@@ -19,5 +19,11 @@ MicroUSB cable
 3d-printer (you can also appoint any 3d-printing service)
 Soldering iron
 
-## How to setup
+## Setup
+
+### Installing required packages for python 3.5
 Execute the following command in the Terminal to install all required packages:
+sudo curl -sSL https://raw.githubusercontent.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display/master/Packages-installer | bash
+
+### Customising the main script
+Once the packages are installed, you can copy the 'Calendar' folder from this directory to the 'Home' folder of the 'Pi' user. 
