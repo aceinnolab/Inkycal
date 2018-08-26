@@ -23,7 +23,7 @@ A python script for the rpi zero w to sync events from any online calendar to a 
 
 ### Installing required packages for python 3.5
 Execute the following command in the Terminal to install all required packages:
-sudo curl -sSL https://raw.githubusercontent.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display/master/Packages-installer | bash
+**sudo curl -sSL https://raw.githubusercontent.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display/master/Packages-installer | bash**
 
 ### Customising the main script
 Once the packages are installed, you can copy the 'Calendar' folder from this directory to the 'Home' folder of the 'Pi' user on the raspberry pi. From there, navigate to the file 'calendarv2.4' and edit the file according to your own needs.
