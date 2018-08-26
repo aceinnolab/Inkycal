@@ -8,7 +8,7 @@ Attention, this repository has just been created. Please do not use it yet as th
 ## Main features
 Display the date and a full monthly calendar
 Syncronise events from any online calendar (like google, yahoo etc.)
-Get real-time weather data (including temperature, humidity, etc.) using openweathermap api
+Get live weather data (including temperature, humidity, etc.) using openweathermap api
 
 ## Hardware required
 7.5" E-Paper Display (Black, White, Red) with driver hat from waveshare (https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm)
@@ -20,3 +20,4 @@ MicroUSB cable
 Soldering iron
 
 ## How to setup
+Execute the following command in the Terminal to install all required packages:
