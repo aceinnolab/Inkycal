@@ -14,15 +14,8 @@ from calibration import calibration
 
 epd = epd7in5b.EPD() #required
 epd.init() #required
-"""
-Attention: Yahoo Calendar urls (for ics) may not work if there is an issue
-with their servers. If you are expierencing issues, you might want to use google
-calendar.
-"""
 
-#google#url = "https://calendar.google.com/calendar/ical/5r4fb74fncg569g17tqc941vco%40group.calendar.google.com/private-5e7bc80e93055e1fbc41ec358b2babab/basic.ics"
-#yahoo calendar might not be so reliable in the long term.
-url = "https://calendar.yahoo.com/saadnaseer63/9607e906db373c21566df3824b05e127/ycal.ics?id=1246"
+url = "please past a valid calendar url here"
 calendar.setfirstweekday(calendar.MONDAY) #mon or sun
 
 c = Calendar(urlopen(url).read().decode('UTF-8')) #was 'iso-8859-1'
@@ -127,9 +120,6 @@ def main():
             weathericon = weather.get_weather_icon_name()
             Temperature = str(int(weather.get_temperature(unit='celsius')['temp']))
             Humidity = str(weather.get_humidity())
-            #print('weather icon:', weathericon) -->debug
-            #print('Temperature:', Temperature + '°C') -->debug
-            #print('Humidity:', Humidity+' %') -->debug
             
             #weather icon handler
             draw(wiconplace, open(wpath+weathericons[weathericon]+'.bmp'))
@@ -174,9 +164,8 @@ def main():
                     if str(time.month) in str((events.begin).format('M')):
                         elist.append(int((events.begin).format('D')))
 
-            print('In this month, you have',len(elist),'Events') # -->debug
-            #cal = calendar.monthcalendar(time.year, time.month)
-
+            print('In this month, you have',len(elist),'Events')
+            
             for x in elist:
                 if x in cal[0]:
                     draw(positions['a'+str(cal[0].index(x)+1)] ,eventicon)
