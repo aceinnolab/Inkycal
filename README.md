@@ -12,8 +12,11 @@ Get live weather data (including temperature, humidity, etc.) using openweatherm
 
 ## Hardware required
 ⋅⋅* 7.5" E-Paper Display (Black, White, Red) with driver hat from waveshare (https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm)
+
 ⋅⋅* Raspberry Pi Zero W (without headers)
+
 ⋅⋅* 90° angled 2x20 Pin GPIO headers
+
 ⋅⋅* MicroSD card (min. 4GB)
 ⋅⋅* MicroUSB cable
 ⋅⋅* 3d-printer (you can also appoint any 3d-printing service)
