@@ -1,6 +1,8 @@
 # Raspberry-Pi-Google-Calendar-with-E-Paper-display
 A python script for the rpi zero w to sync events from any online calendar to a beautiful E-Paper Display, get live weather data and much more. 
 
+### Attention: This project is complete and is currently being tested to verify if it works. Please do not yet use it.
+
 #Place image of the calendar here
 
 ## Main features
