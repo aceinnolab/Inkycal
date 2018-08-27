@@ -21,6 +21,10 @@ A python script for the rpi zero w to sync events from any online calendar to a 
 
 ## Setup
 
+### Getting the Raspberry Pi Zero W ready
+1. Expand the filesystem in the Terminal with **sudo raspi-config --expand-rootfs**
+2. Enable SPI by entering **sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt** in the Terminal
+
 ### Installing required packages for python 3.5
 Execute the following command in the Terminal to install all required packages:
 
