@@ -2,6 +2,7 @@ sudo apt-get update && sudo apt-get dist-upgrade -y
 sudo apt-get clean && sudo apt-get autoremove -y
 git clone https://github.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display
 mv Raspberry-Pi-Google-Calendar-with-E-Paper-display E-Paper-Master
+rm /home/pi/E-Paper-Master/Packages-installer
 
 pip3 install pyowm
 pip3 install ics
