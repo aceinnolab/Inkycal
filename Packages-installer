@@ -13,7 +13,7 @@ sudo apt-get install supervisor -y
 
 sudo bash -c 'cat > /etc/supervisor/conf.d/E-Paper.conf' << EOF
 [program:E-Paper]
-command = /usr/bin/python3.5 /home/pi/E-Paper-Master/Calendar/stable.py
+command = sudo /usr/bin/python3.5 /home/pi/E-Paper-Master/Calendar/stable.py
 stdout_logfile = /home/pi/E-Paper-Master/E-Paper.log
 stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
 EOF
