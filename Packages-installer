@@ -1,3 +1,14 @@
 sudo apt-get update && sudo apt-get dist-upgrade -y
 sudo apt-get clean && sudo apt-get autoremove -y
-sudo pip3 install pyowm -y
+git clone https://github.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display
+mv Raspberry-Pi-Google-Calendar-with-E-Paper-display E-Paper-Master
+pip3 install pyowm
+pip3 install ics
+sudo apt-get install supervisor -y
+
+sudo bash -c 'cat > /etc/supervisor/conf.d/E-Paper.conf<< EOF
+[program:E-Paper]
+command = sudo /usr/bin/python3.5 /home/pi/E-Paper-Master/Calendar/stable.py
+stdout_logfile = /home/pi/E-Paper-Master/E-Paper.log
+stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
+EOF
