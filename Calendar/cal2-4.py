@@ -27,7 +27,7 @@ path = '/home/pi/E-Paper-Master/Calendar/'
 wpath = path+'weather-icons/'
 mpath = path+'months/'
 dpath = path+'days/'
-font = ImageFont.truetype(path+'Assistant-Bold.otf', 18)
+font = ImageFont.truetype(path+'Assistant-Bold.ttf', 18)
 
 weekday =               open(path+'other/weekday.bmp')
 eventicon =             open(path+'other/event.bmp')
