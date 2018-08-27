@@ -7,7 +7,6 @@ import calendar,  pyowm #calendar and openweathermap wrapper
 from ics import Calendar, Event #icalendar parser
 from datetime import datetime #time operations
 from time import sleep #more time operations
-##import requests  #need to try changing from urllib to requests
 from urllib.request import urlopen #allows url to be 'read'
 import arrow #icalendar parser compatible dates
 from calibration import calibration
@@ -18,18 +17,17 @@ epd.init() #required
 url = "please past a valid calendar url here"
 calendar.setfirstweekday(calendar.MONDAY) #mon or sun
 
-c = Calendar(urlopen(url).read().decode('UTF-8')) #was 'iso-8859-1'
-##c = Calendar(requests.get(url)urlopen(url).read().decode('iso-8859-1'))
+c = Calendar(urlopen(url).read().decode('UTF-8'))
 e = Event()
 open = Image.open
 EPD_WIDTH = 640
 EPD_HEIGHT = 384
-font = ImageFont.truetype('/usr/share/fonts/truetype/Assistant/Assistant-Bold.otf', 18)
 
-path = '/home/pi/Calendar/'
+path = '/home/pi/E-Paper-Master/Calendar/'
 wpath = path+'weather-icons/'
 mpath = path+'months/'
 dpath = path+'days/'
+font = ImageFont.truetype(path+'Assistant-Bold.otf', 18)
 
 weekday =               open(path+'/other/weekday.bmp')
 eventicon =             open(path+'other/event.bmp')
@@ -39,7 +37,6 @@ humicon =               open(path+'other/hum-icon.bmp')
 weekmon =               open(path+'other/week-mon.bmp')
 weeksun =               open(path+'other/week-sun.bmp')
 bar =                   open(path+'other/bar.bmp')
-#qr =                    open(path+'other/qr.bmp') #dev
 
 wiconplace = (570, 219)
 tempplace = (605, 310)
@@ -114,8 +111,8 @@ def main():
                 pass
             
             # openweathermap api
-            owm = pyowm.OWM('57c07b8f2ae09e348d32317f1bfe3f52')
-            observation = owm.weather_at_place('Stuttgart, DE')
+            owm = pyowm.OWM('Your Openweathermap API')
+            observation = owm.weather_at_place('Your City, Your Country Name') # like (New York, US)
             weather = observation.get_weather()
             weathericon = weather.get_weather_icon_name()
             Temperature = str(int(weather.get_temperature(unit='celsius')['temp']))
