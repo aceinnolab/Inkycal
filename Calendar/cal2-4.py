@@ -29,7 +29,7 @@ mpath = path+'months/'
 dpath = path+'days/'
 font = ImageFont.truetype(path+'Assistant-Bold.otf', 18)
 
-weekday =               open(path+'/other/weekday.bmp')
+weekday =               open(path+'other/weekday.bmp')
 eventicon =             open(path+'other/event.bmp')
 dateicon =              open(path+'other/today.bmp')
 tempicon =              open(path+'other/temp-icon.bmp')
