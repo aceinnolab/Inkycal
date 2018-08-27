@@ -1,2 +1,3 @@
 sudo apt-get update && sudo apt-get dist-upgrade -y
-sudo pip3 install pyowm
+sudo apt-get clean && sudo apt-get autoremove -y
+sudo pip3 install pyowm -y
