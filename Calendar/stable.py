@@ -14,7 +14,8 @@ from calibration import calibration
 epd = epd7in5b.EPD() #required
 epd.init() #required
 
-url = "please past a valid calendar url here"
+url = "please past a valid calendar url here" # or use this one for testing: 
+#url = "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"
 calendar.setfirstweekday(calendar.MONDAY) #mon or sun
 
 c = Calendar(urlopen(url).read().decode('UTF-8'))
