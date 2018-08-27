@@ -23,17 +23,17 @@ A python script for the rpi zero w to sync events from any online calendar to a 
 
 ### Getting the Raspberry Pi Zero W ready
 1. Expand the filesystem in the Terminal with **`sudo raspi-config --expand-rootfs`**
-2. Enable SPI by entering **sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt** in the Terminal
-3. Set the correct timezone with **sudo dpkg-reconfigure tzdata**, selecting the correct continent and then the capital of your country.
+2. Enable SPI by entering **`sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt`** in the Terminal
+3. Set the correct timezone with **`sudo dpkg-reconfigure tzdata`**, selecting the correct continent and then the capital of your country.
 4. Reboot to apply changes
 
 ### Installing required packages for python 3.5
 Execute the following command in the Terminal to install all required packages:
 
-**sudo curl -sSL https://raw.githubusercontent.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display/master/Packages-installer | bash**
+**`sudo curl -sSL https://raw.githubusercontent.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display/master/Packages-installer | bash`**
 
 ### Customising the main script
-Once the packages are installed, you can copy the 'Calendar' folder from this directory to the 'Home' folder of the 'Pi' user on the raspberry pi. From there, navigate to the file 'calendarv2.4' and edit the file according to your own needs.
+Once the packages are installed, you can copy the 'Calendar' folder from this directory to the 'Home' folder of the 'Pi' user on the raspberry pi. From there, navigate to the file 'stable.py' and edit the file according to your own needs.
 
 
 
