@@ -28,9 +28,8 @@ A python script for the rpi zero w to sync events from any online calendar to a 
 5. Set the correct timezone with **`sudo dpkg-reconfigure tzdata`**, selecting the correct continent and then the capital of your country.
 6. Reboot to apply changes
 
-### Installing required packages for python 3.5
-Execute the following command in the Terminal to install all required packages:
-
+### Installing required packages for python 3.5 
+Execute the following command in the Terminal to install all required packages. This will work on both, Raspbian Stretch with Desktop and Raspbian Stretch lite. 
 **`curl -sSL https://raw.githubusercontent.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display/master/Packages-installer | bash`**
 
 ### Customising the main script
@@ -42,12 +41,7 @@ Once the packages are installed, navigate to the home directory, open 'E-Paper-M
 3. Your city's name and your country code (so the correct weather can be displayed) (e.g. `New York, US`)
 
 
-
-
-
-
-
-
 #### Contact
 Website: ace-laboratory.com
+email: aceisace63@yahoo.com
 
