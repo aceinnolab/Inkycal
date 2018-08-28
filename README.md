@@ -42,6 +42,6 @@ Once the packages are installed, navigate to the home directory, open 'E-Paper-M
 
 
 #### Contact
-Website: ace-laboratory.com
-email: aceisace63@yahoo.com
+* Website: ace-laboratory.com
+* email: aceisace63@yahoo.com
 
