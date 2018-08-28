@@ -2,7 +2,7 @@
 A python script for the rpi zero w to sync events from any online calendar to a beautiful E-Paper Display, get live weather data and much more. 
 
 ### News: Added Support for Raspbian Stretch lite. To get this up and running on raspbian stretch lite, follow the instructions just below.
-![E-Paper-image](https://github.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display/blob/master/Gallery/Front-view.JPG "E-Paper-Image")
+<img src="https://github.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display/blob/master/Gallery/Front-view.JPG" width="600">
 
 ## Main features
 * Display the date and a full monthly calendar
