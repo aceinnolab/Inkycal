@@ -35,7 +35,12 @@ Execute the following command in the Terminal to install all required packages:
 **`sudo curl -sSL https://raw.githubusercontent.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display/master/Packages-installer | bash`**
 
 ### Customising the main script
-Once the packages are installed, you can copy the 'Calendar' folder from this directory to the 'Home' folder of the 'Pi' user on the raspberry pi. From there, navigate to the file 'stable.py' and edit the file according to your own needs.
+Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'stable.py' inside the Calendar folder.
+
+3 Main Details are needed to get running:
+1. A valid ical URL. Use the export funtion in google calendar to create a ical url link and paste it in the url section
+2. A valid openweathermap API-Key is required. This key can be optained for free with an account on openweathermap
+3. Your city's name and your country code (so the correct weather can be displayed) (e.g. `New York, US`)
 
 
 
