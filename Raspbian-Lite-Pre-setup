@@ -4,4 +4,5 @@ sudo apt-get install python3-spidev -y
 sudo apt-get install git -y
 pip3 install Pillow
 sudo pip3 install Pillow
+sudo apt-get install libopenjp2-7-dev
 sudo apt install libtiff5
