@@ -19,7 +19,7 @@ A python script for the rpi zero w to sync events from any online calendar to a 
 * 3d-printer (you can also appoint any 3d-printing service)
 * Soldering iron
 
-## Setup
+# Setup
 
 ## Getting the Raspberry Pi Zero W ready
 1. Set up Wifi on the Raspberry Pi Zero W by copying the file **wpa_supplicant.conf** to the /boot directory and adding your Wifi details in that file.
