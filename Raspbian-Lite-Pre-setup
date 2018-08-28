@@ -1,0 +1,7 @@
+sudo apt-get install python3-pip -y
+sudo apt-get install RPi.GPIO -y
+sudo apt-get install python3-spidev -y
+sudo apt-get install git -y
+pip3 install Pillow
+sudo pip3 install Pillow
+sudo apt install libtiff5
