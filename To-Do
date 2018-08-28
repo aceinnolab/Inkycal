@@ -1,0 +1,13 @@
+# TO DO:
+## Create a Dashboard page as an addition/ alternative to the current 'Calendar' page with the following features:
+1. Sunrise and Sunset times from Openweathermap
+2. Min. and max. Temperature of the current day.
+3. Display the current moon phase according to calculation.
+4. Display larger weather icon and add short description like: 'Sunny'
+5. Show the next few upcoming events with a short description.
+
+## In Planning:
+1. Add notes on the Dashboard page through a webpage.
+
+## Suggested features:
+If you feel like there is something people will find useful, please drop a message explaining the feature and a way on how to implement it. 
