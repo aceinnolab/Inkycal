@@ -1,4 +1,14 @@
-sudo apt-get update
+sudo apt-get update && sudo apt-get dist-upgrade -y
+
+sudo apt-get install python3-pip -y
+sudo apt-get install RPi.GPIO -y
+sudo apt-get install python3-spidev -y
+sudo apt-get install git -y
+pip3 install Pillow
+sudo pip3 install Pillow
+sudo apt-get install libopenjp2-7-dev -y
+sudo apt install libtiff5 -y
+
 sudo apt-get clean && sudo apt-get autoremove -y
 git clone https://github.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display
 mv Raspberry-Pi-Google-Calendar-with-E-Paper-display E-Paper-Master
