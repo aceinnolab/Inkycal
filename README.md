@@ -15,9 +15,8 @@ A python script for the rpi zero w to sync events from any online calendar to a 
 * 90° angled 2x20 Pin GPIO headers
 * MicroSD card (min. 4GB)
 * MicroUSB cable
-### optional:
-* 3d-printer (you can also appoint any 3d-printing service)
-* Soldering iron
+* 3d-printer (you can also appoint any 3d-printing service) for printing a case
+* Soldering iron (for soldering the headers)
 
 # Setup
 
