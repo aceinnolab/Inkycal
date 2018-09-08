@@ -21,7 +21,7 @@ A python script for the rpi zero w to sync events from any online calendar to a 
 # Setup
 
 ## Getting the Raspberry Pi Zero W ready
-1. Set up Wifi on the Raspberry Pi Zero W by copying the file **wpa_supplicant.conf** to the /boot directory and adding your Wifi details in that file.
+1. After [flashing Raspbian Stretch (Lite or Desktop)](https://www.raspberrypi.org/downloads/raspbian/), set up Wifi on the Raspberry Pi Zero W by copying the file **wpa_supplicant.conf** (from above) to the /boot directory and adding your Wifi details in that file.
 2. Create a simple text document named **ssh** in the boot directory to enable ssh.
 3. Expand the filesystem in the Terminal with **`sudo raspi-config --expand-rootfs`**
 4. Enable SPI by entering **`sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt`** in the Terminal
@@ -41,8 +41,7 @@ Once the packages are installed, navigate to the home directory, open 'E-Paper-M
 3. Your city's name and your country code (so the correct weather can be displayed) (e.g. `New York, US`)
 
 
-## Further Information
-Don't forget to check out the **wiki**. It contains all the information to customising, understanding and setting up the script. 
+## Don't forget to check out the Wiki. It contains all the information to customising, understanding and setting up the script. 
 
 ### Contact
 * Website: ace-laboratory.com
