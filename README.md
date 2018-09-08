@@ -41,6 +41,9 @@ Once the packages are installed, navigate to the home directory, open 'E-Paper-M
 3. Your city's name and your country code (so the correct weather can be displayed) (e.g. `New York, US`)
 
 
+## Further Information
+Don't forget to check out the **wiki**. It contains all the information to customising, understanding and setting up the script. 
+
 ### Contact
 * Website: ace-laboratory.com
 * email: aceisace63@yahoo.com
