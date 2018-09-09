@@ -1,5 +1,5 @@
 echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
-sudo apt-get update && sudo apt-get dist-upgrade -y
+sudo apt-get update && sudo apt-get dist-upgrade -y > /dev/null 2>&1
 echo -e "\e[1;36m"System successfully updated and upgraded!"\e[0m"
 
 echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
@@ -40,4 +40,4 @@ EOF
 sudo service supervisor start E-Paper
 echo -e "\e[1;36m"The install was successful"\e[0m"
 echo -e "\e[1;36m"The script will now start at every boot."\e[0m"
-echo -e "\e[1;31m"Don't forget to add your iCal url and your openweathermap API in the main script."\e[0m"
+echo -e "\e[1;31m"Do not forget to add your iCal url and openweathermap API in the main script."\e[0m"
