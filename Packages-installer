@@ -20,8 +20,14 @@ sudo apt-get clean > /dev/null && sudo apt-get autoremove -y > /dev/null
 
 echo -e "\e[1;36m"Installing the E-Paper-Calendar Software"\e[0m"
 git clone https://github.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display
-mv Raspberry-Pi-Google-Calendar-with-E-Paper-display E-Paper-Master
-rm /home/pi/E-Paper-Master/Packages-installer
+mkdir E-Paper-Master
+cd Raspberry-Pi-Google-Calendar-with-E-Paper-display
+cp -r Calendar /home/pi/E-Paper-Master/
+cp README.md /home/pi/E-Paper-Master/
+cp LICENSE /home/pi/E-Paper-Master/
+cp -r .git /home/pi/E-Paper-Master/
+cd
+rm -r Raspberry-Pi-Google-Calendar-with-E-Paper-display
 
 echo -e "\e[1;36m"Installing a few required packages for the E-Paper Software"\e[0m"
 {
