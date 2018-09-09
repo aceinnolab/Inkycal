@@ -2,8 +2,5 @@
 # This file is of no use except for testing purposes. It is meant to make the installer more user-friendly by hiding the output, adding colour etc.
 
 echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
-{
- sudo apt-get update > /dev/null 
- sudo apt-get dist-upgrade -y > /dev/null
-}
+sudo apt-get update > /dev/null && sudo apt-get dist-upgrade -y > /dev/null
 echo -e "\e[1;36m"System successfully updated and upgraded!"\e[0m"
