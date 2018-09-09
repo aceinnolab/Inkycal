@@ -1,8 +1,8 @@
 echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
 sudo apt-get update && sudo apt-get dist-upgrade -y
 echo -e "\e[1;36m"System successfully updated and upgraded!"\e[0m"
-echo -e "\e[1;36m"echo "Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
 
+echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
 sudo apt-get install python3-pip -y
 sudo apt-get install RPi.GPIO -y
 sudo apt-get install python3-spidev -y
