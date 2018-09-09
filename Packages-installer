@@ -38,4 +38,6 @@ stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
 EOF
 
 sudo service supervisor start E-Paper
-echo -e "\e[1;36m"Sucess!, the script will now start at boot. Don't forget to add your iCal url and your openweathermap API"\e[0m"
+echo -e "\e[1;36m"The install was successful"\e[0m"
+echo -e "\e[1;36m"The script will now start at every boot."\e[0m"
+echo -e "\e[1;31m"Don't forget to add your iCal url and your openweathermap API in the main script."\e[0m"
