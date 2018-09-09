@@ -33,6 +33,10 @@ Execute the following command in the Terminal to install all required packages. 
 
 **`curl -sSL https://raw.githubusercontent.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display/master/Packages-installer | bash`**
 
+Should you encounter any problems during the install, try using the Installer with output, like this:
+
+`curl -sSL https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Installer-with-debug |bash`
+
 ## Customising the main script
 Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'stable.py' inside the Calendar folder.
 
