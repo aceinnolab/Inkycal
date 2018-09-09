@@ -1,5 +1,8 @@
+echo "Running apt-get update and apt-get dist-upgrade for you..."
 sudo apt-get update && sudo apt-get dist-upgrade -y
+echo "System successfully updated and upgraded!"
 
+echo "Installing a few packages that are missing on Raspbian Stretch Lite..."
 sudo apt-get install python3-pip -y
 sudo apt-get install RPi.GPIO -y
 sudo apt-get install python3-spidev -y
@@ -9,16 +12,20 @@ sudo pip3 install Pillow
 sudo apt-get install libopenjp2-7-dev -y
 sudo apt install libtiff5 -y
 
+echo "Cleaning a bit of mess to free up some space..."
 sudo apt-get clean && sudo apt-get autoremove -y
+echo "Installing the E-Paper-Calendar Software"
 git clone https://github.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display
 mv Raspberry-Pi-Google-Calendar-with-E-Paper-display E-Paper-Master
 rm /home/pi/E-Paper-Master/Packages-installer
 
+echo "Installing a few required packages for the E-Paper Software"
 sudo pip3 install pyowm
 sudo pip3 install ics
 pip3 install pyowm
 pip3 install ics
 
+echo "Setting up the script  to start at boot..."
 sudo apt-get install supervisor -y
 
 sudo bash -c 'cat > /etc/supervisor/conf.d/E-Paper.conf' << EOF
@@ -29,3 +36,4 @@ stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
 EOF
 
 sudo service supervisor start E-Paper
+echo "Sucess!, the script will now start at boot. Don't forget to add your iCal url and your openweathermap API"
