@@ -45,6 +45,9 @@ Once the packages are installed, navigate to the home directory, open 'E-Paper-M
 2. A valid openweathermap API-Key is required. This key can be optained for free with an account on openweathermap
 3. Your city's name and your country code (so the correct weather can be displayed) (e.g. `New York, US`)
 
+## Demo
+Once you have setup everything, the E-Paper Calendar will refresh the screen in the following way:
+<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/GIF.gif" width="320">
 
 ## Don't forget to check out the Wiki. It contains all the information to customising, understanding and setting up the script. 
 
