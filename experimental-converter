@@ -27,7 +27,7 @@ print('Found these files:', imagenames) #print this list
 print('attempting to convert images to useful ones')
 
 try:
-    os.makedirs('/home/pi/Desktop/images/converted')
+    os.makedirs(path2)
 except OSError as e:
     if e.errno != errno.EEXIST:
         raise
