@@ -37,6 +37,10 @@ Should you encounter any problems during the install, try using the Installer wi
 
 `curl -sSL https://raw.githubusercontent.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/master/Installer-with-debug |bash`
 
+This is how the installer will run:
+
+<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/pi-zero-install-successful.png" width="700">
+
 ## Customising the main script
 Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'stable.py' inside the Calendar folder.
 
