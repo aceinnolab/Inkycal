@@ -1,5 +1,6 @@
 #!/bin/sh
 echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
+echo -e "\e[1;36m"This will take a while."\e[0m"
 sudo apt-get update > /dev/null && sudo apt-get dist-upgrade -y > /dev/null
 echo -e "\e[1;36m"System successfully updated and upgraded!"\e[0m"
 
