@@ -1,0 +1,4 @@
+#!/bin/sh
+echo -e "\e[1;31m"This is a experimental bash script to add support for 2-colour E-Paper Displays"\e[0m"
+cd /home/pi
+wget 
