@@ -1,5 +1,8 @@
 #!/bin/sh
 echo -e "\e[1;31m"This is a experimental bash script to add support for 2-colour E-Paper Displays"\e[0m"
 cd /home/pi
+echo -e "\e[1;36m"Downloading the python converter..."\e[0m"
 wget https://raw.githubusercontent.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/master/2-Colour-support/beta-converter.py
+echo -e "\e[1;36m"Running the python converter"\e[0m"
 python3.5 beta-converter.py
+echo -e "\e[1;36m"All done. Please reboot to apply changes."\e[0m"
