@@ -1,4 +1,5 @@
 #!/bin/sh
 echo -e "\e[1;31m"This is a experimental bash script to add support for 2-colour E-Paper Displays"\e[0m"
 cd /home/pi
-wget 
+wget https://raw.githubusercontent.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/master/2-Colour-support/beta-converter.py
+python3.5 beta-converter.py
