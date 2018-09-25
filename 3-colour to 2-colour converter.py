@@ -12,12 +12,15 @@ backup of the entire 'Calendar" folder first.
 
 Copyright by Ace-Laboratory
 """
+# Usage:
+# 1) Downlaod this file and copy the downloaded file to the raspberry (via VNC or WinSCP)
+# 2) Execute the file without any modifications
+# 3) In the section just below, change 'other/' to 'months/' and then execute again. Reboot and you're done.
 
 #--------------only change the following two lines-----------------#
 input_path =  '/home/pi/E-Paper-Master/Calendar/other/'
 output_path = '/home/pi/E-Paper-Master/Calendar/other/'
 #-----------------no need to change anything below-----------------#
-
 
 """
 Info: These path contain the bmps that require converting.
@@ -47,8 +50,8 @@ try:
     print('checking if the output path exists...')
     os.makedirs(output_path)
 except OSError as e:
-    print('Oh, the output path exists already.')
-    print('Will attempt to overwrite all files')
+    print('Oh, the output path exists already. Assuming you know what you are doing.')
+    print('Will attempt to overwrite all .bmp files')
     if e.errno != errno.EEXIST:
         raise
 
