@@ -3,8 +3,7 @@ A python script for the rpi zero w to sync events from any online calendar to a 
 
 ## News: 
 ### Added Support for Raspbian Stretch lite. To get this up and running on raspbian stretch lite, follow the instructions just below.
-
-### 2-Colour E-Paper support coming soon!
+### 2-Colour E-Paper support coming soon! See the section 'Experimental' for the current status.
 <img src="https://github.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display/blob/master/Gallery/Front-view.JPG" width="500">
 
 ## Main features
@@ -55,8 +54,18 @@ Once the packages are installed, navigate to the home directory, open 'E-Paper-M
 ## Demo
 Once you have setup everything, the E-Paper Calendar will refresh the screen in the following way:
 <img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/GIF.gif" width="320">
+ 
+## (Experimental) Support for 2-Colour E-Paper-versions
+Although this software was not originally intended to be used with the 2-Colour E-Paper Display from waveshare, there probably are a few folks which have the 2-colour version and yet would want to use this software. 
 
-## Don't forget to check out the Wiki. It contains all the information to customising, understanding and setting up the script. 
+Currently, there is a 'quick' fix to get this to work on the 2-Colour E-Paper display. It works by converting the 3-colour bmps used by the E-Paper display to 2-colour (black and white) bmps. To add support for the 2-colour version, follow the steps above as you would with the 3-Colour version. Then, execute:
+**curl -sSL https://raw.githubusercontent.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/master/2-Colour-support/setup | bash**
+
+<img src="https://user-images.githubusercontent.com/29558518/46045487-25134680-c11e-11e8-96de-ee7ed57ac766.png" width="400">
+
+The _experimental_ is there as I don't actually have the 2-Colour version of the E-Paper. I can only _assume_ that it will work. It's strongly recommended to create a backup of the 'E-Paper-Master' folder in case something doesn't work right. If that is the case, please open up an issue to let me know.
+
+## Don't forget to check out the Wiki. It contains all the information to customising, understanding and setting up the script.
 
 ### Contact
 * Website: ace-laboratory.com
