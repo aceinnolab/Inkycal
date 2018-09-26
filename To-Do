@@ -1,4 +1,7 @@
 # TO DO:
+## Add support for the 2-colour 7.5" E-Paper version (black and white only).
+
+
 ## Create a Dashboard page as an addition/ alternative to the current 'Calendar' page with the following features:
 1. Sunrise and Sunset times from Openweathermap
 2. Min. and max. Temperature of the current day.
