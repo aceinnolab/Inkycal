@@ -60,7 +60,8 @@ Once you have setup everything, the E-Paper Calendar will refresh the screen in 
 Although this software was not originally intended to be used with the 2-Colour E-Paper Display from waveshare, there probably are a few folks which have the 2-colour version and yet would want to use this software. 
 
 Currently, there is a 'quick' fix to get this to work on the 2-Colour E-Paper display. It works by converting the 3-colour bmps used by the E-Paper display to 2-colour (black and white) bmps. To add support for the 2-colour version, follow the steps above as you would with the 3-Colour version. Then, execute:
-**curl -sSL https://raw.githubusercontent.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/master/2-Colour-support/setup | bash**
+
+**`curl -sSL https://raw.githubusercontent.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/master/2-Colour-support/setup | bash`**
 
 <img src="https://user-images.githubusercontent.com/29558518/46045487-25134680-c11e-11e8-96de-ee7ed57ac766.png" width="400">
 
