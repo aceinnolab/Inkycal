@@ -26,7 +26,7 @@ EPD_HEIGHT = 384
 
 path = '/home/pi/E-Paper-Master/Calendar/'
 wpath = path+'weather-icons/'
-mpath = path+'months/en/'
+mpath = path+'months/de/'
 dpath = path+'days/'
 font = ImageFont.truetype(path+'Assistant-Bold.ttf', 18)
 
@@ -35,8 +35,8 @@ eventicon =             open(path+'other/event.bmp')
 dateicon =              open(path+'other/today.bmp')
 tempicon =              open(path+'other/temp-icon.bmp')
 humicon =               open(path+'other/hum-icon.bmp')
-weekmon =               open(path+'other/week-mon.bmp')
-weeksun =               open(path+'other/week-sun.bmp')
+weekmon =               open(path+'other/week-mon-de.bmp')
+weeksun =               open(path+'other/week-sun-de.bmp')
 bar =                   open(path+'other/bar.bmp')
 
 wiconplace = (570, 219)
@@ -46,8 +46,8 @@ monthplace = (443, 0)
 weekplace = (415,0)
 barplace = (555, 0)
 
-weekdaysmon = {'Mon': (416,3), 'Tue': (416,57), 'Wed': (416,111), 'Thu': (416,165), 'Fri': (416,219), 'Sat': (416,273), 'Sun':(416,327)}
-weekdayssun = {'Sun': (416,3), 'Mon': (416,57), 'Tue': (416,111), 'Wed': (416,165), 'Thu': (416,219), 'Fri': (416,273), 'Sat':(416,327)}
+weekdaysmon = {'Mo': (416,3), 'Di': (416,57), 'Mi': (416,111), 'Do': (416,165), 'Fr': (416,219), 'Sa': (416,273), 'So':(416,327)}
+weekdayssun = {'So': (416,3), 'Mo': (416,57), 'Di': (416,111), 'Mi': (416,165), 'Do': (416,219), 'Fr': (416,273), 'Sa':(416,327)}
 
 positions = {'a1': (351, 3), 'a2': (351, 57), 'a3': (351, 111), 'a4': (351, 165),  'a5': (351, 219), 'a6': (351, 273), 'a7': (351, 327),
 'b1': (284, 3), 'b2': (284, 57), 'b3': (284, 111), 'b4': (284, 165), 'b5': (284, 219), 'b6': (284, 273), 'b7': (284, 327),
@@ -153,8 +153,8 @@ def main():
             if calendar.firstweekday() == 6:
                 draw(weekdayssun[(time.strftime("%a"))], weekday)
             
-            print('It is currently:',time.strftime('%a %-d %b %y')) #--debug
-            print('The current time is:', time.strftime('%H:%M')) #--debug
+            print('Aktuell ist es:',time.strftime('%a %-d %b %y')) #--debug
+            print('Die aktuelle Zeit ist:', time.strftime('%H:%M')) #--debug
     
             elist = []
             for events in c.events:
@@ -162,7 +162,7 @@ def main():
                     if str(time.month) in str((events.begin).format('M')):
                         elist.append(int((events.begin).format('D')))
 
-            print('In this month, you have',len(elist),'Events')
+            print('In diesem Monat, hast du',len(elist),'Events')
             
             for x in elist:
                 if x in cal[0]:
