@@ -4,7 +4,7 @@ A python script for the rpi zero w to sync events from any online calendar to a 
 ## News: 
 * **Added Support for Raspbian Stretch lite. To get this up and running on raspbian stretch lite, follow the instructions just below.**
 
-* **2-Colour E-Paper support coming soon! See the section 'Experimental' for the current status.**
+* **2-Colour E-Paper support added! To use this software on the 2-Colour E-Paper Display, follow the instructions below.**
 <img src="https://github.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display/blob/master/Gallery/Front-view.JPG" width="500">
 
 ## Main features
