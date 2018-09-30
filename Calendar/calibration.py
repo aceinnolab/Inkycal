@@ -4,11 +4,12 @@ from PIL import Image, ImageDraw, ImageFont
 EPD_WIDTH = 640
 EPD_HEIGHT = 384
 
+epd = epd7in5b.EPD()
+
 def calibration():
     for i in range(2):
-        epd = epd7in5b.EPD()
         epd.init()
-        black = Image.new('L', (EPD_WIDTH, EPD_HEIGHT), 0)
+        black = Image.new('1', (EPD_WIDTH, EPD_HEIGHT), 0)
         print('calibrating black...')
         ImageDraw.Draw(black)
         epd.display_frame(epd.get_frame_buffer(black))
@@ -17,17 +18,14 @@ def calibration():
         ImageDraw.Draw(red)
         print('calibrating red...')
         epd.display_frame(epd.get_frame_buffer(red))
-        white = Image.new('L', (EPD_WIDTH, EPD_HEIGHT), 255)
+        white = Image.new('1', (EPD_WIDTH, EPD_HEIGHT), 255)
         ImageDraw.Draw(white)
         print('calibrating white...')
         epd.display_frame(epd.get_frame_buffer(white))
-
+        epd.sleep()
     print('Cycle complete!')
 
 def main():
-    epd = epd7in5b.EPD()
-    epd.init()
-
     for i in range(1):
         calibration()
 
