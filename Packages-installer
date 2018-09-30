@@ -28,7 +28,7 @@ cp README.md /home/pi/E-Paper-Master/
 cp LICENSE /home/pi/E-Paper-Master/
 cp -r .git /home/pi/E-Paper-Master/
 cd
-rm -r Raspberry-Pi-Google-Calendar-with-E-Paper-display
+sudo rm -r Raspberry-Pi-Google-Calendar-with-E-Paper-display
 
 echo -e "\e[1;36m"Installing a few required packages for the E-Paper Software"\e[0m"
 {
