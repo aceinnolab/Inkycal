@@ -1,0 +1,68 @@
+"""
+Experimental converter that transforms standard png, jpg and bmp files to useable bmp files which can be used by the Calendar.
+# Currently in ALPHA mode. Please use with caution and keep backups
+# Version 1.0 (initial)
+
+# Copyright by Ace-Laboratory
+"""
+
+## What this script does:
+# grab images from one folder, perform some operations and paste them in an output folder.
+# The operations consists of removing the alpha channel, reducing the colours to (currently) just two,
+# Inverting the colours (as the display inverts them again) and rotating the picture by 90 deg clockwise
+
+## Please only use png files for now as that has been tested and confirmed to work so far.
+
+import glob, os, errno
+from PIL import Image
+import PIL.ImageOps
+#--------------only change the following two lines-----------------#
+input_folder = '/home/pi/input/'
+output_folder = '/home/pi/output/'
+#-----------------no need to change anything below----------------#
+
+os.chdir(input_folder)
+
+pngs = []
+for files in glob.glob("*.png"):
+    pngs.append(os.path.splitext(os.path.basename(files))[0])
+
+bmps = []
+for files in glob.glob("*.bmp"):
+    bmps.append(files)
+
+jpegs= []
+for files in glob.glob("*.jpg"):
+    print(os.path.splitext(os.path.basename(files))[0])
+    jpegs.append(os.path.splitext(os.path.basename(files))[0])
+
+print('converting...')
+
+thresh = 126 # any value below 127 works.
+fn = lambda x : 255 if x > thresh else 0
+
+# PNG to BMP conversion
+for files in pngs: #part1: first from png to bmp
+    png=Image.open(input_folder+files+".png")
+    png.load()
+    background = Image.new("RGB", png.size, (255, 255, 255))
+    background.paste(png, mask=png.split()[3])
+    background.convert('L').point(fn, mode='1').save((output_folder+files+'.bmp'), 'BMP', quality=90)
+
+png_bmp = [] #part2: and then from bmp to bmp
+os.chdir(output_folder)
+for files in glob.glob("*.bmp"):
+    png_bmp.append(files)
+for files in png_bmp:
+    (PIL.ImageOps.invert((Image.open(output_folder+files).rotate(-90, expand=True)).convert('L'))).save(output_folder+files)
+
+# BMP to BMP conversion
+for files in bmps:
+    (PIL.ImageOps.invert((Image.open(input_folder+files).rotate(-90, expand=True)).convert('L'))).save(output_folder+files)
+
+# JPG to BMP (do not use)
+for files in jpegs:
+    (Image.open(input_folder+files+".jpg").convert('L').save(output_folder+files+".bmp"))
+print('All done')
+
+
