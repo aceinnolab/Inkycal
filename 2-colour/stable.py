@@ -25,7 +25,7 @@ api_key = ""
 location = "California, US"
 week_starts_on = "Monday"
 
-"""That's all. The software will do the rest."""
+"""That's all. The software will do the rest. You don't need to modify anything below this."""
 
 import epd7in5
 from PIL import Image, ImageDraw, ImageFont, ImageOps #image operations
@@ -99,7 +99,6 @@ def main():
         hour = int(time.strftime("%-H"))
         
         for i in range(1):
-            epd.init()
             if hour is 0:
                 calibration()
             if hour is 12:
@@ -107,6 +106,7 @@ def main():
             if hour is 18:
                 calibration()
 
+            epd.init()
             image = Image.new('1', (EPD_WIDTH, EPD_HEIGHT), 255)
             draw = (ImageDraw.Draw(image)).bitmap
             
