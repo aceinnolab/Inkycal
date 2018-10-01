@@ -22,6 +22,11 @@ if [ "$digit" != 2 ] && [ "$digit" != 3 ]; then
     exit
 fi
 
+if [ "$digit" = 2 ] || [ "$digit" = 3 ]; then
+    echo "Your input was accepted"
+    echo "The installer will do the rest now. You can enjoy a break in the meanwhile."
+fi
+
 echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
 echo -e "\e[1;36m"This will take a while, sometimes up to 30 mins"\e[0m"
 sudo apt-get update > /dev/null && sudo apt-get dist-upgrade -y > /dev/null
