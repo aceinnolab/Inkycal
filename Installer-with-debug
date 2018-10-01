@@ -34,13 +34,12 @@ fi
 # Updating and upgrading the system, without taking too much space
 echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
 echo -e "\e[1;36m"This will take a while, sometimes up to 30 mins"\e[0m"
-sudo apt-get update > /dev/null && sudo apt-get dist-upgrade -y > /dev/null
+sudo apt-get update && sudo apt-get dist-upgrade -y
 echo -e "\e[1;36m"System successfully updated and upgraded!"\e[0m"
 echo ""
 
 # Installing a few packages which are missing on Raspbian Stretch Lite
 echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
-{
 sudo apt-get install python3-pip -y
 sudo apt-get install RPi.GPIO -y
 sudo apt-get install python3-spidev -y
@@ -49,12 +48,11 @@ pip3 install Pillow
 sudo pip3 install Pillow 
 sudo apt-get install libopenjp2-7-dev -y 
 sudo apt install libtiff5 -y
-} > /dev/null
 echo ""
 
 # Running apt-get clean and apt-get autoremove
 echo -e "\e[1;36m"Cleaning a bit of mess to free up some space..."\e[0m"
-sudo apt-get clean > /dev/null && sudo apt-get autoremove -y > /dev/null
+sudo apt-get clean && sudo apt-get autoremove -y
 echo ""
 
 # Using this part for the 2-colour E-Paper version
@@ -109,17 +107,15 @@ fi
 
 # Installing packages required by the main script
 echo -e "\e[1;36m"Installing a few required packages for the E-Paper Software"\e[0m"
-{
 sudo pip3 install pyowm
 sudo pip3 install ics
 pip3 install pyowm
 pip3 install ics
-} > /dev/null
 echo ""
 
 # Setting up supervisor
 echo -e "\e[1;36m"Setting up the script to start at boot..."\e[0m"
-sudo apt-get install supervisor -y > /dev/null
+sudo apt-get install supervisor -y
 
 sudo bash -c 'cat > /etc/supervisor/conf.d/E-Paper.conf' << EOF
 [program:E-Paper]
