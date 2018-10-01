@@ -4,12 +4,13 @@
 
 # Copyright by Ace-Laboratory
 
+
+# Getting input to see which E-Paper version is currently being used.
 echo -e "\e[1mWhich version of the E-Paper display are you using?"
 echo -e "\e[97mEnter \e[91m2 \e[97m if you are using the 2-Colour E-Paper"
 echo -e "\e[97mEnter \e[91m3 \e[97m if you are using the 3-Colour E-Paper"
-echo "confirm your selection with [ENTER]"
-
-read -r digit
+echo -e "\e[97mconfirm your selection with [ENTER]"
+read -r -p 'Please type in the number now:  ' digit
 
 if [ -z "$digit" ]; then
     echo "You didn't enter anything."
@@ -23,11 +24,21 @@ if [ "$digit" != 2 ] && [ "$digit" != 3 ]; then
     exit
 fi
 
+if [ "$digit" = 2 ] || [ "$digit" = 3 ]; then
+    echo ""
+    echo -e "\e[1;36m"Your input was accepted"\e[0m"
+    echo -e "\e[1;36m"The installer will finish the rest now. You can enjoy a break in the meanwhile."\e[0m"
+    echo ""
+fi
+
+# Updating and upgrading the system, without taking too much space
 echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
 echo -e "\e[1;36m"This will take a while, sometimes up to 30 mins"\e[0m"
 sudo apt-get update > /dev/null && sudo apt-get dist-upgrade -y > /dev/null
 echo -e "\e[1;36m"System successfully updated and upgraded!"\e[0m"
+echo ""
 
+# Installing a few packages which are missing on Raspbian Stretch Lite
 echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
 {
 sudo apt-get install python3-pip -y
@@ -39,15 +50,20 @@ sudo pip3 install Pillow
 sudo apt-get install libopenjp2-7-dev -y 
 sudo apt install libtiff5 -y
 } > /dev/null
+echo ""
 
+# Running apt-get clean and apt-get autoremove
 echo -e "\e[1;36m"Cleaning a bit of mess to free up some space..."\e[0m"
 sudo apt-get clean > /dev/null && sudo apt-get autoremove -y > /dev/null
+echo ""
 
+# Using this part for the 2-colour E-Paper version
 if [ "$digit" = 2 ]; then
     echo -e "\e[1;36m"Installing the 2-Colour E-Paper-Calendar Software"\e[0m"
     git clone https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather
     mkdir E-Paper-Master
     cd E-Paper-Calendar-with-iCal-sync-and-live-weather
+    rm -r Calendar
     mv 2-colour Calendar
     cp -r Calendar /home/pi/E-Paper-Master/
     cp README.md /home/pi/E-Paper-Master/
@@ -55,8 +71,19 @@ if [ "$digit" = 2 ]; then
     cp -r .git /home/pi/E-Paper-Master/
     cd
     sudo rm -r E-Paper-Calendar-with-iCal-sync-and-live-weather
+    # add a short info
+    cat > /home/pi/E-Paper-Master/Info.txt << EOF
+This document contains a short info of the version
+
+Version: 2-Colour E-Paper-version
+Installer version: 1.2 (Early October 2018)
+If the time was set correctly, you installed this software on:
+EOF
+    echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
+    echo ""
 fi
 
+# Using this part for the 3-colour E-Paper version
 if [ "$digit" = 3 ]; then
     echo -e "\e[1;36m"Installing the 3-Colour E-Paper-Calendar Software"\e[0m"
     git clone https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather
@@ -68,8 +95,19 @@ if [ "$digit" = 3 ]; then
     cp -r .git /home/pi/E-Paper-Master/
     cd
     sudo rm -r E-Paper-Calendar-with-iCal-sync-and-live-weather
+    # add a short info
+    cat > /home/pi/E-Paper-Master/Info.txt << EOF
+This document contains a short info of the version
+
+Version: 3-Colour E-Paper-version
+Installer version: 1.2 (Early October 2018)
+If the time was set correctly, you installed this software on:
+EOF
+    echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
+    echo ""
 fi
 
+# Installing packages required by the main script
 echo -e "\e[1;36m"Installing a few required packages for the E-Paper Software"\e[0m"
 {
 sudo pip3 install pyowm
@@ -77,7 +115,9 @@ sudo pip3 install ics
 pip3 install pyowm
 pip3 install ics
 } > /dev/null
+echo ""
 
+# Setting up supervisor
 echo -e "\e[1;36m"Setting up the script to start at boot..."\e[0m"
 sudo apt-get install supervisor -y > /dev/null
 
@@ -89,7 +129,9 @@ stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
 EOF
 
 sudo service supervisor start E-Paper
+echo ""
 
+# Final words
 echo -e "\e[1;36m"The install was successful"\e[0m"
 echo -e "\e[1;36m"The programm will now start at every boot."\e[0m"
 
