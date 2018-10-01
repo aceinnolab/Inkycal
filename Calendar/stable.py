@@ -12,11 +12,11 @@ Copyright by Ace-Laboratory
 # api-key refers to your openweathermap api key. It can be generated for free
 # when you sign up for an account and consists of a bunch of numbers and letters
 
-#location refers to the city you live in. You api key will be used to grab live
+# location refers to the city you live in. You api key will be used to grab live
 # weather data for this city. Use the format below (city-name, country code)
 
-# When does the week normally start in your country?
-# Choose between Monday and Sunday
+# week_starts_on refers to the day on which the week starts on in your country.
+# Choose between Monday and Sunday.
 
 """ To quickly get started, fill in the following details:"""
 
@@ -25,7 +25,7 @@ api_key = ""
 location = "California, US"
 week_starts_on = "Monday"
 
-"""That's all. The software will do the rest."""
+"""That's all. The software will do the rest. You don't need to modify anything below this."""
 
 import epd7in5b #epd-control
 from PIL import Image, ImageDraw, ImageFont, ImageOps #image operations
