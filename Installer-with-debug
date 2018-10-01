@@ -27,7 +27,7 @@ fi
 if [ "$digit" = 2 ] || [ "$digit" = 3 ]; then
     echo ""
     echo -e "\e[1;36m"Your input was accepted"\e[0m"
-    echo -e "\e[1;36m"The installer will do the rest now. You can enjoy a break in the meanwhile."\e[0m"
+    echo -e "\e[1;36m"The installer will finish the rest now. You can enjoy a break in the meanwhile."\e[0m"
     echo ""
 fi
 
@@ -71,16 +71,6 @@ if [ "$digit" = 2 ]; then
     cp -r .git /home/pi/E-Paper-Master/
     cd
     sudo rm -r E-Paper-Calendar-with-iCal-sync-and-live-weather
-    cd E-Paper-Master
-    bash -c 'cat > /home/pi/E-Paper-Master/Info.txt' << EOF
-    This document contains a short info of the version
-    
-    Version: 2-Colour E-Paper-version
-    Installer version: 1.2 (Early October 2018)
-    If the time was set correctly, you installed this software on:
-    
-    EOF
-    echo echo `date` >> /home/pi/E-Paper-Master/Info.txt
     echo ""
 fi
 
@@ -96,15 +86,6 @@ if [ "$digit" = 3 ]; then
     cp -r .git /home/pi/E-Paper-Master/
     cd
     sudo rm -r E-Paper-Calendar-with-iCal-sync-and-live-weather
-    bash -c 'cat > /home/pi/E-Paper-Master/Info.txt' << EOF
-    This document contains a short info of the version
-    
-    Version: 3-Colour E-Paper-version
-    Installer version: 1.2 (Early October 2018)
-    If the time was set correctly, you installed this software on:
-    
-    EOF
-    echo echo `date` >> /home/pi/E-Paper-Master/Info.txt
     echo ""
 fi
 
