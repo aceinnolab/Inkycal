@@ -1,10 +1,35 @@
-#!/bin/sh
+#!/bin/bash
+# This script is for automating the install for both displays,
+# The 2-colour and 3-colour one.
+
+# Copyright by Ace-Laboratory
+
+echo -e "\e[1mWhich version of the E-Paper display are you using?"
+echo -e "\e[97mEnter \e[91m2 \e[97m if you are using the 2-Colour E-Paper"
+echo -e "\e[97mEnter \e[91m3 \e[97m if you are using the 3-Colour E-Paper"
+echo "confirm your selection with [ENTER]"
+
+read -r digit
+
+if [ -z "$digit" ]; then
+    echo "You didn't enter anything."
+    echo "Aborting now."
+    exit
+fi
+
+if [ "$digit" != 2 ] && [ "$digit" != 3 ]; then
+    echo "invalid number, only 2 or 3 can be accepted."
+    echo "Aborting now."
+    exit
+fi
+
 echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
-echo -e "\e[1;36m"This will take a while."\e[0m"
-sudo apt-get update && sudo apt-get dist-upgrade -y
+echo -e "\e[1;36m"This will take a while, sometimes up to 30 mins"\e[0m"
+sudo apt-get update > /dev/null && sudo apt-get dist-upgrade -y > /dev/null
 echo -e "\e[1;36m"System successfully updated and upgraded!"\e[0m"
 
 echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
+{
 sudo apt-get install python3-pip -y
 sudo apt-get install RPi.GPIO -y
 sudo apt-get install python3-spidev -y
@@ -13,29 +38,48 @@ pip3 install Pillow
 sudo pip3 install Pillow 
 sudo apt-get install libopenjp2-7-dev -y 
 sudo apt install libtiff5 -y
+} > /dev/null
 
 echo -e "\e[1;36m"Cleaning a bit of mess to free up some space..."\e[0m"
-sudo apt-get clean && sudo apt-get autoremove -y  
+sudo apt-get clean > /dev/null && sudo apt-get autoremove -y > /dev/null
 
-echo -e "\e[1;36m"Installing the E-Paper-Calendar Software"\e[0m"
-git clone https://github.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display
-mkdir E-Paper-Master
-cd Raspberry-Pi-Google-Calendar-with-E-Paper-display
-cp -r Calendar /home/pi/E-Paper-Master/
-cp README.md /home/pi/E-Paper-Master/
-cp LICENSE /home/pi/E-Paper-Master/
-cp -r .git /home/pi/E-Paper-Master/
-cd
-rm -r Raspberry-Pi-Google-Calendar-with-E-Paper-display
+if [ "$digit" = 2 ]; then
+    echo -e "\e[1;36m"Installing the 2-Colour E-Paper-Calendar Software"\e[0m"
+    git clone https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather
+    mkdir E-Paper-Master
+    cd E-Paper-Calendar-with-iCal-sync-and-live-weather
+    mv 2-colour Calendar
+    cp -r Calendar /home/pi/E-Paper-Master/
+    cp README.md /home/pi/E-Paper-Master/
+    cp LICENSE /home/pi/E-Paper-Master/
+    cp -r .git /home/pi/E-Paper-Master/
+    cd
+    sudo rm -r E-Paper-Calendar-with-iCal-sync-and-live-weather
+fi
+
+if [ "$digit" = 3 ]; then
+    echo -e "\e[1;36m"Installing the 3-Colour E-Paper-Calendar Software"\e[0m"
+    git clone https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather
+    mkdir E-Paper-Master
+    cd E-Paper-Calendar-with-iCal-sync-and-live-weather
+    cp -r Calendar /home/pi/E-Paper-Master/
+    cp README.md /home/pi/E-Paper-Master/
+    cp LICENSE /home/pi/E-Paper-Master/
+    cp -r .git /home/pi/E-Paper-Master/
+    cd
+    sudo rm -r E-Paper-Calendar-with-iCal-sync-and-live-weather
+fi
 
 echo -e "\e[1;36m"Installing a few required packages for the E-Paper Software"\e[0m"
+{
 sudo pip3 install pyowm
 sudo pip3 install ics
 pip3 install pyowm
 pip3 install ics
+} > /dev/null
 
-echo -e "\e[1;36m"Setting up the script  to start at boot..."\e[0m"
-sudo apt-get install supervisor -y
+echo -e "\e[1;36m"Setting up the script to start at boot..."\e[0m"
+sudo apt-get install supervisor -y > /dev/null
 
 sudo bash -c 'cat > /etc/supervisor/conf.d/E-Paper.conf' << EOF
 [program:E-Paper]
@@ -47,6 +91,10 @@ EOF
 sudo service supervisor start E-Paper
 
 echo -e "\e[1;36m"The install was successful"\e[0m"
-echo -e "\e[1;36m"The script will now start at every boot."\e[0m"
-echo -e "\e[1;31m"Do not forget to add your iCal url and openweathermap API in the main script."\e[0m"
+echo -e "\e[1;36m"The programm will now start at every boot."\e[0m"
 
+echo -e "\e[1;31m"Please enter your details in the main script."\e[0m"
+echo -e "\e[1;31m"If the file is not modified, the programm will not start"\e[0m"
+
+echo -e "\e[1;36m"To modify the main file, enter:"\e[0m"
+echo -e "\e[1;36m"nano /home/pi/E-Paper-Master/Calendar/stable.py"\e[0m"
