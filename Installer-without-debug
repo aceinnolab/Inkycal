@@ -1,6 +1,8 @@
 #!/bin/bash
 # This script is for automating the install for both displays,
 # The 2-colour and 3-colour one.
+# Version: 1.2 (early October)
+# Well tested and confirmed
 
 # Copyright by Ace-Laboratory
 
