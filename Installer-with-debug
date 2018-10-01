@@ -71,14 +71,13 @@ if [ "$digit" = 2 ]; then
     cp -r .git /home/pi/E-Paper-Master/
     cd
     sudo rm -r E-Paper-Calendar-with-iCal-sync-and-live-weather
-    #experimental
+    # add a short info
     cat > /home/pi/E-Paper-Master/Info.txt << EOF
 This document contains a short info of the version
 
 Version: 2-Colour E-Paper-version
 Installer version: 1.2 (Early October 2018)
 If the time was set correctly, you installed this software on:
-    
 EOF
     echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
     echo ""
@@ -96,6 +95,15 @@ if [ "$digit" = 3 ]; then
     cp -r .git /home/pi/E-Paper-Master/
     cd
     sudo rm -r E-Paper-Calendar-with-iCal-sync-and-live-weather
+    # add a short info
+    cat > /home/pi/E-Paper-Master/Info.txt << EOF
+This document contains a short info of the version
+
+Version: 3-Colour E-Paper-version
+Installer version: 1.2 (Early October 2018)
+If the time was set correctly, you installed this software on:
+EOF
+    echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
     echo ""
 fi
 
