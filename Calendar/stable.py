@@ -15,11 +15,15 @@ Copyright by Ace-Laboratory
 #location refers to the city you live in. You api key will be used to grab live
 # weather data for this city. Use the format below (city-name, country code)
 
+# When does the week normally start in your country?
+# Choose between Monday and Sunday
+
 """ To quickly get started, fill in the following details:"""
 
 url = "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"
 api_key = ""
 location = "California, US"
+week_starts_on = "Monday"
 
 """That's all. The software will do the rest."""
 
@@ -35,10 +39,10 @@ from calibration import calibration
 
 epd = epd7in5b.EPD() #required
 
-if (weekday_start_on == "Monday"):
+if (week_starts_on == "Monday"):
     calendar.setfirstweekday(calendar.MONDAY)
     
-if (weekday_start_on == "Sunday"):
+if (week_starts_on == "Sunday"):
     calendar.setfirstweekday(calendar.Sunday)
 
 c = Calendar(urlopen(url).read().decode('UTF-8'))
