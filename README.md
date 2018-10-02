@@ -48,7 +48,7 @@ If the Installer should fail for any reason, kindly open an issue and paste the 
 
 This is how the installer will run:
 
-<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/pi-zero-install-successful.png" width="700">
+<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/Installer-v1.2-screenshot.png" width="700">
 
 ## Adding details to the programm
 Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'stable.py' inside the Calendar folder.
@@ -66,7 +66,7 @@ Once you have setup everything, the E-Paper Calendar will refresh the screen in 
 If you were using a previous version and want to update, do the following:
 
 * Save your personal details from the main script, located in `/home/pi/E-Paper-Master/Calendar/stable.py` in a different location.
-For example you can create a text file which contains your openweathermap-api-key and iCal-url in `/home/pi/personal`
+For example you can create a text file which contains your openweathermap-api-key and iCal-url in `/home/pi/personal.txt`
 
 * Remove the E-Paper-Master folder from the home directory with `sudo rm -r /home/pi/E-Paper-Master/`
 
