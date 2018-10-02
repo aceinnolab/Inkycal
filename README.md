@@ -2,7 +2,7 @@
 A python script for the rpi zero w to sync events from any online calendar to a beautiful E-Paper Display, get live weather data and much more. 
 
 ## News:
-* **Version 1.2 released (early October 2018) with lots of improvements, especially for the 2-Colour version!** (Early October)
+* **Version 1.2 released (early October 2018) with lots of improvements, especially for the 2-Colour version!**
 
 **If you were using any previous versions, please update as this version contains a critical update. See below section regarding updating**
 
