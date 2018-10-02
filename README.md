@@ -1,12 +1,13 @@
 # Raspberry-Pi-Google-Calendar-with-E-Paper-display
 A python script for the rpi zero w to sync events from any online calendar to a beautiful E-Paper Display, get live weather data and much more. 
 
-## News: 
-* **Added Support for Raspbian Stretch lite.**
+## News:
+* **Version 1.2 released (early October 2018) with lots of improvements, especially for the 2-Colour version!** (Early October)
 
-* **Added Support for the 2-Colour E-Paper Display as well!**
+**If you were using any previous versions, please update as this version contains a critical update. See below section regarding updating**
 
-* **In Progress: Updating the single-line-installer for better user-expierence**
+* **Added Support for the 2-Colour E-Paper Display as well!** (End of September)
+* **Added Support for Raspbian Stretch lite.** (End of September)
 <img src="https://github.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display/blob/master/Gallery/Front-view.JPG" width="500">
 
 ## Main features
@@ -15,13 +16,14 @@ A python script for the rpi zero w to sync events from any online calendar to a 
 * Get live weather data (including temperature, humidity, etc.) using openweathermap api
 
 ## Hardware required
-* 7.5" E-Paper Display (Black, White, Red) with driver hat from waveshare (https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm)
-* Raspberry Pi Zero W (without headers)
-* 90° angled 2x20 Pin GPIO headers
+* 7.5" 3-Colour E-Paper Display (Black, White, Red/Yellow) with driver hat from [waveshare](https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm)
+**or**
+* 7.5" 2-Colour E-Paper Display (Black, White) with driver hat from [waveshare](https://www.waveshare.com/product/7.5inch-e-paper-hat.htm)
+* Raspberry Pi Zero WH (with headers) (no soldering iron required)
+* Or: Raspberry Pi Zero W. In this case, you'll need to solder 2x20 pin GPIO headers yourself
 * MicroSD card (min. 4GB)
-* MicroUSB cable
-* 3d-printer (you can also appoint any 3d-printing service) for printing a case
-* Soldering iron (for soldering the headers)
+* MicroUSB cable (for power)
+* Something to be used as a case (e.g. a picture frame or a 3D-printed case)
 
 # Setup
 
@@ -40,13 +42,15 @@ Execute the following command in the Terminal to install all required packages. 
 
 Should you encounter any problems during the install, try using the Installer with output, like this:
 
-`curl -sSL https://raw.githubusercontent.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/master/Installer-with-debug |bash`
+`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/master/Installer-with-debug)"`
+
+If the Installer should fail for any reason, kindly open an issue and paste the error. Thanks.
 
 This is how the installer will run:
 
 <img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/pi-zero-install-successful.png" width="700">
 
-## Customising the main script
+## Adding details to the programm
 Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'stable.py' inside the Calendar folder.
 
 3 Main Details are needed to get running:
@@ -57,17 +61,16 @@ Once the packages are installed, navigate to the home directory, open 'E-Paper-M
 ## Demo
 Once you have setup everything, the E-Paper Calendar will refresh the screen in the following way:
 <img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/GIF.gif" width="320">
- 
-## (Experimental) Support for 2-Colour E-Paper-versions
-Although this software was not originally intended to be used with the 2-Colour E-Paper Display from waveshare, there probably are a few folks which have the 2-colour version and yet would want to use this software. 
 
-Currently, there is a 'quick' fix to get this to work on the 2-Colour E-Paper display. It works by converting the 3-colour bmps used by the E-Paper display to 2-colour (black and white) bmps. To add support for the 2-colour version, follow the steps above as you would with the 3-Colour version. Then, execute:
+## Updating
+If you were using a previous version and want to update, do the following:
 
-**`curl -sSL https://raw.githubusercontent.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/master/2-Colour-support/setup | bash`**
+* Save your personal details from the main script, located in `/home/pi/E-Paper-Master/Calendar/stable.py` in a different location.
+For example you can create a text file which contains your openweathermap-api-key and iCal-url in `/home/pi/personal`
 
-<img src="https://user-images.githubusercontent.com/29558518/46045487-25134680-c11e-11e8-96de-ee7ed57ac766.png" width="400">
+* Remove the E-Paper-Master folder from the home directory with `sudo rm -r /home/pi/E-Paper-Master/`
 
-The _experimental_ is there as I don't actually have the 2-Colour version of the E-Paper. I can only _assume_ that it will work. It's strongly recommended to create a backup of the 'E-Paper-Master' folder in case something doesn't work right. If that is the case, please open up an issue to let me know.
+* Re-run the (updated) installer and insert your details again in stable.py. Reboot to apply changes.
 
 ## Don't forget to check out the Wiki. It contains all the information to customising, understanding and setting up the script.
 
