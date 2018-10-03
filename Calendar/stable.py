@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 """
 E-Paper Software (main script) adapted for the 3-colour E-Paper display
 A full and detailed breakdown for this code can be found in the wiki.
@@ -167,6 +170,9 @@ def main():
             measure2= ImageDraw.Draw(space2)
             temperature = ImageDraw.Draw(space2)
             temperature.text((2, 8), (Temperature + " °C"),  fill=0 ,font=font)
+            #if you come across a 'Non-ASCII' Syntax error and comment out the line above and uncomment the line below.
+            #This is for advanced users who want to experiment with encodings.
+            #temperature.text((2, 8), (Temperature + u'\xb0' + "C"), fill=0 ,font=font)
             rotate2 = space2.rotate(270,  expand=1)
             image.paste(rotate2, (605,334))
 
