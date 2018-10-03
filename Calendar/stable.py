@@ -53,7 +53,7 @@ EPD_HEIGHT = 384
 
 path = '/home/pi/E-Paper-Master/Calendar/'
 wpath = path+'weather-icons/'
-mpath = path+'months/en/'
+mpath = path+'months/'
 dpath = path+'days/'
 font = ImageFont.truetype(path+'Assistant-Bold.ttf', 18)
 
