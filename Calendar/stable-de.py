@@ -1,6 +1,32 @@
 """
+E-Paper Software (main script) adapted for the 3-colour E-Paper display
+A full and detailed breakdown for this code can be found in the wiki.
+If you have any questions, feel free to open an issue at Github.
+
 Copyright by Ace-Laboratory
 """
+
+# url refers to the iCal url. It's the link you can copy when you click on
+# 'export' Calendar in Google or Yahoo (and many more online) Calendars
+
+# api-key refers to your openweathermap api key. It can be generated for free
+# when you sign up for an account and consists of a bunch of numbers and letters
+
+# location refers to the city you live in. You api key will be used to grab live
+# weather data for this city. Use the format below (city-name, country code)
+
+# week_starts_on refers to the day on which the week starts on in your country.
+# Choose between Monday and Sunday.
+
+""" To quickly get started, fill in the following details:"""
+
+url = "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"
+api_key = ""
+location = "California, US"
+week_starts_on = "Monday"
+
+"""That's all. The software will do the rest. You don't need to modify anything below this."""
+
 import epd7in5b #epd-control
 from PIL import Image, ImageDraw, ImageFont, ImageOps #image operations
 import calendar,  pyowm #calendar and openweathermap wrapper
@@ -12,11 +38,12 @@ import arrow #icalendar parser compatible dates
 from calibration import calibration
 
 epd = epd7in5b.EPD() #required
-epd.init() #required
 
-url = "please past a valid calendar url here" # or use this one for testing: 
-#url = "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"
-calendar.setfirstweekday(calendar.MONDAY) #mon or sun
+if (week_starts_on == "Monday"):
+    calendar.setfirstweekday(calendar.MONDAY)
+    
+if (week_starts_on == "Sunday"):
+    calendar.setfirstweekday(calendar.Sunday)
 
 c = Calendar(urlopen(url).read().decode('UTF-8'))
 e = Event()
@@ -26,7 +53,7 @@ EPD_HEIGHT = 384
 
 path = '/home/pi/E-Paper-Master/Calendar/'
 wpath = path+'weather-icons/'
-mpath = path+'months/de/'
+mpath = path+'months/en/'
 dpath = path+'days/'
 font = ImageFont.truetype(path+'Assistant-Bold.ttf', 18)
 
@@ -35,8 +62,8 @@ eventicon =             open(path+'other/event.bmp')
 dateicon =              open(path+'other/today.bmp')
 tempicon =              open(path+'other/temp-icon.bmp')
 humicon =               open(path+'other/hum-icon.bmp')
-weekmon =               open(path+'other/week-mon-de.bmp')
-weeksun =               open(path+'other/week-sun-de.bmp')
+weekmon =               open(path+'other/week-mon.bmp')
+weeksun =               open(path+'other/week-sun.bmp')
 bar =                   open(path+'other/bar.bmp')
 
 wiconplace = (570, 219)
@@ -76,9 +103,9 @@ def main():
                 calibration()
             if hour is 12:
                 calibration()
-            if hour is 18: #change to 18
+            if hour is 18:
                 calibration()
-
+            epd.init()
             image = Image.new('L', (EPD_WIDTH, EPD_HEIGHT), 255)
             draw = (ImageDraw.Draw(image)).bitmap
             
@@ -86,9 +113,11 @@ def main():
             draw(monthplace, Image.open(mpath+str(time.strftime("%B"))+'.bmp'))
 
             if calendar.firstweekday() == 0:
+                #print('Your week starts on Monday') #->debug
                 draw(weekplace, weekmon)
                 
             if calendar.firstweekday() == 6:
+                #print('Your week starts on Sunday') #->debug
                 draw(weekplace, weeksun)
             
             draw(barplace, bar) 
@@ -112,12 +141,15 @@ def main():
                 pass
             
             # openweathermap api
-            owm = pyowm.OWM('Your Openweathermap API')
-            observation = owm.weather_at_place('Your City, Your Country Name') # like (New York, US)
+            owm = pyowm.OWM(api_key)
+            observation = owm.weather_at_place(location)
             weather = observation.get_weather()
             weathericon = weather.get_weather_icon_name()
             Temperature = str(int(weather.get_temperature(unit='celsius')['temp']))
             Humidity = str(weather.get_humidity())
+            #print('temp: '+Temperature +'°C') #->debug
+            #print('humidity: '+Humidity+'%') #->debug
+            #print(weathericon)              #->debug
             
             #weather icon handler
             draw(wiconplace, open(wpath+weathericons[weathericon]+'.bmp'))
@@ -153,8 +185,8 @@ def main():
             if calendar.firstweekday() == 6:
                 draw(weekdayssun[(time.strftime("%a"))], weekday)
             
-            print('Aktuell ist es:',time.strftime('%a %-d %b %y')) #--debug
-            print('Die aktuelle Zeit ist:', time.strftime('%H:%M')) #--debug
+            print('It is currently:',time.strftime('%a %-d %b %y')) #--debug
+            print('The current time is:', time.strftime('%H:%M')) #--debug
     
             elist = []
             for events in c.events:
@@ -162,7 +194,7 @@ def main():
                     if str(time.month) in str((events.begin).format('M')):
                         elist.append(int((events.begin).format('D')))
 
-            print('In diesem Monat, hast du',len(elist),'Events')
+            print('In this month, you have',len(elist),'Events')
             
             for x in elist:
                 if x in cal[0]:
@@ -204,6 +236,7 @@ def main():
 
             # delete the list so deleted events can be removed from the list
             del elist[:]
+            epd.sleep()
             
             for i in range(1):
                 nexthour = ((60 - int(time.strftime("%-M")))*60) - (int(time.strftime("%-S")))
