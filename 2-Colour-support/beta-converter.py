@@ -18,7 +18,6 @@ Info: These path contain the bmps that require converting.
 1) /home/pi/E-Paper-Master/Calendar/months/
 3) /home/pi/E-Paper-Master/Calendar/other/
 """
-
 path = '/home/pi/E-Paper-Master/Calendar/'
 #--------------only change the following two lines-----------------#
 input_path_1 =  path+'other/'
