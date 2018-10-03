@@ -1,5 +1,5 @@
 """
-E-Paper Software (main script) adapted for the 3-colour E-Paper display
+E-Paper Software (main script) adapted for the 2-colour E-Paper display
 A full and detailed breakdown for this code can be found in the wiki.
 If you have any questions, feel free to open an issue at Github.
 
@@ -27,7 +27,7 @@ week_starts_on = "Monday"
 
 """That's all. The software will do the rest. You don't need to modify anything below this."""
 
-import epd7in5b #epd-control
+import epd7in5
 from PIL import Image, ImageDraw, ImageFont, ImageOps #image operations
 import calendar,  pyowm #calendar and openweathermap wrapper
 from ics import Calendar, Event #icalendar parser
@@ -37,7 +37,7 @@ from urllib.request import urlopen #allows url to be 'read'
 import arrow #icalendar parser compatible dates
 from calibration import calibration
 
-epd = epd7in5b.EPD() #required
+epd = epd7in5.EPD() #required
 
 if (week_starts_on == "Monday"):
     calendar.setfirstweekday(calendar.MONDAY)
@@ -53,7 +53,7 @@ EPD_HEIGHT = 384
 
 path = '/home/pi/E-Paper-Master/Calendar/'
 wpath = path+'weather-icons/'
-mpath = path+'months/en/'
+mpath = path+'months/'
 dpath = path+'days/'
 font = ImageFont.truetype(path+'Assistant-Bold.ttf', 18)
 
@@ -105,8 +105,9 @@ def main():
                 calibration()
             if hour is 18:
                 calibration()
+
             epd.init()
-            image = Image.new('L', (EPD_WIDTH, EPD_HEIGHT), 255)
+            image = Image.new('1', (EPD_WIDTH, EPD_HEIGHT), 255)
             draw = (ImageDraw.Draw(image)).bitmap
             
             #background image
@@ -244,3 +245,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    

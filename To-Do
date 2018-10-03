@@ -1,6 +1,7 @@
 # TO DO:
 ## Add support for the 2-colour 7.5" E-Paper version (black and white only).
 
+## Notify waveshare that this Software now also works for the 2-colour version
 
 ## Create a Dashboard page as an addition/ alternative to the current 'Calendar' page with the following features:
 1. Sunrise and Sunset times from Openweathermap
