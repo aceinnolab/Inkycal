@@ -4,7 +4,6 @@
 
 # Copyright by Ace-Laboratory
 
-
 # Getting input to see which E-Paper version is currently being used.
 echo -e "\e[1mWhich version of the E-Paper display are you using?"
 echo -e "\e[97mEnter \e[91m2 \e[97m if you are using the 2-Colour E-Paper"
