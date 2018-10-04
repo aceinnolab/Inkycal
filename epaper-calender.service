@@ -4,6 +4,7 @@ Description=E Paper Calendar with iCal sync and live weather
 [Service]
 Type=simple
 ExecStart=/usr/bin/python3 /home/pi/E-Paper-Master/Calendar/stable.py
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
