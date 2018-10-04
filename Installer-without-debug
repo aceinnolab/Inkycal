@@ -43,14 +43,9 @@ echo ""
 # Installing a few packages which are missing on Raspbian Stretch Lite
 echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
 {
-sudo apt-get install python3-pip -y
-sudo apt-get install RPi.GPIO -y
-sudo apt-get install python3-spidev -y
-sudo apt-get install git -y
+sudo apt-get install python3-pip RPi.GPIO python3-spidev git libopenjp2-7-dev libtiff5 -y
 pip3 install Pillow 
 sudo pip3 install Pillow 
-sudo apt-get install libopenjp2-7-dev -y 
-sudo apt install libtiff5 -y
 } > /dev/null
 echo ""
 
