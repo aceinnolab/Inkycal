@@ -99,6 +99,6 @@ for files in jpeg_bmp:
 
 """ Step 1 & 2 conversion for bmp files"""
 for files in bmps:
-    PIL.ImageOps.invert(Image.open(input_folder+files+".bmp").convert('L').point(fn, mode='1')).rotate(-90, expand=True).save((output_folder+files), 'BMP', quality=90)    #(PIL.ImageOps.invert((Image.open(input_folder+files).rotate(-90, expand=True)).convert('L'))).save(output_folder+files)
+    PIL.ImageOps.invert(Image.open(input_folder+files+".bmp").convert('L').point(fn, mode='1')).rotate(-90, expand=True).save((output_folder+files), 'BMP', quality=90)
 
 print('All done')
