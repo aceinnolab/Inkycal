@@ -40,7 +40,7 @@ for files in glob.glob("*.jpeg"):
 print('converting the images now')
 
 """First, a function. It's required for reducing colours"""
-fn = lambda x : 255 if x > 179 else (0 if x < 178 else 179)
+fn = lambda x : 179 if x == 179 else (255 if x > 179 else 0)
 
 """ Conversion is done in two steps:
 1) Converting the file from .png or .jpeg .bmp to a greyscale .bmp
