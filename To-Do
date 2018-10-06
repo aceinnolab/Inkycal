@@ -1,7 +1,28 @@
-# TO DO:
-## Add support for the 2-colour 7.5" E-Paper version (black and white only).
+# For version 1.3
 
-## Notify waveshare that this Software now also works for the 2-colour version
+## Installer:
+
+add option to choose language
+
+After selecting the 2-colour version, download the same folder as the 3-colour one, remove the following files:
+epd7in5b.py, epdif.py, calibration.py and replace them with the ones for the 2-colour version.
+
+-> Currently, the installer downloads all files from the w-Colour folder.
+
+Download the 3-colour to 2-colour image converter and execute it in the following folders:
+/E-Paper-Master/Calendar/
++ months
++ other
+
+add language info in the Info.txt file after installing
+
+
+
+
+
+
+
+## some ideas (not version specific)
 
 ## Create a Dashboard page as an addition/ alternative to the current 'Calendar' page with the following features:
 1. Sunrise and Sunset times from Openweathermap
