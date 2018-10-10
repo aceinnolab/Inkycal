@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """
@@ -21,12 +21,9 @@ Copyright by Ace-Laboratory
 # week_starts_on refers to the day on which the week starts on in your country.
 # Choose between Monday and Sunday.
 
-""" To quickly get started, fill in the following details:"""
+""" To quickly get started, go to the settings.py file and fill in the necessary fields there"""
 
-url = "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"
-api_key = ""
-location = "California, US"
-week_starts_on = "Monday"
+from settings import *
 
 """That's all. The software will do the rest. You don't need to modify anything below this."""
 
