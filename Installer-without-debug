@@ -132,8 +132,8 @@ echo ""
 echo -e "\e[1;36m"The install was successful"\e[0m"
 echo -e "\e[1;36m"The programm will now start at every boot."\e[0m"
 
-echo -e "\e[1;31m"Please enter your details in the main script."\e[0m"
-echo -e "\e[1;31m"If the file is not modified, the programm will not start"\e[0m"
+echo -e "\e[1;31m"Please enter your details in the file 'settings.py'."\e[0m"
+echo -e "\e[1;31m"If this file is not modified, the programm will not start"\e[0m"
 
-echo -e "\e[1;36m"To modify the main file, enter:"\e[0m"
-echo -e "\e[1;36m"nano /home/pi/E-Paper-Master/Calendar/stable.py"\e[0m"
+echo -e "\e[1;36m"To modify the settings file, enter:"\e[0m"
+echo -e "\e[1;36m"nano /home/pi/E-Paper-Master/Calendar/settings.py"\e[0m"
