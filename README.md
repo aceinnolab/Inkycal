@@ -10,7 +10,8 @@ Altough mainly intended for the Raspberry Pi Zero W, mainly since it only requir
 
 * **Added Support for the 2-Colour E-Paper Display as well!** (End of September)
 * **Added Support for Raspbian Stretch lite.** (End of September)
-<img src="https://github.com/aceisace/Raspberry-Pi-Google-Calendar-with-E-Paper-display/blob/master/Gallery/Front-view.JPG" width="500">
+
+<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/E-Paper-Calendar-front.jpg" width="500">
 
 ## Main features
 * Display the date and a full monthly calendar
