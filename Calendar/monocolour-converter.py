@@ -20,16 +20,16 @@ Info: These paths contain the bmps that require converting.
 """
 path = '/home/pi/E-Paper-Master/Calendar/'
 #--------------only change the following lines-----------------#
-input_path_1 =  path+/'other/de/'
+input_path_1 =  path+'other/de/'
 output_path_1 = path+'other/de/'
 
 input_path_2 =  path+'months/de/'
 output_path_2 = path+'months/de/'
 
-input_path_3 =  path+/'other/en/'
+input_path_3 =  path+'other/en/'
 output_path_3 = path+'other/en/'
 
-input_path_4 =  path+/'other/en/'
+input_path_4 =  path+'other/en/'
 output_path_4 = path+'other/en/'
 #-----------------no need to change anything below-----------------#
 
