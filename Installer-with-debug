@@ -1,6 +1,8 @@
 #!/bin/bash
 # This script is for automating the install for both displays,
 # The 2-colour and 3-colour one.
+# Version: 1.3 (Mid October)
+# Well tested and confirmed
 
 # Copyright by Ace-Laboratory
 
@@ -39,70 +41,15 @@ echo ""
 
 # Installing a few packages which are missing on Raspbian Stretch Lite
 echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
-sudo apt-get install python3-pip -y
-sudo apt-get install RPi.GPIO -y
-sudo apt-get install python3-spidev -y
-sudo apt-get install git -y
+sudo apt-get install python3-pip RPi.GPIO python3-spidev git libopenjp2-7-dev libtiff5 -y
 pip3 install Pillow 
 sudo pip3 install Pillow 
-sudo apt-get install libopenjp2-7-dev -y 
-sudo apt install libtiff5 -y
 echo ""
 
 # Running apt-get clean and apt-get autoremove
 echo -e "\e[1;36m"Cleaning a bit of mess to free up some space..."\e[0m"
 sudo apt-get clean && sudo apt-get autoremove -y
 echo ""
-
-# Using this part for the 2-colour E-Paper version
-if [ "$digit" = 2 ]; then
-    echo -e "\e[1;36m"Installing the 2-Colour E-Paper-Calendar Software"\e[0m"
-    git clone https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather
-    mkdir E-Paper-Master
-    cd E-Paper-Calendar-with-iCal-sync-and-live-weather
-    rm -r Calendar
-    mv 2-colour Calendar
-    cp -r Calendar /home/pi/E-Paper-Master/
-    cp README.md /home/pi/E-Paper-Master/
-    cp LICENSE /home/pi/E-Paper-Master/
-    cp -r .git /home/pi/E-Paper-Master/
-    cd
-    sudo rm -r E-Paper-Calendar-with-iCal-sync-and-live-weather
-    # add a short info
-    cat > /home/pi/E-Paper-Master/Info.txt << EOF
-This document contains a short info of the version
-
-Version: 2-Colour E-Paper-version
-Installer version: 1.2 (Early October 2018)
-If the time was set correctly, you installed this software on:
-EOF
-    echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
-    echo ""
-fi
-
-# Using this part for the 3-colour E-Paper version
-if [ "$digit" = 3 ]; then
-    echo -e "\e[1;36m"Installing the 3-Colour E-Paper-Calendar Software"\e[0m"
-    git clone https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather
-    mkdir E-Paper-Master
-    cd E-Paper-Calendar-with-iCal-sync-and-live-weather
-    cp -r Calendar /home/pi/E-Paper-Master/
-    cp README.md /home/pi/E-Paper-Master/
-    cp LICENSE /home/pi/E-Paper-Master/
-    cp -r .git /home/pi/E-Paper-Master/
-    cd
-    sudo rm -r E-Paper-Calendar-with-iCal-sync-and-live-weather
-    # add a short info
-    cat > /home/pi/E-Paper-Master/Info.txt << EOF
-This document contains a short info of the version
-
-Version: 3-Colour E-Paper-version
-Installer version: 1.2 (Early October 2018)
-If the time was set correctly, you installed this software on:
-EOF
-    echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
-    echo ""
-fi
 
 # Installing packages required by the main script
 echo -e "\e[1;36m"Installing a few required packages for the E-Paper Software"\e[0m"
@@ -111,6 +58,42 @@ sudo pip3 install ics
 pip3 install pyowm
 pip3 install ics
 echo ""
+
+# Using this part for the 2-colour E-Paper version
+if [ "$digit" = 2 ]; then
+    # execute the monocolour-converter to convert all 3-colour icons to 2-colour ones
+    python3.5 /home/pi/E-Paper-Master/Calendar/monocolour-converter.py
+    
+    # edit the settings file for the 2-colour display option
+    sed -i 's/display_colours = "bwr"/display_colours = "bw"/' /home/pi/E-Paper-Master/Calendar/settings.py
+    
+    # add a short info
+    cat > /home/pi/E-Paper-Master/Info.txt << EOF
+This document contains a short info of the E-Paper-Calendar software version
+
+Version: 2-Colour E-Paper-version
+Installer version: 1.3 (Mid October 2018)
+configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
+If the time was set correctly, you installed this software on:
+EOF
+    echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
+    echo ""
+fi
+
+# Using this part for the 3-colour E-Paper version
+if [ "$digit" = 3 ]; then
+    # add a short info
+    cat > /home/pi/E-Paper-Master/Info.txt << EOF
+This document contains a short info of the version
+
+Version: 3-Colour E-Paper-version
+Installer version: 1.3 (Mid October 2018)
+configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
+If the time was set correctly, you installed this software on:
+EOF
+    echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
+    echo ""
+fi
 
 # Setting up supervisor
 echo -e "\e[1;36m"Setting up the script to start at boot..."\e[0m"
