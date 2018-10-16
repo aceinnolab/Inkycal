@@ -2,30 +2,32 @@
 # -*- coding: utf-8 -*-
 
 """
-E-Paper Software (main script) adapted for the 3-colour E-Paper display
+E-Paper Software (main script) for the 3-colour and 2-Colour E-Paper display
 A full and detailed breakdown for this code can be found in the wiki.
 If you have any questions, feel free to open an issue at Github.
 
 Copyright by Ace-Laboratory
 """
-
-""" To quickly get started, go to the settings.py file and fill in the necessary fields there"""
-
 from settings import *
 
-"""That's all. The software will do the rest. You don't need to modify anything below this."""
+from PIL import Image, ImageDraw, ImageFont, ImageOps
+import calendar,  pyowm
+from ics import Calendar, Event
+from datetime import datetime
+from time import sleep
+from urllib.request import urlopen
+import arrow
 
-import epd7in5b #epd-control
-from PIL import Image, ImageDraw, ImageFont, ImageOps #image operations
-import calendar,  pyowm #calendar and openweathermap wrapper
-from ics import Calendar, Event #icalendar parser
-from datetime import datetime #time operations
-from time import sleep #more time operations
-from urllib.request import urlopen #allows url to be 'read'
-import arrow #icalendar parser compatible dates
-from calibration import calibration
 
-epd = epd7in5b.EPD() #required
+if display_colours == "bwr":
+    import epd7in5b
+    epd = epd7in5b.EPD()
+    from calibration import calibration
+
+if display_colours == "bw":
+    import epd7in5
+    epd = epd7in5.EPD()
+    from calibration_bw import calibration
 
 if (week_starts_on == "Monday"):
     calendar.setfirstweekday(calendar.MONDAY)
@@ -41,18 +43,19 @@ EPD_HEIGHT = 384
 
 path = '/home/pi/E-Paper-Master/Calendar/'
 wpath = path+'weather-icons/'
-mpath = path+'months/'
+mpath = path+'months/'+language+'/'
 dpath = path+'days/'
+opath = path+'other/'+language+'/'
 font = ImageFont.truetype(path+'Assistant-Bold.ttf', 18)
 
-weekday =               open(path+'other/weekday.bmp')
-eventicon =             open(path+'other/event.bmp')
-dateicon =              open(path+'other/today.bmp')
-tempicon =              open(path+'other/temp-icon.bmp')
-humicon =               open(path+'other/hum-icon.bmp')
-weekmon =               open(path+'other/week-mon.bmp')
-weeksun =               open(path+'other/week-sun.bmp')
-bar =                   open(path+'other/bar.bmp')
+weekday =               open(opath+'weekday.bmp')
+eventicon =             open(opath+'event.bmp')
+dateicon =              open(opath+'today.bmp')
+tempicon =              open(opath+'temp-icon.bmp')
+humicon =               open(opath+'hum-icon.bmp')
+weekmon =               open(opath+'week-mon.bmp')
+weeksun =               open(opath+'week-sun.bmp')
+bar =                   open(opath+'bar.bmp')
 
 wiconplace = (570, 219)
 tempplace = (605, 310)
@@ -135,7 +138,7 @@ def main():
             weathericon = weather.get_weather_icon_name()
             Temperature = str(int(weather.get_temperature(unit='celsius')['temp']))
             Humidity = str(weather.get_humidity())
-            #print('temp: '+Temperature +'°C') #->debug
+            #print('temp: '+Temperature +' °C') #->debug
             #print('humidity: '+Humidity+'%') #->debug
             #print(weathericon)              #->debug
             
