@@ -14,16 +14,23 @@ Copyright by Ace-Laboratory
 """
 
 """
-Info: These path contain the bmps that require converting.
-1) /home/pi/E-Paper-Master/Calendar/months/
-3) /home/pi/E-Paper-Master/Calendar/other/
+Info: These paths contain the bmps that require converting.
+1) /home/pi/E-Paper-Master/Calendar/months/ + language
+3) /home/pi/E-Paper-Master/Calendar/other/ + language
 """
 path = '/home/pi/E-Paper-Master/Calendar/'
-#--------------only change the following two lines-----------------#
-input_path_1 =  path+'other/'
-output_path_1 = path+'other/'
-input_path_2 =  path+'months/'
-output_path_2 = path+'months/'
+#--------------only change the following lines-----------------#
+input_path_1 =  path+/'other/de/'
+output_path_1 = path+'other/de/'
+
+input_path_2 =  path+'months/de/'
+output_path_2 = path+'months/de/'
+
+input_path_3 =  path+/'other/en/'
+output_path_3 = path+'other/en/'
+
+input_path_4 =  path+/'other/en/'
+output_path_4 = path+'other/en/'
 #-----------------no need to change anything below-----------------#
 
 import glob, os, errno
@@ -32,6 +39,8 @@ import PIL.ImageOps
 
 imagenames_1 = []
 imagenames_2 = []
+imagenames_3 = []
+imagenames_4 = []
 
 print('opening the specified directory...')
 
@@ -44,6 +53,17 @@ os.chdir(input_path_2) #folder containg files
 for files in glob.glob('*.bmp'): #find bmp files
     imagenames_2.append(files) #add these files to a list
 print('Found these files:', imagenames_2) #print this list
+
+os.chdir(input_path_3) #folder containg files
+for files in glob.glob('*.bmp'): #find bmp files
+    imagenames_3.append(files) #add these files to a list
+print('Found these files:', imagenames_3) #print this list
+
+os.chdir(input_path_4) #folder containg files
+for files in glob.glob('*.bmp'): #find bmp files
+    imagenames_4.append(files) #add these files to a list
+print('Found these files:', imagenames_4) #print this list
+
 
 # 0 is black, 255 is white, 127 is red.
 # The following will convert the 'red' parts to white parts.
@@ -73,6 +93,10 @@ for files in imagenames_1:
     ((Image.open(input_path_1+files)).convert('L').point(fn, mode='1').save(output_path_1+files))
 for files in imagenames_2:
     ((Image.open(input_path_2+files)).convert('L').point(fn, mode='1').save(output_path_2+files))
+for files in imagenames_3:
+    ((Image.open(input_path_3+files)).convert('L').point(fn, mode='1').save(output_path_3+files))
+for files in imagenames_4:
+    ((Image.open(input_path_4+files)).convert('L').point(fn, mode='1').save(output_path_4+files))
 
 print('All done!')
 print('The bmp have been converted. Good luck!')
