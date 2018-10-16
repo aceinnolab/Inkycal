@@ -59,6 +59,17 @@ pip3 install pyowm
 pip3 install ics
 echo ""
 
+echo -e "\e[1;36m"Installing the E-Paper-Calendar Software for your display"\e[0m"
+git clone https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather
+mkdir E-Paper-Master
+cd E-Paper-Calendar-with-iCal-sync-and-live-weather
+cp -r Calendar /home/pi/E-Paper-Master/
+cp README.md /home/pi/E-Paper-Master/
+cp LICENSE /home/pi/E-Paper-Master/
+cp -r .git /home/pi/E-Paper-Master/
+cd
+sudo rm -r E-Paper-Calendar-with-iCal-sync-and-live-weather
+
 # Using this part for the 2-colour E-Paper version
 if [ "$digit" = 2 ]; then
     # execute the monocolour-converter to convert all 3-colour icons to 2-colour ones
