@@ -5,4 +5,5 @@
 ## Main script
 
 * Detect if there are network issues and restart the script automatically when online again
+* Automatically backup the settings file and add script for updating
 
