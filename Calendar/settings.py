@@ -4,6 +4,8 @@ url = "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.cale
 api_key = "api-key"
 location = "Julich, DE"
 week_starts_on = "Monday"
+display_colours = "bw"
+language = "en"
 
 # url refers to the iCal url. It's the link you can copy when you click on
 # 'export' Calendar in Google or Yahoo (and many more online) Calendars
@@ -16,3 +18,9 @@ week_starts_on = "Monday"
 
 # week_starts_on refers to the day on which the week starts on in your country.
 # Choose between Monday and Sunday.
+
+# display_colours refers to the number of colours that your E-Paper supports.
+# Options are: bw (black and white) and bwr (black, white and red/yellow)
+
+# language refers to the language of the Calendar. Current options are en for
+# english and de for German
