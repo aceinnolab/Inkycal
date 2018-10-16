@@ -4,7 +4,7 @@ url = "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.cale
 api_key = "api-key"
 location = "Julich, DE"
 week_starts_on = "Monday"
-display_colours = "bw"
+display_colours = "bwr"
 language = "en"
 
 # url refers to the iCal url. It's the link you can copy when you click on
