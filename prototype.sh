@@ -46,7 +46,7 @@ sudo rm -r E-Paper-Calendar-with-iCal-sync-and-live-weather
 # Using this part for the 2-colour E-Paper version
 if [ "$digit" = 2 ]; then
     # execute the monocolour-converter to convert all 3-colour icons to 2-colour ones
-    python3.5 /home/pi/E-Paper-Master/monocolour-converter.py
+    python3.5 /home/pi/E-Paper-Master/Calendar/monocolour-converter.py
     
     # edit the settings file for the 2-colour display option
     sed -i 's/display_colours = "bwr"/display_colours = "bw"/' /home/pi/E-Paper-Master/Calendar/settings.py
