@@ -1,18 +1,16 @@
 #!/bin/bash
 # This script is for automating the install for both displays,
 # The 2-colour and 3-colour one.
-# Version: 1.2 (early October)
+# Version: 1.3 (Mid October)
 # Well tested and confirmed
 
 # Copyright by Ace-Laboratory
-
 
 # Getting input to see which E-Paper version is currently being used.
 echo -e "\e[1mWhich version of the E-Paper display are you using?"
 echo -e "\e[97mEnter \e[91m2 \e[97m if you are using the 2-Colour E-Paper"
 echo -e "\e[97mEnter \e[91m3 \e[97m if you are using the 3-Colour E-Paper"
-echo -e "\e[97mconfirm your selection with [ENTER]"
-read -r -p 'Please type in the number now:  ' digit
+read -r -p 'confirm your selection with [ENTER]  ' digit
 
 if [ -z "$digit" ]; then
     echo "You didn't enter anything."
