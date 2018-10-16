@@ -4,6 +4,22 @@ The order is from latest to oldest and structured in the following way:
 * Version name with date of publishing
 * Sections with either 'added', 'fixed', 'updated' and 'changed'
 
+## [1.3] Mid October
+
+### Added
+* Added a seperate configuration file for the main script named settings.py
+* Added option to choose display within the setting.py file
+* Added German language support
+* Added option to choose language within the settings file
+* Added a working RGB to 3-Colour/2-Colour converter for jpegs, pngs and bmps for easier conversion of custom icons
+
+### Fixed
+* Fixed some issues with a new bmp files which were not displayed correctly on the display
+
+### Changed
+* Combined the software for the 2-colour and 3-Colour version
+* Split the main script into a settings file and the main programm itself.
+
 ## [1.2] Early October
 
 ### Added
