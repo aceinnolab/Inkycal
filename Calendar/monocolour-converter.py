@@ -29,8 +29,8 @@ output_path_2 = path+'months/de/'
 input_path_3 =  path+'other/en/'
 output_path_3 = path+'other/en/'
 
-input_path_4 =  path+'other/en/'
-output_path_4 = path+'other/en/'
+input_path_4 =  path+'months/en/'
+output_path_4 = path+'months/en/'
 #-----------------no need to change anything below-----------------#
 
 import glob, os, errno
