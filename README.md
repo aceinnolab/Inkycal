@@ -5,7 +5,7 @@ This is a software written in python3 that allows you to transform an E-Paper di
 Altough mainly intended for the Raspberry Pi Zero W, mainly since it only requires 1W per hour, it works on the Rapsberry Pi 2/3 as well. To get started, follow the instructions below.
 
 ## News:
-* **Version 1.3 released (Mid October 2018) for better user expierence **
+* **Version 1.3 released (Mid October 2018) for better user expierence**
 
 * **Added Support for the 2-Colour E-Paper Display as well!** (End of September)
 * **Added Support for Raspbian Stretch lite.** (End of September)
