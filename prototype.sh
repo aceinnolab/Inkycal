@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Please do not use this file. It is only intended for testing new features and can potentially damage the system.
+
+
 # This script is for automating the install for both displays,
 # The 2-colour and 3-colour one.
 # Version: 1.3 (Mid October)
