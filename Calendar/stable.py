@@ -55,14 +55,14 @@ tempicon =              open(opath+'temp-icon.bmp')
 humicon =               open(opath+'hum-icon.bmp')
 weekmon =               open(opath+'week-mon.bmp')
 weeksun =               open(opath+'week-sun.bmp')
-bar =                   open(opath+'bar.bmp')
+seperator =             open(opath+'seperator.bmp')
 
 wiconplace = (570, 219)
 tempplace = (605, 310)
 humplace = (572, 308)
 monthplace = (443, 0)
 weekplace = (415,0)
-barplace = (555, 0)
+seperator_place = (555, 0)
 
 weekdaysmon = {'Mon': (416,3), 'Tue': (416,57), 'Wed': (416,111), 'Thu': (416,165), 'Fri': (416,219), 'Sat': (416,273), 'Sun':(416,327)}
 weekdayssun = {'Sun': (416,3), 'Mon': (416,57), 'Tue': (416,111), 'Wed': (416,165), 'Thu': (416,219), 'Fri': (416,273), 'Sat':(416,327)}
@@ -111,7 +111,7 @@ def main():
                 #print('Your week starts on Sunday') #->debug
                 draw(weekplace, weeksun)
             
-            draw(barplace, bar) 
+            draw(seperatorplace, seperator) 
 
             cal = calendar.monthcalendar(time.year, time.month)
 
