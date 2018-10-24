@@ -132,15 +132,24 @@ def main():
                 pass
             
             # openweathermap api
-            owm = pyowm.OWM(api_key)
-            observation = owm.weather_at_place(location)
-            weather = observation.get_weather()
-            weathericon = weather.get_weather_icon_name()
+            try:
+                print("Before fetching owm data")
+                owm = pyowm.OWM(api_key)
+                observation = owm.weather_at_place(location)
+                print("Fetching weather data...")
+                weather = observation.get_weather()
+                weathericon = weather.get_weather_icon_name()
+            except Exception as e:
+                template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+                message = template.format(type(ex).__name__, ex.args)
+                print(message)
+                print("************ OWM DID NOT RESPOND *************")
+                pass
             Temperature = str(int(weather.get_temperature(unit='celsius')['temp']))
             Humidity = str(weather.get_humidity())
-            #print('temp: '+Temperature +' °C') #->debug
-            #print('humidity: '+Humidity+'%') #->debug
-            #print(weathericon)              #->debug
+            print('temp: '+Temperature +' °C') #->debug
+            print('humidity: '+Humidity+'%') #->debug
+            print(weathericon)              #->debug
             
             #weather icon handler
             draw(wiconplace, open(wpath+weathericons[weathericon]+'.bmp'))
