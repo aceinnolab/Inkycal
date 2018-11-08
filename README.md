@@ -2,7 +2,7 @@
 
 This is a software written in python3 that allows you to transform an E-Paper display (like the kindle) into an information display. It fetches live data from Openweathermap (a weather info provider) and your Online Calendar (Google/Yahoo Calendar) and displays them on a large, beautiful and ultra-low power E-Paper display. It's ideal for staying organised and keeping track of important details without having to check them up online. 
 
-Altough mainly intended for the Raspberry Pi Zero W, mainly since it only requires 1W per hour, it works on the Rapsberry Pi 2/3 as well. To get started, follow the instructions below.
+Altough mainly intended for the Raspberry Pi Zero W, mainly since it requires very little power (1W), it works on the Rapsberry Pi 2/3 as well. To get started, follow the instructions below.
 
 ## News:
 * **Version 1.3 released (Mid October 2018) for better user expierence**
