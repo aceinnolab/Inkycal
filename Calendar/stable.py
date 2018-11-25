@@ -139,6 +139,7 @@ def main():
                 pass
 
             """Drawing today's date at the top left corner"""
+            """Uncomment this section (the following 5 lines) to hide date at top left corner"""
             space1=Image.new('1', (115,25), color=255)
             date = ImageDraw.Draw(space1)
             date.text((2, 3), (time.strftime('%a %-d %b %y')),  font=font, fill=0)
