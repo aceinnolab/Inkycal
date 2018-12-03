@@ -31,6 +31,7 @@ if display_colours == "bw":
     epd = epd7in5.EPD()
     from calibration_bw import calibration
 
+font = ImageFont.truetype(path+'Assistant-Bold.ttf', 18)
 c = Calendar(urlopen(url).read().decode('UTF-8'))
 e = Event()
 EPD_WIDTH = 640
