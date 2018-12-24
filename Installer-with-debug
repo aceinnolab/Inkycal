@@ -1,10 +1,10 @@
 #!/bin/bash
 # This script is for automating the install for both displays,
 # The 2-colour and 3-colour one.
-# Version: 1.3 (Mid October)
+# Version: 1.4 (Late December)
 # Well tested and confirmed
 
-# Copyright by Ace-Laboratory
+# Copyright by aceisace
 
 # Getting input to see which E-Paper version is currently being used.
 echo -e "\e[1mWhich version of the E-Paper display are you using?"
@@ -83,7 +83,7 @@ if [ "$digit" = 2 ]; then
 This document contains a short info of the E-Paper-Calendar software version
 
 Version: 2-Colour E-Paper-version
-Installer version: 1.3 (Mid October 2018)
+Installer version: 1.4 (Late December 2018)
 configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
 If the time was set correctly, you installed this software on:
 EOF
@@ -98,7 +98,7 @@ if [ "$digit" = 3 ]; then
 This document contains a short info of the version
 
 Version: 3-Colour E-Paper-version
-Installer version: 1.3 (Mid October 2018)
+Installer version: 1.4 (Late December 2018)
 configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
 If the time was set correctly, you installed this software on:
 EOF
@@ -114,7 +114,9 @@ sudo bash -c 'cat > /etc/supervisor/conf.d/E-Paper.conf' << EOF
 [program:E-Paper]
 command = sudo /usr/bin/python3.5 /home/pi/E-Paper-Master/Calendar/stable.py
 stdout_logfile = /home/pi/E-Paper-Master/E-Paper.log
+stdout_logfile_maxbytes = 1MB
 stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
+stderr_logfile_maxbytes = 1MB
 EOF
 
 sudo service supervisor start E-Paper
