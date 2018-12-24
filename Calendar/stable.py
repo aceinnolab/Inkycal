@@ -6,7 +6,7 @@ E-Paper Software (main script) for the 3-colour and 2-Colour E-Paper display
 A full and detailed breakdown for this code can be found in the wiki.
 If you have any questions, feel free to open an issue at Github.
 
-Copyright by Ace-Laboratory
+Copyright by aceisace
 """
 print('importing modules')
 from settings import *
