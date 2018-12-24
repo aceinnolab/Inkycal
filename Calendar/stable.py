@@ -35,7 +35,7 @@ if display_colours == "bw":
     epd = epd7in5.EPD()
     from calibration_bw import calibration
 
-c = Calendar(urlopen(url).read().decode('UTF-8'))
+c = Calendar(urlopen(url).read().decode())
 e = Event()
 EPD_WIDTH = 640
 EPD_HEIGHT = 384
