@@ -144,7 +144,7 @@ def main():
 
                 """Drawing the fetched temperature"""
                 draw(tempplace, tempicon)
-                write_text(50,35, Temperature + " Â°C", 605, 334)
+                write_text(50,35, Temperature + " °C", 605, 334)
 
                 """Drawing the fetched humidity"""
                 draw(humplace, humicon)
