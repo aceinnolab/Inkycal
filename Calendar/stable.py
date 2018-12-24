@@ -124,7 +124,7 @@ def main():
 
                 Temperature = str(int(weather.get_temperature(unit='celsius')['temp']))
                 Humidity = str(weather.get_humidity())
-                print('temperature: '+Temperature +' Â°C')
+                print('temperature: '+Temperature +' °C')
                 print('humidity: '+Humidity+'%')
                 print('fetched icon code: '+weathericon)
                 print('equivalent to icon: '+weathericons[weathericon]+'\n')
