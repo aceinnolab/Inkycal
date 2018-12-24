@@ -10,7 +10,7 @@ Altough mainly intended for the Raspberry Pi Zero W, mainly since it requires ve
 * **Added Support for the 2-Colour E-Paper Display as well!** (End of September)
 * **Added Support for Raspbian Stretch lite.** (End of September)
 
-<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/E-Paper-Calendar-front.jpg" width="500">
+<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/E-Paper-Calendar-front.jpg" width="500"> **info: Picture needs updating. This is showing the picture of v1.3. The new image will be replaced soon.** 
 
 ## Main features
 * Display the date and a full monthly calendar
