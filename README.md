@@ -79,6 +79,5 @@ For example you can create a text file which contains your openweathermap-api-ke
 ## Don't forget to check out the Wiki. It contains all the information to customising, understanding and setting up the script.
 
 ### Contact
-* Website: ace-laboratory.com
 * email: aceisace63@yahoo.com
 
