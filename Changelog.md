@@ -4,6 +4,29 @@ The order is from latest to oldest and structured in the following way:
 * Version name with date of publishing
 * Sections with either 'added', 'fixed', 'updated' and 'changed'
 
+## [1.4] Late December
+
+### Added
+* Added short weather description in the top section
+* Added wind speed (in km/h) and an icon for wind speed
+* Added sunrise icon and time of sunrise
+* Added sunset icon and time of sunset
+* Added memory limits on both log files (output file and error file) to 1 MB
+
+### Fixed
+* Fixed an issue where text would not fit on screen
+* Fixed an issue where the script would fail after every network error from openweathermap API
+* Fixed an issue where text would not be centered
+* Fixed an issue with decoding the calendar url
+
+### Changed
+* Changed the position of the weather icon to the top left corner
+* Changed the way text is displayed on the display by adding a function named 'write_text'
+* Split the main script to form a new file with icons and their position and locations
+
+### Removed
+* Removed the explicit date from the top left corner
+
 ## [1.3] Mid October
 
 ### Added
