@@ -174,7 +174,7 @@ def main():
             elist = []
             eventstoday = []
             for events in c.events:
-                if time.year <= int((events.begin).format('YYYY')):
+                if time.year == int((events.begin).format('YYYY')):
                     if time.month == int((events.begin).format('M')):
                         elist.append(int((events.begin).format('D')))
 
