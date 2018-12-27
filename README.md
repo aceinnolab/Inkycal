@@ -55,7 +55,7 @@ This is how the installer will run:
 <img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/Installer-v1.2-screenshot.png" width="700">
 
 ## Adding details to the programm
-Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'stable.py' inside the Calendar folder.
+Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'settings.py' inside the Calendar folder.
 
 3 Main Details are needed to get running:
 1. A valid ical URL. Use the export funtion in google calendar to create a ical url link and paste it in the url section
@@ -69,12 +69,11 @@ Once you have setup everything, the E-Paper Calendar will refresh the screen in 
 ## Updating
 If you were using a previous version and want to update, do the following:
 
-* Save your personal details from the main script, located in `/home/pi/E-Paper-Master/Calendar/stable.py` in a different location.
-For example you can create a text file which contains your openweathermap-api-key and iCal-url in `/home/pi/personal.txt`
-
+* Save your personal details from the main script, located in `/home/pi/E-Paper-Master/Calendar/settings.py` in a different location.
+For example you can copy the settings.py file which contains your configuration information and settings to the home directory. 
 * Remove the E-Paper-Master folder from the home directory with `sudo rm -r /home/pi/E-Paper-Master/`
 
-* Re-run the (updated) installer and insert your details again in stable.py. Reboot to apply changes.
+* Re-run the (updated) installer and after the install has finshed, copy the contents of the settings.py file to the new settings.py file, located in /home/pi/E-Paper-Master/Calendar/. 
 
 ## Don't forget to check out the Wiki. It contains all the information to customising, understanding and setting up the script.
 
