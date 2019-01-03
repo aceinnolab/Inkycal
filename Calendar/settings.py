@@ -1,14 +1,18 @@
 """ To quickly get started, fill in the following details:"""
 
-url = "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"
+ical_urls = [
+"https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"
+]
+
 api_key = "api-key"
 location = "Julich, DE"
 week_starts_on = "Monday"
 display_colours = "bwr"
 language = "en"
 
-# url refers to the iCal url. It's the link you can copy when you click on
-# 'export' Calendar in Google or Yahoo (and many more online) Calendars
+# ical_urls refers to the iCal url/s. It's the link you can copy when you click on
+# 'export' Calendar in Google or Yahoo (and many more online) Calendars. To add multiple iCal URLs, simply add
+# a comma after the first url and add the next url in the next line: "URL2".
 
 # api-key refers to your openweathermap api key. It can be generated for free
 # when you sign up for an account and consists of a bunch of numbers and letters
