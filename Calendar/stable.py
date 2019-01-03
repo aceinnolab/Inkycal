@@ -35,11 +35,10 @@ if display_colours == "bw":
     epd = epd7in5.EPD()
     from calibration_bw import calibration
 
-c = Calendar(urlopen(url).read().decode())
-e = Event()
 EPD_WIDTH = 640
 EPD_HEIGHT = 384
 font = ImageFont.truetype(path+'Assistant-Bold.ttf', 18)
+im_open = Image.open
 
 def main():
     while True:
@@ -62,10 +61,10 @@ def main():
             draw = (ImageDraw.Draw(image)).bitmap
 
             """Draw the icon showing the current month"""
-            draw(monthplace, Image.open(mpath+str(time.strftime("%B"))+'.bmp'))
+            draw(monthplace, im_open(mpath+str(time.strftime("%B"))+'.bmp'))
 
             """Draw the 3 lines that seperates the top section"""
-            draw(seperatorplace, seperator)
+            draw(seperatorplace, separator)
 
             """Draw the icons with the weekday-names (Mon, Tue...) and
                draw a circle  on the current weekday"""
@@ -85,21 +84,20 @@ def main():
             #print(cal) #-uncomment for debugging with incorrect dates
 
             for i in cal[0]:
-                draw(positions['a'+str(cal[0].index(i)+1)] ,open(dpath+str(i)+'.bmp'))
+                draw(positions['a'+str(cal[0].index(i)+1)] ,im_open(dpath+str(i)+'.bmp'))
             for i in cal[1]:
-                draw(positions['b'+str(cal[1].index(i)+1)] ,open(dpath+str(i)+'.bmp'))
+                draw(positions['b'+str(cal[1].index(i)+1)] ,im_open(dpath+str(i)+'.bmp'))
             for i in cal[2]:
-                draw(positions['c'+str(cal[2].index(i)+1)] ,open(dpath+str(i)+'.bmp'))
+                draw(positions['c'+str(cal[2].index(i)+1)] ,im_open(dpath+str(i)+'.bmp'))
             for i in cal[3]:
-                draw(positions['d'+str(cal[3].index(i)+1)] ,open(dpath+str(i)+'.bmp'))
+                draw(positions['d'+str(cal[3].index(i)+1)] ,im_open(dpath+str(i)+'.bmp'))
             for i in cal[4]:
-                draw(positions['e'+str(cal[4].index(i)+1)] ,open(dpath+str(i)+'.bmp'))
+                draw(positions['e'+str(cal[4].index(i)+1)] ,im_open(dpath+str(i)+'.bmp'))
             try:
                 for i in cal[5]:
-                    draw(positions['f'+str(cal[5].index(i)+1)] ,Image.open(dpath+str(i)+'.bmp'))
+                    draw(positions['f'+str(cal[5].index(i)+1)] ,im_open(dpath+str(i)+'.bmp'))
             except IndexError:
                 pass
-
 
             def write_text(a,b, text, c,d):#a,b box-size  #c,d box position
                 w, h = font.getsize(text)
@@ -114,9 +112,9 @@ def main():
 
 
             """ Handling Openweathermap API"""
+            print("Preparing to fetch data from openweathermap API")
             owm = pyowm.OWM(api_key)
             if owm.is_API_online() is True: #test server connection
-                print("Preparing to fetch data from openweathermap API")
                 observation = owm.weather_at_place(location)
                 print("Fetching weather data...")
                 weather = observation.get_weather()
@@ -140,7 +138,7 @@ def main():
                 print('Weather: '+ weather_description)
 
                 """Drawing the fetched weather icon"""
-                draw(wiconplace, open(wpath+weathericons[weathericon] + '.bmp'))
+                draw(wiconplace, im_open(wpath+weathericons[weathericon] + '.bmp'))
 
                 """Drawing the fetched temperature"""
                 draw(tempplace, tempicon)
@@ -169,24 +167,36 @@ def main():
                 draw(wiconplace, no_response)
                 pass
 
-            """Sort the Events in your iCalendar"""
-            print('Fetching upcoming events from your calendar')
-            elist = []
-            eventstoday = []
-            for events in c.events:
-                if time.year == int((events.begin).format('YYYY')):
-                    if time.month == int((events.begin).format('M')):
-                        elist.append(int((events.begin).format('D')))
+            """Filter this months events from your iCalendar/s"""
+            print('Fetching this months events from your calendar')
+            events_this_month = []
+            events_today = []
 
-            """Uncomment the next 4 lines to print your events on the console"""
-#                        if time.day <= int((events.begin).format('D')):
-#                           print(events.name+' starts on '+events.begin.format('D '+'MMM '+'YYYY'))
-#                    if time.month < int((events.begin).format('M')):
-#                        print(events.name+' starts on '+events.begin.format('D '+'MMM '+'YYYY'))
+            for icalendars in ical_urls:
+                ical = Calendar(urlopen(icalendars).read().decode())
+                for events in ical.events:
+                    if(time.now().strftime('%-m %Y') == (events.begin).format('M YYYY')): 
+                        events_this_month.append(int((events.begin).format('D')))
+                        if time.day == int((events.begin).format('D')):
+                            if events.begin.format('HH '+'mm') == "00 00": #full day events
+                                events_today.append('today: '+events.name)
+                            else:
+                                events_today.append(events.name+' at '+events.begin.format('HH '+'mm'))
 
-                            
+            events = len(events_today)
+            if events == 0:
+                print('no events today')
+            elif events == 1:
+                print(events_today[0])
+            elif events == 2:
+                print(events_today[0])
+                print('+ 1 event')
+            else:
+                print(events_today[0])
+                print('+',events -1, 'events')
+                     
             """Draw circles on any days which include an Event"""
-            for x in elist:
+            for x in events_this_month:
                 if x in cal[0]:
                     draw(positions['a'+str(cal[0].index(x)+1)] ,eventicon)
                 if x in cal[1]:
@@ -203,7 +213,7 @@ def main():
                 except IndexError:
                     pass
 
-            """Draw a square with round corners on the today's date"""
+            """Draw a square with round corners on today's date"""
             today = time.day
             if today in cal[0]:
                 draw(positions['a'+str(cal[0].index(today)+1)] ,dateicon)
@@ -228,8 +238,8 @@ def main():
             epd.display_frame(epd.get_frame_buffer(image))
 
             # delete the list so deleted events can be removed from the list
-            del elist[:]
-            del eventstoday[:]
+            del events_this_month[:]
+            del events_today[:]
             print('data sent successfully'+'\n')
             print('letting the display sleep until the next hour')
             epd.sleep()
