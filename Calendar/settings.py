@@ -1,3 +1,8 @@
+"""
+E-Paper settings file for software version v1.4. Utilises list for adding multiple iCal URLs.
+Updated on 5th Jan 2019
+"""
+
 """ To quickly get started, fill in the following details:"""
 
 ical_urls = [
