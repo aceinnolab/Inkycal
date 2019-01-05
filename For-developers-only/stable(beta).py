@@ -64,7 +64,7 @@ def main():
             draw(monthplace, im_open(mpath+str(time.strftime("%B"))+'.bmp'))
 
             """Draw the 3 lines that seperates the top section"""
-            draw(seperatorplace, seperator)
+            draw(seperatorplace, separator)
 
             """Draw the icons with the weekday-names (Mon, Tue...) and
                draw a circle  on the current weekday"""
