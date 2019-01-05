@@ -12,6 +12,7 @@ The order is from latest to oldest and structured in the following way:
 * Added sunrise icon and time of sunrise
 * Added sunset icon and time of sunset
 * Added memory limits on both log files (output file and error file) to 1 MB
+* Added option for multiple iCal URLs in the settings file
 
 ### Fixed
 * Fixed an issue where text would not fit on screen
