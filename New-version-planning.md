@@ -7,3 +7,10 @@
 * Make month icons smaller to create some space below the separator
 * Add feature to display upcoming events
 * Replace 'current day' and 'event' icons with better ones
+
+
+
+---------------------------
+## More feature suggestions (will not be implemented anytime soon)
+* Nextcloud Integration (further research required)
+* Displaying tasks from iCalendar (further research required)
