@@ -2,7 +2,9 @@
 
 This is a software written in python3 that allows you to transform an E-Paper display (like the kindle) into an information display. It fetches live data from Openweathermap (a weather info provider) and your Online Calendar (Google/Yahoo Calendar) and displays them on a large, beautiful and ultra-low power E-Paper display. It's ideal for staying organised and keeping track of important details without having to check them up online. 
 
-Altough mainly intended for the Raspberry Pi Zero W, mainly since it requires very little power (1W), it works on the Rapsberry Pi 2/3 as well. To get started, follow the instructions below.
+This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E-Paper display from waveshare/gooddisplay and works with Raspberry Pi 2, 3 and 0 (Zero, Zero W, Zero WH). 
+
+**To get started, follow the instructions below.**
 
 ## News:
 * **Version 1.4 released (Late December 2018) with new features and more improvements**
@@ -25,7 +27,7 @@ Altough mainly intended for the Raspberry Pi Zero W, mainly since it requires ve
 * Or: Raspberry Pi Zero W. In this case, you'll need to solder 2x20 pin GPIO headers yourself
 * MicroSD card (min. 4GB)
 * MicroUSB cable (for power)
-* Something to be used as a case (e.g. a picture frame or a 3D-printed case)
+* Something to be used as a case (e.g. a (RIBBA) picture frame or a 3D-printed case)
 
 # Setup
 
@@ -69,14 +71,16 @@ Once you have setup everything, the E-Paper Calendar will refresh the screen in 
 ## Updating
 If you were using a previous version and want to update, do the following:
 
-* Save your personal details from the main script, located in `/home/pi/E-Paper-Master/Calendar/settings.py` in a different location.
+* Save your personal details from the settings file, located in `/home/pi/E-Paper-Master/Calendar/settings.py` in a different location.
 For example you can copy the settings.py file which contains your configuration information and settings to the home directory. 
 * Remove the E-Paper-Master folder from the home directory with `sudo rm -r /home/pi/E-Paper-Master/`
 
 * Re-run the (updated) installer and after the install has finshed, copy the contents of the settings.py file to the new settings.py file, located in /home/pi/E-Paper-Master/Calendar/. 
 
-## Don't forget to check out the Wiki. It contains all the information to customising, understanding and setting up the script.
+## Don't forget to check out the Wiki. It contains all the information to understanding and customising the script.
+
+P.S: Don't forget to star and watch the repo. For those who have done so already, thank you very much!
 
 ### Contact
 * email: aceisace63@yahoo.com
-
+* website: aceinnolab.com (coming soon)
