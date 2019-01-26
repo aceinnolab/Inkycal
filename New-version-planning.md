@@ -7,8 +7,12 @@
 * Make month icons smaller to create some space below the separator
 * Add feature to display upcoming events
 * Replace 'current day' and 'event' icons with better ones
+* Add support for units (metric/imperial)
+* Add 12/24 hour support
 
-
+## Settings file
+* Add option for choosing metric or imperial units
+* Add option for choosing 12/24 hours format
 
 ---------------------------
 ## More feature suggestions (will not be implemented anytime soon)
