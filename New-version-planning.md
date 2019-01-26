@@ -18,3 +18,4 @@
 ## More feature suggestions (will not be implemented anytime soon)
 * Nextcloud Integration (further research required)
 * Displaying tasks from iCalendar (further research required)
+* Add an option in the settings file to switch between weekly and monthly view
