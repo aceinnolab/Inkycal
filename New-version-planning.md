@@ -2,9 +2,13 @@
 
 # For version 1.5
 
-## Main script
+## Installer
 * Update installer with options to update, install and uninstall the entire software (including backing up of the settings.py file)
-* Make month icons smaller to create some space below the separator
+* Remove Installer without debug (is there really a neeed to?)
+
+## Main script
+* Optimise icons and their positions to create more space and improve readability
+* Add support for jpeg files! (BMP files will no longer be used)
 * Add feature to display upcoming events
 * Replace 'current day' and 'event' icons with better ones
 * Add support for units (metric/imperial)
