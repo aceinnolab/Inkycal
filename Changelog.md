@@ -4,7 +4,32 @@ The order is from latest to oldest and structured in the following way:
 * Version name with date of publishing
 * Sections with either 'added', 'fixed', 'updated' and 'changed'
 
-## [1.4] Late December
+## [1.5] Early February 2019
+
+### Added
+* Added option to update or uninstall the software via the Installer. To uninstall, just re-run the Installer.
+* Added feature to display upcoming events from the current month and next month on the bottom section.
+* Added support for 12 hour/ 24 hours (sunrise- and sunset-timings can now be adjusted via the settings file)
+* Added support for imperial units (wind speed can now be shown as mph as well)
+* Added option to choose metric/imperial units
+* Added option to save the generated image in the 'Calendar' folder to help debugging.
+
+### Changed
+* Changed a lot of icon sizes, positions and locations.
+* Changed the file format for nearly all icons. Icons should now be in JPEG format.
+* Chnaged the way icons are displayed. The software now uses the correct coordinates of icons
+* Icons are no longer rotated
+* Changes a few values in 'epd7in5b' to improve the readability of icons on the display
+* Changed the 'current day' and 'event' icon with slightly better ones
+* Changed the folder structure in the 'Calendar' folder for better navigation and overview
+
+### Removed
+* Removed the Installer without debug
+* Removed the calibration.py file by merging the calibrations for the 3-Colour and 2-Colour display.
+* Removed a few font files as only 1 is required.
+* Removed the monocolour-converter.py file as the conversion is no longer required
+
+## [1.4] Late December 2018
 
 ### Added
 * Added short weather description in the top section
@@ -28,7 +53,7 @@ The order is from latest to oldest and structured in the following way:
 ### Removed
 * Removed the explicit date from the top left corner
 
-## [1.3] Mid October
+## [1.3] Mid October 2018
 
 ### Added
 * Added a seperate configuration file for the main script named settings.py
@@ -44,7 +69,7 @@ The order is from latest to oldest and structured in the following way:
 * Combined the software for the 2-colour and 3-Colour version
 * Split the main script into a settings file and the main programm itself.
 
-## [1.2] Early October
+## [1.2] Early October 2018
 
 ### Added
 * Added option to choose E-Paper version (2/3-Colour) at beginning of install
@@ -62,7 +87,7 @@ The order is from latest to oldest and structured in the following way:
 * Changed the main script slightly (stable.py) to allow easier input of personal variables
 * Improved the single-line installers (with and without debug)
 
-## [1.1] End of September
+## [1.1] Late September 2018
 ### Added 
 * Added a command to partially support the 7.5" 2-Colour (Black and White)
 * Added support for Raspbian Stretch Lite by installing missing packages
@@ -72,5 +97,5 @@ The order is from latest to oldest and structured in the following way:
 ### Fixed
 * fixed a bug (reference to Issue #3) where the 'Installer with Debug' was not working due to incorrect url
 
-## [1.0] Mid-September
+## [1.0] Mid-September 2018
 ### Initial Release of the E-Paper-Calendar Software
