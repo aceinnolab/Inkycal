@@ -4,7 +4,7 @@ from PIL import Image, ImageFont
 from settings import *
 im_open = Image.open
 
-path =      '/home/pi/1.5/Calendar/' #don't forget to change!
+path =      '/home/pi/E-Paper-Master/Calendar/'
 wpath =     path+'weather-icons/'
 mpath =     path+'translations/'+language+'/months/'
 weekpath =  path+'translations/'+language+'/week/'
