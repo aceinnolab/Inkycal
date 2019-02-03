@@ -48,11 +48,7 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 ## Installing required packages for python 3.5 
 Execute the following command in the Terminal to install all required packages. This will work on both, Raspbian Stretch with Desktop and Raspbian Stretch lite. 
 
-**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/master/Installer-without-debug)"`**
-
-Should you encounter any problems during the install, try using the Installer with output, like this:
-
-`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/master/Installer-with-debug)"`
+**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/master/Installer-with-debug)"`**
 
 If the Installer should fail for any reason, kindly open an issue and paste the error. Thanks.
 
