@@ -167,5 +167,7 @@ EOF
 
     echo -e "\e[1;36m"To modify the settings file, enter:"\e[0m"
     echo -e "\e[1;36m"nano /home/pi/E-Paper-Master/Calendar/settings.py"\e[0m"
-
+    echo ""
+    echo -e "\e[1;36m"You can test if the programm works by typing:"\e[0m"
+    echo -e "\e[1;36m"python3.5 /home/pi/E-Paper-Master/E-Paper.py"\e[0m"
 fi
