@@ -25,7 +25,7 @@ fi
 
 if [ "$option" = 2 ]; then
     echo "Removing the E-Paper software now..."
-    pip3 uninstall Pillow && sudo pip3 uninstall Pillow && sudo pip3 uninstall pyowm && sudo pip3 uninstall ics && pip3 uninstall pyowm && pip3 uninstall ics && sudo apt-get remove --purge supervisor -y && sudo apt-get clean && sudo apt-get autoremove -y && sudo rm -r /home/pi/E-Paper-Master/
+    pip3 uninstall Pillow -y && sudo pip3 uninstall Pillow -y && sudo pip3 uninstall pyowm -y&& sudo pip3 uninstall ics -y && pip3 uninstall pyowm -y && pip3 uninstall ics -y && sudo apt-get remove --purge supervisor -y && sudo apt-get clean && sudo apt-get autoremove -y && sudo rm -r /home/pi/E-Paper-Master/
 fi
 
 
