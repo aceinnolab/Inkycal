@@ -1,9 +1,8 @@
 # Please do not use this file. It is only intended for testing new features and can potentially damage the system.
 #!/bin/bash
-# This script is for automating the install for both displays,
-# The 2-colour and 3-colour one.
-# Version: 1.4 (Late December)
-# Well tested and confirmed on 5th Jan 2019
+# E-Paper-Calendar software installer for the raspberry pi
+# Version: 1.5 (Early Februrary 2019)
+# Well tested and confirmed on 3rd Feb 2019
 
 # Copyright by aceisace
 
@@ -39,7 +38,7 @@ if [ "$option" = 1 ]; then
         sleep 2
 	echo "Backing up the current settings file in the home directory."
 	sleep 2
-	cp /home/pi/E-Paper-Master/Calendar/settings.py /home/pi/settings-old.py#
+	cp /home/pi/E-Paper-Master/Calendar/settings.py /home/pi/settings-old.py
 	echo "renaming the old E-Paper software folder"
 	sleep 2
 	cp -r /home/pi/E-Paper-Master /home/pi/E-Paper-Master-old
@@ -113,9 +112,6 @@ fin
 
     # Using this part for the 2-colour E-Paper version
     if [ "$digit" = 2 ]; then
-        # execute the monocolour-converter to convert all 3-colour icons to 2-colour ones
-        python3.5 /home/pi/E-Paper-Master/Calendar/monocolour-converter.py
-        
         # edit the settings file for the 2-colour display option
         sed -i 's/display_colours = "bwr"/display_colours = "bw"/' /home/pi/E-Paper-Master/Calendar/settings.py
         
@@ -124,7 +120,7 @@ fin
     This document contains a short info of the E-Paper-Calendar software version
 
     Version: 2-Colour E-Paper-version
-    Installer version: 1.4 (Late December 2018)
+    Installer version: 1.5 (Early February 2019)
     configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
     If the time was set correctly, you installed this software on:
 EOF
@@ -139,7 +135,7 @@ EOF
     This document contains a short info of the version
 
     Version: 3-Colour E-Paper-version
-    Installer version: 1.4 (Late December 2018)
+    Installer version: 1.5 (Early February 2019)
     configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
     If the time was set correctly, you installed this software on:
 EOF
@@ -153,7 +149,7 @@ EOF
 
     sudo bash -c 'cat > /etc/supervisor/conf.d/E-Paper.conf' << EOF
     [program:E-Paper]
-    command = sudo /usr/bin/python3.5 /home/pi/E-Paper-Master/Calendar/stable.py
+    command = sudo /usr/bin/python3.5 /home/pi/E-Paper-Master/Calendar/E-Paper.py
     stdout_logfile = /home/pi/E-Paper-Master/E-Paper.log
     stdout_logfile_maxbytes = 1MB
     stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
