@@ -1,7 +1,3 @@
-# Important news:
-## Please be aware that the software is being updated as you read this line. It's (highly) possible that something isn't working as expected or may damage your system. Please wait until this message has disappeared. Thank you!
-
-
 # Raspberry-Pi-Google-Calendar-with-E-Paper-display
 
 This is a software written in python3 that allows you to transform an E-Paper display (like the kindle) into an information display. It fetches live data from Openweathermap (a weather info provider) and your Online Calendar (Google/Yahoo Calendar) and displays them on a large, beautiful and ultra-low power E-Paper display. It's ideal for staying organised and keeping track of important details without having to check them up online. 
