@@ -16,13 +16,10 @@ if [ "$option" != 1 ] && [ "$option" != 2 ]; then
     echo "invalid number, aborting now"
     exit
 fi
-
 if [ -z "$option" ]; then
     echo "You didn't enter anything, aborting now."
     exit
 fi
-
-
 if [ "$option" = 2 ]; then
     echo "Removing the E-Paper software now..."
     pip3 uninstall Pillow -y && sudo pip3 uninstall Pillow -y && sudo pip3 uninstall pyowm -y&& sudo pip3 uninstall ics -y && pip3 uninstall pyowm -y && pip3 uninstall ics -y && sudo apt-get remove --purge supervisor -y && sudo apt-get clean && sudo apt-get autoremove -y
