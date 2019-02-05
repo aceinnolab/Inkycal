@@ -2,8 +2,7 @@
 #!/bin/bash
 # E-Paper-Calendar software installer for the raspberry pi
 # Version: 1.5 (Early Februrary 2019)
-# Well tested and confirmed on 3rd Feb 2019
-
+# Stability status of this installer: pending
 # Copyright by aceisace
 
 echo -e "\e[1mPlease select an option from below:"
@@ -26,7 +25,10 @@ fi
 
 if [ "$option" = 2 ]; then
     echo "Removing the E-Paper software now..."
-    pip3 uninstall Pillow && sudo pip3 uninstall Pillow && sudo pip3 uninstall pyowm && sudo pip3 uninstall ics && pip3 uninstall pyowm && pip3 uninstall ics && sudo apt-get remove --purge supervisor -y && sudo apt-get clean && sudo apt-get autoremove -y && sudo rm -r /home/pi/E-Paper-Master/
+    pip3 uninstall Pillow -y && sudo pip3 uninstall Pillow -y && sudo pip3 uninstall pyowm -y&& sudo pip3 uninstall ics -y && pip3 uninstall pyowm -y && pip3 uninstall ics -y && sudo apt-get remove --purge supervisor -y && sudo apt-get clean && sudo apt-get autoremove -y
+    if [ -d "/home/pi/test" ]; then
+    echo "Hooray, it worked!"
+    fi
 fi
 
 
@@ -83,7 +85,6 @@ if [ "$option" = 1 ]; then
     pip3 install Pillow==5.3.0
     sudo pip3 install Pillow==5.3.0
     echo ""
-fin
 
     # Running apt-get clean and apt-get autoremove
     echo -e "\e[1;36m"Cleaning a bit of mess to free up some space..."\e[0m"
@@ -117,12 +118,12 @@ fin
         
         # add a short info
         cat > /home/pi/E-Paper-Master/Info.txt << EOF
-    This document contains a short info of the E-Paper-Calendar software version
+This document contains a short info of the E-Paper-Calendar software version
 
-    Version: 2-Colour E-Paper-version
-    Installer version: 1.5 (Early February 2019)
-    configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
-    If the time was set correctly, you installed this software on:
+Version: 2-Colour E-Paper-version
+Installer version: 1.5 (Early February 2019)
+configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
+If the time was set correctly, you installed this software on:
 EOF
         echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
         echo ""
@@ -132,12 +133,12 @@ EOF
     if [ "$digit" = 3 ]; then
         # add a short info
         cat > /home/pi/E-Paper-Master/Info.txt << EOF
-    This document contains a short info of the version
+This document contains a short info of the version
 
-    Version: 3-Colour E-Paper-version
-    Installer version: 1.5 (Early February 2019)
-    configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
-    If the time was set correctly, you installed this software on:
+Version: 3-Colour E-Paper-version
+Installer version: 1.5 (Early February 2019)
+configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
+If the time was set correctly, you installed this software on:
 EOF
         echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
         echo ""
@@ -148,12 +149,12 @@ EOF
     sudo apt-get install supervisor -y
 
     sudo bash -c 'cat > /etc/supervisor/conf.d/E-Paper.conf' << EOF
-    [program:E-Paper]
-    command = sudo /usr/bin/python3.5 /home/pi/E-Paper-Master/Calendar/E-Paper.py
-    stdout_logfile = /home/pi/E-Paper-Master/E-Paper.log
-    stdout_logfile_maxbytes = 1MB
-    stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
-    stderr_logfile_maxbytes = 1MB
+[program:E-Paper]
+command = sudo /usr/bin/python3.5 /home/pi/E-Paper-Master/Calendar/E-Paper.py
+stdout_logfile = /home/pi/E-Paper-Master/E-Paper.log
+stdout_logfile_maxbytes = 1MB
+stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
+stderr_logfile_maxbytes = 1MB
 EOF
 
     sudo service supervisor start E-Paper
@@ -168,5 +169,7 @@ EOF
 
     echo -e "\e[1;36m"To modify the settings file, enter:"\e[0m"
     echo -e "\e[1;36m"nano /home/pi/E-Paper-Master/Calendar/settings.py"\e[0m"
-
+    echo ""
+    echo -e "\e[1;36m"You can test if the programm works by typing:"\e[0m"
+    echo -e "\e[1;36m"python3.5 /home/pi/E-Paper-Master/E-Paper.py"\e[0m"
 fi
