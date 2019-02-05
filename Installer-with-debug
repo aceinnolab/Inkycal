@@ -147,12 +147,12 @@ EOF
     sudo apt-get install supervisor -y
 
     sudo bash -c 'cat > /etc/supervisor/conf.d/E-Paper.conf' << EOF
-    [program:E-Paper]
-    command = sudo /usr/bin/python3.5 /home/pi/E-Paper-Master/Calendar/E-Paper.py
-    stdout_logfile = /home/pi/E-Paper-Master/E-Paper.log
-    stdout_logfile_maxbytes = 1MB
-    stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
-    stderr_logfile_maxbytes = 1MB
+[program:E-Paper]
+command = sudo /usr/bin/python3.5 /home/pi/E-Paper-Master/Calendar/E-Paper.py
+stdout_logfile = /home/pi/E-Paper-Master/E-Paper.log
+stdout_logfile_maxbytes = 1MB
+stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
+stderr_logfile_maxbytes = 1MB
 EOF
 
     sudo service supervisor start E-Paper
