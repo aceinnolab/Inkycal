@@ -115,12 +115,12 @@ fin
         
         # add a short info
         cat > /home/pi/E-Paper-Master/Info.txt << EOF
-    This document contains a short info of the E-Paper-Calendar software version
+This document contains a short info of the E-Paper-Calendar software version
 
-    Version: 2-Colour E-Paper-version
-    Installer version: 1.5 (Early February 2019)
-    configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
-    If the time was set correctly, you installed this software on:
+Version: 2-Colour E-Paper-version
+Installer version: 1.5 (Early February 2019)
+configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
+If the time was set correctly, you installed this software on:
 EOF
         echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
         echo ""
@@ -130,12 +130,12 @@ EOF
     if [ "$digit" = 3 ]; then
         # add a short info
         cat > /home/pi/E-Paper-Master/Info.txt << EOF
-    This document contains a short info of the version
+This document contains a short info of the version
 
-    Version: 3-Colour E-Paper-version
-    Installer version: 1.5 (Early February 2019)
-    configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
-    If the time was set correctly, you installed this software on:
+Version: 3-Colour E-Paper-version
+Installer version: 1.5 (Early February 2019)
+configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
+If the time was set correctly, you installed this software on:
 EOF
         echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
         echo ""
