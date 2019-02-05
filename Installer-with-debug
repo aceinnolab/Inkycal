@@ -81,7 +81,6 @@ if [ "$option" = 1 ]; then
     pip3 install Pillow==5.3.0
     sudo pip3 install Pillow==5.3.0
     echo ""
-fin
 
     # Running apt-get clean and apt-get autoremove
     echo -e "\e[1;36m"Cleaning a bit of mess to free up some space..."\e[0m"
