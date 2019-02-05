@@ -55,25 +55,21 @@ This is how the installer will run:
 <img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/Installer-v1.2-screenshot.png" width="700">
 
 ## Adding details to the programm
-Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'settings.py' inside the Calendar folder.
+Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'settings.py' inside the Calendar folder. Adjust the values as needed. You can use the table below as a reference.
 
-3 Main Details are needed to get running:
-1. A valid ical URL. Use the export funtion in google calendar to create a ical url link and paste it in the url section
-2. A valid openweathermap API-Key is required. This key can be optained for free with an account on openweathermap
-3. Your city's name and your country code (so the correct weather can be displayed) (e.g. `New York, US`)
-
-## Demo
-Once you have setup everything, the E-Paper Calendar will refresh the screen in the following way:
-<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/E-Paper-v1.4-front.JPG" width="500">
+| Parameter |  Description |
+| --- | --- |
+| ical_urls |  Your iCalendar URL/s. To add more than one URL, seperate each with a comma |
+| api_key | Your __personal__ openweathermap API-key which you can generate and find in your Account info |
+| location | Location refers to the closest weather station from your place. It isn't necessarily the place you live in. To find this location, type your city name in the search box on [openweathermap](https://openweathermap.org/). The output should be in the following format: City Name, Country ISO-Code. Not sure what your ISO code is? Check here: [(find iso-code)](https://countrycode.org/)  |
+| week_starts_on | When does the work start on your Region? Possible options are `"Monday"` or `"Sunday"`|
+| display_colours | This should normally be set by the installer when you choose the type of your display. Options include `"bw"` if you're using the black and white E-Paper or `"bwr"` when you're using the black-white-red or black-white-yellow E-Paper|
+| language | Choosing the language allows changing the language of the month and week-icons. Possible options are `"en"` for english and `"de"` for german|
+|units| Selecting units allows switching units from km/h (kilometer per hour) and °C (degree Celcius) to mph (miles per hour) and °F (degree Fahrenheit). Possible options are `"metric"` or `"imperial"`|
+|hours | Which time format do you prefer? This will change the sunrise and sunset times from 24-hours format to 12-hours format. Possible options are `"24"` for 24-hours and `"12"` for 12-hours.|
 
 ## Updating
-If you were using a previous version and want to update, do the following:
-
-* Save your personal details from the settings file, located in `/home/pi/E-Paper-Master/Calendar/settings.py` in a different location.
-For example you can copy the settings.py file which contains your configuration information and settings to the home directory. 
-* Remove the E-Paper-Master folder from the home directory with `sudo rm -r /home/pi/E-Paper-Master/`
-
-* Re-run the (updated) installer and after the install has finshed, copy the contents of the settings.py file to the new settings.py file, located in /home/pi/E-Paper-Master/Calendar/. 
+To update the software, simply execute the installer from above again, selecting the 'update' option. **Attention:** Only your current settings file will be backed up in the home directory. After updating, copy the contents from your old settings file to the new one. There are usally more options in the new settings.py file so a 'template' is prepared with each update. This template can be found in `/home/pi/E-Paper-Master/Calendar/settings.py.sample`. 
 
 ## Don't forget to check out the Wiki. It contains all the information to understanding and customising the script.
 
