@@ -23,7 +23,10 @@ if [ -z "$option" ]; then
 fi
 if [ "$option" = 3 ]; then
     echo "Removing the E-Paper software now..."
-    pip3 uninstall Pillow -y && sudo pip3 uninstall Pillow -y && sudo pip3 uninstall pyowm -y&& sudo pip3 uninstall ics -y && pip3 uninstall pyowm -y && pip3 uninstall ics -y && sudo apt-get remove --purge supervisor -y && sudo apt-get clean && sudo apt-get autoremove -y
+    pip3 uninstall Pillow -y && sudo pip3 uninstall Pillow -y && sudo pip3 uninstall pyowm -y&& sudo pip3 uninstall ics -y && pip3 uninstall pyowm -y && pip3 uninstall ics -y && sudo apt-get remove supervisor -y && sudo apt-get clean && sudo apt-get autoremove -y
+    if [ -e /etc/supervisor/conf.d/E-Paper.conf ]; then
+        sudo rm /etc/supervisor/conf.d/E-Paper.conf
+    fi
     echo "The libraries have been removed successfully"
     echo "Removing the E-Paper-Calendar folder if it exists"
     if [ -d "/home/pi/E-Paper-Master" ]; then
@@ -105,7 +108,7 @@ Version: 1.5
 Installer version: 1.5 (Early February 2019)
 configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
 If the time was set correctly, you installed this software on:
-EOF
+    EOF
     echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
     echo ""
 
@@ -120,7 +123,7 @@ stdout_logfile = /home/pi/E-Paper-Master/E-Paper.log
 stdout_logfile_maxbytes = 1MB
 stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
 stderr_logfile_maxbytes = 1MB
-EOF
+    EOF
 
     sudo service supervisor start E-Paper
     echo ""
