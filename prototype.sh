@@ -108,9 +108,9 @@ Version: 1.5
 Installer version: 1.5 (Early February 2019)
 configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
 If the time was set correctly, you installed this software on:
-EOF
+    EOF
     echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
-    echo ""
+    echo -e ""
 
     # Setting up supervisor
     echo -e "\e[1;36m"Setting up auto-start of script at boot"\e[0m"
@@ -123,10 +123,10 @@ stdout_logfile = /home/pi/E-Paper-Master/E-Paper.log
 stdout_logfile_maxbytes = 1MB
 stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
 stderr_logfile_maxbytes = 1MB
-EOF
+    EOF
 
     sudo service supervisor start E-Paper
-    echo ""
+    echo -e ""
 
     # Final words
     echo -e "\e[1;36m"The install was successful"\e[0m"
@@ -139,4 +139,4 @@ EOF
     echo -e "\e[1;36m"nano /home/pi/E-Paper-Master/Calendar/settings.py"\e[0m"
     echo -e "\e[1;36m"You can test if the programm works by typing:"\e[0m"
     echo -e "\e[1;36m"python3.5 /home/pi/E-Paper-Master/Calendar/E-Paper.py"\e[0m"
-fi
+fin
