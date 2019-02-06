@@ -69,7 +69,11 @@ Once the packages are installed, navigate to the home directory, open 'E-Paper-M
 |hours | Which time format do you prefer? This will change the sunrise and sunset times from 24-hours format to 12-hours format. Possible options are `"24"` for 24-hours and `"12"` for 12-hours.|
 
 ## Updating
-To update the software, simply execute the installer from above again, selecting the 'update' option. **Attention:** Only your current settings file will be backed up in the home directory. After updating, copy the contents from your old settings file to the new one. There are usally more options in the new settings.py file so a 'template' is prepared with each update. This template can be found in `/home/pi/E-Paper-Master/Calendar/settings.py.sample`. 
+If you want to update to the latest version, run the Installer from above again and select the 'update' option. 
+
+Before updating, the Installer checks if the settings file (/home/pi/E-Paper-Master/Calendar/settings.py) exists. This is done to test if a previous version was installed correctly. If the settings file exists, it is copied to the home directory and renamed as 'settings.py.old'. The old software folder 'E-Paper-Master' is renamed to 'E-Paper-Master-old'. Lastly, the latest version of the software is copied to the Raspberry as 'E-Paper-Master'.
+
+After updating, copy the contents from your old settings file to the new one. There are usally more options in the new settings.py file so a 'template' is prepared with each update. This template can be found in /home/pi/E-Paper-Master/Calendar/settings.py.sample.
 
 ## Don't forget to check out the Wiki. It contains all the information to understanding and customising the script.
 
