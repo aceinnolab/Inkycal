@@ -84,7 +84,7 @@ if [ "$option" = 2 ]; then
     sudo pip3 install ics
     pip3 install pyowm
     pip3 install ics
-    echo "Finished installing libraries"
+    echo -e "\e[1;36m""Finished installing libraries"\e[0m"
 fi
 
 if [ "$option" = 1 ] || [ "$option" = 2 ]; then
@@ -108,7 +108,7 @@ Version: 1.5
 Installer version: 1.5 (Early February 2019)
 configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
 If the time was set correctly, you installed this software on:
-    EOF
+EOF
     echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
     echo ""
 
@@ -123,7 +123,7 @@ stdout_logfile = /home/pi/E-Paper-Master/E-Paper.log
 stdout_logfile_maxbytes = 1MB
 stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
 stderr_logfile_maxbytes = 1MB
-    EOF
+EOF
 
     sudo service supervisor start E-Paper
     echo ""
