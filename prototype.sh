@@ -45,6 +45,7 @@ if [ "$option" = 1 ]; then
 	echo -e "renaming the old E-Paper software folder"
 	sleep 2
 	cp -r /home/pi/E-Paper-Master /home/pi/E-Paper-Master-old
+	sudo rm -r /home/pi/E-Paper-Master
 	echo "Updating now..."
 	echo -e "\e[1;36m"Installing the E-Paper-Calendar Software for your display"\e[0m"
         cd
