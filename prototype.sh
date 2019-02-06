@@ -33,7 +33,6 @@ fi
 
 if [ "$option" = 1 ]; then
     echo "Checking if the settings.py exists..."
-    sleep 2
     if [ -e /home/pi/E-Paper-Master/Calendar/settings.py ]; then
         echo "Found an E-Paper settings file."
         sleep 2
@@ -46,7 +45,7 @@ if [ "$option" = 1 ]; then
 	echo "Updating now..."
 	echo -e "\e[1;36m"Installing the E-Paper-Calendar Software for your display"\e[0m"
         cd
-    else
+    if [ ! -f /home/pi/E-Paper-Master/Calendar/settings.py ]; then
         echo "Could not find any settings.py file in /home/pi/E-Paper-Master"
 	echo "Please uninstall the software first and then use the install option"
 	echo "Exiting now"
@@ -56,14 +55,14 @@ fi
 
 if [ "$option" = 2 ]; then
     echo "The installer will finish the rest now. You can enjoy a break in the meanwhile."\e[0m"
-
+    
     # Updating and upgrading the system, without taking too much space
     echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
     echo -e "\e[1;36m"This will take a while, sometimes up to 30 mins"\e[0m"
     sudo apt-get update && sudo apt-get dist-upgrade -y
     echo -e "\e[1;36m"System successfully updated and upgraded!"\e[0m"
     echo ""
-    exit
+
     # Installing a few packages which are missing on Raspbian Stretch Lite
     echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
     sudo apt-get install python3-pip python-rpi.gpio-dbgsym python3-rpi.gpio python-rpi.gpio python3-rpi.gpio-dbgsym python3-spidev git libopenjp2-7-dev libtiff5 -y
@@ -85,7 +84,7 @@ if [ "$option" = 2 ]; then
     echo "Finished installing libraries"
 fi
 
-if [ "$option" = 2 ] || [ "$option" = 1 ] ;
+if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     echo -e "\e[1;36m"Installing the E-Paper-Calendar Software for your display"\e[0m"
     cd
     git clone https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather
