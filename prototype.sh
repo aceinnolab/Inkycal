@@ -14,21 +14,21 @@ echo -e "\e[97mConfirm your selection with [ENTER]"
 read -r -p 'Waiting for input...  ' option
 
 if [ "$option" != 1 ] && [ "$option" != 2 ] && [ "$option" != 3 ]; then
-    echo "invalid number, aborting now"
+    echo -e "invalid number, aborting now"
     exit
 fi
 if [ -z "$option" ]; then
-    echo "You didn't enter anything, aborting now."
+    echo -e "You didn't enter anything, aborting now."
     exit
 fi
 if [ "$option" = 3 ]; then
-    echo "Removing the E-Paper software now..."
+    echo -e "Removing the E-Paper software now..."
     pip3 uninstall Pillow -y && sudo pip3 uninstall Pillow -y && sudo pip3 uninstall pyowm -y&& sudo pip3 uninstall ics -y && pip3 uninstall pyowm -y && pip3 uninstall ics -y && sudo apt-get remove supervisor -y && sudo apt-get clean && sudo apt-get autoremove -y
     if [ -e /etc/supervisor/conf.d/E-Paper.conf ]; then
         sudo rm /etc/supervisor/conf.d/E-Paper.conf
     fi
-    echo "The libraries have been removed successfully"
-    echo "Removing the E-Paper-Calendar folder if it exists"
+    echo -e "The libraries have been removed successfully"
+    echo -e "Removing the E-Paper-Calendar folder if it exists"
     if [ -d "/home/pi/E-Paper-Master" ]; then
         sudo rm -r /home/pi/E-Paper-Master/
     fi
@@ -37,27 +37,27 @@ fi
 if [ "$option" = 1 ]; then
     echo "Checking if the settings.py exists..."
     if [ -e /home/pi/E-Paper-Master/Calendar/settings.py ]; then
-        echo "Found an E-Paper settings file."
+        echo -e "Found an E-Paper settings file."
         sleep 2
 	echo "Backing up the current settings file in the home directory."
 	sleep 2
 	cp /home/pi/E-Paper-Master/Calendar/settings.py /home/pi/settings-old.py
-	echo "renaming the old E-Paper software folder"
+	echo -e "renaming the old E-Paper software folder"
 	sleep 2
 	cp -r /home/pi/E-Paper-Master /home/pi/E-Paper-Master-old
 	echo "Updating now..."
 	echo -e "\e[1;36m"Installing the E-Paper-Calendar Software for your display"\e[0m"
         cd
-    if [ ! -f /home/pi/E-Paper-Master/Calendar/settings.py ]; then
-        echo "Could not find any settings.py file in /home/pi/E-Paper-Master"
-	echo "Please uninstall the software first and then use the install option"
-	echo "Exiting now"
+    else
+        echo -e "Could not find any settings.py file in /home/pi/E-Paper-Master"
+	echo -e "Please uninstall the software first and then use the install option"
+	echo -e "Exiting now"
 	exit
     fi
 fi
 
 if [ "$option" = 2 ]; then
-    echo "The installer will finish the rest now. You can enjoy a break in the meanwhile."\e[0m"
+    echo -e "\e[1;36m"The installer will finish the rest now. You can enjoy a break in the meanwhile."\e[0m"
     
     # Updating and upgrading the system, without taking too much space
     echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
@@ -84,7 +84,7 @@ if [ "$option" = 2 ]; then
     sudo pip3 install ics
     pip3 install pyowm
     pip3 install ics
-    echo -e "\e[1;36m""Finished installing libraries"\e[0m"
+    echo -e "\e[1;36m"Finished installing libraries"\e[0m"
 fi
 
 if [ "$option" = 1 ] || [ "$option" = 2 ]; then
@@ -108,9 +108,9 @@ Version: 1.5
 Installer version: 1.5 (Early February 2019)
 configuration file: /home/pi/E-Paper-Master/Calendar/settings.py
 If the time was set correctly, you installed this software on:
-    EOF
+EOF
     echo "$(date)" >> /home/pi/E-Paper-Master/Info.txt
-    echo -e ""
+    echo ""
 
     # Setting up supervisor
     echo -e "\e[1;36m"Setting up auto-start of script at boot"\e[0m"
@@ -123,10 +123,10 @@ stdout_logfile = /home/pi/E-Paper-Master/E-Paper.log
 stdout_logfile_maxbytes = 1MB
 stderr_logfile = /home/pi/E-Paper-Master/E-Paper-err.log
 stderr_logfile_maxbytes = 1MB
-    EOF
+EOF
 
     sudo service supervisor start E-Paper
-    echo -e ""
+    echo ""
 
     # Final words
     echo -e "\e[1;36m"The install was successful"\e[0m"
@@ -139,4 +139,4 @@ stderr_logfile_maxbytes = 1MB
     echo -e "\e[1;36m"nano /home/pi/E-Paper-Master/Calendar/settings.py"\e[0m"
     echo -e "\e[1;36m"You can test if the programm works by typing:"\e[0m"
     echo -e "\e[1;36m"python3.5 /home/pi/E-Paper-Master/Calendar/E-Paper.py"\e[0m"
-fin
+fi
