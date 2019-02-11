@@ -69,6 +69,14 @@ Once the packages are installed, navigate to the home directory, open 'E-Paper-M
 |units| Selecting units allows switching units from km/h (kilometer per hour) and °C (degree Celcius) to mph (miles per hour) and °F (degree Fahrenheit). Possible options are `"metric"` or `"imperial"`|
 |hours | Which time format do you prefer? This will change the sunrise and sunset times from 24-hours format to 12-hours format. Possible options are `"24"` for 24-hours and `"12"` for 12-hours.|
 
+## iCalendar
+It is a bit tricky to set up the iCalendar so it works correctly without throwing any errors. If you encounter errors related to your iCalendar, please open up an issue and paste the error message there.
+
+A more detailed section about the iCalendar will be added to the wiki soon, but for now, here are some suggestions to prevent error messages:
+1) Ensure your iCalendar URL is fine. If you receive an error showing error 404, it means the URL is wrong.
+2) If your existing iCalendar doesn't work at all, export the Calendar as a file, then create a new Calendar and import the file from before.
+3) If you receive errors related to 'alarm' or 'trigger', please make sure your iCalendar does not use reminders. The problem is that some actions are not supported by the Raspberry and cause errors. For example, the Rapsberry can't send a mail, make a noise or display a message as soon as an event starts. 
+
 ## Updating
 If you want to update to the latest version, run the Installer from above again and select the 'update' option. 
 
