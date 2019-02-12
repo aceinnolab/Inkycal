@@ -17,6 +17,8 @@
 ## E-Paper files (epd7in5/epd7in5b)
 * Optimise values for displaying images by modifying some values
 when converting image to data
+* Merge calibration module with epd7in5 and epd7in5b
+* Create function to calibrate the screen much faster by omitting conversion
 
 ## Settings file
 * Add option to switch between the monthly and weekly view
