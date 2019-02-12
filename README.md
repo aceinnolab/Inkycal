@@ -7,8 +7,7 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 **To get started, follow the instructions below.**
 
 ## News:
-* **Version 1.5 released (Early February 2019) with new features and lots of back-end improvements**
-* **Version 1.4 released (Late December 2018) with new features and more improvements**
+* **Version 1.5 released (Early February 2019) with a new layout, displayed events and many back-end improvements**
 * **Added Support for the 2-Colour E-Paper Display as well!** (Late September 2018)
 * **Added Support for Raspbian Stretch lite.** (Late September 2018)
 
