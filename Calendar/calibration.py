@@ -24,7 +24,7 @@ def calibration():
             red = Image.new('L', (EPD_WIDTH, EPD_HEIGHT), 'red')
             ImageDraw.Draw(red)
             print('calibrating red...')
-        epd.display_frame(epd.get_frame_buffer(red))
+            epd.display_frame(epd.get_frame_buffer(red))
         white = Image.new('1', (EPD_WIDTH, EPD_HEIGHT), 'white')
         ImageDraw.Draw(white)
         print('calibrating white...')
