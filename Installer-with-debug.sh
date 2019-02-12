@@ -84,11 +84,6 @@ if [ "$option" = 2 ]; then
     pip3 install pyowm
     pip3 install ics
     echo -e "\e[1;36m"Finished installing libraries"\e[0m"
-    
-    # Making a copy of the sample settings.py file
-    cd /home/pi/E-Paper-Master/Calendar
-    cp settings.py.sample settings.py
-    cd
 fi
 
 if [ "$option" = 1 ] || [ "$option" = 2 ]; then
@@ -101,7 +96,13 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     cp README.md /home/pi/E-Paper-Master/
     cp LICENSE /home/pi/E-Paper-Master/
     cp -r .git /home/pi/E-Paper-Master/
+    
+    # Make a copy of the sample settings.py file
+    cd /home/pi/E-Paper-Master/Calendar
+    cp settings.py.sample settings.py
     cd
+
+    # Remove the downloaded (temporary) directory
     sudo rm -r E-Paper-Calendar-with-iCal-sync-and-live-weather
 
     # add a short info
