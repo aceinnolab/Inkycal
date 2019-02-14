@@ -14,6 +14,7 @@
 * Fix a bug where past events are shown along with ones in the future
 * Add support for ics files along with iCalendar URLs
 * Allow connecting to the openweathermap API servers even when the SSL certificate has expired
+* Try using the weathericons.io font instead of icons
 
 ## E-Paper files (epd7in5/epd7in5b)
 * Optimise values for displaying images by modifying some values
