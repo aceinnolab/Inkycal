@@ -191,33 +191,54 @@ def main():
             print('Fetching events from your calendar'+'\n')
             events_this_month = []
             upcoming = []
-
             for icalendars in ical_urls:
-                ical = Calendar(urlopen(icalendars).read().decode())
+                decode = str(urlopen(icalendars).read().decode())
+                #fix a bug related to Alarm action by replacing parts of the icalendar
+                fix_e = decode.replace('BEGIN:VALARM\r\nACTION:NONE','BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:')
+                #uncomment line below to display your calendar in ical format
+                #print(fix_e)
+                ical = Calendar(fix_e)
                 for events in ical.events:
-                    if time.now().strftime('%-m %Y') == (events.begin).format('M YYYY'):
-                        upcoming.append({'date':events.begin.format('D MMM'), 'event':events.name})
+                    if time.now().strftime('%-m %Y') == (events.begin).format('M YYYY') and (events.begin).format('DD') >= time.now().strftime('%d'):
+                        upcoming.append({'date':events.begin.format('DD MMM'), 'event':events.name})
                         events_this_month.append(int((events.begin).format('D')))
                     if month == 12:
                         if (1, year+1) == (1, int((events.begin).year)):
-                            upcoming.append({'date':events.begin.format('D MMM'), 'event':events.name})
+                            upcoming.append({'date':events.begin.format('DD MMM'), 'event':events.name})
                     if month != 12:
                         if (month+1, year) == (events.begin).format('M YYYY'):
-                            upcoming.append({'date':events.begin.format('D MMM'), 'event':events.name})
+                            upcoming.append({'date':events.begin.format('DD MMM'), 'event':events.name}) # HS sort events by date
+
+            def takeDate(elem):
+                return elem['date']
+
+            upcoming.sort(key=takeDate)
 
             del upcoming[4:]
+            # uncomment the following 2 lines to display the fetched events
+            # from your iCalendar
+            print('Upcoming events:')
+            print(upcoming)
 
+            #Credit to Hubert for suggesting truncating event names
             def write_text_left(box_width, box_height, text, tuple):
                 text_width, text_height = font.getsize(text)
-                if (text_width, text_height) > (box_width, box_height):
-                    raise ValueError('Sorry, your text is too big for the box')
-                else:
-                    y = int((box_height / 2) - (text_height / 2))
-                    space = Image.new('L', (box_width, box_height), color=255)
-                    ImageDraw.Draw(space).text((0, y), text, fill=0, font=font)
-                    image.paste(space, tuple)
+                while (text_width, text_height) > (box_width, box_height):
+                    text=text[0:-1]
+                    text_width, text_height = font.getsize(text)
+                y = int((box_height / 2) - (text_height / 2))
+                space = Image.new('L', (box_width, box_height), color=255)
+                ImageDraw.Draw(space).text((0, y), text, fill=0, font=font)
+                image.paste(space, tuple)
 
             """Write event dates and names on the E-Paper"""
+            for dates in range(len(upcoming)):
+                write_text(70, 25, (upcoming[dates]['date']), date_positions['d'+str(dates+1)])
+
+            for events in range(len(upcoming)):
+                write_text_left(314, 25, (upcoming[events]['event']), event_positions['e'+str(events+1)])
+
+             """Write event dates and names on the E-Paper"""
             for dates in range(len(upcoming)):
                 write_text(70, 25, (upcoming[dates]['date']), date_positions['d'+str(dates+1)])
 
