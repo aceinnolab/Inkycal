@@ -238,13 +238,6 @@ def main():
             for events in range(len(upcoming)):
                 write_text_left(314, 25, (upcoming[events]['event']), event_positions['e'+str(events+1)])
 
-             """Write event dates and names on the E-Paper"""
-            for dates in range(len(upcoming)):
-                write_text(70, 25, (upcoming[dates]['date']), date_positions['d'+str(dates+1)])
-
-            for events in range(len(upcoming)):
-                write_text_left(314, 25, (upcoming[events]['event']), event_positions['e'+str(events+1)])
-
             """Draw smaller squares on days with events"""
             for numbers in events_this_month:
                 if numbers in cal[0]:
