@@ -79,7 +79,6 @@ def main():
 
             if (week_starts_on == "Sunday"):
                 calendar.setfirstweekday(calendar.SUNDAY)
-                draw(weekplace, weeksun)
                 image.paste(weeksun, weekplace)
                 draw(weekdayssun[(time.strftime("%a"))], weekday)
 
