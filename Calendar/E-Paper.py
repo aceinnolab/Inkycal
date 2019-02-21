@@ -193,10 +193,11 @@ def main():
             for icalendars in ical_urls:
                 decode = str(urlopen(icalendars).read().decode())
                 #fix a bug related to Alarm action by replacing parts of the icalendar
-                fix_e = decode.replace('BEGIN:VALARM\r\nACTION:NONE','BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:')
+                fix_e_1 = decode.replace('BEGIN:VALARM\r\nACTION:NONE','BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:')
+                fix_e_2 = fix_e_1.replace('BEGIN:VALARM\r\nACTION:EMAIL','BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:')
                 #uncomment line below to display your calendar in ical format
-                #print(fix_e)
-                ical = Calendar(fix_e)
+                #print(fix_e_2)
+                ical = Calendar(fix_e_2)
                 for events in ical.events:
                     if time.now().strftime('%-m %Y') == (events.begin).format('M YYYY') and (events.begin).format('DD') >= time.now().strftime('%d'):
                         upcoming.append({'date':events.begin.format('DD MMM'), 'event':events.name})
