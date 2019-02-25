@@ -4,6 +4,7 @@ ical_urls = [
 "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"
 ]
 
+events_max_range = "60"
 api_key = ""
 location = "Julich, DE"
 week_starts_on = "Monday"
