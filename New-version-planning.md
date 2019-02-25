@@ -14,17 +14,18 @@
 * Fix a bug where past events are shown along with ones in the future
 * Add support for ics files along with iCalendar URLs
 * Allow connecting to the openweathermap API servers even when the SSL certificate has expired
-* Try using the weathericons.io font instead of icons
 
 ## E-Paper files (epd7in5/epd7in5b)
 * Optimise values for displaying images by modifying some values
 when converting image to data
 * Merge calibration module with epd7in5 and epd7in5b
-* Create function to calibrate the screen much faster by omitting conversion
+* Create function to calibrate the screen faster by omitting conversion
 
 ## Settings file
 * Add option to switch between the monthly and weekly view
-* Add option to display tasks instead of/and events
+* Add option to display one of the following below the monthly Calendar section:
+ Tasks, RSS-feed, events
+* Add option to fetch events from a given time range in the future
 
 ---------------------------
 ## More feature suggestions (will not be implemented anytime soon)
