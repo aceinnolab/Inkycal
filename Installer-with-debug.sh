@@ -48,7 +48,7 @@ if [ "$option" = 1 ]; then
 	echo -e "\e[1;36m"Installing the E-Paper-Calendar Software for your display"\e[0m"
         cd
     else
-        echo -e "Could not find any settings.py file in /home/pi/E-Paper-Master"
+        echo -e "Could not find any settings.py file in /home/pi/E-Paper-Master/Calendar"
 	echo -e "Please uninstall the software first and then use the install option"
 	echo -e "Exiting now"
 	exit
