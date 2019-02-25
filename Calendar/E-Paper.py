@@ -9,7 +9,7 @@ Copyright by aceisace
 """
 from __future__ import print_function
 import calendar
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from time import sleep
 
 from settings import *
@@ -41,7 +41,6 @@ im_open = Image.open
 """Main loop starts from here"""
 def main():
     while True:
-
         time = datetime.now()
         hour = int(time.strftime("%-H"))
         month = int(time.now().strftime('%-m'))
@@ -49,14 +48,13 @@ def main():
 
         for i in range(1):
             print('_________Starting new loop___________'+'\n')
+
             """At the following hours (midnight, midday and 6 pm), perform
                a calibration of the display's colours"""
-
             if hour is 0 or hour is 12 or hour is 18:
-                print('performing calibration for colours now')
                 calibration()
 
-            print('Date:', time.strftime('%a %-d %b %y')+', time: '+time.strftime('%H:%M')+'\n')
+            print('Date:', time.strftime('%a %-d %b %y')+', Time: '+time.strftime('%H:%M')+'\n')
 
             """Create a blank white page, for debugging, change mode to
             to 'RGB' and and save the image by uncommenting the image.save
@@ -97,11 +95,9 @@ def main():
                 image.paste(im_open(dpath+str(numbers)+'.jpeg'), positions['d'+str(cal[3].index(numbers)+1)])
             for numbers in cal[4]:
                 image.paste(im_open(dpath+str(numbers)+'.jpeg'), positions['e'+str(cal[4].index(numbers)+1)])
-            try:
+            if len(cal) == 6:
                 for numbers in cal[5]:
                     image.paste(im_open(dpath+str(numbers)+'.jpeg'), positions['f'+str(cal[5].index(numbers)+1)])
-            except IndexError:
-                pass
 
             """Custom function to display text on the E-Paper.
             Tuple refers to the x and y coordinates of the E-Paper display,
@@ -190,37 +186,33 @@ def main():
             print('Fetching events from your calendar'+'\n')
             events_this_month = []
             upcoming = []
+
+            today = date.today()
+            time_span = today + timedelta(days=int(events_max_range))
+
             for icalendars in ical_urls:
                 decode = str(urlopen(icalendars).read().decode())
-                #fix a bug related to Alarm action by replacing parts of the icalendar
                 fix_e_1 = decode.replace('BEGIN:VALARM\r\nACTION:NONE','BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:')
                 fix_e_2 = fix_e_1.replace('BEGIN:VALARM\r\nACTION:EMAIL','BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:')
-                #uncomment line below to display your calendar in ical format
-                #print(fix_e_2)
+                # uncomment line below to display your calendar in ical format
+                # print(fix_e_2)
                 ical = Calendar(fix_e_2)
                 for events in ical.events:
-                    if time.now().strftime('%-m %Y') == (events.begin).format('M YYYY') and (events.begin).format('DD') >= time.now().strftime('%d'):
-                        upcoming.append({'date':events.begin.format('DD MMM'), 'event':events.name})
+                    if events.begin.date().month == today.month:
                         events_this_month.append(int((events.begin).format('D')))
-                    if month == 12:
-                        if (1, year+1) == (1, int((events.begin).year)):
-                            upcoming.append({'date':events.begin.format('DD MMM'), 'event':events.name})
-                    if month != 12:
-                        if (month+1, year) == (events.begin).format('M YYYY'):
-                            upcoming.append({'date':events.begin.format('DD MMM'), 'event':events.name}) # HS sort events by date
+                    if today <= events.begin.date() <= time_span:
+                        upcoming.append({'date':events.begin.format('YYYY MM DD'), 'event':events.name})
 
             def takeDate(elem):
                 return elem['date']
 
             upcoming.sort(key=takeDate)
 
-            del upcoming[4:]
             # uncomment the following 2 lines to display the fetched events
             # from your iCalendar
-            print('Upcoming events:')
-            print(upcoming)
+            # print('Upcoming events:')
+            # print(upcoming)
 
-            #Credit to Hubert for suggesting truncating event names
             def write_text_left(box_width, box_height, text, tuple):
                 text_width, text_height = font.getsize(text)
                 while (text_width, text_height) > (box_width, box_height):
@@ -232,11 +224,23 @@ def main():
                 image.paste(space, tuple)
 
             """Write event dates and names on the E-Paper"""
-            for dates in range(len(upcoming)):
-                write_text(70, 25, (upcoming[dates]['date']), date_positions['d'+str(dates+1)])
+            if len(cal) == 5:
+                del upcoming[6:]
+                
+                for dates in range(len(upcoming)):
+                    readable_date = datetime.strptime(upcoming[dates]['date'], '%Y %m %d').strftime('%-d %b')
+                    write_text(70, 25, readable_date, date_positions['d'+str(dates+1)])
+                for events in range(len(upcoming)):
+                    write_text_left(314, 25, (upcoming[events]['event']), event_positions['e'+str(events+1)])
 
-            for events in range(len(upcoming)):
-                write_text_left(314, 25, (upcoming[events]['event']), event_positions['e'+str(events+1)])
+            if len(cal) == 6:
+                del upcoming[4:]
+                
+                for dates in range(len(upcoming)):
+                    readable_date = datetime.strptime(upcoming[dates]['date'], '%Y %m %d').strftime('%-d %b')
+                    write_text(70, 25, readable_date, date_positions['d'+str(dates+3)])
+                for events in range(len(upcoming)):
+                    write_text_left(314, 25, (upcoming[events]['event']), event_positions['e'+str(events+3)])
 
             """Draw smaller squares on days with events"""
             for numbers in events_this_month:
@@ -250,11 +254,9 @@ def main():
                     draw(positions['d'+str(cal[3].index(numbers)+1)], eventicon)
                 if numbers in cal[4]:
                     draw(positions['e'+str(cal[4].index(numbers)+1)], eventicon)
-                try:
+                if len(cal) == 6:
                     if numbers in cal[5]:
                         draw(positions['f'+str(cal[5].index(numbers)+1)], eventicon)
-                except IndexError:
-                    pass
 
             """Draw a larger square on today's date"""
             today = time.day
@@ -268,24 +270,22 @@ def main():
                 draw(positions['d'+str(cal[3].index(today)+1)], dateicon)
             if today in cal[4]:
                 draw(positions['e'+str(cal[4].index(today)+1)], dateicon)
-            try:
+            if len(cal) == 6:
                 if today in cal[5]:
                     draw(positions['f'+str(cal[5].index(today)+1)], dateicon)
-            except IndexError:
-                pass
 
             print('Initialising E-Paper Display')
             epd.init()
             sleep(5)
             print('Converting image to data and sending it to the display')
-            print('This may take a while...'+'\n')
+            print('This will take about a minute...'+'\n')
             epd.display_frame(epd.get_frame_buffer(image.rotate(270, expand=1)))
             # Uncomment following line to save image
             #image.save(path+'test.png')
             del events_this_month[:]
             del upcoming[:]
             print('Data sent successfully')
-            print('Powering off the E-Paper until the next loop'+'\n')
+            print('______Powering off the E-Paper until the next loop______'+'\n')
             epd.sleep()
 
             for i in range(1):
