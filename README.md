@@ -60,6 +60,7 @@ Once the packages are installed, navigate to the home directory, open 'E-Paper-M
 | Parameter |  Description |
 | --- | --- |
 | ical_urls |  Your iCalendar URL/s. To add more than one URL, seperate each with a comma |
+|events_max_range| How far in the future should events from your iCalendar be fetched. The value is given in days. By default, events in the next 60 days will be fetched from the Calendar. Can be any integer from "1" to "365"|
 | api_key | Your __personal__ openweathermap API-key which you can generate and find in your Account info |
 | location | Location refers to the closest weather station from your place. It isn't necessarily the place you live in. To find this location, type your city name in the search box on [openweathermap](https://openweathermap.org/). The output should be in the following format: City Name, Country ISO-Code. Not sure what your ISO code is? Check here: [(find iso-code)](https://countrycode.org/)  |
 | week_starts_on | When does the work start on your Region? Possible options are `"Monday"` or `"Sunday"`|
