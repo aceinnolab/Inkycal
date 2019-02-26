@@ -55,7 +55,8 @@ This is how the installer will run:
 <img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/Installer-v1.2-screenshot.png" width="700">
 
 ## Adding details to the programm
-Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'settings.py' inside the Calendar folder. Adjust the values as needed. You can use the table below as a reference.
+Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'settings.py' inside the Calendar folder. Adjust the values as needed. You can use the table below as a reference. You can edit the settings.py file by typing:
+`nano /home/pi/E-Paper-Master/Calendar/settings.py` in the Terminal. 
 
 | Parameter |  Description |
 | --- | --- |
@@ -63,19 +64,20 @@ Once the packages are installed, navigate to the home directory, open 'E-Paper-M
 |events_max_range| How far in the future should events from your iCalendar be fetched. The value is given in days. By default, events in the next 60 days will be fetched from the Calendar. Can be any integer from "1" to "365"|
 | api_key | Your __personal__ openweathermap API-key which you can generate and find in your Account info |
 | location | Location refers to the closest weather station from your place. It isn't necessarily the place you live in. To find this location, type your city name in the search box on [openweathermap](https://openweathermap.org/). The output should be in the following format: City Name, Country ISO-Code. Not sure what your ISO code is? Check here: [(find iso-code)](https://countrycode.org/)  |
-| week_starts_on | When does the work start on your Region? Possible options are `"Monday"` or `"Sunday"`|
+| week_starts_on | When does the week start on your Region? Possible options are `"Monday"` or `"Sunday"`|
 | display_colours | This should normally be set by the installer when you choose the type of your display. Options include `"bw"` if you're using the black and white E-Paper or `"bwr"` when you're using the black-white-red or black-white-yellow E-Paper|
 | language | Choosing the language allows changing the language of the month and week-icons. Possible options are `"en"` for english and `"de"` for german|
 |units| Selecting units allows switching units from km/h (kilometer per hour) and °C (degree Celcius) to mph (miles per hour) and °F (degree Fahrenheit). Possible options are `"metric"` or `"imperial"`|
 |hours | Which time format do you prefer? This will change the sunrise and sunset times from 24-hours format to 12-hours format. Possible options are `"24"` for 24-hours and `"12"` for 12-hours.|
 
 ## iCalendar
-It is a bit tricky to set up the iCalendar so it works correctly without throwing any errors. If you encounter errors related to your iCalendar, please open up an issue and paste the error message there.
+Currently, only Google Calendar is fully supported and has proven to run more stable than others. While it is possible that a non-Google iCalendar may work, it is often not the case. If you're not using Google-Calendar and the script is throwing errors related to your iCalendar, please export your iCalendar (as an .ics file), create a new Calendar at Google Calendar and import your previous Calendar's .ics file. After importing, navigate to the section 'Integrate Calendar', copy the 'Secret address in iCal format' and paste it in the ical_urls section in the settings.py file (see instructions above). 
 
-A more detailed section about the iCalendar will be added to the wiki soon, but for now, here are some suggestions to prevent error messages:
-1) Ensure your iCalendar URL is fine. If you receive an error showing error 404, it means the URL is wrong.
-2) If your existing iCalendar doesn't work at all, export the Calendar as a file, then create a new Calendar and import the file from before.
-3) If you receive errors related to 'alarm' or 'trigger', please make sure your iCalendar does not use reminders. The problem is that some actions are not supported by the Raspberry and cause errors. For example, the Rapsberry can't send a mail, make a noise or display a message as soon as an event starts. 
+Try avoiding too long event names in your Calendar. If an event is too long, it'll be 'chunked off', letter by letter, from the end until it fits.
+
+Event dates and names are displayed in chronological order below the Calendar. The small squares on the monthly Calendar indicate events on those days. For example, if you see a small square on the 14th of the current month, it means you have/had an event in your iCalendar on that day.
+
+If you encounter errors related to your iCalendar, please feel free to report the error either by opening an issue or by sending a mail.
 
 ## Updating
 If you want to update to the latest version, run the Installer from above again and select the 'update' option. 
