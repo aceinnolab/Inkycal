@@ -6,7 +6,7 @@
 * Optimise the installer by adding a few more options when updating     
 
 ## Main script
-* Implement weekly view (may take a lot of time)
+* Implement daily view
 * Display more events when free space is available (below monthly calendar)
 * Implement feature to fetch tasks
 * Add code in E-Paper.py for fixing errors related to the iCalendar (ics.py is pretty picky)
@@ -26,6 +26,7 @@ when converting image to data
 * Add option to display one of the following below the monthly Calendar section:
  Tasks, RSS-feed, events
 * Add option to fetch events from a given time range in the future
+* Add option to choose the Display-update interval
 
 ---------------------------
 ## More feature suggestions (will not be implemented anytime soon)
