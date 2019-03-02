@@ -202,7 +202,7 @@ def main():
                 # print(fix_e_2)
                 ical = Calendar(fix_e_2)
                 for events in ical.events:
-                   if re.search('RRULE',str(events)) is not None:
+                    if re.search('RRULE',str(events)) is not None:
                            r = re.search('RRULE:(.+?)\n',str(events))
                            r_start = re.search('DTSTART:(.+?)\n',str(events))
                            if time.now().month == 12:
@@ -217,7 +217,7 @@ def main():
                                       events_this_month.append(i.day)
                                    # uncomment this line to see fetched recurring events
                                    #print ("Appended recurring event: " + events.name + " on " + str(time.now().year) + " " + time.now().strftime('%m')+ " " + str(i.day).zfill(2))
-                   else:
+                    else:
                        if events.begin.date().month == today.month:
                           if int((events.begin).format('D')) not in events_this_month:
                              events_this_month.append(int((events.begin).format('D')))
