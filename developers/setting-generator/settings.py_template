@@ -1,0 +1,14 @@
+""" To quickly get started, fill in the following details:"""
+
+ical_urls = [
+"{ics_url}"
+]
+
+events_max_range = "{events_max_range}"
+api_key = "{api_key}"
+location = "{location}"
+week_starts_on = "{weekStart}"
+display_colours = "{display_colours}"
+language = "{language}"
+units = "{units}"
+hours = "{hours}"
