@@ -332,7 +332,7 @@ def main():
                 epd.sleep()
                 del image
 
-            display_improved_image(image)
+            display_corrected_image(image)
             del events_this_month[:]
             del upcoming[:]
             
