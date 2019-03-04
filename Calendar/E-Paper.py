@@ -11,13 +11,12 @@ from __future__ import print_function
 import calendar
 from datetime import datetime, date, timedelta
 from time import sleep
-
-from settings import *
-from icon_positions_locations import *
-
 from dateutil.rrule import *
 from dateutil.parser import parse
 import re
+
+from settings import *
+from icon_positions_locations import *
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 import pyowm
@@ -63,8 +62,7 @@ def main():
             """Create a blank white page, for debugging, change mode to
             to 'RGB' and and save the image by uncommenting the image.save
             line at the bottom"""
-            image = Image.new('L', (EPD_HEIGHT, EPD_WIDTH), 'white')
-            draw = (ImageDraw.Draw(image)).bitmap
+            image = Image.new('RGB', (EPD_HEIGHT, EPD_WIDTH), 'white')
 
             """Draw the icon with the current month's name"""
             image.paste(im_open(mpath+str(time.strftime("%B")+'.jpeg')), monthplace)
@@ -77,12 +75,12 @@ def main():
             if (week_starts_on == "Monday"):
                 calendar.setfirstweekday(calendar.MONDAY)
                 image.paste(weekmon, weekplace)
-                draw(weekdaysmon[(time.strftime("%a"))], weekday)
+                image.paste(weekday, weekdaysmon[(time.strftime("%a"))], weekday)
 
             if (week_starts_on == "Sunday"):
                 calendar.setfirstweekday(calendar.SUNDAY)
                 image.paste(weeksun, weekplace)
-                draw(weekdayssun[(time.strftime("%a"))], weekday)
+                image.paste(weekday, weekdayssun[(time.strftime("%a"))], weekday)
 
             """Using the built-in calendar function, draw icons for each
                number of the month (1,2,3,...28,29,30)"""
@@ -113,8 +111,8 @@ def main():
                 else:
                     x = int((box_width / 2) - (text_width / 2))
                     y = int((box_height / 2) - (text_height / 2))
-                    space = Image.new('L', (box_width, box_height), color=255)
-                    ImageDraw.Draw(space).text((x, y), text, fill=0, font=font)
+                    space = Image.new('RGB', (box_width, box_height), color='white')
+                    ImageDraw.Draw(space).text((x, y), text, fill='black', font=font)
                     image.paste(space, tuple)
 
             """ Handling Openweathermap API"""
@@ -240,14 +238,14 @@ def main():
                     text=text[0:-1]
                     text_width, text_height = font.getsize(text)
                 y = int((box_height / 2) - (text_height / 2))
-                space = Image.new('L', (box_width, box_height), color=255)
-                ImageDraw.Draw(space).text((0, y), text, fill=0, font=font)
+                space = Image.new('RGB', (box_width, box_height), color='white')
+                ImageDraw.Draw(space).text((0, y), text, fill='black', font=font)
                 image.paste(space, tuple)
 
             """Write event dates and names on the E-Paper"""
             if len(cal) == 5:
                 del upcoming[6:]
-                
+
                 for dates in range(len(upcoming)):
                     readable_date = datetime.strptime(upcoming[dates]['date'], '%Y %m %d').strftime('%-d %b')
                     write_text(70, 25, readable_date, date_positions['d'+str(dates+1)])
@@ -256,7 +254,7 @@ def main():
 
             if len(cal) == 6:
                 del upcoming[4:]
-                
+
                 for dates in range(len(upcoming)):
                     readable_date = datetime.strptime(upcoming[dates]['date'], '%Y %m %d').strftime('%-d %b')
                     write_text(70, 25, readable_date, date_positions['d'+str(dates+3)])
@@ -266,49 +264,78 @@ def main():
             """Draw smaller squares on days with events"""
             for numbers in events_this_month:
                 if numbers in cal[0]:
-                    draw(positions['a'+str(cal[0].index(numbers)+1)], eventicon)
+                    image.paste(eventicon, positions['a'+str(cal[0].index(numbers)+1)], eventicon)
                 if numbers in cal[1]:
-                    draw(positions['b'+str(cal[1].index(numbers)+1)], eventicon)
+                    image.paste(eventicon, positions['b'+str(cal[1].index(numbers)+1)], eventicon)
                 if numbers in cal[2]:
-                    draw(positions['c'+str(cal[2].index(numbers)+1)], eventicon)
+                    image.paste(eventicon, positions['c'+str(cal[2].index(numbers)+1)], eventicon)
                 if numbers in cal[3]:
-                    draw(positions['d'+str(cal[3].index(numbers)+1)], eventicon)
+                    image.paste(eventicon, positions['d'+str(cal[3].index(numbers)+1)], eventicon)
                 if numbers in cal[4]:
-                    draw(positions['e'+str(cal[4].index(numbers)+1)], eventicon)
+                    image.paste(eventicon, positions['e'+str(cal[4].index(numbers)+1)], eventicon)
                 if len(cal) == 6:
                     if numbers in cal[5]:
-                        draw(positions['f'+str(cal[5].index(numbers)+1)], eventicon)
+                        image.paste(eventicon, positions['f'+str(cal[5].index(numbers)+1)], eventicon)
 
             """Draw a larger square on today's date"""
             today = time.day
             if today in cal[0]:
-                draw(positions['a'+str(cal[0].index(today)+1)], dateicon)
+                image.paste(dateicon, positions['a'+str(cal[0].index(today)+1)], dateicon)
             if today in cal[1]:
-                draw(positions['b'+str(cal[1].index(today)+1)], dateicon)
+                image.paste(dateicon, positions['b'+str(cal[1].index(today)+1)], dateicon)
             if today in cal[2]:
-                draw(positions['c'+str(cal[2].index(today)+1)], dateicon)
+                image.paste(dateicon, positions['c'+str(cal[2].index(today)+1)], dateicon)
             if today in cal[3]:
-                draw(positions['d'+str(cal[3].index(today)+1)], dateicon)
+                image.paste(dateicon, positions['d'+str(cal[3].index(today)+1)], dateicon)
             if today in cal[4]:
-                draw(positions['e'+str(cal[4].index(today)+1)], dateicon)
+                image.paste(dateicon, positions['e'+str(cal[4].index(today)+1)], dateicon)
             if len(cal) == 6:
                 if today in cal[5]:
-                    draw(positions['f'+str(cal[5].index(today)+1)], dateicon)
+                    image.paste(dateicon, positions['f'+str(cal[5].index(today)+1)], dateicon)
 
-            print('Initialising E-Paper Display')
-            epd.init()
-            sleep(5)
-            print('Converting image to data and sending it to the display')
-            print('This will take about a minute...'+'\n')
-            epd.display_frame(epd.get_frame_buffer(image.rotate(270, expand=1)))
-            # Uncomment following line to save image
-            #image.save(path+'test.png')
+            """
+            The function below will take care of displaying the image correctly on E-Paper-Displays. It works by analysing
+            2 bands of each pixel (for example, red and green) and re-writes the values in a way so the image only contains
+            3 colours, without anytyhing in between. As a result, the image looks much more better on E-Paper.
+            Currently in beta-phase.
+            """
+
+            def display_corrected_image(image):
+                # Uncomment following line to save the unprocessed image
+                # image.save(path+'before.bmp')
+                width, height = image.size
+                pixels = image.load()
+                # To-Do: Use lambda instead of double-loop
+                for x in range(width):
+                    for y in range(height):
+                        pixel = image.getpixel((x, y))
+                        red = pixel[0]
+                        green = pixel[1]
+                        if red > 240 and green > 240: #white
+                            pixels[x, y] = (255, 255, 255)
+                        elif red > 250 and green < 180: #red
+                            pixels[x, y] = (255, 0, 0)
+                        else:
+                            pixels[x, y] = (0, 0, 0)
+
+                # Uncomment following line to save the processed image
+                image.save(path+'after.bmp')
+
+                print('Initialising E-Paper Display')
+                epd.init()
+                sleep(5)
+                print('Converting image to data and sending it to the display')
+                print('This will take about a minute...'+'\n')
+                epd.display_frame(epd.get_frame_buffer(image.rotate(270, expand=1)))
+                print('Data sent successfully')
+                print('______Powering off the E-Paper until the next loop______'+'\n')
+                epd.sleep()
+                del image
+
+            display_improved_image(image)
             del events_this_month[:]
             del upcoming[:]
-            print('Data sent successfully')
-            print('______Powering off the E-Paper until the next loop______'+'\n')
-            epd.sleep()
-
+            
             for i in range(1):
                 nexthour = ((60 - int(time.strftime("%-M")))*60) - (int(time.strftime("%-S")))
                 sleep(nexthour)
