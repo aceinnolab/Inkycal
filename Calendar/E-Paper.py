@@ -306,18 +306,29 @@ def main():
                 # image.save(path+'before.bmp')
                 width, height = image.size
                 pixels = image.load()
-                # To-Do: Use lambda instead of double-loop
-                for x in range(width):
-                    for y in range(height):
-                        pixel = image.getpixel((x, y))
-                        red = pixel[0]
-                        green = pixel[1]
-                        if red > 240 and green > 240: #white
-                            pixels[x, y] = (255, 255, 255)
-                        elif red > 250 and green < 180: #red
-                            pixels[x, y] = (255, 0, 0)
-                        else:
-                            pixels[x, y] = (0, 0, 0)
+                if display_colours == "bwr":
+                    for x in range(width):
+                        for y in range(height):
+                            pixel = image.getpixel((x, y))
+                            red = pixel[0]
+                            green = pixel[1]
+                            if red > 240 and green > 240: #white
+                                pixels[x, y] = (255, 255, 255)
+                            elif red > 250 and green < 180: #red
+                                pixels[x, y] = (255, 0, 0)
+                            else:
+                                pixels[x, y] = (0, 0, 0)
+                
+                if display_colours == "bw":
+                    for x in range(width):
+                        for y in range(height):
+                            pixel = image.getpixel((x, y))
+                            red = pixel[0]
+                            green = pixel[1]
+                            if red > 240 and green > 240: #white
+                                pixels[x, y] = (255, 255, 255)
+                            else:
+                                pixels[x, y] = (0, 0, 0)
                 print('Conversion finished. Enjoy a crisp image on the E-Paper')
 
                 # Uncomment following line to save the processed image
