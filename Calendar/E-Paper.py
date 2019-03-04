@@ -301,6 +301,7 @@ def main():
             """
 
             def display_corrected_image(image):
+                print('Improving the colours of the generated image.')
                 # Uncomment following line to save the unprocessed image
                 # image.save(path+'before.bmp')
                 width, height = image.size
@@ -317,9 +318,10 @@ def main():
                             pixels[x, y] = (255, 0, 0)
                         else:
                             pixels[x, y] = (0, 0, 0)
+                print('Conversion finished. Enjoy a crisp image on the E-Paper')
 
                 # Uncomment following line to save the processed image
-                image.save(path+'after.bmp')
+                # image.save(path+'after.bmp')
 
                 print('Initialising E-Paper Display')
                 epd.init()
