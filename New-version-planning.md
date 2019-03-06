@@ -10,7 +10,7 @@
 | -- | -- |
 |Implement daily view (will take some more time)| Not yet started |
 |Display more events when free space is available (below monthly calendar)| finished -> implemented in master branch|
-|Implement feature to fetch tasks| Not yet started|
+|Implement feature to fetch tasks| work in progress. Problem encountered: Google Calendar does not support vtodo (tasks)|
 |Add code in E-Paper.py for fixing errors related to the iCalendar (ics.py is pretty picky)| finished -> implemented in master branch |
 |Add support for recurring events found in iCalendars| finished -> implemented in master branch (credit to Hubert)|
 |Truncate event names if they're too long to be displayed|finished -> implemented in master branch|
