@@ -4,6 +4,9 @@ This is a software written in python3 that allows you to transform an E-Paper di
 
 This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E-Paper display from waveshare/gooddisplay and works with Raspberry Pi 2, 3 and 0 (Zero, Zero W, Zero WH).
 
+## Attention: This software is being updated right now and therefore is in a slightly unstable condition. Please wait until this message has disappeared before you update or install the software. Thank you for understanding.
+
+
 **To get started, follow the instructions below.**
 
 ## News:
