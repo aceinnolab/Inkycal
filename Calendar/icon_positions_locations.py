@@ -42,6 +42,11 @@ windiconspace = (79, 0)
 sunriseplace = (214, 0)
 sunsetplace = (214, 35)
 
+rss_places = {
+    'line_1' : (0, 490), 'line_2' : (0, 515), 'line_3' : (0, 540),
+    'line_4' : (0, 565), 'line_5' : (0, 590), 'line_6' : (0, 615)
+    }
+
 e_col = 70
 date_col = 0
 
@@ -55,13 +60,13 @@ e_row_6 = 615
 event_positions = {
     'e1': (e_col, e_row_1), 'e2': (e_col, e_row_2), 'e3': (e_col, e_row_3),
     'e4': (e_col, e_row_4), 'e5': (e_col, e_row_5), 'e6': (e_col, e_row_6)
-}
+    }
 
 date_positions = {
     'd1': (date_col, e_row_1), 'd2': (date_col, e_row_2),
     'd3': (date_col, e_row_3), 'd4': (date_col, e_row_4),
     'd5': (date_col, e_row_5), 'd6': (date_col, e_row_6)
-}
+    }
 
 col1 = 3
 col2 = 57
