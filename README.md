@@ -61,12 +61,16 @@ Once the packages are installed, navigate to the home directory, open 'E-Paper-M
 | Parameter |  Description |
 | --- | --- |
 | ical_urls |  Your iCalendar URL/s. To add more than one URL, seperate each with a comma |
-|events_max_range| How far in the future should events from your iCalendar be fetched. The value is given in days. By default, events in the next 60 days will be fetched from the Calendar. Can be any integer from "1" to "365"|
+| rss_feeds | Here, you can add RSS-feed URLs which are used to fetch news etc. |
+| update_interval | How often should be Display be updated in one hour? The default option is "30", which means once every 30 mins. You can select one of the values from: `"10"`, `"15"`, `"20"`, `"30"`, `"60"`. All values are in minutes |
+| additional_feature | What would you like the Display to show in the section below the Calendar? The default option is `"rss"` (for RSS-feeds. You may choose `"events`" if you want to display events instead of RSS-feeds|
 | api_key | Your __personal__ openweathermap API-key which you can generate and find in your Account info |
 | location | Location refers to the closest weather station from your place. It isn't necessarily the place you live in. To find this location, type your city name in the search box on [openweathermap](https://openweathermap.org/). The output should be in the following format: City Name, Country ISO-Code. Not sure what your ISO code is? Check here: [(find iso-code)](https://countrycode.org/)  |
 | week_starts_on | When does the week start on your Region? Possible options are `"Monday"` or `"Sunday"`|
-| display_colours | This should normally be set by the installer when you choose the type of your display. Options include `"bw"` if you're using the black and white E-Paper or `"bwr"` when you're using the black-white-red or black-white-yellow E-Paper|
-| language | Choosing the language allows changing the language of the month and week-icons. Possible options are `"en"` for english and `"de"` for german|
+|events_max_range| How far in the future should events from your iCalendar be fetched. The value is given in days. By default, events in the next 60 days will be fetched from the Calendar. Can be any integer from `"1"` to `"365"`|
+| calibration_hours | At which hours would you like the Display to 'calibrate' itself? Calibration is strongly recommended at least 3 times a day. In the list, you have to include hours in 24-hour format, seperated by a comma. The default option is `[1,12,18]` and refers to 1 am, 12 am, and 6 pm |
+display_colours | This should normally be set by the installer when you choose the type of your display. Options include `"bw"` if you're using the black and white E-Paper or `"bwr"` when you're using the black-white-red or black-white-yellow E-Paper|
+| language | Choosing the language allows changing the language of the month and week-icons. Possible options are `"en"` for english,  `"de"` for german and `"zh-tw"` for Taiwan Chinese (Hong Kong Chinese)|
 |units| Selecting units allows switching units from km/h (kilometer per hour) and °C (degree Celcius) to mph (miles per hour) and °F (degree Fahrenheit). Possible options are `"metric"` or `"imperial"`|
 |hours | Which time format do you prefer? This will change the sunrise and sunset times from 24-hours format to 12-hours format. Possible options are `"24"` for 24-hours and `"12"` for 12-hours.|
 
