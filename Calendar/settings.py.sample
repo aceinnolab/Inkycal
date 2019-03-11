@@ -2,12 +2,20 @@
 
 ical_urls = [
 "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"
-]
+    ]
 
-events_max_range = "60"
+rss_feeds = [
+    "http://feeds.bbci.co.uk/news/world/rss.xml#",
+    "http://rss.focus.de/fol/XML/rss_folnews.xml"
+    ]
+
+update_interval = "15"
+additional_feature = "rss"
 api_key = ""
 location = "Julich, DE"
 week_starts_on = "Monday"
+events_max_range = "60"
+calibration_hours = [1,12,18]
 display_colours = "bwr"
 language = "en"
 units = "metric"
