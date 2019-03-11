@@ -84,7 +84,7 @@ def main():
                 print('Current countdown:',calibration_countdown)
                 calibration_countdown -= 1
                 print('counts left until calibration:',calibration_countdown)
-                if calibration_countdown == 1:
+                if calibration_countdown is 1:
                     calibration()
                     print('Resetting Countdown')
                     calibration_countdown = 60//int(update_interval)
