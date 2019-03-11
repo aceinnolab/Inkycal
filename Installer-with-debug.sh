@@ -67,9 +67,7 @@ if [ "$option" = 2 ]; then
 
     # Installing a few packages which are missing on Raspbian Stretch Lite
     echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
-    sudo apt-get install python3-pip python-rpi.gpio-dbgsym python3-rpi.gpio python-rpi.gpio python3-rpi.gpio-dbgsym python3-spidev git libopenjp2-7-dev libtiff5 -y
-    pip3 install Pillow==5.3.0
-    sudo pip3 install Pillow==5.3.0
+    sudo apt-get install python3-pip python-rpi.gpio-dbgsym python3-rpi.gpio python-rpi.gpio python3-rpi.gpio-dbgsym python3-spidev git libopenjp2-7-dev libtiff5 python-numpy -y
     echo ""
 
     # Running apt-get clean and apt-get autoremove
@@ -80,9 +78,13 @@ if [ "$option" = 2 ]; then
     # Installing packages required by the main script
     echo -e "\e[1;36m"Installing a few required packages for the E-Paper Software"\e[0m"
     sudo pip3 install pyowm
+    sudo pip3 install Pillow==5.3.0
     sudo pip3 install ics
+    sudo pip3 install feedparser
     pip3 install pyowm
     pip3 install ics
+    pip3 install feedparser
+    pip3 install Pillow==5.3.0
     echo -e "\e[1;36m"Finished installing libraries"\e[0m"
 fi
 
