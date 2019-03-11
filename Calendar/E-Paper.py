@@ -374,7 +374,7 @@ def main():
 
             if display_colours == "bw":
                 buffer[np.logical_and(r > 240, g > 240)] = [255,255,255] #white
-                buffer[r < 240] = [0,0,0] #black
+                buffer[g < 255] = [0,0,0] #black
             
             improved_image = Image.fromarray(buffer).rotate(270, expand=True)
             print('Initialising E-Paper Display')
