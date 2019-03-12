@@ -386,10 +386,13 @@ def main():
             print('______Powering off the E-Paper until the next loop______'+'\n')
             epd.sleep()
 
-            del events_this_month[:]
-            del upcoming[:]
-            del rss_feed[:]
-            del news[:]
+            del events_this_month
+            del upcoming
+
+            if additional_feature == "rss":
+                del rss_feed
+                del news
+
             del buffer
             del image
             del improved_image
