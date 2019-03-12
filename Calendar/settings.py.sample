@@ -5,8 +5,7 @@ ical_urls = [
     ]
 
 rss_feeds = [
-    "http://feeds.bbci.co.uk/news/world/rss.xml#",
-    "http://rss.focus.de/fol/XML/rss_folnews.xml"
+    "http://feeds.bbci.co.uk/news/world/rss.xml#"
     ]
 
 update_interval = "60"
