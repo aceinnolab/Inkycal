@@ -62,7 +62,7 @@ Once the packages are installed, navigate to the home directory, open 'E-Paper-M
 | --- | --- |
 | ical_urls |  Your iCalendar URL/s. To add more than one URL, seperate each with a comma |
 | rss_feeds | Here, you can add RSS-feed URLs which are used to fetch news etc. |
-| update_interval | How often should be Display be updated in one hour? The default option is "30", which means once every 30 mins. You can select one of the values from: `"10"`, `"15"`, `"20"`, `"30"`, `"60"`. All values are in minutes |
+| update_interval | How often should be Display be updated in one hour? The default option is `"60"`, which means once every 30 hour. You can select one of the values from: `"10"`, `"15"`, `"20"`, `"30"`, `"60"`. Please note that ghosting will occur when updating too frequently. To prevent ghosting, it's recommended to run 1 calibration for every 6 updates. For example, with an update interval of 1 hour, the calibration should be executed every 6 hours. |
 | additional_feature | What would you like the Display to show in the section below the Calendar? The default option is `"rss"` (for RSS-feeds. You may choose `"events`" if you want to display events instead of RSS-feeds|
 | api_key | Your __personal__ openweathermap API-key which you can generate and find in your Account info |
 | location | Location refers to the closest weather station from your place. It isn't necessarily the place you live in. To find this location, type your city name in the search box on [openweathermap](https://openweathermap.org/). The output should be in the following format: City Name, Country ISO-Code. Not sure what your ISO code is? Check here: [(find iso-code)](https://countrycode.org/)  |
