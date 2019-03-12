@@ -307,10 +307,10 @@ def main():
                 news = []
 
                 if len(cal) == 5:
-                    del rss_feed[:6]
+                    del rss_feed[6:]
 
                 if len(cal) == 6:
-                    del rss_feed[:4]
+                    del rss_feed[4:]
 
                 for title in range(len(rss_feeds)):
                     news.append(multiline_text(rss_feed[title], 384))
