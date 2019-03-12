@@ -1,7 +1,7 @@
 #!/bin/bash
 # E-Paper-Calendar software installer for the raspberry pi
 # Version: 1.5 (Early Februrary 2019)
-# Stability status of this installer: stable
+# Stability status of this installer: Confirmed with Raspbain Stretch Lite on 12th March 2019
 # Copyright by aceisace
 
 echo -e "\e[1mPlease select an option from below:"
