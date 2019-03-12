@@ -27,7 +27,7 @@ except ImportError:
 try:
     import numpy as np
 except ImportError:
-    print("Please install numpy with: sudo apt-get install python-numpy")
+    print("Please install numpy with: sudo apt-get install python3-numpy")
 
 from settings import *
 from icon_positions_locations import *
