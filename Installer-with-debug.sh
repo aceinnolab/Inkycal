@@ -133,6 +133,12 @@ stderr_logfile_maxbytes = 1MB
 EOF
 
     sudo service supervisor start E-Paper
+
+    # Installing some new dependencies
+    echo "Installing some new dependencies"
+    sudo apt-get install python-numpy -y
+    sudo pip3 install feedparser
+    pip3 install feedparser
     echo ""
 
     # Final words
