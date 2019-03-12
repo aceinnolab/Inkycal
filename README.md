@@ -4,9 +4,6 @@ This is a software written in python3 that allows you to transform an E-Paper di
 
 This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E-Paper display from waveshare/gooddisplay and works with Raspberry Pi 2, 3 and 0 (Zero, Zero W, Zero WH).
 
-## Attention: This software is being updated right now and therefore is in a slightly unstable condition. Please wait until this message has disappeared before you update or install the software. Thank you for understanding.
-
-
 **To get started, follow the instructions below.**
 
 ## News:
@@ -52,7 +49,7 @@ If the Installer should fail for any reason, kindly open an issue and paste the 
 
 This is how the installer will run:
 
-<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/Installer-v1.2-screenshot.png" width="700">
+<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/installer-v1-5-p1.png" width="650"><img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/installer-v1-5-p2.png" width="650">
 
 ## Adding details to the programm
 Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'settings.py' inside the Calendar folder. Adjust the values as needed. You can use the table below as a reference. You can edit the settings.py file by typing:
