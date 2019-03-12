@@ -86,8 +86,6 @@ If you encounter errors related to your iCalendar, please feel free to report th
 ## Updating
 If you want to update to the latest version, run the Installer from above again and select the 'update' option. 
 
-For those who were already running v1.5, with the latest update, more packages are required due to more features. Please intall those additional packages with: `sudo apt-get install python-numpy && sudo pip3 install feedparser && pip3 install feedparser`. The E-Paper.py file will also give a message if there's something missing.
-
 Before updating, the Installer checks if the settings file (/home/pi/E-Paper-Master/Calendar/settings.py) exists. This is done to test if a previous version was installed correctly. If the settings file exists, it is copied to the home directory and renamed as 'settings.py.old'. The old software folder 'E-Paper-Master' is renamed to 'E-Paper-Master-old'. Lastly, the latest version of the software is copied to the Raspberry as 'E-Paper-Master'.
 
 After updating, copy the contents from your old settings file to the new one. There are usally more options in the new settings.py file so a 'template' is prepared with each update. This template can be found in /home/pi/E-Paper-Master/Calendar/settings.py.sample.
