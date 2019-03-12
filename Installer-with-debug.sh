@@ -67,8 +67,7 @@ if [ "$option" = 2 ]; then
 
     # Installing a few packages which are missing on Raspbian Stretch Lite
     echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
-    sudo apt-get install python3-pip -y
-    sudo apt-get install python3-pip python-rpi.gpio-dbgsym python3-rpi.gpio python-rpi.gpio python3-rpi.gpio-dbgsym python3-spidev git libopenjp2-7-dev libtiff5 python-numpy -y
+    sudo apt-get install python3-pip -y python-rpi.gpio-dbgsym -y python3-rpi.gpio -y python-rpi.gpio -y python3-rpi.gpio-dbgsym -y python3-spidev -y git -y libopenjp2-7-dev -y libtiff5 -y python-numpy -y
     echo ""
 
     # Running apt-get clean and apt-get autoremove
