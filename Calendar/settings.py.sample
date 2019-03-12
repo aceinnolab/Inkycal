@@ -9,7 +9,7 @@ rss_feeds = [
     "http://rss.focus.de/fol/XML/rss_folnews.xml"
     ]
 
-update_interval = "30"
+update_interval = "60"
 additional_feature = "rss"
 api_key = ""
 location = "Julich, DE"
