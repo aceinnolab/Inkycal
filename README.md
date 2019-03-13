@@ -11,12 +11,13 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 * **Added Support for the 2-Colour E-Paper Display as well!** (Late September 2018)
 * **Added Support for Raspbian Stretch lite.** (Late September 2018)
 
-<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/v1-5-mar-19.JPG" width="600">
+<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/v1-5-mar-19.JPG" width="750">
 
 ## Main features
-* Display the date and a full monthly calendar
-* Syncronise events from any online calendar (like google, yahoo etc.)
-* Get live weather data (including temperature, humidity, etc.) using openweathermap api
+* Monthly Calendar which automatically updates itself to the current day
+* Fetch appointments/events from your Google Calendar and display them on the Display
+* Fetch live weather data (temperature, humidity, sunrise- & sunset time, wind speed, weather-icon) from Openweathermap servers and display them on the E-Paper
+* Fetch RSS-feeds from given RSS-feed URLs and display the content (news, quotes etc.) on the E-Paper
 
 ## Hardware required
 * 7.5" 3-Colour E-Paper Display (Black, White, Red/Yellow) with driver hat from [waveshare](https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm)
@@ -52,7 +53,7 @@ This is how the installer will run:
 <img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/installer-v1-5-p1.png" width="650"><img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/installer-v1-5-p2.png" width="650">
 
 ## Adding details to the programm
-Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'settings.py' inside the Calendar folder. Adjust the values as needed. You can use the table below as a reference. You can edit the settings.py file by typing:
+Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'settings.py' inside the Calendar folder. Adjust the values using the list below as a reference. You can edit the settings.py file by typing:
 `nano /home/pi/E-Paper-Master/Calendar/settings.py` in the Terminal. 
 
 | Parameter |  Description |
