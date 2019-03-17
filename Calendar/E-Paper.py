@@ -234,10 +234,11 @@ def main():
                     if beginAlarmIndex >= 0:
                         endAlarmIndex = decode.find('END:VALARM')
                         decode = decode[:beginAlarmIndex] + decode[endAlarmIndex+12:]
-                fix_e_1 = decode.replace('BEGIN:VALARM\r\nACTION:NONE','BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:')
-                fix_e_2 = fix_e_1.replace('BEGIN:VALARM\r\nACTION:EMAIL','BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:')
+                #fix_e_1 = decode.replace('BEGIN:VALARM\r\nACTION:NONE','BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:')
+                #fix_e_2 = fix_e_1.replace('BEGIN:VALARM\r\nACTION:EMAIL','BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:')
                 # print(fix_e_2) #print iCal as string
-                ical = Calendar(fix_e_2)
+                #ical = Calendar(fix_e_2)
+                ical = Calendar(decode)
                 for events in ical.events:
                     if events.begin.date().month is today.month:
                         if int((events.begin).format('D')) not in events_this_month:
