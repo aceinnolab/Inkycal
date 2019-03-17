@@ -404,6 +404,8 @@ def main():
             del improved_image
             gc.collect()
 
+            if calibration_countdown is 'initial':
+                    calibration_countdown = 0
             calibration_countdown += 1
 
             for i in range(1):
