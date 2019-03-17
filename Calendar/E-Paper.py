@@ -40,11 +40,11 @@ try:
 except Exception as e:
     print("Something didn't work right, maybe you're offline?"+e.reason)
 
-if display_colours == "bwr":
+if display_colours is "bwr":
     import epd7in5b
     epd = epd7in5b.EPD()
 
-if display_colours == "bw":
+if display_colours is "bw":
     import epd7in5
     epd = epd7in5.EPD()
 
@@ -55,6 +55,8 @@ EPD_HEIGHT = 384
 font = ImageFont.truetype(path+'Assistant-Regular.ttf', 18)
 im_open = Image.open
 
+owm = pyowm.OWM(api_key)
+
 possible_update_values = [10, 15, 20, 30, 60]
 if int(update_interval) not in possible_update_values:
     print('Selected update-interval: ',update_interval, 'minutes')
@@ -63,7 +65,7 @@ if int(update_interval) not in possible_update_values:
 
 """Main loop starts from here"""
 def main():
-    calibration_countdown = 60//int(update_interval) - 60//int(datetime.now().strftime("%M"))
+    calibration_countdown = 'initial'
     while True:
         time = datetime.now()
         hour = int(time.strftime("%-H"))
@@ -81,14 +83,13 @@ def main():
             """At the hours specified in the settings file,
             calibrate the display to prevent ghosting"""
             if hour in calibration_hours:
-                print('Current countdown:',calibration_countdown)
-                calibration_countdown -= 1
-                print('counts left until calibration:',calibration_countdown)
-                if calibration_countdown <= 1:
+                if calibration_countdown is 'initial':
+                    calibration_countdown = 0
                     calibration()
-                    print('Resetting Countdown')
-                    calibration_countdown = 60//int(update_interval)
-                    print('Calibration countdown:',calibration_countdown)
+                else:
+                    if calibration_countdown % (60 // int(update_interval)) is 0:
+                        calibration()
+                        calibration_countdown = 0
 
             """Create a blank white page first"""
             image = Image.new('RGB', (EPD_HEIGHT, EPD_WIDTH), 'white')
@@ -101,13 +102,13 @@ def main():
 
             """Add weekday-icons (Mon, Tue...) and draw a circle on the
             current weekday"""
-            if (week_starts_on == "Monday"):
+            if (week_starts_on is "Monday"):
                 calendar.setfirstweekday(calendar.MONDAY)
                 image.paste(weekmon, weekplace)
                 image.paste(weekday, weekdaysmon[(time.strftime("%a"))], weekday)
 
             """For those whose week starts on Sunday, change accordingly"""
-            if (week_starts_on == "Sunday"):
+            if (week_starts_on is "Sunday"):
                 calendar.setfirstweekday(calendar.SUNDAY)
                 image.paste(weeksun, weekplace)
                 image.paste(weekday, weekdayssun[(time.strftime("%a"))], weekday)
@@ -126,7 +127,7 @@ def main():
                 image.paste(im_open(dpath+str(numbers)+'.jpeg'), positions['d'+str(cal[3].index(numbers)+1)])
             for numbers in cal[4]:
                 image.paste(im_open(dpath+str(numbers)+'.jpeg'), positions['e'+str(cal[4].index(numbers)+1)])
-            if len(cal) == 6:
+            if len(cal) is 6:
                 for numbers in cal[5]:
                     image.paste(im_open(dpath+str(numbers)+'.jpeg'), positions['f'+str(cal[5].index(numbers)+1)])
 
@@ -146,7 +147,6 @@ def main():
 
             """Connect to Openweathermap API to fetch weather data"""
             print("Connecting to Openweathermap API servers...")
-            owm = pyowm.OWM(api_key)
             if owm.is_API_online() is True:
                 observation = owm.weather_at_place(location)
                 print("weather data:")
@@ -156,23 +156,23 @@ def main():
                 cloudstatus = str(weather.get_clouds())
                 weather_description = (str(weather.get_status()))
 
-                if units == "metric":
+                if units is "metric":
                     Temperature = str(int(weather.get_temperature(unit='celsius')['temp']))
                     windspeed = str(int(weather.get_wind()['speed']))
                     write_text(50, 35, Temperature + " °C", (334, 0))
                     write_text(100, 35, windspeed+" km/h", (114, 0))
 
-                if units == "imperial":
+                if units is "imperial":
                     Temperature = str(int(weather.get_temperature('fahrenheit')['temp']))
                     windspeed = str(int(weather.get_wind()['speed']*0.621))
                     write_text(50, 35, Temperature + " °F", (334, 0))
                     write_text(100, 35, windspeed+" mph", (114, 0))
 
-                if hours == "24":
+                if hours is "24":
                     sunrisetime = str(datetime.fromtimestamp(int(weather.get_sunrise_time(timeformat='unix'))).strftime('%-H:%M'))
                     sunsettime = str(datetime.fromtimestamp(int(weather.get_sunset_time(timeformat='unix'))).strftime('%-H:%M'))
 
-                if hours == "12":
+                if hours is "12":
                     sunrisetime = str(datetime.fromtimestamp(int(weather.get_sunrise_time(timeformat='unix'))).strftime('%-I:%M'))
                     sunsettime = str(datetime.fromtimestamp(int(weather.get_sunset_time(timeformat='unix'))).strftime('%-I:%M'))
 
@@ -228,12 +228,18 @@ def main():
 
             for icalendars in ical_urls:
                 decode = str(urlopen(icalendars).read().decode())
+                beginAlarmIndex = 0
+                while beginAlarmIndex >= 0:
+                    beginAlarmIndex = decode.find('BEGIN:VALARM')
+                    if beginAlarmIndex >= 0:
+                        endAlarmIndex = decode.find('END:VALARM')
+                        decode = decode[:beginAlarmIndex] + decode[endAlarmIndex+12:]
                 fix_e_1 = decode.replace('BEGIN:VALARM\r\nACTION:NONE','BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:')
                 fix_e_2 = fix_e_1.replace('BEGIN:VALARM\r\nACTION:EMAIL','BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:')
                 # print(fix_e_2) #print iCal as string
                 ical = Calendar(fix_e_2)
                 for events in ical.events:
-                    if events.begin.date().month == today.month:
+                    if events.begin.date().month is today.month:
                         if int((events.begin).format('D')) not in events_this_month:
                             events_this_month.append(int((events.begin).format('D')))
                         if today <= events.begin.date() <= time_span:
@@ -257,8 +263,8 @@ def main():
                 image.paste(space, tuple)
 
             """Write event dates and names on the E-Paper"""
-            if additional_feature == "events":
-                if len(cal) == 5:
+            if additional_feature is "events":
+                if len(cal) is 5:
                     del upcoming[6:]
 
                     for dates in range(len(upcoming)):
@@ -267,7 +273,7 @@ def main():
                     for events in range(len(upcoming)):
                         write_text_left(314, 25, (upcoming[events]['event']), event_positions['e'+str(events+1)])
 
-                if len(cal) == 6:
+                if len(cal) is 6:
                     del upcoming[4:]
 
                     for dates in range(len(upcoming)):
@@ -277,7 +283,7 @@ def main():
                         write_text_left(314, 25, (upcoming[events]['event']), event_positions['e'+str(events+3)])
 
             """Add rss-feeds at the bottom section of the Calendar"""
-            if additional_feature == "rss":
+            if additional_feature is "rss":
 
                 def multiline_text(text, max_width):
                     lines = []
@@ -306,10 +312,10 @@ def main():
                 random.shuffle(rss_feed)
                 news = []
 
-                if len(cal) == 5:
+                if len(cal) is 5:
                     del rss_feed[6:]
 
-                if len(cal) == 6:
+                if len(cal) is 6:
                     del rss_feed[4:]
 
                 for title in range(len(rss_feeds)):
@@ -317,13 +323,13 @@ def main():
 
                 news = [j for i in news for j in i]
 
-                if len(cal) == 5:
+                if len(cal) is 5:
                     if len(news) > 6:
                         del news[6:]
                     for lines in range(len(news)):
                         write_text_left(384, 25, news[lines], rss_places['line_'+str(lines+1)])
 
-                if len(cal) == 6:
+                if len(cal) is 6:
                     if len(news) > 4:
                         del news[4:]
                     for lines in range(len(news)):
@@ -341,7 +347,7 @@ def main():
                     image.paste(eventicon, positions['d'+str(cal[3].index(numbers)+1)], eventicon)
                 if numbers in cal[4]:
                     image.paste(eventicon, positions['e'+str(cal[4].index(numbers)+1)], eventicon)
-                if len(cal) == 6:
+                if len(cal) is 6:
                     if numbers in cal[5]:
                         image.paste(eventicon, positions['f'+str(cal[5].index(numbers)+1)], eventicon)
 
@@ -357,7 +363,7 @@ def main():
                 image.paste(dateicon, positions['d'+str(cal[3].index(today)+1)], dateicon)
             if today in cal[4]:
                 image.paste(dateicon, positions['e'+str(cal[4].index(today)+1)], dateicon)
-            if len(cal) == 6:
+            if len(cal) is 6:
                 if today in cal[5]:
                     image.paste(dateicon, positions['f'+str(cal[5].index(today)+1)], dateicon)
 
@@ -367,12 +373,12 @@ def main():
             """
             buffer = np.array(image)
             r,g,b = buffer[:,:,0], buffer[:,:,1], buffer[:,:,2]
-            if display_colours == "bwr":
+            if display_colours is "bwr":
                 buffer[np.logical_and(r > 240, g > 240)] = [255,255,255] #white
                 buffer[np.logical_and(r > 240, g < 240)] = [255,0,0] #red
-                buffer[np.logical_and(r != 255, r ==g )] = [0,0,0] #black
+                buffer[np.logical_and(r != 255, r is g )] = [0,0,0] #black
 
-            if display_colours == "bw":
+            if display_colours is "bw":
                 buffer[np.logical_and(r > 240, g > 240)] = [255,255,255] #white
                 buffer[g < 255] = [0,0,0] #black
             
@@ -389,7 +395,7 @@ def main():
             del events_this_month
             del upcoming
 
-            if additional_feature == "rss":
+            if additional_feature is "rss":
                 del rss_feed
                 del news
 
@@ -398,20 +404,25 @@ def main():
             del improved_image
             gc.collect()
 
+            calibration_countdown += 1
+
             for i in range(1):
                 timings = []
                 updates_per_hour = 60//int(update_interval)
 
-                for times in range(updates_per_hour):
-                    interval = 60-(times*int(update_interval))
-                    if interval >= mins:
-                        time_left = (mins-interval)*(-1)
-                        timings.append(time_left)
-                next_update = min(timings)*60 + (60-seconds)
-                print(min(timings),'Minutes and ', (60-seconds),'Seconds left until next loop')
+                for updates in range(updates_per_hour):
+                    timings.append(60 - int(update_interval)*updates)
+
+                for update_times in timings:
+                    if update_times >= mins:
+                        sleep_for_minutes = update_times - mins
+                
+                next_update_countdown = sleep_for_minutes + (60-seconds)
+
+                print(sleep_for_minutes,'Minutes and ', (60-seconds),'Seconds left until next loop')
+
                 del timings
-                print('sleeping for',next_update, 'seconds')
-                sleep(next_update)
+                sleep(next_update_countdown)
 
 if __name__ == '__main__':
     main()
