@@ -417,7 +417,7 @@ def main():
                     if update_times >= mins:
                         sleep_for_minutes = update_times - mins
                 
-                next_update_countdown = sleep_for_minutes + (60-seconds)
+                next_update_countdown = sleep_for_minutes*60 + (60-seconds)
 
                 print(sleep_for_minutes,'Minutes and ', (60-seconds),'Seconds left until next loop')
 
