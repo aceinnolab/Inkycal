@@ -11,7 +11,7 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 * **Added Support for the 2-Colour E-Paper Display as well!** (Late September 2018)
 * **Added Support for Raspbian Stretch lite.** (Late September 2018)
 
-<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/v1-5-mar-19.JPG" width="750">
+<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/v1-5-mar-19.JPG" width="600">
 
 ## Main features
 * Monthly Calendar which automatically updates itself to the current day
