@@ -234,17 +234,31 @@ def main():
                     if beginAlarmIndex >= 0:
                         endAlarmIndex = decode.find('END:VALARM')
                         decode = decode[:beginAlarmIndex] + decode[endAlarmIndex+12:]
-                #fix_e_1 = decode.replace('BEGIN:VALARM\r\nACTION:NONE','BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:')
-                #fix_e_2 = fix_e_1.replace('BEGIN:VALARM\r\nACTION:EMAIL','BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:')
-                # print(fix_e_2) #print iCal as string
-                #ical = Calendar(fix_e_2)
                 ical = Calendar(decode)
                 for events in ical.events:
-                    if events.begin.date().month is today.month:
-                        if int((events.begin).format('D')) not in events_this_month:
-                            events_this_month.append(int((events.begin).format('D')))
-                        if today <= events.begin.date() <= time_span:
-                            upcoming.append({'date':events.begin.format('YYYY MM DD'), 'event':events.name})
+                   if re.search('RRULE',str(events)) is not None:
+                           r = re.search('RRULE:(.+?)\n',str(events))
+                           r_start = re.search('DTSTART:(.+?)\n',str(events))
+                           if r_start is not None: # if r_start is None the format of DTSTART is not recognized
+                               if time.now().month == 12:
+                                   r_string=(r.group(1).rstrip()+';UNTIL='+'%04d%02d%02d'+'T000000Z') % (time.now().year+1, 1, 1)
+                               else:
+                                   r_string=(r.group(1).rstrip()+';UNTIL='+'%04d%02d%02d'+'T000000Z') % (time.now().year, time.now().month+1, 1)
+                               rule=rrulestr(r_string,dtstart=parse(r_start.group(1)))
+                               for i in rule:
+                                   if i.year == time.now().year and i.month == time.now().month and i.day >= time.now().day:
+                                       upcoming.append({'date':str(time.now().year) + " " + time.now().strftime('%m')+ " " + str(i.day).zfill(2), 'event':events.name})
+                                       if i.day not in events_this_month:
+                                          events_this_month.append(i.day)
+                                   # uncomment this line to see fetched recurring events
+                                   #print ("Appended recurring event: " + events.name + " on " + str(time.now().year) + " " + time.now().strftime('%m')+ " " + str(i.day).zfill(2))
+                   else:
+                       if events.begin.date().month == today.month:
+                          if int((events.begin).format('D')) not in events_this_month:
+                             events_this_month.append(int((events.begin).format('D')))
+                       if today <= events.begin.date() <= time_span:
+                          upcoming.append({'date':events.begin.format('YYYY MM DD'), 'event':events.name})
+
 
             def takeDate(elem):
                 return elem['date']
