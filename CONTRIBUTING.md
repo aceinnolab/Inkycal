@@ -8,6 +8,10 @@ of difference so it's important to check how well your suggestion can perform.
 A testing time for 1 week is set as the E-Paper software takes 1 days for a daily cycle, 7 days for a weekly cycle and 1 month for a 
 montly cycle. Usually, if it works for the daily and weekly cycle, there shouldn't be any issues in the monthly cycle.
 
+# Code contributions
+
+Code contrubutions are most welcome. If you want to contrubite, please fork the main repo, apply changes to your own branch or a new one, test it for at least one week (see above) and then submit a Pull Request. Lastly, don't forget to add your name to the file `CONTRIBUTORS.md`. Thank You!
+
 # Submitting Issues
 
 Please only submit reproducible issues and write the instructions on how to reproduce them.
