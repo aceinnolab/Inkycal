@@ -391,7 +391,7 @@ def main():
             if display_colours is "bwr":
                 buffer[np.logical_and(r > 240, g > 240)] = [255,255,255] #white
                 buffer[np.logical_and(r > 240, g < 240)] = [255,0,0] #red
-                buffer[np.logical_and(r != 255, r is g )] = [0,0,0] #black
+                buffer[np.logical_and(r != 255, r == g )] = [0,0,0] #black
 
             if display_colours is "bw":
                 buffer[np.logical_and(r > 240, g > 240)] = [255,255,255] #white
