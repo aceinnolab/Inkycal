@@ -1,11 +1,17 @@
-# Raspberry-Pi-Google-Calendar-with-E-Paper-display
+# Raspberry Pi E-Paper Calendar
 
-This is a software written in python3 that allows you to transform an E-Paper display (like the kindle) into an information display. It fetches live data from Openweathermap (a weather info provider) and your Online Calendar (Google/Yahoo Calendar) and displays them on a large, beautiful and ultra-low power E-Paper display. It's ideal for staying organised and keeping track of important details without having to check them up online. 
+<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/E-Paper-Calendar%20Software-logo.png" width="800">
+
+This is a software written in python3 that allows you to transform an E-Paper display (like the kindle) into an information display. It fetches live data from Openweathermap (a weather info provider) and your Online Calendar (Google/Yahoo Calendar) and displays them on a large, beautiful and ultra-low power E-Paper display. It's ideal for staying organised and keeping track of important details without having to check them up online each time.
 
 This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E-Paper display from waveshare/gooddisplay and works with Raspberry Pi 2, 3 and 0 (Zero, Zero W, Zero WH).
 
-**To get started, follow the instructions below.**
+[![Version](https://img.shields.io/github/release/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather.svg)](https://img.shields.io/github/release/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather.svg)
+[![Python](https://img.shields.io/pypi/pyversions/pyowm.svg)](https://img.shields.io/pypi/pyversions/pyowm.svg)
+[![Licence](https://img.shields.io/github/license/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather.svg)](https://img.shields.io/github/license/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather.svg)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/SaadNaseer)
 
+**To get started, follow the instructions below.**
 ## News:
 * **Version 1.5 released (Early February 2019) with a new layout, displayed events and many back-end improvements**
 * **Added Support for the 2-Colour E-Paper Display as well!** (Late September 2018)
@@ -88,10 +94,15 @@ Before updating, the Installer checks if the settings file (/home/pi/E-Paper-Mas
 
 After updating, copy the contents from your old settings file to the new one. There are usally more options in the new settings.py file so a 'template' is prepared with each update. This template can be found in /home/pi/E-Paper-Master/Calendar/settings.py.sample.
 
+## Contributing
+All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/CONTRIBUTING.md).
+
+The average response time for issues, PRs and emails is usually 24 hours. In rare cases, it might be longer.
+
 ## Don't forget to check out the Wiki. It contains all the information to understanding and customising the script.
 
-P.S: Don't forget to star and watch the repo. For those who have done so already, thank you very much!
+**P.S:** Don't forget to star and watch the repo. For those who have done so already, thank you very much!
 
 ### Contact
-* email: aceisace63@yahoo.com
+* email: aceisace63@yahoo.com (response time < 24 hours)
 * website: aceinnolab.com (coming soon)
