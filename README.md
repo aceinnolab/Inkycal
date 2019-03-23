@@ -1,29 +1,35 @@
 # Raspberry Pi E-Paper Calendar
-
+<p align="center">
 <img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/E-Paper-Calendar%20Software-logo.png" width="800">
+</p>
 
-This is a software written in python3 that allows you to transform an E-Paper display (like the kindle) into an information display. It fetches live data from Openweathermap (a weather info provider) and your Online Calendar (Google/Yahoo Calendar) and displays them on a large, beautiful and ultra-low power E-Paper display. It's ideal for staying organised and keeping track of important details without having to check them up online each time.
+<p align="center">
+  
+  [![Version](https://img.shields.io/github/release/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather.svg)](https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/releases)
+  [![Python](https://img.shields.io/pypi/pyversions/pyowm.svg)](https://img.shields.io/pypi/pyversions/pyowm.svg)
+  [![Licence](https://img.shields.io/github/license/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather.svg)](https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/LICENSE)
+  [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/SaadNaseer)
+</p>
+
+A software written in python3 that allows you to transform an E-Paper display (like the kindle) into an information display. It fetches live data from Openweathermap (a weather info provider) and your Online Calendar (Google/Yahoo Calendar) and displays them on a large, beautiful and ultra-low power E-Paper display. It's ideal for staying organised and keeping track of important details without having to check them up online each time.
 
 This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E-Paper display from waveshare/gooddisplay and works with Raspberry Pi 2, 3 and 0 (Zero, Zero W, Zero WH).
 
-[![Version](https://img.shields.io/github/release/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather.svg)](https://img.shields.io/github/release/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather.svg)
-[![Python](https://img.shields.io/pypi/pyversions/pyowm.svg)](https://img.shields.io/pypi/pyversions/pyowm.svg)
-[![Licence](https://img.shields.io/github/license/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather.svg)](https://img.shields.io/github/license/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather.svg)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/SaadNaseer)
-
-**To get started, follow the instructions below.**
 ## News:
 * **Version 1.5 released (Early February 2019) with a new layout, displayed events and many back-end improvements**
-* **Added Support for the 2-Colour E-Paper Display as well!** (Late September 2018)
-* **Added Support for Raspbian Stretch lite.** (Late September 2018)
 
+## Preview
+<p align="center">
 <img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/v1-5-mar-19.JPG" width="600">
+</p>
 
 ## Main features
 * Monthly Calendar which automatically updates itself to the current day
 * Fetch appointments/events from your Google Calendar and display them on the Display
 * Fetch live weather data (temperature, humidity, sunrise- & sunset time, wind speed, weather-icon) from Openweathermap servers and display them on the E-Paper
 * Fetch RSS-feeds from given RSS-feed URLs and display the content (news, quotes etc.) on the E-Paper
+
+**To get started, follow the instructions below.**
 
 ## Hardware required
 * 7.5" 3-Colour E-Paper Display (Black, White, Red/Yellow) with driver hat from [waveshare](https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm)
@@ -36,7 +42,6 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 * Something to be used as a case (e.g. a (RIBBA) picture frame or a 3D-printed case)
 
 # Setup
-
 ## Getting the Raspberry Pi Zero W ready
 1. After [flashing Raspbian Stretch (Lite or Desktop)](https://www.raspberrypi.org/downloads/raspbian/), set up Wifi on the Raspberry Pi Zero W by copying the file **wpa_supplicant.conf** (from above) to the /boot directory and adding your Wifi details in that file.
 2. Create a simple text document named **ssh** in the boot directory to enable ssh.
@@ -47,14 +52,14 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 7. Optional: If you want to disable the on-board leds of the Raspberry, follow these instructions: 
 **[Disable on-board-led](https://www.jeffgeerling.com/blogs/jeff-geerling/controlling-pwr-act-leds-raspberry-pi)**
 
-## Installing required packages for python 3.5 
+## Installing required packages for python 3.x
 Execute the following command in the Terminal to install all required packages. This will work on both, Raspbian Stretch with Desktop and Raspbian Stretch lite. 
 
 **`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/master/Installer-with-debug.sh)"`**
 
 If the Installer should fail for any reason, kindly open an issue and paste the error. Thanks.
 
-This is how the installer will run:
+**Screenshot of the installer:**
 
 <img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/installer-v1-5-p1.png" width="650"><img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/installer-v1-5-p2.png" width="650">
 
@@ -63,7 +68,7 @@ Once the packages are installed, navigate to the home directory, open 'E-Paper-M
 `nano /home/pi/E-Paper-Master/Calendar/settings.py` in the Terminal. 
 
 | Parameter |  Description |
-| --- | --- |
+| :---: | :---: |
 | ical_urls |  Your iCalendar URL/s. To add more than one URL, seperate each with a comma |
 | rss_feeds | Here, you can add RSS-feed URLs which are used to fetch news etc. |
 | update_interval | How often should be Display be updated in one hour? The default option is `"60"`, which means once every 30 hour. You can select one of the values from: `"10"`, `"15"`, `"20"`, `"30"`, `"60"`. Please note that ghosting will occur when updating too frequently. To prevent ghosting, it's recommended to run 1 calibration for every 6 updates. For example, with an update interval of 1 hour, the calibration should be executed every 6 hours. |
@@ -99,10 +104,10 @@ All sorts of contributions are most welcome and appreciated. To start contributi
 
 The average response time for issues, PRs and emails is usually 24 hours. In rare cases, it might be longer.
 
-## Don't forget to check out the Wiki. It contains all the information to understanding and customising the script.
+### Don't forget to check out the Wiki. It contains all the information to understanding and customising the script.
 
 **P.S:** Don't forget to star and watch the repo. For those who have done so already, thank you very much!
 
-### Contact
-* email: aceisace63@yahoo.com (response time < 24 hours)
-* website: aceinnolab.com (coming soon)
+## Contact
+* Email: aceisace63@yahoo.com (average response time < 24 hours)
+* Website: aceinnolab.com (coming soon)
