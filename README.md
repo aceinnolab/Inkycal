@@ -63,8 +63,8 @@ If the Installer should fail for any reason, kindly open an issue and paste the 
 <img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/installer-v1-5-p1.png" width="650"><img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/installer-v1-5-p2.png" width="650">
 
 ## Adding details to the programm
-Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'settings.py' inside the Calendar folder. Adjust the values using the list below as a reference. You can edit the settings.py file by typing:
-`nano /home/pi/E-Paper-Master/Calendar/settings.py` in the Terminal. 
+Once the packages are installed, navigate to the home directory, open 'E-Paper-Calendar' and open the file 'settings.py' inside the Calendar folder. Adjust the values using the list below as a reference. You can edit the settings.py file by typing:
+`nano /home/pi/E-Paper-Calendar/Calendar/settings.py` in the Terminal. 
 
 | Parameter |  Description |
 | :---: | :---: |
@@ -94,9 +94,9 @@ If you encounter errors related to your iCalendar, please feel free to report th
 ## Updating
 If you want to update to the latest version, run the Installer from above again and select the 'update' option. 
 
-Before updating, the Installer checks if the settings file (/home/pi/E-Paper-Master/Calendar/settings.py) exists. This is done to test if a previous version was installed correctly. If the settings file exists, it is copied to the home directory and renamed as 'settings.py.old'. The old software folder 'E-Paper-Master' is renamed to 'E-Paper-Master-old'. Lastly, the latest version of the software is copied to the Raspberry as 'E-Paper-Master'.
+Before updating, the Installer checks if the settings file (/home/pi/E-Paper-Calendar/Calendar/settings.py) exists. This is done to test if a previous version was installed correctly. If the settings file exists, it is copied to the home directory and renamed as 'settings.py.old'. The old software folder 'E-Paper-Calendar' is renamed to 'E-Paper-Calendar-old'. Lastly, the latest version of the software is copied to the Raspberry as 'E-Paper-Calendar'.
 
-After updating, copy the contents from your old settings file to the new one. There are usally more options in the new settings.py file so a 'template' is prepared with each update. This template can be found in /home/pi/E-Paper-Master/Calendar/settings.py.sample.
+After updating, copy the contents from your old settings file to the new one. There are usally more options in the new settings.py file so a 'template' is prepared with each update. This template can be found in /home/pi/E-Paper-Calendar/Calendar/settings.py.sample.
 
 ## Contributing
 All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inky-Calendar/blob/master/CONTRIBUTING.md).
