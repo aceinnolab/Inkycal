@@ -1,4 +1,3 @@
-# Raspberry Pi E-Paper Calendar
 <p align="center">
 <img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/E-Paper-Calendar%20Software-logo.png" width="800">
 </p>
@@ -11,7 +10,7 @@
   [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/SaadNaseer)
 </p>
 
-A software written in python3 that allows you to transform an E-Paper display (like the kindle) into an information display. It fetches live data from Openweathermap (a weather info provider) and your Online Calendar (Google/Yahoo Calendar) and displays them on a large, beautiful and ultra-low power E-Paper display. It's ideal for staying organised and keeping track of important details without having to check them up online each time.
+A software written in python3 that allows you to transform an E-Paper display (like the kindle) into an information display. It fetches live data from Openweathermap (a weather info provider) and your Online Calendar (Google Calendar), fetches RSS-Feeds and displays them on a large, beautiful and ultra-low power E-Paper display. It's ideal for staying organised and keeping track of important details without having to check them up online each time.
 
 This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E-Paper display from waveshare/gooddisplay and works with Raspberry Pi 2, 3 and 0 (Zero, Zero W, Zero WH).
 
