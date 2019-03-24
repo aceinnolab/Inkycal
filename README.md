@@ -1,13 +1,13 @@
 # Raspberry Pi E-Paper Calendar
 <p align="center">
-<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/E-Paper-Calendar%20Software-logo.png" width="800">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/E-Paper-Calendar%20Software-logo.png" width="800">
 </p>
 
 <p align="center">
   
-  [![Version](https://img.shields.io/github/release/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather.svg)](https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/releases)
+  [![Version](https://img.shields.io/github/release/aceisace/Inky-Calendar.svg)](https://github.com/aceisace/Inky-Calendar/releases)
   [![Python](https://img.shields.io/pypi/pyversions/pyowm.svg)](https://img.shields.io/pypi/pyversions/pyowm.svg)
-  [![Licence](https://img.shields.io/github/license/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather.svg)](https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/LICENSE)
+  [![Licence](https://img.shields.io/github/license/aceisace/Inky-Calendar.svg)](https://github.com/aceisace/Inky-Calendar/blob/master/LICENSE)
   [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/SaadNaseer)
 </p>
 
@@ -20,7 +20,7 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 
 ## Preview
 <p align="center">
-<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/v1-5-mar-19.JPG" width="600">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/v1-5-mar-19.JPG" width="600">
 </p>
 
 ## Main features
@@ -55,13 +55,13 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 ## Installing required packages for python 3.x
 Execute the following command in the Terminal to install all required packages. This will work on both, Raspbian Stretch with Desktop and Raspbian Stretch lite. 
 
-**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/master/Installer-with-debug.sh)"`**
+**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/master/Installer-with-debug.sh)"`**
 
 If the Installer should fail for any reason, kindly open an issue and paste the error. Thanks.
 
 **Screenshot of the installer:**
 
-<img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/installer-v1-5-p1.png" width="650"><img src="https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/Gallery/installer-v1-5-p2.png" width="650">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/installer-v1-5-p1.png" width="650"><img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/installer-v1-5-p2.png" width="650">
 
 ## Adding details to the programm
 Once the packages are installed, navigate to the home directory, open 'E-Paper-Master' and open the file 'settings.py' inside the Calendar folder. Adjust the values using the list below as a reference. You can edit the settings.py file by typing:
@@ -100,7 +100,7 @@ Before updating, the Installer checks if the settings file (/home/pi/E-Paper-Mas
 After updating, copy the contents from your old settings file to the new one. There are usally more options in the new settings.py file so a 'template' is prepared with each update. This template can be found in /home/pi/E-Paper-Master/Calendar/settings.py.sample.
 
 ## Contributing
-All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/E-Paper-Calendar-with-iCal-sync-and-live-weather/blob/master/CONTRIBUTING.md).
+All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inky-Calendar/blob/master/CONTRIBUTING.md).
 
 The average response time for issues, PRs and emails is usually 24 hours. In rare cases, it might be longer.
 
