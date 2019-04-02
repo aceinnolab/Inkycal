@@ -15,6 +15,7 @@ A software written in python3 that allows you to transform an E-Paper display (l
 This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E-Paper display from waveshare/gooddisplay and works with Raspberry Pi 2, 3 and 0 (Zero, Zero W, Zero WH).
 
 ## News:
+* **Added a user-friendly Web-UI for adding details to the programm** (Credit to TobyChui for the template)
 * **Version 1.5 released (Early February 2019) with a new layout, displayed events and many back-end improvements**
 
 ## Preview
@@ -63,7 +64,16 @@ If the Installer should fail for any reason, kindly open an issue and paste the 
 <img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/installer-v1-5-p1.png" width="650"><img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/installer-v1-5-p2.png" width="650">
 
 ## Adding details to the programm
-Once the packages are installed, navigate to the home directory, open 'E-Paper-Calendar' and open the file 'settings.py' inside the Calendar folder. Adjust the values using the list below as a reference. You can edit the settings.py file by typing:
+There are currently 2 ways to add details to the programm, the user-friendly method and the legacy method. It's recommended to use the 
+user-friendly option first. If you encounter any bugs, please use the legacy method and write a comment describing the bug.
+
+1) **User-friendly method**
+To use the new WEB-UI (Web-User-Interface), simply double-click the file Settings-Web-UI.html located in /home/pi/E-Paper-Calendar/Calendar/ to open up the document with the browser (Chrome etc.). Next, fill in the details (you can use the table below for a reference) and click on generate to create your settings.py file. Lastly, copy the generated 'settings.py' file to /home/pi/E-Paper-Calendar/Calendar (the same path where the settings.py file is) and try starting the main script with:
+python3.5 /home/pi/E-Paper-Calendar/Calendar/E-Paper.py.
+If you encounter any issues, please leave a comment here or via email. Thanks in advance.
+
+2) **Legacy method**
+Navigate to the home directory, open 'E-Paper-Calendar' and open the file 'settings.py' inside the Calendar folder. Adjust the values using the list below as a reference. You can edit the settings.py file by typing:
 `nano /home/pi/E-Paper-Calendar/Calendar/settings.py` in the Terminal. 
 
 | Parameter |  Description |
