@@ -19,7 +19,10 @@ body{
 	<div class="ts segment">
 		<div class="ts header">
 			Setting Generator
-			<div class="sub header"><a href="https://github.com/aceisace/Inky-Calendar">For Inky-Calendar Project of Ace-Innovation Laboratory (by aceisace)</a> Project<br>
+			<div class="sub header"><a href="https://github.com/aceisace/Inky-Calendar">For Inky-Calendar Project of Ace-Innovation Laboratory (by aceisace)</a><br>
+			<img src="https://github.com/aceisace/Inky-Calendar/blob/Stable/Gallery/Inky-Calendar-logo.png?raw=true" width="800">
+			<div>
+			</div>
 			<ins>If no value is filled in for any of the row, the default value will be used.</ins>
 			</div>
 			
@@ -27,12 +30,12 @@ body{
 	</div>
 		<form class="ts form">
 			<div class="field">
-				<label>iCalendar URL/s</label>
+				<label>iCalendar URL. If you want to add multiple URLs, seperate each one with a comma.</label>
 				<input id="ical_urls" type="text" placeholder="https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics">
 			</div>
 
             <div class="field">
-				<label>RSS-Feed URLs</label>
+				<label>RSS-Feed URL. To add more than one feed, seperate each URL with a comma.</label>
 				<input id="rss_urls" type="text" placeholder="http://feeds.bbci.co.uk/news/world/rss.xml#">
 			</div>
 
@@ -52,7 +55,7 @@ body{
 						<label for="update_30_mins">every 30 minutes</label>
 					</div>
 					<div class="ts radio checkbox">
-						<input id="update_60_mins" type="radio" name="aa">
+						<input id="update_60_mins" type="radio" name="aa" checked>
 						<label for="update_60_mins">every 60 minutes</label>
 					</div>
 				</div>
@@ -66,7 +69,7 @@ body{
 						<label for="event_feature">Events from my iCalendar</label>
 					</div>
 					<div class="ts radio checkbox">
-						<input id="rss_feature" type="radio" name="af">
+						<input id="rss_feature" type="radio" name="af" checked>
 						<label for="rss_feature">RSS-Feeds</label>
 					</div>
 				</div>
@@ -85,7 +88,7 @@ body{
 				<label>Week starts on</label>
 				<div class="ts checkboxes">
 					<div class="ts radio checkbox">
-						<input id="week_monday" type="radio" name="hr">
+						<input id="week_monday" type="radio" name="hr" checked>
 						<label for="week_monday">Monday</label>
 					</div>
 					<div class="ts radio checkbox">
@@ -109,7 +112,7 @@ body{
 				<label>Which Colours does your E-Paper Display support?</label>
 				<div class="ts checkboxes">
 					<div class="ts radio checkbox">
-						<input id="b_w_r" type="radio" name="dp">
+						<input id="b_w_r" type="radio" name="dp" checked>
 						<label for="b_w_r">Black-White-Red</label>
 					</div>
 					<div class="ts radio checkbox">
@@ -123,7 +126,7 @@ body{
 				<label>Which language do you prefer for the Calendar?</label>
 				<div class="ts checkboxes">
 					<div class="ts radio checkbox">
-						<input id="language_en" type="radio" name="la">
+						<input id="language_en" type="radio" name="la" checked>
 						<label for="language_en">English</label>
 					</div>
 					<div class="ts radio checkbox">
@@ -141,7 +144,7 @@ body{
 				<label>Which units are used in your country?</label>
 				<div class="ts checkboxes">
 					<div class="ts radio checkbox">
-						<input id="metric" type="radio" name="un">
+						<input id="metric" type="radio" name="un" checked>
 						<label for="metric">Metric</label>
 					</div>
 					<div class="ts radio checkbox">
@@ -159,7 +162,7 @@ body{
 						<label for="12_hours">12-hour format</label>
 					</div>
 					<div class="ts radio checkbox">
-						<input id="24_hours" type="radio" name="tf">
+						<input id="24_hours" type="radio" name="tf" checked>
 						<label for="24_hours">24-hour format</label>
 					</div>
 				</div>
