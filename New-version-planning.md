@@ -9,6 +9,7 @@
 ## Main script
 | Feature | Status |
 | -- | -- |
+|Use relative path instead of explicit path| work in progress |
 |Implement Agenda view (will take some more time)| Work in progress |
 |Display more events when free space is available (below monthly calendar)| finished -> implemented in master branch|
 |Implement feature to fetch tasks| canceled as Google Calendar does not support VTODO (Tasks)|
