@@ -1,5 +1,5 @@
 #!/bin/bash
-# E-Paper-Calendar software installer for the raspberry pi
+# E-Paper-Calendar software installer for Raspberry pi
 # Version: 1.5 (Early Februrary 2019)
 # Stability status of this installer: Confirmed with Raspbain Stretch Lite on 12th March 2019
 # Copyright by aceisace
@@ -26,28 +26,28 @@ if [ "$option" = 3 ]; then
         sudo rm /etc/supervisor/conf.d/E-Paper.conf
     fi
     echo -e "The libraries have been removed successfully"
-    echo -e "Removing the E-Paper-Calendar folder if it exists"
-    if [ -d "/home/pi/E-Paper-Calendar" ]; then
-        sudo rm -r /home/pi/E-Paper-Calendar/
+    echo -e "Removing the Inky-Calendar folder if it exists"
+    if [ -d "/home/pi/Inky-Calendar" ]; then
+        sudo rm -r /home/pi/Inky-Calendar/
     fi
 fi
 
 if [ "$option" = 1 ]; then
     echo "Checking if the settings.py exists..."
-    if [ -e /home/pi/E-Paper-Calendar/Calendar/settings.py ]; then
+    if [ -e /home/pi/Inky-Calendar/Calendar/settings.py ]; then
         echo -e "Found an E-Paper settings file."
         sleep 2
 	echo "Backing up the current settings file in the home directory."
 	sleep 2
-	cp /home/pi/E-Paper-Calendar/Calendar/settings.py /home/pi/settings-old.py
+	cp /home/pi/Inky-Calendar/Calendar/settings.py /home/pi/settings-old.py
 	echo -e "renaming the old E-Paper software folder"
 	sleep 2
-	cp -r /home/pi/E-Paper-Calendar /home/pi/E-Paper-Calendar-old
-	sudo rm -r /home/pi/E-Paper-Calendar
+	cp -r /home/pi/Inky-Calendar /home/pi/Inky-Calendar-old
+	sudo rm -r /home/pi/Inky-Calendar
 	echo "Updating now..."
         cd
     else
-        echo -e "Could not find any settings.py file in /home/pi/E-Paper-Calendar/Calendar"
+        echo -e "Could not find any settings.py file in /home/pi/Inky-Calendar/Calendar"
 	echo -e "Please uninstall the software first and then use the install option"
 	echo -e "Exiting now"
 	exit
@@ -88,18 +88,18 @@ if [ "$option" = 2 ]; then
 fi
 
 if [ "$option" = 1 ] || [ "$option" = 2 ]; then
-    echo -e "\e[1;36m"Installing the E-Paper-Calendar Software for your display"\e[0m"
+    echo -e "\e[1;36m"Installing the Inky-Calendar Software for your display"\e[0m"
     cd
     git clone https://github.com/aceisace/Inky-Calendar
-    mkdir E-Paper-Calendar
+    mkdir Inky-Calendar
     cd Inky-Calendar
-    cp -r Calendar /home/pi/E-Paper-Calendar/
-    cp README.md /home/pi/E-Paper-Calendar/
-    cp LICENSE /home/pi/E-Paper-Calendar/
-    cp -r .git /home/pi/E-Paper-Calendar/
+    cp -r Calendar /home/pi/Inky-Calendar/
+    cp README.md /home/pi/Inky-Calendar/
+    cp LICENSE /home/pi/Inky-Calendar/
+    cp -r .git /home/pi/Inky-Calendar/
     
     # Make a copy of the sample settings.py file
-    cd /home/pi/E-Paper-Calendar/Calendar
+    cd /home/pi/Inky-Calendar/Calendar
     cp settings.py.sample settings.py
     cd
 
@@ -107,15 +107,15 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     sudo rm -r Inky-Calendar
 
     # add a short info
-    cat > /home/pi/E-Paper-Calendar/Info.txt << EOF
-This document contains a short info of the E-Paper-Calendar software version
+    cat > /home/pi/Inky-Calendar/Info.txt << EOF
+This document contains a short info of the Inky-Calendar software version
 
 Version: 1.5
 Installer version: 1.5 (Early February 2019)
-configuration file: /home/pi/E-Paper-Calendar/Calendar/settings.py
+configuration file: /home/pi/Inky-Calendar/Calendar/settings.py
 If the time was set correctly, you installed this software on:
 EOF
-    echo "$(date)" >> /home/pi/E-Paper-Calendar/Info.txt
+    echo "$(date)" >> /home/pi/Inky-Calendar/Info.txt
     echo ""
 
     # Setting up supervisor
@@ -124,10 +124,10 @@ EOF
 
     sudo bash -c 'cat > /etc/supervisor/conf.d/E-Paper.conf' << EOF
 [program:E-Paper]
-command = sudo /usr/bin/python3.5 /home/pi/E-Paper-Calendar/Calendar/E-Paper.py
-stdout_logfile = /home/pi/E-Paper-Calendar/E-Paper.log
+command = sudo /usr/bin/python3.5 /home/pi/Inky-Calendar/Calendar/E-Paper.py
+stdout_logfile = /home/pi/Inky-Calendar/E-Paper.log
 stdout_logfile_maxbytes = 1MB
-stderr_logfile = /home/pi/E-Paper-Calendar/E-Paper-err.log
+stderr_logfile = /home/pi/Inky-Calendar/E-Paper-err.log
 stderr_logfile_maxbytes = 1MB
 EOF
 
@@ -147,7 +147,7 @@ EOF
     echo -e "\e[1;31m"If this file is not modified, the programm will not start"\e[0m"
 
     echo -e "\e[1;36m"To modify the settings file, enter:"\e[0m"
-    echo -e "\e[1;36m"nano /home/pi/E-Paper-Calendar/Calendar/settings.py"\e[0m"
+    echo -e "\e[1;36m"nano /home/pi/Inky-Calendar/Calendar/settings.py"\e[0m"
     echo -e "\e[1;36m"You can test if the programm works by typing:"\e[0m"
-    echo -e "\e[1;36m"python3.5 /home/pi/E-Paper-Calendar/Calendar/E-Paper.py"\e[0m"
+    echo -e "\e[1;36m"python3.5 /home/pi/Inky-Calendar/Calendar/E-Paper.py"\e[0m"
 fi
