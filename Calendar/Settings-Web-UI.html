@@ -192,7 +192,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <br>
   
   <script>
-  var template = 'ical_urls = [\n"{ical_urls}"\n]\nrss_feeds = [\n"{rss_urls}"\n]\nupdate_interval = "{update_interval}"\nadditional_feature = "{additional_feature}"\napi_key = "{api_key}"\nlocation = "{location}"\nweek_starts_on = "{week_starts_on}"\nevents_max_range = "{events_max_range}"\ndisplay_colours = "{display_colours}"\nlanguage = "{language}"\nunits = "{units}"\nhours = "{hours}"';
+  var template = 'ical_urls = [\n"{ical_urls}"\n]\nrss_feeds = [\n"{rss_urls}"\n]\nupdate_interval = "{update_interval}"\nadditional_feature = "{additional_feature}"\napi_key = "{api_key}"\nlocation = "{location}"\nweek_starts_on = "{week_starts_on}"\nevents_max_range = "{events_max_range}"\ncalibration_hours = [{calibration_hours}]\ndisplay_colours = "{display_colours}"\nlanguage = "{language}"\nunits = "{units}"\nhours = "{hours}"';
   
   function generate(){
     var ical_urls = $("#ical_urls").val().trim();
@@ -219,7 +219,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     var additional_feature = "events";
     if ($('#rss').is(':checked')){
-      hours = "rss";
+      additional_feature = "rss";
     }
 
     var api_key = $("#api_key").val().trim();
@@ -234,12 +234,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     var week_starts_on = "Monday";
     if ($('#week_sunday').is(':checked')){
-      hours = "Sunday";
+      week_starts_on = "Sunday";
     }
 
     var events_max_range = $("#events_max_range").val().trim();
     if (events_max_range == ""){
       events_max_range = $("#events_max_range").attr("placeholder");
+    }
+
+    var calibration_hours = $("#calibration_hours").val().trim();
+    if (calibration_hours == ""){
+      calibration_hours = $("#calibration_hours").attr("placeholder");
     }
 
     var display_colours = "bw";
