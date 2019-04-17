@@ -1,3 +1,6 @@
+# Attention: 
+## A bug has been reported by some of the new users. It is being fixed right now. Please don't attemt to use the installer until this message has disappeared. Thanks for understanding.
+
 <p align="center">
 <img src="https://github.com/aceisace/Inky-Calendar/blob/Stable/Gallery/Inky-Calendar-logo.png" width="800">
 </p>
