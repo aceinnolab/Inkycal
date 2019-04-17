@@ -4,6 +4,8 @@
 # Stability status of this installer: Confirmed with Raspbain Stretch Lite on 12th March 2019
 # Copyright by aceisace
 
+#TODO: Faster installation by checking if module is installed (by test-importing it in python3)
+
 echo -e "\e[1mPlease select an option from below:"
 echo -e "\e[97mEnter \e[91m1 \e[97m to update the E-Paper software"
 echo -e "\e[97mEnter \e[91m2 \e[97m to install the E-Paper software"
