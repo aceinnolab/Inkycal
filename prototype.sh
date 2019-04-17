@@ -91,12 +91,12 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     echo -e "\e[1;36m"Installing the Inky-Calendar Software for your display"\e[0m"
     cd
     git clone https://github.com/aceisace/Inky-Calendar
-    mkdir Inky-Calendar
-    cd Inky-Calendar
-    cp -r Calendar /home/pi/Inky-Calendar/
-    cp README.md /home/pi/Inky-Calendar/
-    cp LICENSE /home/pi/Inky-Calendar/
-    cp -r .git /home/pi/Inky-Calendar/
+    #mkdir Inky-Calendar
+    #cd Inky-Calendar
+    #cp -r Calendar /home/pi/Inky-Calendar/
+    #cp README.md /home/pi/Inky-Calendar/
+    #cp LICENSE /home/pi/Inky-Calendar/
+    #cp -r .git /home/pi/Inky-Calendar/
     
     # Make a copy of the sample settings.py file
     cd /home/pi/Inky-Calendar/Calendar
