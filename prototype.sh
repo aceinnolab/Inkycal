@@ -23,7 +23,7 @@ if [ -z "$option" ]; then
 fi
 if [ "$option" = 3 ]; then
     echo -e "Removing the E-Paper software now..."
-    pip3 uninstall Pillow -y && sudo pip3 uninstall Pillow -y && sudo pip3 uninstall pyowm -y&& sudo pip3 uninstall ics -y && pip3 uninstall pyowm -y && pip3 uninstall ics -y && sudo apt-get remove supervisor -y && sudo apt-get clean && sudo apt-get autoremove -y
+    pip3 uninstall Pillow -y && sudo pip3 uninstall Pillow -y && sudo pip3 uninstall pyowm -y&& sudo pip3 uninstall ics -y && pip3 uninstall pyowm -y && pip3 uninstall ics -y && sudo apt-get remove supervisor -y && pip3 uninstall feedparser && sudo pip3 uninstall feedparser && sudo apt-get clean && sudo apt-get autoremove -y
     if [ -e /etc/supervisor/conf.d/E-Paper.conf ]; then
         sudo rm /etc/supervisor/conf.d/E-Paper.conf
     fi
@@ -57,14 +57,32 @@ if [ "$option" = 1 ]; then
 fi
 
 if [ "$option" = 2 ]; then
-    echo -e "\e[1;36m"The installer will finish the rest now. You can enjoy a break in the meanwhile."\e[0m"
+    # Ask to update system
+    echo -e "\e[1mWould you like to update and upgrade the operating system first?"
+    echo -e "\e[97mIt is not scrictly required, but highly recommended."
+    echo -e "\e[97mPlease note that updating may take quite some time, in rare cases up to 1 hour."
+    echo -e "\e[97mPlease type [y] for yes or [n] for no and confirm your selection with [ENTER]"
+    read -r -p 'Waiting for input...  ' update
     
-    # Updating and upgrading the system, without taking too much space
-    echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
-    echo -e "\e[1;36m"This will take a while, sometimes up to 30 mins"\e[0m"
-    sudo apt-get update && sudo apt-get dist-upgrade -y
-    echo -e "\e[1;36m"System successfully updated and upgraded!"\e[0m"
-    echo ""
+    if [ "$update" != Y ] && [ "$update" != y ] && [ "$update" != N ] && [ "$update" != n ]; then
+        echo -e "invalid input, aborting now"
+        exit
+    fi
+    if [ -z "$update" ]; then
+        echo -e "You didn't enter anything, aborting now."
+        exit
+    fi
+    
+    if [ "$update" = Y ] || [ "$update" = y ]; then
+        # Updating and upgrading the system, without taking too much space
+        echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
+        echo -e "\e[1;36m"This will take a while, sometimes up to 1 hour"\e[0m"
+        sudo apt-get update && sudo apt-get dist-upgrade -y
+        echo -e "\e[1;36m"System successfully updated and upgraded!"\e[0m"
+        echo ""
+    fi
+
+    echo -e "\e[1;36m"The installer will finish the rest now. You can enjoy a break in the meanwhile."\e[0m"
 
     # Installing a few packages which are missing on Raspbian Stretch Lite
     echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
