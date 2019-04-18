@@ -101,7 +101,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     
     echo -e "\e[1;36m"Checking if pyowm is installed for user pi"\e[0m"
     if python3.5 -c "import pyowm" &> /dev/null; then
-        echo 'pyowm is installed, skipping installtion of this package.'
+        echo 'pyowm is installed, skipping installation of this package.'
     else
         echo 'pywom is not installed, attempting to install now'
 	pip3 install pyowm
@@ -110,7 +110,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     #PYOWM for user sudo
     echo -e "\e[1;36m"Checking if pyowm is installed for user sudo"\e[0m"
     if sudo python3.5 -c "import pyowm" &> /dev/null; then
-        echo 'pyowm is installed, skipping installtion of this package.'
+        echo 'pyowm is installed, skipping installation of this package.'
     else
         echo 'pywom is not installed, attempting to install now'
 	sudo pip3 install pyowm
@@ -119,7 +119,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     #Pillow for user pi  
     echo -e "\e[1;36m"Checking if Pillow (PIL) (v=5.3.0) is installed for user pi"\e[0m"
     if python3.5 -c "import PIL" &> /dev/null; then
-        echo 'Pillow is installed, skipping installtion of this package.'
+        echo 'Pillow is installed, skipping installation of this package.'
     else
         echo 'Pillow is not installed, attempting to install now'
 	pip3 install Pillow==5.3.0
@@ -128,7 +128,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     #Pillow for user pi  
     echo -e "\e[1;36m"Checking if Pillow (PIL) (v=5.3.0) is installed for user sudo"\e[0m"
     if sudo python3.5 -c "import PIL" &> /dev/null; then
-        echo 'Pillow is installed, skipping installtion of this package.'
+        echo 'Pillow is installed, skipping installation of this package.'
     else
         echo 'Pillow is not installed, attempting to install now'
 	sudo pip3 install Pillow==5.3.0
@@ -137,7 +137,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     #Ics.py for user pi  
     echo -e "\e[1;36m"Checking if ics is installed for user pi"\e[0m"
     if python3.5 -c "import ics" &> /dev/null; then
-        echo 'ics is installed, skipping installtion of this package.'
+        echo 'ics is installed, skipping installation of this package.'
     else
         echo 'ics is not installed, attempting to install now'
 	pip3 install ics
@@ -146,7 +146,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     #Ics.py for user sudo
     echo -e "\e[1;36m"Checking if ics is installed for user sudo"\e[0m"
     if sudo python3.5 -c "import ics" &> /dev/null; then
-        echo 'ics is installed, skipping installtion of this package.'
+        echo 'ics is installed, skipping installation of this package.'
     else
         echo 'ics is not installed, attempting to install now'
 	sudo pip3 ics
@@ -155,7 +155,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     #feedparser for user pi  
     echo -e "\e[1;36m"Checking if feedparser is installed for user pi"\e[0m"
     if python3.5 -c "import feedparser" &> /dev/null; then
-        echo 'feedparser is installed, skipping installtion of this package.'
+        echo 'feedparser is installed, skipping installation of this package.'
     else
         echo 'ics is not installed, attempting to install now'
 	pip3 install ics
@@ -164,7 +164,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     #feedparser for user sudo
     echo -e "\e[1;36m"Checking if feedparser is installed for user sudo"\e[0m"
     if sudo python3.5 -c "import feedparser" &> /dev/null; then
-        echo 'feedparser is installed, skipping installtion of this package.'
+        echo 'feedparser is installed, skipping installation of this package.'
     else
         echo 'feedparser is not installed, attempting to install now'
 	sudo pip3 feedparser
