@@ -117,7 +117,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     fi
     
     #Pillow for user pi  
-    echo -e "\e[1;36m"Checking if Pillow (PIL) (v=5.3.0) is installed for user pi"\e[0m"
+    echo -e "\e[1;36m"Checking if Pillow v5.3.0 is installed for user pi"\e[0m"
     if python3.5 -c "import PIL" &> /dev/null; then
         echo 'Pillow is installed, skipping installation of this package.'
     else
