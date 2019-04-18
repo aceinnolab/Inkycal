@@ -46,10 +46,27 @@ if [ "$option" = 1 ]; then
 	echo "Updating now..."
         cd
     else
-        echo -e "Could not find any settings.py file in /home/pi/Inky-Calendar/Calendar"
-	echo -e "Please uninstall the software first and then use the install option"
-	echo -e "Exiting now"
-	exit
+        # Ask to update anyway. May not work always, but can help with new versions.
+	echo -e "\e[1mCould not find the configuration file -settings.py- in /home/pi/Inky-Calendar/Calendar"
+        echo -e "\e[1mWould you like to update the Inky-Calendar software anyway?"
+        echo -e "\e[97mPlease type [y] for yes or [n] for no and confirm your selection with [ENTER]"
+        read -r -p 'Waiting for input...  ' update_anyway
+    
+        if [ "$update_anyway" != Y ] && [ "$update_anyway" != y ] && [ "$update_anyway" != N ] && [ "$update_anyway" != n ]; then
+            echo -e "invalid input, aborting now"
+            exit
+        fi
+        if [ -z "$update_anyway" ]; then
+            echo -e "You didn't enter anything, aborting now."
+            exit
+        fi
+    
+        if [ "$update_anyway" = Y ] || [ "$update_anyway" = y ]; then
+            echo "Updating now..."
+	else
+	    echo -e "Not attempting to update, exiting now."
+            exit
+        fi
     fi
 fi
 
