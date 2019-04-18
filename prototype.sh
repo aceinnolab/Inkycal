@@ -4,8 +4,6 @@
 # Stability status of this installer: Confirmed with Raspbain Stretch Lite on 12th March 2019
 # Copyright by aceisace
 
-#TODO: Faster installation by checking if module is installed (by test-importing it in python3)
-
 echo -e "\e[1mPlease select an option from below:"
 echo -e "\e[97mEnter \e[91m1 \e[97m to update the E-Paper software"
 echo -e "\e[97mEnter \e[91m2 \e[97m to install the E-Paper software"
@@ -57,6 +55,20 @@ if [ "$option" = 1 ]; then
 fi
 
 if [ "$option" = 2 ]; then
+    echo -e "\e[1;36m"Setting up the system by installing some required libraries for python3 "\e[0m"
+
+    # Installing a few packages which are missing on Raspbian Stretch Lite
+    echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
+    sudo apt-get install python3-pip -y python-rpi.gpio-dbgsym -y python3-rpi.gpio -y python-rpi.gpio -y python3-rpi.gpio-dbgsym -y python3-spidev -y git -y libopenjp2-7-dev -y libtiff5 -y python3-numpy -y
+    echo ""
+
+    # Running apt-get clean and apt-get autoremove
+    echo -e "\e[1;36m"Cleaning a bit of mess to free up some space..."\e[0m"
+    sudo apt-get clean && sudo apt-get autoremove -y
+    echo ""
+fi
+
+if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     # Ask to update system
     echo -e "\e[1mWould you like to update and upgrade the operating system first?"
     echo -e "\e[97mIt is not scrictly required, but highly recommended."
@@ -82,32 +94,93 @@ if [ "$option" = 2 ]; then
         echo ""
     fi
 
-    echo -e "\e[1;36m"The installer will finish the rest now. You can enjoy a break in the meanwhile."\e[0m"
+    # Installing dependencies
+    
+    #PYOWM for user pi
+    echo -e "\e[1;36m"Installing dependencies of the Inky-Calendar software"\e[0m"
+    
+    echo -e "\e[1;36m"Checking if pyowm is installed for user pi"\e[0m"
+    if python3.5 -c "import pyowm" &> /dev/null; then
+        echo 'pyowm is installed, skipping installtion of this package.'
+    else
+        echo 'pywom is not installed, attempting to install now'
+	pip3 install pyowm
+    fi
+    
+    #PYOWM for user sudo
+    echo -e "\e[1;36m"Checking if pyowm is installed for user sudo"\e[0m"
+    if sudo python3.5 -c "import pyowm" &> /dev/null; then
+        echo 'pyowm is installed, skipping installtion of this package.'
+    else
+        echo 'pywom is not installed, attempting to install now'
+	sudo pip3 install pyowm
+    fi
+    
+    #Pillow for user pi  
+    echo -e "\e[1;36m"Checking if Pillow (PIL) (v=5.3.0) is installed for user pi"\e[0m"
+    if python3.5 -c "import PIL" &> /dev/null; then
+        echo 'Pillow is installed, skipping installtion of this package.'
+    else
+        echo 'Pillow is not installed, attempting to install now'
+	pip3 install Pillow==5.3.0
+    fi
+    
+    #Pillow for user pi  
+    echo -e "\e[1;36m"Checking if Pillow (PIL) (v=5.3.0) is installed for user sudo"\e[0m"
+    if sudo python3.5 -c "import PIL" &> /dev/null; then
+        echo 'Pillow is installed, skipping installtion of this package.'
+    else
+        echo 'Pillow is not installed, attempting to install now'
+	sudo pip3 install Pillow==5.3.0
+    fi
+    
+    #Ics.py for user pi  
+    echo -e "\e[1;36m"Checking if ics is installed for user pi"\e[0m"
+    if python3.5 -c "import ics" &> /dev/null; then
+        echo 'ics is installed, skipping installtion of this package.'
+    else
+        echo 'ics is not installed, attempting to install now'
+	pip3 install ics
+    fi
+    
+    #Ics.py for user sudo
+    echo -e "\e[1;36m"Checking if ics is installed for user sudo"\e[0m"
+    if sudo python3.5 -c "import ics" &> /dev/null; then
+        echo 'ics is installed, skipping installtion of this package.'
+    else
+        echo 'ics is not installed, attempting to install now'
+	sudo pip3 ics
+    fi
 
-    # Installing a few packages which are missing on Raspbian Stretch Lite
-    echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
-    sudo apt-get install python3-pip -y python-rpi.gpio-dbgsym -y python3-rpi.gpio -y python-rpi.gpio -y python3-rpi.gpio-dbgsym -y python3-spidev -y git -y libopenjp2-7-dev -y libtiff5 -y python3-numpy -y
-    echo ""
+    #feedparser for user pi  
+    echo -e "\e[1;36m"Checking if feedparser is installed for user pi"\e[0m"
+    if python3.5 -c "import feedparser" &> /dev/null; then
+        echo 'feedparser is installed, skipping installtion of this package.'
+    else
+        echo 'ics is not installed, attempting to install now'
+	pip3 install ics
+    fi
+    
+    #feedparser for user sudo
+    echo -e "\e[1;36m"Checking if feedparser is installed for user sudo"\e[0m"
+    if sudo python3.5 -c "import feedparser" &> /dev/null; then
+        echo 'feedparser is installed, skipping installtion of this package.'
+    else
+        echo 'feedparser is not installed, attempting to install now'
+	sudo pip3 feedparser
+    fi
 
-    # Running apt-get clean and apt-get autoremove
-    echo -e "\e[1;36m"Cleaning a bit of mess to free up some space..."\e[0m"
-    sudo apt-get clean && sudo apt-get autoremove -y
-    echo ""
-
-    # Installing packages required by the main script
-    echo -e "\e[1;36m"Installing a few required packages for the E-Paper Software"\e[0m"
-    sudo pip3 install pyowm
-    sudo pip3 install Pillow==5.3.0
-    sudo pip3 install ics
-    sudo pip3 install feedparser
-    pip3 install pyowm
-    pip3 install ics
-    pip3 install feedparser
-    pip3 install Pillow==5.3.0
-    echo -e "\e[1;36m"Finished installing libraries"\e[0m"
-fi
-
-if [ "$option" = 1 ] || [ "$option" = 2 ]; then
+    #sudo pip3 install pyowm
+    #sudo pip3 install Pillow==5.3.0
+    #sudo pip3 install ics
+    #sudo pip3 install feedparser
+    #pip3 install pyowm
+    #pip3 install ics
+    #pip3 install feedparser
+    #pip3 install Pillow==5.3.0
+    
+    echo -e "\e[1;36m"Finished installing all dependencies"\e[0m"
+    
     # Clone the repository, then delete some non-required files
     echo -e "\e[1;36m"Installing the Inky-Calendar Software for your display"\e[0m"
     cd
@@ -131,8 +204,8 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     cat > /home/pi/Inky-Calendar/Info.txt << EOF
 This document contains a short info of the Inky-Calendar software version
 
-Version: 1.5
-Installer version: 1.5 (Early February 2019)
+Version: 1.6
+Installer version: 1.6 (Mid April 2019)
 configuration file: /home/pi/Inky-Calendar/Calendar/settings.py
 If the time was set correctly, you installed this software on:
 EOF
@@ -154,11 +227,6 @@ EOF
 
     sudo service supervisor start E-Paper
 
-    # Installing some new dependencies
-    echo "Installing some new dependencies"
-    sudo apt-get install python-numpy -y
-    sudo pip3 install feedparser
-    pip3 install feedparser
     echo ""
 
     # Final words
