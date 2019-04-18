@@ -165,7 +165,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
         echo 'ics is installed, skipping installation of this package.'
     else
         echo 'ics is not installed, attempting to install now'
-	sudo pip3 ics
+	sudo pip3 install ics
     fi
 
     #feedparser for user pi  
@@ -173,8 +173,8 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     if python3.5 -c "import feedparser" &> /dev/null; then
         echo 'feedparser is installed, skipping installation of this package.'
     else
-        echo 'ics is not installed, attempting to install now'
-	pip3 install ics
+        echo 'feedparser is not installed, attempting to install now'
+	pip3 install feedparser
     fi
     
     #feedparser for user sudo
@@ -183,7 +183,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
         echo 'feedparser is installed, skipping installation of this package.'
     else
         echo 'feedparser is not installed, attempting to install now'
-	sudo pip3 feedparser
+	sudo pip3 install feedparser
     fi
     
     echo -e "\e[1;36m"Finished installing all dependencies"\e[0m"
