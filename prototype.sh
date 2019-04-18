@@ -125,8 +125,8 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
 	pip3 install Pillow==5.3.0
     fi
     
-    #Pillow for user pi  
-    echo -e "\e[1;36m"Checking if Pillow (PIL) (v=5.3.0) is installed for user sudo"\e[0m"
+    #Pillow for user sudo
+    echo -e "\e[1;36m"Checking if Pillow v5.3.0 is installed for user sudo"\e[0m"
     if sudo python3.5 -c "import PIL" &> /dev/null; then
         echo 'Pillow is installed, skipping installation of this package.'
     else
@@ -169,15 +169,6 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
         echo 'feedparser is not installed, attempting to install now'
 	sudo pip3 feedparser
     fi
-
-    #sudo pip3 install pyowm
-    #sudo pip3 install Pillow==5.3.0
-    #sudo pip3 install ics
-    #sudo pip3 install feedparser
-    #pip3 install pyowm
-    #pip3 install ics
-    #pip3 install feedparser
-    #pip3 install Pillow==5.3.0
     
     echo -e "\e[1;36m"Finished installing all dependencies"\e[0m"
     
