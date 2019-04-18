@@ -24,11 +24,14 @@ if [ "$option" = 3 ]; then
     if [ -e /etc/supervisor/conf.d/E-Paper.conf ]; then
         sudo rm /etc/supervisor/conf.d/E-Paper.conf
     fi
-    echo -e "The libraries have been removed successfully"
+    echo -e "\e[1;36m"The libraries have been removed successfully"\e[0m"
+    sleep 1
     echo -e "Removing the Inky-Calendar folder if it exists"
     if [ -d "/home/pi/Inky-Calendar" ]; then
         sudo rm -r /home/pi/Inky-Calendar/
+	echo -e "\e[1;36m"Found the E-Paper-software folder and deleted it"\e[0m"
     fi
+    echo -e "\e[1;36m"All done!"\e[0m"
 fi
 
 if [ "$option" = 1 ]; then
