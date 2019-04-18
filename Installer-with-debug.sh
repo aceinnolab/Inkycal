@@ -1,10 +1,7 @@
 #!/bin/bash
 # E-Paper-Calendar software installer for Raspberry pi
-# Version: 1.5 (Early Februrary 2019)
-# Stability status of this installer: Confirmed with Raspbain Stretch Lite on 12th March 2019
-# Copyright by aceisace
-
-#TODO: Faster installation by checking if module is installed (by test-importing it in python3)
+# Version: 1.6 (Mid April 2019)
+# Stability status of this installer: Stable
 
 echo -e "\e[1mPlease select an option from below:"
 echo -e "\e[97mEnter \e[91m1 \e[97m to update the E-Paper software"
@@ -22,20 +19,23 @@ if [ -z "$option" ]; then
     exit
 fi
 if [ "$option" = 3 ]; then
-    echo -e "Removing the E-Paper software now..."
-    pip3 uninstall Pillow -y && sudo pip3 uninstall Pillow -y && sudo pip3 uninstall pyowm -y&& sudo pip3 uninstall ics -y && pip3 uninstall pyowm -y && pip3 uninstall ics -y && sudo apt-get remove supervisor -y && sudo apt-get clean && sudo apt-get autoremove -y
+    echo -e "\e[1;36m"Removing the E-Paper software now..."\e[0m"
+    pip3 uninstall Pillow -y && sudo pip3 uninstall Pillow -y && sudo pip3 uninstall pyowm -y&& sudo pip3 uninstall ics -y && pip3 uninstall pyowm -y && pip3 uninstall ics -y && sudo apt-get remove supervisor -y && pip3 uninstall feedparser -y && sudo pip3 uninstall feedparser -y && sudo apt-get clean && sudo apt-get autoremove -y
     if [ -e /etc/supervisor/conf.d/E-Paper.conf ]; then
         sudo rm /etc/supervisor/conf.d/E-Paper.conf
     fi
-    echo -e "The libraries have been removed successfully"
+    echo -e "\e[1;36m"The libraries have been removed successfully"\e[0m"
+    sleep 1
     echo -e "Removing the Inky-Calendar folder if it exists"
     if [ -d "/home/pi/Inky-Calendar" ]; then
         sudo rm -r /home/pi/Inky-Calendar/
+	echo -e "\e[1;36m"Found the E-Paper-software folder and deleted it"\e[0m"
     fi
+    echo -e "\e[1;36m"All done!"\e[0m"
 fi
 
 if [ "$option" = 1 ]; then
-    echo "Checking if the settings.py exists..."
+    echo -e "\e[1;36m"Checking if the settings.py exists..."\e[0m"
     if [ -e /home/pi/Inky-Calendar/Calendar/settings.py ]; then
         echo -e "Found an E-Paper settings file."
         sleep 2
@@ -49,22 +49,33 @@ if [ "$option" = 1 ]; then
 	echo "Updating now..."
         cd
     else
-        echo -e "Could not find any settings.py file in /home/pi/Inky-Calendar/Calendar"
-	echo -e "Please uninstall the software first and then use the install option"
-	echo -e "Exiting now"
-	exit
+        # Ask to update anyway. May not work always, but can help with new versions.
+	echo -e "\e[1;36m"Could not find the configuration file -settings.py- in /home/pi/Inky-Calendar/Calendar"\e[0m"
+	sleep 2
+	echo -e "\e[1;36m"Would you like to update the Inky-Calendar software anyway?"\e[0m"
+        echo -e "\e[97mPlease type [y] for yes or [n] for no and confirm your selection with [ENTER]"
+        read -r -p 'Waiting for input...  ' update_anyway
+    
+        if [ "$update_anyway" != Y ] && [ "$update_anyway" != y ] && [ "$update_anyway" != N ] && [ "$update_anyway" != n ]; then
+            echo -e "invalid input, aborting now"
+            exit
+        fi
+        if [ -z "$update_anyway" ]; then
+            echo -e "You didn't enter anything, aborting now."
+            exit
+        fi
+    
+        if [ "$update_anyway" = Y ] || [ "$update_anyway" = y ]; then
+            echo "Updating now..."
+	else
+	    echo -e "Not attempting to update, exiting now."
+            exit
+        fi
     fi
 fi
 
 if [ "$option" = 2 ]; then
-    echo -e "\e[1;36m"The installer will finish the rest now. You can enjoy a break in the meanwhile."\e[0m"
-    
-    # Updating and upgrading the system, without taking too much space
-    echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
-    echo -e "\e[1;36m"This will take a while, sometimes up to 30 mins"\e[0m"
-    sudo apt-get update && sudo apt-get dist-upgrade -y
-    echo -e "\e[1;36m"System successfully updated and upgraded!"\e[0m"
-    echo ""
+    echo -e "\e[1;36m"Setting up the system by installing some required libraries for python3"\e[0m"
 
     # Installing a few packages which are missing on Raspbian Stretch Lite
     echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
@@ -75,21 +86,116 @@ if [ "$option" = 2 ]; then
     echo -e "\e[1;36m"Cleaning a bit of mess to free up some space..."\e[0m"
     sudo apt-get clean && sudo apt-get autoremove -y
     echo ""
-
-    # Installing packages required by the main script
-    echo -e "\e[1;36m"Installing a few required packages for the E-Paper Software"\e[0m"
-    sudo pip3 install pyowm
-    sudo pip3 install Pillow==5.3.0
-    sudo pip3 install ics
-    sudo pip3 install feedparser
-    pip3 install pyowm
-    pip3 install ics
-    pip3 install feedparser
-    pip3 install Pillow==5.3.0
-    echo -e "\e[1;36m"Finished installing libraries"\e[0m"
 fi
 
 if [ "$option" = 1 ] || [ "$option" = 2 ]; then
+    # Ask to update system
+    echo -e "\e[1;36m"Would you like to update and upgrade the operating system first?"\e[0m"
+    sleep 1
+    echo -e "\e[97mIt is not scrictly required, but highly recommended."
+    sleep 1
+    echo -e "\e[97mPlease note that updating may take quite some time, in rare cases up to 1 hour."
+    sleep 1
+    echo -e "\e[97mPlease type [y] for yes or [n] for no and confirm your selection with [ENTER]"
+    read -r -p 'Waiting for input...  ' update
+    
+    if [ "$update" != Y ] && [ "$update" != y ] && [ "$update" != N ] && [ "$update" != n ]; then
+        echo -e "invalid input, aborting now"
+        exit
+    fi
+    if [ -z "$update" ]; then
+        echo -e "You didn't enter anything, aborting now."
+        exit
+    fi
+    
+    if [ "$update" = Y ] || [ "$update" = y ]; then
+        # Updating and upgrading the system, without taking too much space
+        echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
+	sleep 1
+        echo -e "\e[1;36m"This will take a while, sometimes up to 1 hour"\e[0m"
+        sudo apt-get update && sudo apt-get dist-upgrade -y
+        echo -e "\e[1;36m"System successfully updated and upgraded!"\e[0m"
+        echo ""
+    fi
+
+    # Installing dependencies
+    
+    #PYOWM for user pi
+    echo -e "\e[1;36m"Installing dependencies for the Inky-Calendar software"\e[0m"
+    
+    echo -e "\e[1;36m"Checking if pyowm is installed for user pi"\e[0m"
+    if python3.5 -c "import pyowm" &> /dev/null; then
+        echo 'pyowm is installed, skipping installation of this package.'
+    else
+        echo 'pywom is not installed, attempting to install now'
+	pip3 install pyowm
+    fi
+    
+    #PYOWM for user sudo
+    echo -e "\e[1;36m"Checking if pyowm is installed for user sudo"\e[0m"
+    if sudo python3.5 -c "import pyowm" &> /dev/null; then
+        echo 'pyowm is installed, skipping installation of this package.'
+    else
+        echo 'pywom is not installed, attempting to install now'
+	sudo pip3 install pyowm
+    fi
+    
+    #Pillow for user pi  
+    echo -e "\e[1;36m"Checking if Pillow is installed for user pi"\e[0m"
+    if python3.5 -c "import PIL" &> /dev/null; then
+        echo 'Pillow is installed, skipping installation of this package.'
+    else
+        echo 'Pillow is not installed, attempting to install now'
+	pip3 install Pillow==5.3.0
+    fi
+    
+    #Pillow for user sudo
+    echo -e "\e[1;36m"Checking if Pillow is installed for user sudo"\e[0m"
+    if sudo python3.5 -c "import PIL" &> /dev/null; then
+        echo 'Pillow is installed, skipping installation of this package.'
+    else
+        echo 'Pillow is not installed, attempting to install now'
+	sudo pip3 install Pillow==5.3.0
+    fi
+    
+    #Ics.py for user pi  
+    echo -e "\e[1;36m"Checking if ics is installed for user pi"\e[0m"
+    if python3.5 -c "import ics" &> /dev/null; then
+        echo 'ics is installed, skipping installation of this package.'
+    else
+        echo 'ics is not installed, attempting to install now'
+	pip3 install ics
+    fi
+    
+    #Ics.py for user sudo
+    echo -e "\e[1;36m"Checking if ics is installed for user sudo"\e[0m"
+    if sudo python3.5 -c "import ics" &> /dev/null; then
+        echo 'ics is installed, skipping installation of this package.'
+    else
+        echo 'ics is not installed, attempting to install now'
+	sudo pip3 install ics
+    fi
+
+    #feedparser for user pi  
+    echo -e "\e[1;36m"Checking if feedparser is installed for user pi"\e[0m"
+    if python3.5 -c "import feedparser" &> /dev/null; then
+        echo 'feedparser is installed, skipping installation of this package.'
+    else
+        echo 'feedparser is not installed, attempting to install now'
+	pip3 install feedparser
+    fi
+    
+    #feedparser for user sudo
+    echo -e "\e[1;36m"Checking if feedparser is installed for user sudo"\e[0m"
+    if sudo python3.5 -c "import feedparser" &> /dev/null; then
+        echo 'feedparser is installed, skipping installation of this package.'
+    else
+        echo 'feedparser is not installed, attempting to install now'
+	sudo pip3 install feedparser
+    fi
+    
+    echo -e "\e[1;36m"Finished installing all dependencies"\e[0m"
+    
     # Clone the repository, then delete some non-required files
     echo -e "\e[1;36m"Installing the Inky-Calendar Software for your display"\e[0m"
     cd
@@ -113,8 +219,8 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     cat > /home/pi/Inky-Calendar/Info.txt << EOF
 This document contains a short info of the Inky-Calendar software version
 
-Version: 1.5
-Installer version: 1.5 (Early February 2019)
+Version: 1.6
+Installer version: 1.6 (Mid April 2019)
 configuration file: /home/pi/Inky-Calendar/Calendar/settings.py
 If the time was set correctly, you installed this software on:
 EOF
@@ -136,11 +242,6 @@ EOF
 
     sudo service supervisor start E-Paper
 
-    # Installing some new dependencies
-    echo "Installing some new dependencies"
-    sudo apt-get install python-numpy -y
-    sudo pip3 install feedparser
-    pip3 install feedparser
     echo ""
 
     # Final words
