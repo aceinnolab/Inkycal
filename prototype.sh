@@ -1,8 +1,7 @@
 #!/bin/bash
 # E-Paper-Calendar software installer for Raspberry pi
-# Version: 1.5 (Early Februrary 2019)
-# Stability status of this installer: Confirmed with Raspbain Stretch Lite on 12th March 2019
-# Copyright by aceisace
+# Version: 1.6 (Mid April 2019)
+# Stability status of this installer: Testing in progress
 
 echo -e "\e[1mPlease select an option from below:"
 echo -e "\e[97mEnter \e[91m1 \e[97m to update the E-Paper software"
@@ -55,7 +54,7 @@ if [ "$option" = 1 ]; then
 fi
 
 if [ "$option" = 2 ]; then
-    echo -e "\e[1;36m"Setting up the system by installing some required libraries for python3 "\e[0m"
+    echo -e "\e[1;36m"Setting up the system by installing some required libraries for python3"\e[0m"
 
     # Installing a few packages which are missing on Raspbian Stretch Lite
     echo -e "\e[1;36m"Installing a few packages that are missing on Raspbian Stretch Lite..."\e[0m"
@@ -97,7 +96,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     # Installing dependencies
     
     #PYOWM for user pi
-    echo -e "\e[1;36m"Installing dependencies of the Inky-Calendar software"\e[0m"
+    echo -e "\e[1;36m"Installing dependencies for the Inky-Calendar software"\e[0m"
     
     echo -e "\e[1;36m"Checking if pyowm is installed for user pi"\e[0m"
     if python3.5 -c "import pyowm" &> /dev/null; then
@@ -117,7 +116,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     fi
     
     #Pillow for user pi  
-    echo -e "\e[1;36m"Checking if Pillow v5.3.0 is installed for user pi"\e[0m"
+    echo -e "\e[1;36m"Checking if Pillow is installed for user pi"\e[0m"
     if python3.5 -c "import PIL" &> /dev/null; then
         echo 'Pillow is installed, skipping installation of this package.'
     else
@@ -126,7 +125,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     fi
     
     #Pillow for user sudo
-    echo -e "\e[1;36m"Checking if Pillow v5.3.0 is installed for user sudo"\e[0m"
+    echo -e "\e[1;36m"Checking if Pillow is installed for user sudo"\e[0m"
     if sudo python3.5 -c "import PIL" &> /dev/null; then
         echo 'Pillow is installed, skipping installation of this package.'
     else
