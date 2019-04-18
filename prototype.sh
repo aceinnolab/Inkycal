@@ -19,7 +19,7 @@ if [ -z "$option" ]; then
     exit
 fi
 if [ "$option" = 3 ]; then
-    echo -e "Removing the E-Paper software now..."
+    echo -e "\e[1;36m"Removing the E-Paper software now..."\e[0m"
     pip3 uninstall Pillow -y && sudo pip3 uninstall Pillow -y && sudo pip3 uninstall pyowm -y&& sudo pip3 uninstall ics -y && pip3 uninstall pyowm -y && pip3 uninstall ics -y && sudo apt-get remove supervisor -y && pip3 uninstall feedparser && sudo pip3 uninstall feedparser && sudo apt-get clean && sudo apt-get autoremove -y
     if [ -e /etc/supervisor/conf.d/E-Paper.conf ]; then
         sudo rm /etc/supervisor/conf.d/E-Paper.conf
@@ -32,7 +32,7 @@ if [ "$option" = 3 ]; then
 fi
 
 if [ "$option" = 1 ]; then
-    echo "Checking if the settings.py exists..."
+    echo -e "\e[1;36m"Checking if the settings.py exists..."\e[0m"
     if [ -e /home/pi/Inky-Calendar/Calendar/settings.py ]; then
         echo -e "Found an E-Paper settings file."
         sleep 2
@@ -47,8 +47,9 @@ if [ "$option" = 1 ]; then
         cd
     else
         # Ask to update anyway. May not work always, but can help with new versions.
-	echo -e "\e[1mCould not find the configuration file -settings.py- in /home/pi/Inky-Calendar/Calendar"
-        echo -e "\e[1mWould you like to update the Inky-Calendar software anyway?"
+	echo -e "\e[1;36m"Could not find the configuration file -settings.py- in /home/pi/Inky-Calendar/Calendar"\e[0m"
+	sleep 2
+	echo -e "\e[1;36m"Would you like to update the Inky-Calendar software anyway?"\e[0m"
         echo -e "\e[97mPlease type [y] for yes or [n] for no and confirm your selection with [ENTER]"
         read -r -p 'Waiting for input...  ' update_anyway
     
@@ -86,9 +87,12 @@ fi
 
 if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     # Ask to update system
-    echo -e "\e[1mWould you like to update and upgrade the operating system first?"
+    echo -e "\e[1;36m"Would you like to update and upgrade the operating system first?"\e[0m"
+    sleep 1
     echo -e "\e[97mIt is not scrictly required, but highly recommended."
+    sleep 1
     echo -e "\e[97mPlease note that updating may take quite some time, in rare cases up to 1 hour."
+    sleep 1
     echo -e "\e[97mPlease type [y] for yes or [n] for no and confirm your selection with [ENTER]"
     read -r -p 'Waiting for input...  ' update
     
@@ -104,6 +108,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     if [ "$update" = Y ] || [ "$update" = y ]; then
         # Updating and upgrading the system, without taking too much space
         echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
+	sleep 1
         echo -e "\e[1;36m"This will take a while, sometimes up to 1 hour"\e[0m"
         sudo apt-get update && sudo apt-get dist-upgrade -y
         echo -e "\e[1;36m"System successfully updated and upgraded!"\e[0m"
