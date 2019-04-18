@@ -61,7 +61,7 @@ If the Installer should fail for any reason, kindly open an issue and paste the 
 
 **Screenshot of the installer:**
 
-<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/installer-v1-5-p1.png" width="650"><img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/installer-v1-5-p2.png" width="650">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/Stable/Gallery/installer-v1.6-part1.png" width="650"><img src="https://github.com/aceisace/Inky-Calendar/blob/Stable/Gallery/installer-v1.6-part2.png" width="650">
 
 ## Adding details to the programm
 There are currently 2 ways to add details to the programm, the user-friendly method and the legacy method. It's recommended to use the 
