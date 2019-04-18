@@ -4,6 +4,8 @@
 # Stability status of this installer: Confirmed with Raspbain Stretch Lite on 12th March 2019
 # Copyright by aceisace
 
+#TODO: Faster installation by checking if module is installed (by test-importing it in python3)
+
 echo -e "\e[1mPlease select an option from below:"
 echo -e "\e[97mEnter \e[91m1 \e[97m to update the E-Paper software"
 echo -e "\e[97mEnter \e[91m2 \e[97m to install the E-Paper software"
@@ -88,23 +90,24 @@ if [ "$option" = 2 ]; then
 fi
 
 if [ "$option" = 1 ] || [ "$option" = 2 ]; then
+    # Clone the repository, then delete some non-required files
     echo -e "\e[1;36m"Installing the Inky-Calendar Software for your display"\e[0m"
     cd
-    git clone https://github.com/aceisace/Inky-Calendar
-    #mkdir Inky-Calendar
-    #cd Inky-Calendar
-    #cp -r Calendar /home/pi/Inky-Calendar/
-    #cp README.md /home/pi/Inky-Calendar/
-    #cp LICENSE /home/pi/Inky-Calendar/
-    #cp -r .git /home/pi/Inky-Calendar/
+    git clone https://github.com/aceisace/Inky-Calendar Inky-Calendar-temp
+    mkdir Inky-Calendar
+    cd Inky-Calendar-temp
+    cp -r Calendar /home/pi/Inky-Calendar/
+    cp README.md /home/pi/Inky-Calendar/
+    cp LICENSE /home/pi/Inky-Calendar/
+    cp -r .git /home/pi/Inky-Calendar/
     
     # Make a copy of the sample settings.py file
     cd /home/pi/Inky-Calendar/Calendar
     cp settings.py.sample settings.py
-    cd
 
     # Remove the downloaded (temporary) directory
-    sudo rm -r Inky-Calendar
+    cd
+    sudo rm -r Inky-Calendar-temp
 
     # add a short info
     cat > /home/pi/Inky-Calendar/Info.txt << EOF
