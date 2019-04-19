@@ -15,6 +15,7 @@ A software written in python3 that allows you to transform an E-Paper display (l
 This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E-Paper display from waveshare/gooddisplay and works with Raspberry Pi 2, 3 and 0 (Zero, Zero W, Zero WH).
 
 ## News:
+* **Updated and optimised the installer for faster installation and updating (Mid April 2019) 
 * **Added a user-friendly Web-UI for adding details to the programm** (Credit to TobyChui for the template)
 * **Version 1.5 released (Early February 2019) with a new layout, displayed events and many back-end improvements**
 
@@ -68,13 +69,13 @@ There are currently 2 ways to add details to the programm, the user-friendly met
 user-friendly option first. If you encounter any bugs, please use the legacy method and write a comment describing the bug.
 
 1) **User-friendly method**
-To use the new WEB-UI (Web-User-Interface), simply double-click the file Settings-Web-UI.html located in /home/pi/E-Paper-Calendar/Calendar/ to open up the document with the browser (Chrome etc.). Next, fill in the details (you can use the table below for a reference) and click on generate to create your settings.py file. Lastly, copy the generated 'settings.py' file to /home/pi/E-Paper-Calendar/Calendar (the same path where the settings.py file is) and try starting the main script with:
-python3.5 /home/pi/E-Paper-Calendar/Calendar/E-Paper.py.
+To use the new WEB-UI (Web-User-Interface), simply double-click the file Settings-Web-UI.html located in /home/pi/Inky-Calendar/Calendar/ to open up the document with the browser (Chrome etc.). Next, fill in the details (you can use the table below for a reference) and click on generate to create your settings.py file. Lastly, copy the generated 'settings.py' file to /home/pi/Inky-Calendar/Calendar (the same path where the settings.py file is) and try starting the main script with:
+python3.5 /home/pi/Inky-Calendar/Calendar/E-Paper.py.
 If you encounter any issues, please leave a comment here or via email. Thanks in advance.
 
 2) **Legacy method**
-Navigate to the home directory, open 'E-Paper-Calendar' and open the file 'settings.py' inside the Calendar folder. Adjust the values using the list below as a reference. You can edit the settings.py file by typing:
-`nano /home/pi/E-Paper-Calendar/Calendar/settings.py` in the Terminal. 
+Navigate to the home directory, open 'Inky-Calendar' and open the file 'settings.py' inside the Calendar folder. Adjust the values using the list below as a reference. You can edit the settings.py file by typing:
+`nano /home/pi/Inky-Calendar/Calendar/settings.py` in the Terminal. 
 
 | Parameter |  Description |
 | :---: | :---: |
@@ -104,9 +105,9 @@ If you encounter errors related to your iCalendar, please feel free to report th
 ## Updating
 If you want to update to the latest version, run the Installer from above again and select the 'update' option. 
 
-Before updating, the Installer checks if the settings file (/home/pi/E-Paper-Calendar/Calendar/settings.py) exists. This is done to test if a previous version was installed correctly. If the settings file exists, it is copied to the home directory and renamed as 'settings.py.old'. The old software folder 'E-Paper-Calendar' is renamed to 'E-Paper-Calendar-old'. Lastly, the latest version of the software is copied to the Raspberry as 'E-Paper-Calendar'.
+Before updating, the Installer checks if the settings file (/home/pi/Inky-Calendar/Calendar/settings.py) exists. This is done to test if a previous version was installed correctly. If the settings file exists, it is copied to the home directory and renamed as 'settings.py.old'. The old software folder 'Inky-Calendar' is renamed to 'Inky-Calendar-old'. Lastly, the latest version of the software is copied to the Raspberry as 'Inky-Calendar'.
 
-After updating, copy the contents from your old settings file to the new one. There are usally more options in the new settings.py file so a 'template' is prepared with each update. This template can be found in /home/pi/E-Paper-Calendar/Calendar/settings.py.sample.
+After updating, copy the contents from your old settings file to the new one. There are usally more options in the new settings.py file so a 'template' is prepared with each update. This template can be found in /home/pi/Inky-Calendar/Calendar/settings.py.sample.
 
 ## Contributing
 All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inky-Calendar/blob/master/CONTRIBUTING.md).
