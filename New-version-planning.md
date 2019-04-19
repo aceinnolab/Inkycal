@@ -1,3 +1,5 @@
+## This file will be deleted soon as the progress of the next release has been shifted to 'Projects'
+
 ### This file contains features in planning for the next release
 
 # For version 1.6
