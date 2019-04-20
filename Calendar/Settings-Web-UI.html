@@ -192,7 +192,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <br>
   
   <script>
-  var template = 'ical_urls = [\n"{ical_urls}"\n]\nrss_feeds = [\n"{rss_urls}"\n]\nupdate_interval = "{update_interval}"\nadditional_feature = "{additional_feature}"\napi_key = "{api_key}"\nlocation = "{location}"\nweek_starts_on = "{week_starts_on}"\nevents_max_range = "{events_max_range}"\ncalibration_hours = [{calibration_hours}]\ndisplay_colours = "{display_colours}"\nlanguage = "{language}"\nunits = "{units}"\nhours = "{hours}"';
+  var template = 'ical_urls = ["{ical_urls}"]\nrss_feeds = ["{rss_urls}"]\nupdate_interval = "{update_interval}"\nadditional_feature = "{additional_feature}"\napi_key = "{api_key}"\nlocation = "{location}"\nweek_starts_on = "{week_starts_on}"\nevents_max_range = "{events_max_range}"\ncalibration_hours = [{calibration_hours}]\ndisplay_colours = "{display_colours}"\nlanguage = "{language}"\nunits = "{units}"\nhours = "{hours}"';
   
   function generate(){
     var ical_urls = $("#ical_urls").val().trim();
