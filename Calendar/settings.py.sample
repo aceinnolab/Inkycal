@@ -1,9 +1,5 @@
-ical_urls = [
-"https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"
-]
-rss_feeds = [
-"http://feeds.bbci.co.uk/news/world/rss.xml#"
-]
+ical_urls = ["https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"]
+rss_feeds = ["http://feeds.bbci.co.uk/news/world/rss.xml#"]
 update_interval = "60"
 additional_feature = "events"
 api_key = ""
