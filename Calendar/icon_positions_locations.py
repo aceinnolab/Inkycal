@@ -9,7 +9,7 @@ from PIL import Image
 from settings import language
 im_open = Image.open
 
-path = '/home/pi/Calendar/Calendar/'
+path = '/home/pi/Inky-Calendar/Calendar/'
 wpath = path+'weather-icons/'
 mpath = path+'translations/'+language+'/months/'
 weekpath = path+'translations/'+language+'/week/'

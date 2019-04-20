@@ -9,295 +9,303 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.js"></script>
 <style>
 body{
-	background-color:#eaeaea;
+  background-color:#eaeaea;
 }
 </style>
 </head>
 <body>
 <br><br>
-	<div class="ts container">
-	<div class="ts segment">
-		<div class="ts header">
-			Setting Generator
-			<div class="sub header"><a href="https://github.com/aceisace/Inky-Calendar">For Inky-Calendar Project of Ace-Innovation Laboratory (by aceisace)</a> Project<br>
-			<ins>If no value is filled in for any of the row, the default value will be used.</ins>
-			</div>
-			
-		</div>
-	</div>
-		<form class="ts form">
-			<div class="field">
-				<label>iCalendar URL/s</label>
-				<input id="ical_urls" type="text" placeholder="https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics">
-			</div>
+  <div class="ts container">
+  <div class="ts segment">
+    <div class="ts header">
+      Setting Generator
+      <div class="sub header"><a href="https://github.com/aceisace/Inky-Calendar">For Inky-Calendar Project of Ace-Innovation Laboratory (by aceisace)</a><br>
+      <img src="https://github.com/aceisace/Inky-Calendar/blob/Stable/Gallery/Inky-Calendar-logo.png?raw=true" width="800">
+      <div>
+      </div>
+      <ins>If no value is filled in for any of the row, the default value will be used.</ins>
+      </div>
+      
+    </div>
+  </div>
+    <form class="ts form">
+      <div class="field">
+        <label>iCalendar URL. If you want to add multiple URLs, seperate each one with a comma.</label>
+        <input id="ical_urls" type="text" placeholder="https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics">
+      </div>
 
             <div class="field">
-				<label>RSS-Feed URLs</label>
-				<input id="rss_urls" type="text" placeholder="http://feeds.bbci.co.uk/news/world/rss.xml#">
-			</div>
+        <label>RSS-Feed URL. To add more than one feed, seperate each URL with a comma.</label>
+        <input id="rss_urls" type="text" placeholder="http://feeds.bbci.co.uk/news/world/rss.xml#">
+      </div>
 
-			<div class="field">
-				<label>How often should the display be refreshed?</label>
-				<div class="ts checkboxes">
-					<div class="ts radio checkbox">
-						<input id="update_15_mins" type="radio" name="aa">
-						<label for="update_15_mins">every 15 minutes</label>
-					</div>
-					<div class="ts radio checkbox">
-						<input id="update_20_mins" type="radio" name="aa">
-						<label for="update_20_mins">every 20 minutes</label>
-					</div>
-					<div class="ts radio checkbox">
-						<input id="update_30_mins" type="radio" name="aa">
-						<label for="update_30_mins">every 30 minutes</label>
-					</div>
-					<div class="ts radio checkbox">
-						<input id="update_60_mins" type="radio" name="aa">
-						<label for="update_60_mins">every 60 minutes</label>
-					</div>
-				</div>
-			</div>
+      <div class="field">
+        <label>How often should the display be refreshed?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="update_15_mins" type="radio" name="aa">
+            <label for="update_15_mins">every 15 minutes</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="update_20_mins" type="radio" name="aa">
+            <label for="update_20_mins">every 20 minutes</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="update_30_mins" type="radio" name="aa">
+            <label for="update_30_mins">every 30 minutes</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="update_60_mins" type="radio" name="aa" checked>
+            <label for="update_60_mins">every 60 minutes</label>
+          </div>
+        </div>
+      </div>
 
-		    <div class="field">
-				<label>What do you want to be displayed below the Calendar?</label>
-				<div class="ts checkboxes">
-					<div class="ts radio checkbox">
-						<input id="event_feature" type="radio" name="af">
-						<label for="event_feature">Events from my iCalendar</label>
-					</div>
-					<div class="ts radio checkbox">
-						<input id="rss_feature" type="radio" name="af">
-						<label for="rss_feature">RSS-Feeds</label>
-					</div>
-				</div>
-			</div>
+        <div class="field">
+        <label>What do you want to be displayed below the Calendar?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="event_feature" type="radio" name="af">
+            <label for="event_feature">Events from my iCalendar</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="rss_feature" type="radio" name="af" checked>
+            <label for="rss_feature">RSS-Feeds</label>
+          </div>
+        </div>
+      </div>
 
-			<div class="field">
-				<label>Openweathermap API Key</label>
-				<input id="api_key" type="text" placeholder="">
-			</div>
-			<div class="field">
-				<label>Location</label>
-				<input id="location" type="text" placeholder="Stuttgart, DE">
-			</div>
-		
-			<div class="field">
-				<label>Week starts on</label>
-				<div class="ts checkboxes">
-					<div class="ts radio checkbox">
-						<input id="week_monday" type="radio" name="hr">
-						<label for="week_monday">Monday</label>
-					</div>
-					<div class="ts radio checkbox">
-						<input id="week_sunday" type="radio" name="hr">
-						<label for="week_sunday">Sunday</label>
-					</div>
-				</div>
-			</div>
+      <div class="field">
+        <label>Openweathermap API Key</label>
+        <input id="api_key" type="text" placeholder="">
+      </div>
+      <div class="field">
+        <label>Location</label>
+        <input id="location" type="text" placeholder="Stuttgart, DE">
+      </div>
+    
+      <div class="field">
+        <label>Week starts on</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="week_monday" type="radio" name="hr" checked>
+            <label for="week_monday">Monday</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="week_sunday" type="radio" name="hr">
+            <label for="week_sunday">Sunday</label>
+          </div>
+        </div>
+      </div>
 
-			<div class="field">
-				<label>How far (in the future) should events from your iCalendar be fetched (in days)?</label>
-				<input id="events_max_range" type="text" placeholder="60">
-			</div>
+      <div class="field">
+        <label>How far (in the future) should events from your iCalendar be fetched (in days)?</label>
+        <input id="events_max_range" type="text" placeholder="60">
+      </div>
 
-			<div class="field">
-				<label>At which hours should the display be calibrated?</label>
-				<input id="calibration_hours" type="text" placeholder="0,12,18">
-			</div>
+      <div class="field">
+        <label>At which hours should the display be calibrated?</label>
+        <input id="calibration_hours" type="text" placeholder="0,12,18">
+      </div>
 
-			<div class="field">
-				<label>Which Colours does your E-Paper Display support?</label>
-				<div class="ts checkboxes">
-					<div class="ts radio checkbox">
-						<input id="b_w_r" type="radio" name="dp">
-						<label for="b_w_r">Black-White-Red</label>
-					</div>
-					<div class="ts radio checkbox">
-						<input id="b_w" type="radio" name="dp">
-						<label for="b_w">Black-White</label>
-					</div>
-				</div>
-			</div>
+      <div class="field">
+        <label>Which Colours does your E-Paper Display support?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="b_w_r" type="radio" name="dp" checked>
+            <label for="b_w_r">Black-White-Red</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="b_w" type="radio" name="dp">
+            <label for="b_w">Black-White</label>
+          </div>
+        </div>
+      </div>
 
-			<div class="field">
-				<label>Which language do you prefer for the Calendar?</label>
-				<div class="ts checkboxes">
-					<div class="ts radio checkbox">
-						<input id="language_en" type="radio" name="la">
-						<label for="language_en">English</label>
-					</div>
-					<div class="ts radio checkbox">
-						<input id="language_zh_tw" type="radio" name="la">
-						<label for="language_zh_tw">Chinese/Taiwanese</label>
-					</div>
-					<div class="ts radio checkbox">
-						<input id="language_de" type="radio" name="la">
-						<label for="language_de">German</label>
-					</div>
-				</div>
-			</div>
+      <div class="field">
+        <label>Which language do you prefer for the Calendar?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="language_en" type="radio" name="la" checked>
+            <label for="language_en">English</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_zh_tw" type="radio" name="la">
+            <label for="language_zh_tw">Chinese/Taiwanese</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_de" type="radio" name="la">
+            <label for="language_de">German</label>
+          </div>
+        </div>
+      </div>
 
-			<div class="field">
-				<label>Which units are used in your country?</label>
-				<div class="ts checkboxes">
-					<div class="ts radio checkbox">
-						<input id="metric" type="radio" name="un">
-						<label for="metric">Metric</label>
-					</div>
-					<div class="ts radio checkbox">
-						<input id="imperial" type="radio" name="un">
-						<label for="imperial">Imperial</label>
-					</div>
-				</div>
-			</div>
+      <div class="field">
+        <label>Which units are used in your country?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="metric" type="radio" name="un" checked>
+            <label for="metric">Metric</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="imperial" type="radio" name="un">
+            <label for="imperial">Imperial</label>
+          </div>
+        </div>
+      </div>
 
-			<div class="field">
-				<label>Which hour-format do you prefer?</label>
-				<div class="ts checkboxes">
-					<div class="ts radio checkbox">
-						<input id="12_hours" type="radio" name="tf">
-						<label for="12_hours">12-hour format</label>
-					</div>
-					<div class="ts radio checkbox">
-						<input id="24_hours" type="radio" name="tf">
-						<label for="24_hours">24-hour format</label>
-					</div>
-				</div>
-			</div>
+      <div class="field">
+        <label>Which hour-format do you prefer?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="12_hours" type="radio" name="tf">
+            <label for="12_hours">12-hour format</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="24_hours" type="radio" name="tf" checked>
+            <label for="24_hours">24-hour format</label>
+          </div>
+        </div>
+      </div>
 
-		</form>
-		<br>
-		<button class="ts primary button" onClick="generate();">Generate</button>
-	<br><br>
-	<kbd>Developed by Toby Chui for Inky-Calendar Project, modified by aceisace Licensed under MIT</kbd>
-	<details class="ts accordion">
-		<summary>
-			<i class="dropdown icon"></i> MIT License
-		</summary>
-		<div class="content">
-			<p>Copyright 2019 Toby Chui <br>
+    </form>
+    <br>
+    <button class="ts primary button" onClick="generate();">Generate</button>
+  <br><br>
+  <kbd>Developed by Toby Chui for Inky-Calendar Project, modified by aceisace Licensed under MIT</kbd>
+  <details class="ts accordion">
+    <summary>
+      <i class="dropdown icon"></i> MIT License
+    </summary>
+    <div class="content">
+      <p>Copyright 2019 Toby Chui <br>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-		</div>
-	</details>
-	</div>
-	<br>
-	<br>
-	
-	<script>
-	var template = 'ical_urls = [\n"{ical_urls}"\n]\nrss_feeds = [\n"{rss_urls}"\n]\nupdate_interval = "{update_interval}"\nadditional_feature = "{additional_feature}"\napi_key = "{api_key}"\nlocation = "{location}"\nweek_starts_on = "{week_starts_on}"\nevents_max_range = "{events_max_range}"\ndisplay_colours = "{display_colours}"\nlanguage = "{language}"\nunits = "{units}"\nhours = "{hours}"';
-	
-	function generate(){
-		var ical_urls = $("#ical_urls").val().trim();
-		if (ical_urls == ""){
-			ical_urls = $("#ical_urls").attr("placeholder");
-		}
-		var rss_urls = $("#rss_urls").val().trim();
-		if (rss_urls == ""){
-			rss_urls = $("#rss_urls").attr("placeholder");
-		}
-		var update_interval = "60";
-		if ($('#update_15_mins').is(':checked')){
-			update_interval = "15";
-		}
-		if ($('#update_20_mins').is(':checked')){
-			update_interval = "20";
-		}
-		if ($('#update_30_mins').is(':checked')){
-			update_interval = "30";
-		}
-		if ($('#update_60_mins').is(':checked')){
-			update_interval = "60";
-		}
+    </div>
+  </details>
+  </div>
+  <br>
+  <br>
+  
+  <script>
+  var template = 'ical_urls = [\n"{ical_urls}"\n]\nrss_feeds = [\n"{rss_urls}"\n]\nupdate_interval = "{update_interval}"\nadditional_feature = "{additional_feature}"\napi_key = "{api_key}"\nlocation = "{location}"\nweek_starts_on = "{week_starts_on}"\nevents_max_range = "{events_max_range}"\ncalibration_hours = [{calibration_hours}]\ndisplay_colours = "{display_colours}"\nlanguage = "{language}"\nunits = "{units}"\nhours = "{hours}"';
+  
+  function generate(){
+    var ical_urls = $("#ical_urls").val().trim();
+    if (ical_urls == ""){
+      ical_urls = $("#ical_urls").attr("placeholder");
+    }
+    var rss_urls = $("#rss_urls").val().trim();
+    if (rss_urls == ""){
+      rss_urls = $("#rss_urls").attr("placeholder");
+    }
+    var update_interval = "60";
+    if ($('#update_15_mins').is(':checked')){
+      update_interval = "15";
+    }
+    if ($('#update_20_mins').is(':checked')){
+      update_interval = "20";
+    }
+    if ($('#update_30_mins').is(':checked')){
+      update_interval = "30";
+    }
+    if ($('#update_60_mins').is(':checked')){
+      update_interval = "60";
+    }
 
-		var additional_feature = "events";
-		if ($('#rss').is(':checked')){
-			hours = "rss";
-		}
+    var additional_feature = "events";
+    if ($('#rss').is(':checked')){
+      additional_feature = "rss";
+    }
 
-		var api_key = $("#api_key").val().trim();
-		if (api_key == ""){
-			api_key = "";
-		}
+    var api_key = $("#api_key").val().trim();
+    if (api_key == ""){
+      api_key = "";
+    }
 
-		var location = $("#location").val().trim();
-		if (location == ""){
-			location = $("#location").attr("placeholder");
-		}
+    var location = $("#location").val().trim();
+    if (location == ""){
+      location = $("#location").attr("placeholder");
+    }
 
-		var week_starts_on = "Monday";
-		if ($('#week_sunday').is(':checked')){
-			hours = "Sunday";
-		}
+    var week_starts_on = "Monday";
+    if ($('#week_sunday').is(':checked')){
+      week_starts_on = "Sunday";
+    }
 
-		var events_max_range = $("#events_max_range").val().trim();
-		if (events_max_range == ""){
-			events_max_range = $("#events_max_range").attr("placeholder");
-		}
+    var events_max_range = $("#events_max_range").val().trim();
+    if (events_max_range == ""){
+      events_max_range = $("#events_max_range").attr("placeholder");
+    }
 
-		var display_colours = "bw";
-		if ($('#b_w_r').is(':checked')){
-			display_colours = "bwr";
-		}
+    var calibration_hours = $("#calibration_hours").val().trim();
+    if (calibration_hours == ""){
+      calibration_hours = $("#calibration_hours").attr("placeholder");
+    }
 
-		var language = "en";
-		if ($('#language_de').is(':checked')){
-			language = "de";
-		}
-		if ($('#language_zh_tw').is(':checked')){
-			language = "zh_tw";
-		}
+    var display_colours = "bw";
+    if ($('#b_w_r').is(':checked')){
+      display_colours = "bwr";
+    }
 
-		var units = "metric";
-		if ($('#imperial').is(':checked')){
-			units = "imperial";
-		}
+    var language = "en";
+    if ($('#language_de').is(':checked')){
+      language = "de";
+    }
+    if ($('#language_zh_tw').is(':checked')){
+      language = "zh_tw";
+    }
 
-		var hours = "24";
-		if ($('#12_hours').is(':checked')){
-			hours = "12";
-		}
-		//console.log(ical_urls, rss_urls,update_interval, additional_feature, api_key, location, week_starts_on, events_max_range, calibration_hours, display_colours, language, units, hours);
-		createPythonSetting(ical_urls, rss_urls,update_interval, additional_feature, api_key, location, week_starts_on, events_max_range, calibration_hours, display_colours, language, units, hours);
-	}
-	
-	function rk(content,key,value){
-		//Use to replace key-value pair in template string
-		return content.split("{" + key + "}").join(value);
-	}
-	
-	function createPythonSetting(a,b,c,d,e,f,g,h,i,j,k,l,m){
-		var box = template;
-		box = rk(box,"ical_urls",a);
-		box = rk(box,"rss_urls",b);
-		box = rk(box,"update_interval",c);
-		box = rk(box,"additional_feature",d);
-		box = rk(box,"api_key",e);
-		box = rk(box,"location",f);
-		box = rk(box,"week_starts_on",g);
-		box = rk(box,"events_max_range",h);
-		box = rk(box,"calibration_hours",i);
-		box = rk(box,"display_colours",j);
-		box = rk(box,"language",k);
-		box = rk(box,"units",l);
-		box = rk(box,"hours",m);
-		var config = new Blob([box], {type : "text/plain"});
-		var link = document.createElement('link');
-		link.href = window.URL.createObjectURL(config);
-		var a = document.createElement('A');
-		a.href = link.href;
-		a.download = link.href.substr(link.href.lastIndexOf('/') + 1);
-		document.body.appendChild(a);
-		$(a).attr('download','setting.py');
-		a.click();
-		document.body.removeChild(a);
-	}
-	
-	
-	</script>
+    var units = "metric";
+    if ($('#imperial').is(':checked')){
+      units = "imperial";
+    }
+
+    var hours = "24";
+    if ($('#12_hours').is(':checked')){
+      hours = "12";
+    }
+    //console.log(ical_urls, rss_urls,update_interval, additional_feature, api_key, location, week_starts_on, events_max_range, calibration_hours, display_colours, language, units, hours);
+    createPythonSetting(ical_urls, rss_urls,update_interval, additional_feature, api_key, location, week_starts_on, events_max_range, calibration_hours, display_colours, language, units, hours);
+  }
+  
+  function rk(content,key,value){
+    //Use to replace key-value pair in template string
+    return content.split("{" + key + "}").join(value);
+  }
+  
+  function createPythonSetting(a,b,c,d,e,f,g,h,i,j,k,l,m){
+    var box = template;
+    box = rk(box,"ical_urls",a);
+    box = rk(box,"rss_urls",b);
+    box = rk(box,"update_interval",c);
+    box = rk(box,"additional_feature",d);
+    box = rk(box,"api_key",e);
+    box = rk(box,"location",f);
+    box = rk(box,"week_starts_on",g);
+    box = rk(box,"events_max_range",h);
+    box = rk(box,"calibration_hours",i);
+    box = rk(box,"display_colours",j);
+    box = rk(box,"language",k);
+    box = rk(box,"units",l);
+    box = rk(box,"hours",m);
+    var config = new Blob([box], {type : "text/plain"});
+    var link = document.createElement('link');
+    link.href = window.URL.createObjectURL(config);
+    var a = document.createElement('A');
+    a.href = link.href;
+    a.download = link.href.substr(link.href.lastIndexOf('/') + 1);
+    document.body.appendChild(a);
+    $(a).attr('download','settings.py');
+    a.click();
+    document.body.removeChild(a);
+  }
+  
+  
+  </script>
 </body>
 </html>
