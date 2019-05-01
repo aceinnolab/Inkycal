@@ -69,7 +69,7 @@ There are currently 2 ways to add details to the programm, the user-friendly met
 user-friendly option first. If you encounter any bugs, please use the legacy method and write a comment describing the bug.
 
 1) **User-friendly method**
-To use the new WEB-UI (Web-User-Interface), simply double-click the file Settings-Web-UI.html located in /home/pi/Inky-Calendar/Calendar/ to open up the document with the browser (Chrome etc.). Next, fill in the details (you can use the table below for a reference) and click on generate to create your settings.py file. Lastly, copy the generated 'settings.py' file to /home/pi/Inky-Calendar/Calendar (the same path where the settings.py file is) and try starting the main script with:
+To use the new WEB-UI (Web-User-Interface), simply double-click the file Settings-Web-UI.html located in /home/pi/Inky-Calendar/Calendar/ to open up the document with the browser (Chrome etc.). Next, fill in the details (you can use the table below for a reference) and click on generate to create your settings.py file. Please add your details without these signs `""`. For example, your api_key should be entered like this: `wadiln3ilioejo` and _not_ `"wadiln3ilioejo"`. Lastly, copy the generated 'settings.py' file to /home/pi/Inky-Calendar/Calendar (the same path where the settings.py file is) and try starting the main script with:
 python3.5 /home/pi/Inky-Calendar/Calendar/E-Paper.py.
 If you encounter any issues, please leave a comment here or via email. Thanks in advance.
 
@@ -79,8 +79,8 @@ Navigate to the home directory, open 'Inky-Calendar' and open the file 'settings
 
 | Parameter |  Description |
 | :---: | :---: |
-| ical_urls |  Your iCalendar URL/s. To add more than one URL, seperate each with a comma |
-| rss_feeds | Here, you can add RSS-feed URLs which are used to fetch news etc. |
+| ical_urls |  Your iCalendar URL/s. To add more than one URL, seperate each with a comma, for example: "ical-url1", "ical-url2"|
+| rss_feeds | Here, you can add RSS-feed URLs which are used to fetch news etc. for example: "rss-url1", "rss-url2"|
 | update_interval | How often should be Display be updated in one hour? The default option is `"60"`, which means once every 30 hour. You can select one of the values from: `"10"`, `"15"`, `"20"`, `"30"`, `"60"`. Please note that ghosting will occur when updating too frequently. To prevent ghosting, it's recommended to run 1 calibration for every 6 updates. For example, with an update interval of 1 hour, the calibration should be executed every 6 hours. |
 | additional_feature | What would you like the Display to show in the section below the Calendar? The default option is `"rss"` (for RSS-feeds. You may choose `"events`" if you want to display events instead of RSS-feeds|
 | api_key | Your __personal__ openweathermap API-key which you can generate and find in your Account info |
