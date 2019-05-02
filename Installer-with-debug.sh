@@ -46,6 +46,8 @@ if [ "$option" = 1 ]; then
 	sleep 2
 	cp -r /home/pi/Inky-Calendar /home/pi/Inky-Calendar-old
 	sudo rm -r /home/pi/Inky-Calendar
+	mv /home/pi/Inky-Calendar-old/Calendar /home/pi/Inky-Calendar-old/Calendar-old #added due to relative path which searches for 
+	# the 'Calendar' folder
 	echo "Updating now..."
         cd
     else
