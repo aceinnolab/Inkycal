@@ -31,13 +31,9 @@ try:
 except Exception as e:
     print("Something didn't work right, maybe you're offline?"+e.reason)
 
-if display_colours is "bwr":
-    import epd7in5b
-    epd = epd7in5b.EPD()
+import e_paper_drivers
 
-if display_colours is "bw":
-    import epd7in5
-    epd = epd7in5.EPD()
+epd = e_paper_drivers.EPD()
 
 from calibration import calibration
 
