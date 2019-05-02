@@ -343,10 +343,11 @@ def main():
                                 else:
                                     agenda_list.append({'value':events.name, 'type':'full_day_event'})
 
-                    if rss_feeds != []:
+                    if bottom_section is not "":
                         del agenda_list[16:]
                         image.paste(seperator2, agenda_view_lines['line17'])
-                    else:
+
+                    if bottom_section is "":
                         del agenda_list[22:]
                         image.paste(seperator2, agenda_view_lines['line22'])
 
