@@ -13,14 +13,10 @@ from icon_positions_locations import black, white, red
 
 def calibration():
     """Function for Calibration"""
-    if display_colours == "bwr":
-        import epd7in5b
-        epd = epd7in5b.EPD()
-        print('_________Calibration for 3-Colour E-Paper started_________'+'\n')
-    if display_colours == "bw":
-        import epd7in5
-        epd = epd7in5.EPD()
-        print('_________Calibration for 2-Colour E-Paper started_________'+'\n')
+    import e_paper_drivers
+    epd = e_paper_drivers.EPD()
+    print('_________Calibration for E-Paper started_________'+'\n')
+
     for i in range(2):
         epd.init()
         print('Calibrating black...')
