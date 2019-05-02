@@ -82,40 +82,30 @@ class EPD:
         self.send_command(POWER_SETTING)
         self.send_data(0x37)
         self.send_data(0x00)
-
         self.send_command(PANEL_SETTING)
         self.send_data(0xCF)
         self.send_data(0x08)
-
         self.send_command(BOOSTER_SOFT_START)
         self.send_data(0xc7)
         self.send_data(0xcc)
         self.send_data(0x28)
-
         self.send_command(POWER_ON)
         self.wait_until_idle()
-
         self.send_command(PLL_CONTROL)
         self.send_data(0x3c)
-
         self.send_command(TEMPERATURE_CALIBRATION)
         self.send_data(0x00)
-
         self.send_command(VCOM_AND_DATA_INTERVAL_SETTING)
         self.send_data(0x77)
-
         self.send_command(TCON_SETTING)
         self.send_data(0x22)
-
         self.send_command(TCON_RESOLUTION)
         self.send_data(0x02)     #source 640
         self.send_data(0x80)
         self.send_data(0x01)     #gate 384
         self.send_data(0x80)
-
         self.send_command(VCM_DC_SETTING)
         self.send_data(0x1E)      #decide by LUT file
-
         self.send_command(0xe5)           #FLASH MODE
         self.send_data(0x03)
 
