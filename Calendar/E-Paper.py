@@ -21,7 +21,7 @@ import feedparser
 import numpy as np
 
 from settings import *
-from icon_positions_locations import *
+from image_data import *
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 import pyowm
@@ -32,7 +32,6 @@ except Exception as e:
     print("Something didn't work right, maybe you're offline?"+e.reason)
 
 import e_paper_drivers
-
 epd = e_paper_drivers.EPD()
 
 from calibration import calibration
@@ -45,12 +44,6 @@ bold = ImageFont.truetype(path+'Assistant-Bold.ttf', 18)
 im_open = Image.open
 
 owm = pyowm.OWM(api_key)
-
-possible_update_values = [10, 15, 20, 30, 60]
-if int(update_interval) not in possible_update_values:
-    print('Selected update-interval: ',update_interval, 'minutes')
-    print('Please select an update interval from these values:', possible_update_values)
-    raise ValueError
 
 """Main loop starts from here"""
 def main():
