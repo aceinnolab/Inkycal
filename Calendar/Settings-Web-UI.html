@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<title>Settings-File Generator</title>
 <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -20,7 +21,7 @@ body{
     <div class="ts header">
       Setting Generator
       <div class="sub header"><a href="https://github.com/aceisace/Inky-Calendar">For Inky-Calendar Project of Ace-Innovation Laboratory (by aceisace)</a><br>
-      <img src="https://github.com/aceisace/Inky-Calendar/blob/Stable/Gallery/Inky-Calendar-logo.png?raw=true" width="800">
+      <img src="https://github.com/aceisace/Inky-Calendar/blob/Stable/Gallery/Inky-Calendar-logo.png?raw=true" width="800" alt="Inky-Calendar-logo">
       <div>
       </div>
       <ins>If no value is filled in for any of the row, the default value will be used.</ins>
@@ -30,12 +31,12 @@ body{
   </div>
     <form class="ts form">
       <div class="field">
-        <label>iCalendar URL. If you want to add multiple URLs, seperate each one with a comma.</label>
+        <label>Google iCalendar URL. If you want to add multiple URLs, seperate each one with a comma.</label>
         <input id="ical_urls" type="text" placeholder="https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics">
       </div>
 
             <div class="field">
-        <label>RSS-Feed URL. To add more than one feed, seperate each URL with a comma.</label>
+        <label>RSS-Feeds. To add more than one feed, seperate each URL with a comma.</label>
         <input id="rss_urls" type="text" placeholder="http://feeds.bbci.co.uk/news/world/rss.xml#">
       </div>
 
@@ -61,31 +62,33 @@ body{
         </div>
       </div>
 
-        <div class="field">
-        <label>What do you want to be displayed below the Calendar?</label>
-        <div class="ts checkboxes">
-          <div class="ts radio checkbox">
-            <input id="event_feature" type="radio" name="af">
-            <label for="event_feature">Events from my iCalendar</label>
-          </div>
-          <div class="ts radio checkbox">
-            <input id="rss_feature" type="radio" name="af" checked>
-            <label for="rss_feature">RSS-Feeds</label>
-          </div>
-        </div>
-      </div>
-
       <div class="field">
         <label>Openweathermap API Key</label>
+        <details class="ts accordion">
+          <summary>
+            <i class="dropdown icon"></i> Info
+          </summary>
+          <div class="content">
+        <p> Please insert your own Openweathermap API-key to fetch the latest weather info. To find out how to create your own key, please click here: <a href="https://github.com/aceisace/Inky-Calendar/wiki/Openweathermap-API">Creating an openweathermap api-key</a>. If you don't add an api-key, the top section will not show any weather info</p></div>
+        </details>
         <input id="api_key" type="text" placeholder="">
       </div>
+
+
       <div class="field">
-        <label>Location</label>
+        <label>Location (for weather data)</label>
+        <details class="ts accordion">
+          <summary>
+            <i class="dropdown icon"></i> Info
+          </summary>
+          <div class="content">
+        <p>Location refers to the closest weather station from your place. It isn't necessarily the place you live in. To find this location, type your city name in the search box on <a href="https://openweathermap.org/">openweathermap</a>. The output should be in the following format: City Name, Country ISO-Code. Not sure what your ISO code is? Check here: <a href="https://countrycode.org/">(find iso-code)</a></p></div>
+        </details>
         <input id="location" type="text" placeholder="Stuttgart, DE">
       </div>
     
       <div class="field">
-        <label>Week starts on</label>
+        <label>On which day does the week start on in your country?</label>
         <div class="ts checkboxes">
           <div class="ts radio checkbox">
             <input id="week_monday" type="radio" name="hr" checked>
@@ -158,12 +161,62 @@ body{
         <label>Which hour-format do you prefer?</label>
         <div class="ts checkboxes">
           <div class="ts radio checkbox">
+            <input id="24_hours" type="radio" name="tf" checked>
+            <label for="24_hours">24-hour format</label>
+          </div>
+          <div class="ts radio checkbox">
             <input id="12_hours" type="radio" name="tf">
             <label for="12_hours">12-hour format</label>
           </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>What should be displayed in the top section?</label>
+        <div class="ts checkboxes">
           <div class="ts radio checkbox">
-            <input id="24_hours" type="radio" name="tf" checked>
-            <label for="24_hours">24-hour format</label>
+            <input id="Weather" type="radio" name="ts" checked>
+            <label for="Weather">Events from my iCalendar</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="top_blank" type="radio" name="ts">
+            <label for="top_blank">Nothing</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>What should be displayed in the middle (main) section?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="Calendar" type="radio" name="ms" checked>
+            <label for="Calendar">A monthly Calendar</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="Agenda" type="radio" name="ms">
+            <label for="Agenda">Agenda-like overview</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="middle_blank" type="radio" name="ms">
+            <label for="middle_blank">Nothing</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>What should be displayed in the bottom section? If you've chosen the Agenda View for the middle section, should choose either RSS-feeds or nothing.</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="RSS" type="radio" name="bs" checked>
+            <label for="RSS">RSS-feeds</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="Events" type="radio" name="bs">
+            <label for="Events">Events from my iCalendar</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="bottom_blank" type="radio" name="bs">
+            <label for="bottom_blank">Nothing</label>
           </div>
         </div>
       </div>
@@ -172,7 +225,7 @@ body{
     <br>
     <button class="ts primary button" onClick="generate();">Generate</button>
   <br><br>
-  <kbd>Developed by Toby Chui for Inky-Calendar Project, modified by aceisace Licensed under MIT</kbd>
+  <kbd>Developed by Toby Chui for Inky-Calendar Project, modified by aceisace. Licensed under MIT</kbd>
   <details class="ts accordion">
     <summary>
       <i class="dropdown icon"></i> MIT License
@@ -192,7 +245,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <br>
   
   <script>
-  var template = 'ical_urls = ["{ical_urls}"]\nrss_feeds = ["{rss_urls}"]\nupdate_interval = "{update_interval}"\nadditional_feature = "{additional_feature}"\napi_key = "{api_key}"\nlocation = "{location}"\nweek_starts_on = "{week_starts_on}"\nevents_max_range = "{events_max_range}"\ncalibration_hours = [{calibration_hours}]\ndisplay_colours = "{display_colours}"\nlanguage = "{language}"\nunits = "{units}"\nhours = "{hours}"';
+  var template = 'ical_urls = ["{ical_urls}"]\nrss_feeds = ["{rss_urls}"]\nupdate_interval = "{update_interval}"\napi_key = "{api_key}"\nlocation = "{location}"\nweek_starts_on = "{week_starts_on}"\nevents_max_range = "{events_max_range}"\ncalibration_hours = [{calibration_hours}]\ndisplay_colours = "{display_colours}"\nlanguage = "{language}"\nunits = "{units}"\nhours = "{hours}"\ntop_section = "{top_section}"\nmiddle_section = "{middle_section}"\nbottom_section = "{bottom_section}"';
   
   function generate(){
     var ical_urls = $("#ical_urls").val().trim();
@@ -215,11 +268,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
     if ($('#update_60_mins').is(':checked')){
       update_interval = "60";
-    }
-
-    var additional_feature = "events";
-    if ($('#rss').is(':checked')){
-      additional_feature = "rss";
     }
 
     var api_key = $("#api_key").val().trim();
@@ -269,8 +317,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if ($('#12_hours').is(':checked')){
       hours = "12";
     }
-    //console.log(ical_urls, rss_urls,update_interval, additional_feature, api_key, location, week_starts_on, events_max_range, calibration_hours, display_colours, language, units, hours);
-    createPythonSetting(ical_urls, rss_urls,update_interval, additional_feature, api_key, location, week_starts_on, events_max_range, calibration_hours, display_colours, language, units, hours);
+
+    var top_section = "Weather";
+    if ($('#top_blank').is(':checked')){
+      top_section = "";
+    }
+    
+    var middle_section = "Calendar";
+    if ($('#Agenda').is(':checked')){
+      middle_section = "Agenda";
+    }
+    if ($('#middle_blank').is(':checked')){
+      middle_section = "";
+    }
+
+    var bottom_section = "RSS";
+    if ($('#Events').is(':checked')){
+      bottom_section = "Events";
+    }
+    if ($('#bottom_blank').is(':checked')){
+      bottom_section = "";
+    }
+
+
+    //console.log(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, events_max_range, calibration_hours, display_colours, language, units, hours, top_section, middle_section, bottom_section);
+    createPythonSetting(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, events_max_range, calibration_hours, display_colours, language, units, hours, top_section, middle_section, bottom_section);
   }
   
   function rk(content,key,value){
@@ -278,21 +349,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return content.split("{" + key + "}").join(value);
   }
   
-  function createPythonSetting(a,b,c,d,e,f,g,h,i,j,k,l,m){
+  function createPythonSetting(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o){
     var box = template;
     box = rk(box,"ical_urls",a);
     box = rk(box,"rss_urls",b);
     box = rk(box,"update_interval",c);
-    box = rk(box,"additional_feature",d);
-    box = rk(box,"api_key",e);
-    box = rk(box,"location",f);
-    box = rk(box,"week_starts_on",g);
-    box = rk(box,"events_max_range",h);
-    box = rk(box,"calibration_hours",i);
-    box = rk(box,"display_colours",j);
-    box = rk(box,"language",k);
-    box = rk(box,"units",l);
-    box = rk(box,"hours",m);
+    box = rk(box,"api_key",d);
+    box = rk(box,"location",e);
+    box = rk(box,"week_starts_on",f);
+    box = rk(box,"events_max_range",g);
+    box = rk(box,"calibration_hours",h);
+    box = rk(box,"display_colours",i);
+    box = rk(box,"language",j);
+    box = rk(box,"units",k);
+    box = rk(box,"hours",l);
+    box = rk(box,"top_section",m);
+    box = rk(box,"middle_section",n);
+    box = rk(box,"bottom_section",o);
+
+
     var config = new Blob([box], {type : "text/plain"});
     var link = document.createElement('link');
     link.href = window.URL.createObjectURL(config);
