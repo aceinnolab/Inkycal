@@ -91,6 +91,13 @@ def main():
                 ImageDraw.Draw(space).text((x, y), text, fill='black', font=font)
                 image.paste(space, tuple)
 
+            def internet_available():
+                try:
+                    urlopen('https://google.com',timeout=5)
+                    return True
+                except URLError as err:
+                    return False
+
             """Connect to Openweathermap API and fetch weather data"""
             if top_section is "Weather" and api_key != "" and owm.is_API_online() is True:
                 print("Connecting to Openweathermap API servers...")
@@ -164,7 +171,7 @@ def main():
             """Using the built-in calendar to generate the monthly Calendar
             template"""
             cal = calendar.monthcalendar(time.year, time.month)
-                
+
             if middle_section is "Calendar":
                 """Add the icon with the current month's name"""
                 image.paste(im_open(mpath+str(time.strftime("%B")+'.jpeg')), monthplace)
@@ -278,7 +285,6 @@ def main():
             if middle_section is "Calendar" or "Agenda":
                 """Algorithm for filtering and sorting events from your
                 iCalendar/s"""
-                print('Fetching events from your calendar'+'\n')
                 events_this_month = []
                 upcoming = []
                 now = arrow.now()
@@ -288,44 +294,52 @@ def main():
                 to filter events in that range"""
                 agenda_max_days = arrow.now().replace(days=+22)
                 calendar_max_days = arrow.now().replace(days=+int(events_max_range))
-                for icalendars in ical_urls:
-                    decode = str(urlopen(icalendars).read().decode())
-                    beginAlarmIndex = 0
-                    while beginAlarmIndex >= 0:
-                        beginAlarmIndex = decode.find('BEGIN:VALARM')
-                        if beginAlarmIndex >= 0:
-                            endAlarmIndex = decode.find('END:VALARM')
-                            decode = decode[:beginAlarmIndex] + decode[endAlarmIndex+12:]
-                    ical = Calendar(decode)
-                    for events in ical.events:
-                        if re.search('RRULE',str(events)) is not None:
-                            r = re.search('RRULE:(.+?)\n',str(events))
-                            r_start = re.search('DTSTART:(.+?)\n',str(events))
-                            if r_start is not None: # if r_start is None the format of DTSTART is not recognized
-                                if time.now().month == 12:
-                                    r_string=(r.group(1).rstrip()+';UNTIL='+'%04d%02d%02d'+'T000000Z') % (time.now().year+1, 1, 1)
-                                else:
-                                    r_string=(r.group(1).rstrip()+';UNTIL='+'%04d%02d%02d'+'T000000Z') % (time.now().year, time.now().month+1, 1)
-                                rule=rrulestr(r_string,dtstart=parse(r_start.group(1)))
-                                for i in rule:
-                                    if i.year == time.now().year and i.month == time.now().month and i.day >= time.now().day:
-                                        upcoming.append(events)
-                                        if i.day not in events_this_month:
-                                            events_this_month.append(i.day)
-                                   # uncomment this line to see fetched recurring events
-                                   #print ("Appended recurring event: " + events.name + " on " + str(time.now().year) + " " + time.now().strftime('%m')+ " " + str(i.day).zfill(2))
-                        else:
-                            if events.begin.date().year == today.year and events.begin.date().month is today.month and int((events.begin).format('D')) not in events_this_month:
-                                events_this_month.append(int((events.begin).format('D')))
-                            if middle_section is 'Agenda' and events in ical.timeline.included(now, agenda_max_days):
-                                upcoming.append(events)
-                            if middle_section is 'Calendar' and events in ical.timeline.included(now, calendar_max_days):
-                                upcoming.append(events)
+                if internet_available() is True:
+                    print('Internet connection test passed'+'\n')
+                    print('Fetching events from your calendar'+'\n')
+                    for icalendars in ical_urls:
+                        decode = str(urlopen(icalendars).read().decode())
+                        beginAlarmIndex = 0
+                        while beginAlarmIndex >= 0:
+                            beginAlarmIndex = decode.find('BEGIN:VALARM')
+                            if beginAlarmIndex >= 0:
+                                endAlarmIndex = decode.find('END:VALARM')
+                                decode = decode[:beginAlarmIndex] + decode[endAlarmIndex+12:]
+                        ical = Calendar(decode)
+                        for events in ical.events:
+                            if re.search('RRULE',str(events)) is not None:
+                                r = re.search('RRULE:(.+?)\n',str(events))
+                                r_start = re.search('DTSTART:(.+?)\n',str(events))
+                                if r_start is not None: # if r_start is None the format of DTSTART is not recognized
+                                    if time.now().month == 12:
+                                        r_string=(r.group(1).rstrip()+';UNTIL='+'%04d%02d%02d'+'T000000Z') % (time.now().year+1, 1, 1)
+                                    else:
+                                        r_string=(r.group(1).rstrip()+';UNTIL='+'%04d%02d%02d'+'T000000Z') % (time.now().year, time.now().month+1, 1)
+                                    rule=rrulestr(r_string,dtstart=parse(r_start.group(1)))
+                                    for i in rule:
+                                        if i.year == time.now().year and i.month == time.now().month and i.day >= time.now().day:
+                                            upcoming.append(events)
+                                            if i.day not in events_this_month:
+                                                events_this_month.append(i.day)
+                                       # uncomment this line to see fetched recurring events
+                                       #print ("Appended recurring event: " + events.name + " on " + str(time.now().year) + " " + time.now().strftime('%m')+ " " + str(i.day).zfill(2))
+                            else:
+                                if events.begin.date().year == today.year and events.begin.date().month is today.month and int((events.begin).format('D')) not in events_this_month:
+                                    events_this_month.append(int((events.begin).format('D')))
+                                if middle_section is 'Agenda' and events in ical.timeline.included(now, agenda_max_days):
+                                    upcoming.append(events)
+                                if middle_section is 'Calendar' and events in ical.timeline.included(now, calendar_max_days):
+                                    upcoming.append(events)
 
-                def event_begins(elem):
-                    return elem.begin
+                    def event_begins(elem):
+                        return elem.begin
 
-                upcoming.sort(key=event_begins)
+                    upcoming.sort(key=event_begins)
+
+                else:
+                    print("Could not fetch events from your iCalendar.")
+                    print("Either the internet connection is too slow or we're offline.")
+
 
                 if middle_section is 'Agenda':
                     """For the agenda view, create a list containing dates and events of the next 22 days"""
@@ -359,7 +373,7 @@ def main():
                             write_text(384, 25, agenda_list[lines]['value'], agenda_view_lines['line'+str(lines+1)], alignment='left')
                         else:
                             write_text(384, 25, agenda_list[lines]['value'], agenda_view_lines['line'+str(lines+1)])
-      
+
             if middle_section is 'Calendar':
                 """Draw smaller squares on days with events"""
                 for numbers in events_this_month:
@@ -394,7 +408,7 @@ def main():
                     for events in range(len(upcoming)):
                         write_text(314, 25, (upcoming[events]['event']), event_positions['e'+str(events+3)], alignment = 'left')
 
-            
+
             """
             Map all pixels of the generated image to red, white and black
             so that the image can be displayed 'correctly' on the E-Paper
@@ -409,7 +423,7 @@ def main():
             if display_colours is "bw":
                 buffer[np.logical_and(r > 240, g > 240)] = [255,255,255] #white
                 buffer[g < 255] = [0,0,0] #black
-            
+
             improved_image = Image.fromarray(buffer).rotate(270, expand=True)
             print('Initialising E-Paper Display')
             epd.init()
@@ -427,7 +441,7 @@ def main():
             if bottom_section is 'RSS':
                 del rss_feed
                 del news
-                
+
             if middle_section is 'Agenda':
                 del agenda_list
 
@@ -450,7 +464,7 @@ def main():
                 for update_times in timings:
                     if update_times >= mins:
                         sleep_for_minutes = update_times - mins
-                
+
                 next_update_countdown = sleep_for_minutes*60 + (60-seconds)
 
                 print(sleep_for_minutes,'Minutes and ', (60-seconds),'Seconds left until next loop')
