@@ -25,7 +25,7 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 </p>
 
 ## Main features
-* Monthly Calendar which automatically updates itself to the current day
+* Monthly Calendar which automatically update itself to the current day
 * Fetch appointments/events from your Google Calendar and display them on the Display
 * Fetch live weather data (temperature, humidity, sunrise- & sunset time, wind speed, weather-icon) from Openweathermap servers and display them on the E-Paper
 * Fetch RSS-feeds from given RSS-feed URLs and display the content (news, quotes etc.) on the E-Paper
@@ -40,7 +40,7 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 * Or: Raspberry Pi Zero W. In this case, you'll need to solder 2x20 pin GPIO headers yourself
 * MicroSD card (min. 4GB)
 * MicroUSB cable (for power)
-* Something to be used as a case (e.g. a (RIBBA) picture frame or a 3D-printed case)
+* Something to be used as a case (e.g. a RIBBA photo-frame or a 3D-printed case)
 
 # Setup
 ## Getting the Raspberry Pi Zero W ready
@@ -56,7 +56,9 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 ## Installing required packages for python 3.x
 Execute the following command in the Terminal to install all required packages. This will work on both, Raspbian Stretch with Desktop and Raspbian Stretch lite. 
 
-**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/Stable/Installer-with-debug.sh)"`**
+
+## Attention: this is the Installer of the master branch (development branch). It is not guaranteed to work and is only here for testing
+**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/master/Installer-with-debug.sh)"`**
 
 If the Installer should fail for any reason, kindly open an issue and paste the error. Thanks.
 
