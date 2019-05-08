@@ -307,29 +307,13 @@ def main():
                                 decode = decode[:beginAlarmIndex] + decode[endAlarmIndex+12:]
                         ical = Calendar(decode)
                         for events in ical.events:
-                            if re.search('RRULE',str(events)) is not None:
-                                r = re.search('RRULE:(.+?)\n',str(events))
-                                r_start = re.search('DTSTART:(.+?)\n',str(events))
-                                if r_start is not None: # if r_start is None the format of DTSTART is not recognized
-                                    if time.now().month == 12:
-                                        r_string=(r.group(1).rstrip()+';UNTIL='+'%04d%02d%02d'+'T000000Z') % (time.now().year+1, 1, 1)
-                                    else:
-                                        r_string=(r.group(1).rstrip()+';UNTIL='+'%04d%02d%02d'+'T000000Z') % (time.now().year, time.now().month+1, 1)
-                                    rule=rrulestr(r_string,dtstart=parse(r_start.group(1)))
-                                    for i in rule:
-                                        if i.year == time.now().year and i.month == time.now().month and i.day >= time.now().day:
-                                            upcoming.append(events)
-                                            if i.day not in events_this_month:
-                                                events_this_month.append(i.day)
-                                       # uncomment this line to see fetched recurring events
-                                       #print ("Appended recurring event: " + events.name + " on " + str(time.now().year) + " " + time.now().strftime('%m')+ " " + str(i.day).zfill(2))
-                            else:
-                                if events.begin.date().year == today.year and events.begin.date().month is today.month and int((events.begin).format('D')) not in events_this_month:
+                            if events.begin.date().year == today.year and events.begin.date().month == today.month:
+                                if int((events.begin).format('D')) not in events_this_month:
                                     events_this_month.append(int((events.begin).format('D')))
-                                if middle_section is 'Agenda' and events in ical.timeline.included(now, agenda_max_days):
-                                    upcoming.append(events)
-                                if middle_section is 'Calendar' and events in ical.timeline.included(now, calendar_max_days):
-                                    upcoming.append(events)
+                            if middle_section is 'Agenda' and events in ical.timeline.included(now, agenda_max_days):
+                                upcoming.append(events)
+                            if middle_section is 'Calendar' and events in ical.timeline.included(now, calendar_max_days):
+                                upcoming.append(events)
 
                     def event_begins(elem):
                         return elem.begin
