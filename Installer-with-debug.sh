@@ -240,6 +240,7 @@ stdout_logfile = /home/pi/Inky-Calendar/E-Paper.log
 stdout_logfile_maxbytes = 1MB
 stderr_logfile = /home/pi/Inky-Calendar/E-Paper-err.log
 stderr_logfile_maxbytes = 1MB
+autorestart = true
 EOF
 
     sudo service supervisor start E-Paper
