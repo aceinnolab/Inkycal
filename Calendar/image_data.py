@@ -6,24 +6,25 @@ It also contains the positions of these icons on the E-Paper display
 """
 
 from PIL import Image
-from settings import language
 im_open = Image.open
+import os
 
-path = '/home/pi/Inky-Calendar/Calendar/'
+path = os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")
+if path != "" and path[-1] != "/":
+    path += "/"
+
 wpath = path+'weather-icons/'
-mpath = path+'translations/'+language+'/months/'
-weekpath = path+'translations/'+language+'/week/'
 dpath = path+'days/'
 opath = path+'other/'
+fpath = path+'fonts/'
 
 weekday = im_open(opath+'weekday.png')
 eventicon = im_open(opath+'event.png')
 dateicon = im_open(opath+'today.png')
 seperator = im_open(opath+'seperator.jpeg')
+seperator2 = im_open(opath+'seperator2.jpeg')
 tempicon = im_open(opath+'temperature.jpeg')
 humicon = im_open(opath+'humidity.jpeg')
-weekmon = im_open(weekpath+'week-mon.jpeg')
-weeksun = im_open(weekpath+'week-sun.jpeg')
 no_response = im_open(opath+'cloud-no-response.jpeg')
 sunriseicon = im_open(opath+'wi-sunrise.jpeg')
 sunseticon = im_open(opath+'wi-sunset.jpeg')
@@ -41,6 +42,22 @@ weekplace = (3, 134)
 windiconspace = (79, 0)
 sunriseplace = (214, 0)
 sunsetplace = (214, 35)
+
+
+col = 0
+agenda_view_lines = {
+    'line1': (col, 75), 'line2': (col, 100),
+    'line3': (col, 125), 'line4': (col, 150),
+    'line5': (col, 175), 'line6': (col, 200),
+    'line7': (col, 225), 'line8': (col, 250),
+    'line9': (col, 275), 'line10': (col, 300),
+    'line11': (col, 325), 'line12': (col, 350),
+    'line13': (col, 375), 'line14': (col, 400),
+    'line15': (col, 425), 'line16': (col, 450),
+    'line17': (col, 475), 'line18': (col, 500),
+    'line19': (col, 525), 'line20': (col, 550),
+    'line21': (col, 575), 'line22': (col, 600),
+    }
 
 rss_places = {
     'line_1' : (0, 490), 'line_2' : (0, 515), 'line_3' : (0, 540),
@@ -105,16 +122,10 @@ positions = {
 
 week_row = 134
 
-weekdaysmon = {
-    'Mon': (col1, week_row), 'Tue': (col2, week_row), 'Wed': (col3, week_row),
-    'Thu': (col4, week_row), 'Fri': (col5, week_row), 'Sat': (col6, week_row),
-    'Sun': (col7, week_row)
-    }
-
-weekdayssun = {
-    'Sun': (col1, week_row), 'Mon': (col2, week_row), 'Tue': (col3, week_row),
-    'Wed': (col4, week_row), 'Thu': (col5, week_row), 'Fri': (col6, week_row),
-    'Sat': (col7, week_row)
+weekday_pos = {
+    'pos0': (col1, week_row), 'pos1': (col2, week_row), 'pos2': (col3, week_row),
+    'pos3': (col4, week_row), 'pos4': (col5, week_row), 'pos5': (col6, week_row),
+    'pos6': (col7, week_row)
     }
 
 weathericons = {

@@ -46,6 +46,8 @@ if [ "$option" = 1 ]; then
 	sleep 2
 	cp -r /home/pi/Inky-Calendar /home/pi/Inky-Calendar-old
 	sudo rm -r /home/pi/Inky-Calendar
+	mv /home/pi/Inky-Calendar-old/Calendar /home/pi/Inky-Calendar-old/Calendar-old #added due to relative path which searches for 
+	# the 'Calendar' folder
 	echo "Updating now..."
         cd
     else
@@ -238,6 +240,7 @@ stdout_logfile = /home/pi/Inky-Calendar/E-Paper.log
 stdout_logfile_maxbytes = 1MB
 stderr_logfile = /home/pi/Inky-Calendar/E-Paper-err.log
 stderr_logfile_maxbytes = 1MB
+autorestart = true
 EOF
 
     sudo service supervisor start E-Paper
