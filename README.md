@@ -1,3 +1,6 @@
+# Attention:
+## This branch is currently in a transition state (new release). Please do not use the installer until this message is gone. Thanks for your understanding.
+
 <p align="center">
 <img src="https://github.com/aceisace/Inky-Calendar/blob/Stable/Gallery/Inky-Calendar-logo.png" width="800">
 </p>
@@ -58,7 +61,7 @@ Execute the following command in the Terminal to install all required packages. 
 
 
 ## Attention: this is the Installer of the master branch (development branch). It is not guaranteed to work and is only here for testing
-**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/master/Installer-with-debug.sh)"`**
+**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/Stable/Installer-with-debug.sh)"`**
 
 If the Installer should fail for any reason, kindly open an issue and paste the error. Thanks.
 
