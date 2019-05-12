@@ -251,11 +251,14 @@ EOF
     # Final words
     echo -e "\e[1;36m"The install was successful"\e[0m"
     echo -e "\e[1;36m"The programm is set to start at every boot."\e[0m"
-    echo -e "\e[1;31m"Please enter your details in the file 'settings.py'."\e[0m"
-    echo -e "\e[1;31m"If this file is not modified, the programm will not start"\e[0m"
-
-    echo -e "\e[1;36m"To modify the settings file, enter:"\e[0m"
-    echo -e "\e[1;36m"nano /home/pi/Inky-Calendar/Calendar/settings.py"\e[0m"
+    
+    echo -e "\e[1;31m"To enter your personal details, please use"\e[0m"
+    echo -e "\e[1;31m"the Settings-Web-UI.html web-page"\e[0m"
+    echo -e "\e[1;36m"To do so, open the file Settings-Web-UI.html from"\e[0m"
+    echo -e "\e[1;36m"/home/pi/Inky-Calendar/Settings-Web-UI.html with your browser,"\e[0m"
+    echo -e "\e[1;36m"add your details, click on generate and copy the settings.py"\e[0m"
+    echo -e "\e[1;36m"file to /home/pi/Inky-Calendar/Calendar/"\e[0m"
+    
     echo -e "\e[1;36m"You can test if the programm works by typing:"\e[0m"
     echo -e "\e[1;36m"python3.5 /home/pi/Inky-Calendar/Calendar/E-Paper.py"\e[0m"
 fi
