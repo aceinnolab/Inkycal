@@ -9,18 +9,14 @@ ghosting.
 from __future__ import print_function
 import time
 from settings import display_colours
-from icon_positions_locations import black, white, red
+from image_data import black, white, red
 
 def calibration():
     """Function for Calibration"""
-    if display_colours == "bwr":
-        import epd7in5b
-        epd = epd7in5b.EPD()
-        print('_________Calibration for 3-Colour E-Paper started_________'+'\n')
-    if display_colours == "bw":
-        import epd7in5
-        epd = epd7in5.EPD()
-        print('_________Calibration for 2-Colour E-Paper started_________'+'\n')
+    import e_paper_drivers
+    epd = e_paper_drivers.EPD()
+    print('_________Calibration for E-Paper started_________'+'\n')
+
     for i in range(2):
         epd.init()
         print('Calibrating black...')
@@ -32,7 +28,7 @@ def calibration():
         epd.display_frame(epd.get_frame_buffer(white))
         epd.sleep()
         print('Cycle', str(i+1)+'/2', 'complete'+'\n')
-        print('Calibration complete')
+    print('Calibration complete')
 
 def main():
     """Added timer"""
