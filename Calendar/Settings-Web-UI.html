@@ -107,7 +107,14 @@ body{
       </div>
 
       <div class="field">
-        <label>At which hours should the display be calibrated?</label>
+        <label>At which hours (in 24 hour-format) should the display be calibrated? Leave blank if you're not sure.</label>
+        <details class="ts accordion">
+          <summary>
+            <i class="dropdown icon"></i> Info
+          </summary>
+          <div class="content">
+        <p>Calibration refers to the process of flushing the display with a single colour to prevent 'ghosting' (an effect specific to E-Paper displays where the remnants of the previous image can be seen on the current one). It takes several minutes to finish the calibration(around 10 mins for the 2-colour displays and around 20 mins for the 3-colour displays) so please choose hours where you are less likely to need the display. It is recommended to calibrate at least thrice a day.</p></div>
+        </details>
         <input id="calibration_hours" type="text" placeholder="0,12,18">
       </div>
 
@@ -133,12 +140,52 @@ body{
             <label for="language_en">English</label>
           </div>
           <div class="ts radio checkbox">
-            <input id="language_zh_tw" type="radio" name="la">
-            <label for="language_zh_tw">Chinese/Taiwanese</label>
-          </div>
-          <div class="ts radio checkbox">
             <input id="language_de" type="radio" name="la">
             <label for="language_de">German</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_ru" type="radio" name="la">
+            <label for="language_ru">Russian</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_it" type="radio" name="la">
+            <label for="language_it">Italian</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_es" type="radio" name="la">
+            <label for="language_es">Spanish</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_fr" type="radio" name="la">
+            <label for="language_fr">French</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_el" type="radio" name="la">
+            <label for="language_el">Greek</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_sv" type="radio" name="la">
+            <label for="language_sv">Swedish</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_nl" type="radio" name="la">
+            <label for="language_nl">Dutch</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_pl" type="radio" name="la">
+            <label for="language_pl">Polish</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_ua" type="radio" name="la">
+            <label for="language_ua">Ukrainian</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_nb" type="radio" name="la">
+            <label for="language_nb">Norwegian</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_vi" type="radio" name="la">
+            <label for="language_vi">Vietnamese</label>
           </div>
         </div>
       </div>
@@ -304,8 +351,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if ($('#language_de').is(':checked')){
       language = "de";
     }
-    if ($('#language_zh_tw').is(':checked')){
-      language = "zh_tw";
+    if ($('#language_ru').is(':checked')){
+      language = "ru";
+    }
+    if ($('#language_it').is(':checked')){
+      language = "it";
+    }
+    if ($('#language_es').is(':checked')){
+      language = "es";
+    }
+    if ($('#language_fr').is(':checked')){
+      language = "fr";
+    }
+    if ($('#language_el').is(':checked')){
+      language = "el";
+    }
+    if ($('#language_sv').is(':checked')){
+      language = "sv";
+    }
+    if ($('#language_nl').is(':checked')){
+      language = "nl";
+    }
+    if ($('#language_pl').is(':checked')){
+      language = "pl";
+    }
+    if ($('#language_ua').is(':checked')){
+      language = "ua";
+    }
+    if ($('#language_nb').is(':checked')){
+      language = "nb";
+    }
+    if ($('#language_vi').is(':checked')){
+      language = "vi";
     }
 
     var units = "metric";
