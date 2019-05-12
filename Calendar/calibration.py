@@ -9,7 +9,7 @@ ghosting.
 from __future__ import print_function
 import time
 from settings import display_colours
-from icon_positions_locations import black, white, red
+from image_data import black, white, red
 
 def calibration():
     """Function for Calibration"""
@@ -28,7 +28,7 @@ def calibration():
         epd.display_frame(epd.get_frame_buffer(white))
         epd.sleep()
         print('Cycle', str(i+1)+'/2', 'complete'+'\n')
-        print('Calibration complete')
+    print('Calibration complete')
 
 def main():
     """Added timer"""
