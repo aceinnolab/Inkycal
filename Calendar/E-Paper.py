@@ -38,9 +38,12 @@ from calibration import calibration
 
 EPD_WIDTH = 640
 EPD_HEIGHT = 384
-default = ImageFont.truetype(path+'Assistant-Regular.ttf', 18)
-semi = ImageFont.truetype(path+'Assistant-SemiBold.ttf', 18)
-bold = ImageFont.truetype(path+'Assistant-Bold.ttf', 18)
+
+default = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensedLight.ttf', 18)
+semi = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensed.ttf', 18)
+bold = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensedMedium.ttf', 18)
+month_font = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensedLight.ttf', 40)
+
 im_open = Image.open
 
 owm = pyowm.OWM(api_key)
@@ -55,6 +58,7 @@ def main():
         year = int(time.now().strftime('%Y'))
         mins = int(time.strftime("%M"))
         seconds = int(time.strftime("%S"))
+        now = arrow.now()
 
         for i in range(1):
             print('_________Starting new loop___________'+'\n')
@@ -86,11 +90,12 @@ def main():
                     x = int((box_width / 2) - (text_width / 2))
                 if alignment is 'left':
                     x = 0
-                y = int((box_height / 2) - (text_height / 2))
+                y = int((box_height / 2) - (text_height / 1.7))
                 space = Image.new('RGB', (box_width, box_height), color='white')
                 ImageDraw.Draw(space).text((x, y), text, fill='black', font=font)
                 image.paste(space, tuple)
 
+            """Check if internet is available by trying to reach google"""
             def internet_available():
                 try:
                     urlopen('https://google.com',timeout=5)
@@ -100,73 +105,85 @@ def main():
 
             """Connect to Openweathermap API and fetch weather data"""
             if top_section is "Weather" and api_key != "" and owm.is_API_online() is True:
-                print("Connecting to Openweathermap API servers...")
-                observation = owm.weather_at_place(location)
-                print("weather data:")
-                weather = observation.get_weather()
-                weathericon = weather.get_weather_icon_name()
-                Humidity = str(weather.get_humidity())
-                cloudstatus = str(weather.get_clouds())
-                weather_description = (str(weather.get_status()))
+                try:
+                    print("Connecting to Openweathermap API servers...")
+                    observation = owm.weather_at_place(location)
+                    print("weather data:")
+                    weather = observation.get_weather()
+                    weathericon = weather.get_weather_icon_name()
+                    Humidity = str(weather.get_humidity())
+                    cloudstatus = str(weather.get_clouds())
+                    weather_description = (str(weather.get_status()))
 
-                if units is "metric":
-                    Temperature = str(int(weather.get_temperature(unit='celsius')['temp']))
-                    windspeed = str(int(weather.get_wind()['speed']))
-                    write_text(50, 35, Temperature + " °C", (334, 0))
-                    write_text(100, 35, windspeed+" km/h", (114, 0))
+                    if units is "metric":
+                        Temperature = str(int(weather.get_temperature(unit='celsius')['temp']))
+                        windspeed = str(int(weather.get_wind()['speed']))
+                        write_text(50, 35, Temperature + " °C", (334, 0))
+                        write_text(100, 35, windspeed+" km/h", (114, 0))
 
-                if units is "imperial":
-                    Temperature = str(int(weather.get_temperature('fahrenheit')['temp']))
-                    windspeed = str(int(weather.get_wind()['speed']*0.621))
-                    write_text(50, 35, Temperature + " °F", (334, 0))
-                    write_text(100, 35, windspeed+" mph", (114, 0))
+                    if units is "imperial":
+                        Temperature = str(int(weather.get_temperature('fahrenheit')['temp']))
+                        windspeed = str(int(weather.get_wind()['speed']*0.621))
+                        write_text(50, 35, Temperature + " °F", (334, 0))
+                        write_text(100, 35, windspeed+" mph", (114, 0))
 
-                if hours is "24":
-                    sunrisetime = str(datetime.fromtimestamp(int(weather.get_sunrise_time(timeformat='unix'))).strftime('%-H:%M'))
-                    sunsettime = str(datetime.fromtimestamp(int(weather.get_sunset_time(timeformat='unix'))).strftime('%-H:%M'))
+                    if hours is "24":
+                        sunrisetime = str(datetime.fromtimestamp(int(weather.get_sunrise_time(timeformat='unix'))).strftime('%-H:%M'))
+                        sunsettime = str(datetime.fromtimestamp(int(weather.get_sunset_time(timeformat='unix'))).strftime('%-H:%M'))
 
-                if hours is "12":
-                    sunrisetime = str(datetime.fromtimestamp(int(weather.get_sunrise_time(timeformat='unix'))).strftime('%-I:%M'))
-                    sunsettime = str(datetime.fromtimestamp(int(weather.get_sunset_time(timeformat='unix'))).strftime('%-I:%M'))
+                    if hours is "12":
+                        sunrisetime = str(datetime.fromtimestamp(int(weather.get_sunrise_time(timeformat='unix'))).strftime('%-I:%M'))
+                        sunsettime = str(datetime.fromtimestamp(int(weather.get_sunset_time(timeformat='unix'))).strftime('%-I:%M'))
 
-                """Show the fetched weather data"""
-                print('Temperature: '+ Temperature+' °C')
-                print('Humidity: '+ Humidity+'%')
-                print('weather-icon name: '+weathericons[weathericon])
-                print('Wind speed: '+ windspeed+'km/h')
-                print('Sunrise-time: '+ sunrisetime)
-                print('Sunset time: '+ sunsettime)
-                print('Cloudiness: ' + cloudstatus+'%')
-                print('Weather description: '+ weather_description+'\n')
+                    """Show the fetched weather data"""
+                    print('Temperature: '+ Temperature+' °C')
+                    print('Humidity: '+ Humidity+'%')
+                    print('weather-icon name: '+weathericons[weathericon])
+                    print('Wind speed: '+ windspeed+'km/h')
+                    print('Sunrise-time: '+ sunrisetime)
+                    print('Sunset time: '+ sunsettime)
+                    print('Cloudiness: ' + cloudstatus+'%')
+                    print('Weather description: '+ weather_description+'\n')
 
-                """Add the weather icon at the top left corner"""
-                image.paste(im_open(wpath + weathericons[weathericon] +'.jpeg'), wiconplace)
+                    """Add the weather icon at the top left corner"""
+                    image.paste(im_open(wpath + weathericons[weathericon] +'.jpeg'), wiconplace)
 
-                """Add the temperature icon at it's position"""
-                image.paste(tempicon, tempplace)
+                    """Add the temperature icon at it's position"""
+                    image.paste(tempicon, tempplace)
 
-                """Add the humidity icon and display the humidity"""
-                image.paste(humicon, humplace)
-                write_text(50, 35, Humidity + " %", (334, 35))
+                    """Add the humidity icon and display the humidity"""
+                    image.paste(humicon, humplace)
+                    write_text(50, 35, Humidity + " %", (334, 35))
 
-                """Add the sunrise icon and display the sunrise time"""
-                image.paste(sunriseicon, sunriseplace)
-                write_text(50, 35, sunrisetime, (249, 0))
+                    """Add the sunrise icon and display the sunrise time"""
+                    image.paste(sunriseicon, sunriseplace)
+                    write_text(50, 35, sunrisetime, (249, 0))
 
-                """Add the sunset icon and display the sunrise time"""
-                image.paste(sunseticon, sunsetplace)
-                write_text(50, 35, sunsettime, (249, 35))
+                    """Add the sunset icon and display the sunrise time"""
+                    image.paste(sunseticon, sunsetplace)
+                    write_text(50, 35, sunsettime, (249, 35))
 
-                """Add the wind icon at it's position"""
-                image.paste(windicon, windiconspace)
+                    """Add the wind icon at it's position"""
+                    image.paste(windicon, windiconspace)
 
-                """Add a short weather description"""
-                write_text(144, 35, weather_description, (70, 35))
+                    """Add a short weather description"""
+                    write_text(144, 35, weather_description, (70, 35))
 
-            else:
-                """If no response was received from the openweathermap
-                api server, add the cloud with question mark"""
-                image.paste(no_response, wiconplace)
+                except Exception as e:
+                    """If no response was received from the openweathermap
+                    api server, add the cloud with question mark"""
+                    print('__________OWM-ERROR!__________'+'\n')
+                    print('Reason: ',e+'\n')
+                    image.paste(no_response, wiconplace)
+                    pass
+
+            """Set the Calendar to start on the day specified by the settings file """
+            if week_starts_on is "Monday":
+                calendar.setfirstweekday(calendar.MONDAY)
+
+            """For those whose week starts on Sunday, change accordingly"""
+            if week_starts_on is "Sunday":
+                calendar.setfirstweekday(calendar.SUNDAY)
 
             """Using the built-in calendar to generate the monthly Calendar
             template"""
@@ -174,23 +191,27 @@ def main():
 
             if middle_section is "Calendar":
                 """Add the icon with the current month's name"""
-                image.paste(im_open(mpath+str(time.strftime("%B")+'.jpeg')), monthplace)
+                write_text(384,60, now.format('MMMM',locale=language), monthplace, font=month_font)
 
                 """Add the line seperating the weather and Calendar section"""
                 image.paste(seperator, seperatorplace)
 
-                """Add weekday-icons (Mon, Tue...) and draw a circle on the
-                current weekday"""
-                if (week_starts_on is "Monday"):
-                    calendar.setfirstweekday(calendar.MONDAY)
-                    image.paste(weekmon, weekplace)
-                    image.paste(weekday, weekdaysmon[(time.strftime("%a"))], weekday)
+                """Create a list containing the weekday abbrevations for the
+                chosen language"""
+                if week_starts_on is "Monday":
+                    prev_weekstart = now.replace(days = - now.weekday())
+                    image.paste(weekday, weekday_pos['pos'+str(now.weekday())], weekday)
+                if week_starts_on is "Sunday":
+                    prev_weekstart = now.replace(days = - now.isoweekday())
+                    image.paste(weekday, weekday_pos['pos'+str(now.isoweekday())], weekday)
+                
+                weekday_names_list = []
+                for i in range(7):
+                    weekday_name = prev_weekstart.replace(days=+i)
+                    weekday_names_list.append(weekday_name.format('ddd',locale=language))
 
-                """For those whose week starts on Sunday, change accordingly"""
-                if (week_starts_on is "Sunday"):
-                    calendar.setfirstweekday(calendar.SUNDAY)
-                    image.paste(weeksun, weekplace)
-                    image.paste(weekday, weekdayssun[(time.strftime("%a"))], weekday)
+                for i in range(len(weekday_names_list)):
+                    write_text(54, 28, weekday_names_list[i], weekday_pos['pos'+str(i)])
 
                 """Create the calendar template of the current month"""
                 for numbers in cal[0]:
@@ -224,6 +245,8 @@ def main():
 
             """Add rss-feeds at the bottom section of the Calendar"""
             if bottom_section is "RSS" and rss_feeds != []:
+
+                """Custom function to display longer text into multiple lines (wrapping)"""
                 def multiline_text(text, max_width, font=default):
                     lines = []
                     if font.getsize(text)[0] <= max_width:
@@ -287,7 +310,6 @@ def main():
                 iCalendar/s"""
                 events_this_month = []
                 upcoming = []
-                now = arrow.now()
                 today = time.today()
 
                 """Create a time span using the events_max_range value (in days)
@@ -307,7 +329,7 @@ def main():
                                 decode = decode[:beginAlarmIndex] + decode[endAlarmIndex+12:]
                         ical = Calendar(decode)
                         for events in ical.events:
-                            if events.begin.date().year == today.year and events.begin.date().month == today.month:
+                            if events.begin.date().year == today.year and events.begin.date().month is today.month:
                                 if int((events.begin).format('D')) not in events_this_month:
                                     events_this_month.append(int((events.begin).format('D')))
                             if middle_section is 'Agenda' and events in ical.timeline.included(now, agenda_max_days):
@@ -322,7 +344,7 @@ def main():
 
                 else:
                     print("Could not fetch events from your iCalendar.")
-                    print("Either the internet connection is too slow or we're offline.")
+                    print("Either the internet connection is too weak or we're offline.")
 
 
                 if middle_section is 'Agenda':
@@ -333,14 +355,13 @@ def main():
                     agenda_list = []
                     for i in range(22):
                         date = now.replace(days=+i)
-                        agenda_list.append({'value':date.format('ddd D MMM YY'),'type':'date'})
+                        agenda_list.append({'value':date.format('ddd D MMM YY', locale=language),'type':'date'})
                         for events in upcoming:
                             if events.begin.date().day == date.day:
                                 if not events.all_day:
                                     agenda_list.append({'value':events.begin.format('HH:mm')+ ' '+ str(events.name), 'type':'timed_event'})
                                 else:
                                     agenda_list.append({'value':events.name, 'type':'full_day_event'})
-
                     if bottom_section is not "":
                         del agenda_list[16:]
                         image.paste(seperator2, agenda_view_lines['line17'])
@@ -351,7 +372,7 @@ def main():
 
                     for lines in range(len(agenda_list)):
                         if agenda_list[lines]['type'] is 'date':
-                            write_text(384, 25, agenda_list[lines]['value'], agenda_view_lines['line'+str(lines+1)], font=bold, alignment='left')
+                            write_text(384, 25, agenda_list[lines]['value'], agenda_view_lines['line'+str(lines+1)], font=semi, alignment='left')
                             image.paste(seperator2, agenda_view_lines['line'+str(lines+1)])
                         elif agenda_list[lines]['type'] is 'timed_event':
                             write_text(384, 25, agenda_list[lines]['value'], agenda_view_lines['line'+str(lines+1)], alignment='left')
@@ -418,9 +439,10 @@ def main():
             print('______Powering off the E-Paper until the next loop______'+'\n')
             epd.sleep()
 
-            #if middle_section is 'Calendar':
-            del events_this_month
-            del upcoming
+            if middle_section is 'Calendar':
+                del events_this_month
+                del upcoming
+                del weekday_names_list
 
             if bottom_section is 'RSS':
                 del rss_feed
@@ -435,7 +457,7 @@ def main():
             gc.collect()
 
             if calibration_countdown is 'initial':
-                    calibration_countdown = 0
+                calibration_countdown = 0
             calibration_countdown += 1
 
             for i in range(1):
