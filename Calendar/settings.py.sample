@@ -11,5 +11,5 @@ language = "en"
 units = "metric"
 hours = "24"
 top_section = "Weather"
-middle_section = "Agenda" # Calendar
+middle_section = "Agenda"
 bottom_section = "RSS"
