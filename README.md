@@ -1,5 +1,5 @@
 # Attention:
-## This branch is currently in a transition state (new release). Please use the Installer only if you are a new user and know what you are doing. For all other users, please wait until this warning has disappeared and the new release has been tested thoroughly. Thanks for your understanding.
+## This branch is currently in a transition state (new release). Please use the Installer only if you are an existing user and know what you are doing. For all other users, please wait until this warning has disappeared and the new release has been tested thoroughly. Thanks for your understanding.
 
 <p align="center">
 <img src="https://github.com/aceisace/Inky-Calendar/blob/Stable/Gallery/Inky-Calendar-logo.png" width="800">
