@@ -4,4 +4,4 @@ python:
 install:
   - pip install -r requirements.txt
 script:
-  python3 Inky-Calendar/Calendar/E-Paper.py
+  python3.5 'scripts/Inky-Calendar/Calendar/E-Paper.py'
