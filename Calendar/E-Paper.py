@@ -39,10 +39,16 @@ from calibration import calibration
 EPD_WIDTH = 640
 EPD_HEIGHT = 384
 
-default = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensedLight.ttf', 18)
-semi = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensed.ttf', 18)
-bold = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensedMedium.ttf', 18)
-month_font = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensedLight.ttf', 40)
+if language in ['ja','zh','zh_tw','ko']:
+    default = ImageFont.truetype(fpath+'NotoSansCJK/NotoSansCJKsc-Light.otf', 18)
+    semi = ImageFont.truetype(fpath+'NotoSansCJK/NotoSansCJKsc-DemiLight.otf', 18)
+    bold = ImageFont.truetype(fpath+'NotoSansCJK/NotoSansCJKsc-Regular.otf', 18)
+    month_font = ImageFont.truetype(fpath+'NotoSansCJK/NotoSansCJKsc-DemiLight.otf', 40)
+else:
+    default = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensedLight.ttf', 18)
+    semi = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensed.ttf', 18)
+    bold = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensedMedium.ttf', 18)
+    month_font = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensedLight.ttf', 40)
 
 im_open = Image.open
 
