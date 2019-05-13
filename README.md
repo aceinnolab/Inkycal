@@ -1,3 +1,6 @@
+# Attention:
+## This branch is currently in a transition state (new release). Please use the Installer only if you are a new user and know what you are doing. For all other users, please wait until this warning has disappeared and the new release has been tested thoroughly. Thanks for your understanding.
+
 <p align="center">
 <img src="https://github.com/aceisace/Inky-Calendar/blob/Stable/Gallery/Inky-Calendar-logo.png" width="800">
 </p>
@@ -54,11 +57,9 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 **[Disable on-board-led](https://www.jeffgeerling.com/blogs/jeff-geerling/controlling-pwr-act-leds-raspberry-pi)**
 
 ## Installing required packages for python 3.x
-Execute the following command in the Terminal to install all required packages. This will work on both, Raspbian Stretch with Desktop and Raspbian Stretch lite. 
+Execute the following command in the Terminal to install all required packages. This will work on both, Raspbian Stretch with Desktop and Raspbian Stretch lite, although Raspbian Desktop is recommended.
 
-
-## Attention: this is the Installer of the master branch (development branch). It is not guaranteed to work and is only here for testing
-**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/master/Installer-with-debug.sh)"`**
+**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/Stable/Installer-with-debug.sh)"`**
 
 If the Installer should fail for any reason, kindly open an issue and paste the error. Thanks.
 
