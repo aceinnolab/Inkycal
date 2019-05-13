@@ -1,0 +1,4 @@
+pyowm
+Pillow==5.3.0
+ics
+feedparser
