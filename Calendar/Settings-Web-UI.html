@@ -187,6 +187,22 @@ body{
             <input id="language_vi" type="radio" name="la">
             <label for="language_vi">Vietnamese</label>
           </div>
+          <div class="ts radio checkbox">
+            <input id="language_zh_tw" type="radio" name="la">
+            <label for="language_zh_tw">Chinese-Taiwanese</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_zh" type="radio" name="la">
+            <label for="language_zh">Chinese</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_ja" type="radio" name="la">
+            <label for="language_ja">Japanese</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_ko" type="radio" name="la">
+            <label for="language_ko">Korean</label>
+          </div>
         </div>
       </div>
 
@@ -223,7 +239,7 @@ body{
         <div class="ts checkboxes">
           <div class="ts radio checkbox">
             <input id="Weather" type="radio" name="ts" checked>
-            <label for="Weather">Events from my iCalendar</label>
+            <label for="Weather">Weather</label>
           </div>
           <div class="ts radio checkbox">
             <input id="top_blank" type="radio" name="ts">
@@ -383,6 +399,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
     if ($('#language_vi').is(':checked')){
       language = "vi";
+    }
+    if ($('#language_zh_tw').is(':checked')){
+      language = "zh_tw";
+    }
+    if ($('#language_zh').is(':checked')){
+      language = "zh";
+    }
+    if ($('#language_ja').is(':checked')){
+      language = "ja";
+    }
+    if ($('#language_ko').is(':checked')){
+      language = "ko";
     }
 
     var units = "metric";
