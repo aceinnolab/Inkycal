@@ -18,6 +18,7 @@ A software written in python3 that allows you to transform an E-Paper display (l
 This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E-Paper display from waveshare/gooddisplay and works with Raspberry Pi 2, 3 and 0 (Zero, Zero W, Zero WH).
 
 ## News:
+* **Added Agenda-View design and support for multiple languages (Mid May 2019)**
 * **Updated and optimised the installer for faster installation and updating (Mid April 2019)** 
 * **Added a user-friendly Web-UI for adding details to the programm** (Credit to TobyChui for the template)
 * **Version 1.5 released (Early February 2019) with a new layout, displayed events and many back-end improvements**
@@ -47,7 +48,7 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 
 # Setup
 ## Getting the Raspberry Pi Zero W ready
-1. After [flashing Raspbian Stretch (Lite or Desktop)](https://www.raspberrypi.org/downloads/raspbian/), set up Wifi on the Raspberry Pi Zero W by copying the file **wpa_supplicant.conf** (from above) to the /boot directory and adding your Wifi details in that file.
+1. After [flashing Raspbian Stretch (with Desktop)](https://www.raspberrypi.org/downloads/raspbian/), set up Wifi on the Raspberry Pi Zero W by copying the file **wpa_supplicant.conf** (from above) to the /boot directory and adding your Wifi details in that file.
 2. Create a simple text document named **ssh** in the boot directory to enable ssh.
 3. Expand the filesystem in the Terminal with **`sudo raspi-config --expand-rootfs`**
 4. Enable SPI by entering **`sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt`** in the Terminal
@@ -57,7 +58,7 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 **[Disable on-board-led](https://www.jeffgeerling.com/blogs/jeff-geerling/controlling-pwr-act-leds-raspberry-pi)**
 
 ## Installing required packages for python 3.x
-Execute the following command in the Terminal to install all required packages. This will work on both, Raspbian Stretch with Desktop and Raspbian Stretch lite, although Raspbian Desktop is recommended.
+Execute the following command in the Terminal to install all required packages. Please use Raspbian Stretch with Desktop (preferably the latest version). Support for Raspbian Stretch Lite is temporarily dropped due to some changes, but will be available again soon once it has been tested.
 
 **`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/Stable/Installer-with-debug.sh)"`**
 
