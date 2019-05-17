@@ -387,7 +387,10 @@ def main():
                         for events in upcoming:
                             if events.begin.date().day == date.day:
                                 if not events.all_day:
-                                    agenda_list.append({'value':events.begin.to(system_tz).format('HH:mm')+ ' '+ str(events.name), 'type':'timed_event'})
+                                    if hours is '24':
+                                        agenda_list.append({'value':events.begin.to(system_tz).format('HH:mm')+ ' '+ str(events.name), 'type':'timed_event'})
+                                    if hours is '12':
+                                        agenda_list.append({'value':events.begin.to(system_tz).format('hh:mm a')+ ' '+ str(events.name), 'type':'timed_event'})
                                 else:
                                     agenda_list.append({'value':events.name, 'type':'full_day_event'})
   
