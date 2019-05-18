@@ -432,7 +432,7 @@ def main():
                 if len(cal) is 5:
                     del upcoming[6:]
                     for dates in range(len(upcoming)):
-                        readable_date = upcoming[dates].begin.format('D MMM')
+                        readable_date = upcoming[dates].begin.format('D MMM', locale=language)
                         write_text(70, 25, readable_date, date_positions['d'+str(dates+1)])
                     for events in range(len(upcoming)):
                         write_text(314, 25, upcoming[events].name, event_positions['e'+str(events+1)], alignment = 'left')
@@ -440,7 +440,7 @@ def main():
                 if len(cal) is 6:
                     del upcoming[4:]
                     for dates in range(len(upcoming)):
-                        readable_date = upcoming[dates].begin.format('D MMM')
+                        readable_date = upcoming[dates].begin.format('D MMM', locale=language)
                         write_text(70, 25, readable_date, date_positions['d'+str(dates+3)])
                     for events in range(len(upcoming)):
                         write_text(314, 25, upcoming[events].name, event_positions['e'+str(events+3)], alignment = 'left')
