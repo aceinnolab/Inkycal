@@ -4,6 +4,48 @@ The order is from latest to oldest and structured in the following way:
 * Version name with date of publishing
 * Sections with either 'added', 'fixed', 'updated' and 'changed'
 
+## [1.6] Mid May 2019
+
+### Added
+* Added new design option: **Agenda-View**, which displays events in the next few days with timings
+* Added support for multi-day events
+* Added support for multiple languages
+* Added support for localisation options (dates will be shown in the set language now)
+* Added new fonts (NotoSans Semi & Noto Sans CJK) which support many languages (without displaying tofus)
+* Added dynamic space management to minimise empty space on the generated image
+* Added support for RSS-feeds. It is now possible to display them in the bottom section
+* Added image pre-processing operation to allow displaying the generated image correctly on the E-Paper
+* Added limit (in days) when fetching events from the iCalendar
+* Added option to select the display-update interval*
+* Added user-friendly Web-UI (webpage) for entering personal details easily (Credit to TobyChui)
+* Added support for continuing the loop even if some details are missing in the settings file (api-key, rss-feed)
+* Added support for relative path and removed explicit path
+* Added support for timezones. events timings will be shown correctly using the system's set timezone
+* Added support for 12/24 hours format for events
+
+
+### Changed
+* Changed E-Paper layout by splitting the image into three section: top-, middle, bottom.
+* Changed the way the installer checks if a required package is installed (by test-importing it in python3)
+* Changed the function which displays text on the Calendar
+* Merged e-paper driver files (initially epd7in5b and epd7in5) into a single one (e_paper_drivers)
+* Switched from image-based translations to text-based translation
+* Changed algorithm for filtering events
+
+### Removed
+* Removed (older) fonts which were not suitable for multiple languages
+* (Temporary) removed support of recurring events due to some known bugs
+* (Temporary) dropped support of the installer on Raspbian Jessie Lite due to some known bugs
+* Removed image-based translations for month names
+
+### Fixed
+* Fixed problems with iCalendar triggers by removing them altogether when parsing the iCalendar
+* Fixed problems with outdated events
+
+
+(*) Updating too frequently can cause ghosting, a problem specific to E-Paper displays where parts of the previous image can be seen on the current image. Ghosting can be fixed by 'calibrating' the E-Paper (displaying a single colour on the entire display) and is done by default. As a rule of thumb, one 'calibration' should be done for every 6 display-updates to maintain a crisp image.
+
+
 ## [1.5] Early February 2019
 
 ### Added
