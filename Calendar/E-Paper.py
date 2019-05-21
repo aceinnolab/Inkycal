@@ -187,7 +187,7 @@ def main():
                     """If no response was received from the openweathermap
                     api server, add the cloud with question mark"""
                     print('__________OWM-ERROR!__________'+'\n')
-                    print('Reason: ',e+'\n')
+                    print('Reason: ',e,'\n')
                     image.paste(no_response, wiconplace)
                     pass
 
