@@ -6,7 +6,7 @@
   
   [![Version](https://img.shields.io/github/release/aceisace/Inky-Calendar.svg)](https://github.com/aceisace/Inky-Calendar/releases)
   [![Python](https://img.shields.io/pypi/pyversions/pyowm.svg)](https://img.shields.io/pypi/pyversions/pyowm.svg)
-  [![Licence](https://img.shields.io/github/license/aceisace/Inky-Calendar.svg)](https://github.com/aceisace/Inky-Calendar/blob/master/LICENSE)
+  [![Licence](https://img.shields.io/github/license/aceisace/Inky-Calendar.svg)](https://github.com/aceisace/Inky-Calendar/blob/Stable/LICENSE)
   [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/SaadNaseer)
 </p>
 
