@@ -41,26 +41,28 @@ EPD_WIDTH = 640
 EPD_HEIGHT = 384
 
 if language in ['ja','zh','zh_tw','ko']:
-    default = ImageFont.truetype(fpath+'NotoSansCJK/NotoSansCJKsc-Light.otf', 18)
-    semi = ImageFont.truetype(fpath+'NotoSansCJK/NotoSansCJKsc-DemiLight.otf', 18)
-    bold = ImageFont.truetype(fpath+'NotoSansCJK/NotoSansCJKsc-Regular.otf', 18)
-    month_font = ImageFont.truetype(fpath+'NotoSansCJK/NotoSansCJKsc-DemiLight.otf', 40)
+    default = ImageFont.truetype(fpath+NotoSansCJK+'Light.otf', 18)
+    semi = ImageFont.truetype(fpath+NotoSansCJK+'DemiLight.otf', 18)
+    bold = ImageFont.truetype(fpath+NotoSansCJK+'Regular.otf', 18)
+    month_font = ImageFont.truetype(fpath+NotoSansCJK+'DemiLight.otf', 40)
 else:
-    default = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensedLight.ttf', 18)
-    semi = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensed.ttf', 18)
-    bold = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensedMedium.ttf', 18)
-    month_font = ImageFont.truetype(fpath+'NotoSans/NotoSans-SemiCondensedLight.ttf', 40)
+    default = ImageFont.truetype(fpath+NotoSans+'Light.ttf', 18)
+    semi = ImageFont.truetype(fpath+NotoSans+'.ttf', 18)
+    bold = ImageFont.truetype(fpath+NotoSans+'Medium.ttf', 18)
+    month_font = ImageFont.truetype(fpath+NotoSans+'Light.ttf', 40)
+
+w_font_l = ImageFont.truetype(fpath+weather_font, 60)
+w_font_s = ImageFont.truetype(fpath+weather_font, 22)
 
 im_open = Image.open
 
 '''Get system timezone and set timezone accordingly'''
-file = open('/etc/timezone','r')
-lines = file.readlines()
-system_tz = lines[0].rstrip()
-local_tz = timezone(system_tz)
+with open('/etc/timezone','r') as file:
+    lines = file.readlines()
+    system_tz = lines[0].rstrip()
+    local_tz = timezone(system_tz)
 
-
-owm = pyowm.OWM(api_key)
+owm = pyowm.OWM(api_key, language=language)
 
 """Main loop starts from here"""
 def main():
@@ -72,7 +74,7 @@ def main():
         year = int(time.now().strftime('%Y'))
         mins = int(time.strftime("%M"))
         seconds = int(time.strftime("%S"))
-        now = arrow.now()
+        now = arrow.now(tz=system_tz)
 
         for i in range(1):
             print('_________Starting new loop___________'+'\n')
@@ -127,7 +129,7 @@ def main():
                     weathericon = weather.get_weather_icon_name()
                     Humidity = str(weather.get_humidity())
                     cloudstatus = str(weather.get_clouds())
-                    weather_description = (str(weather.get_status()))
+                    weather_description = (str(weather.get_detailed_status()))
 
                     if units is "metric":
                         Temperature = str(int(weather.get_temperature(unit='celsius')['temp']))
@@ -141,54 +143,57 @@ def main():
                         write_text(50, 35, Temperature + " °F", (334, 0))
                         write_text(100, 35, windspeed+" mph", (114, 0))
 
-                    if hours is "24":
-                        sunrisetime = str(datetime.fromtimestamp(int(weather.get_sunrise_time(timeformat='unix'))).strftime('%-H:%M'))
-                        sunsettime = str(datetime.fromtimestamp(int(weather.get_sunset_time(timeformat='unix'))).strftime('%-H:%M'))
-
-                    if hours is "12":
-                        sunrisetime = str(datetime.fromtimestamp(int(weather.get_sunrise_time(timeformat='unix'))).strftime('%-I:%M'))
-                        sunsettime = str(datetime.fromtimestamp(int(weather.get_sunset_time(timeformat='unix'))).strftime('%-I:%M'))
+                    sunrisetime = arrow.get(weather.get_sunrise_time()).to(system_tz)
+                    sunsettime = arrow.get(weather.get_sunset_time()).to(system_tz)
 
                     """Show the fetched weather data"""
-                    print('Temperature: '+ Temperature+' °C')
-                    print('Humidity: '+ Humidity+'%')
-                    print('weather-icon name: '+weathericons[weathericon])
-                    print('Wind speed: '+ windspeed+'km/h')
-                    print('Sunrise-time: '+ sunrisetime)
-                    print('Sunset time: '+ sunsettime)
-                    print('Cloudiness: ' + cloudstatus+'%')
-                    print('Weather description: '+ weather_description+'\n')
+                    print('Temperature:',Temperature, '°C')
+                    print('Humidity:', Humidity, '%')
+                    print('Wind speed:', windspeed, 'km/h')
+                    print('Sunrise-time:', sunrisetime.format('HH:mm'))
+                    print('Sunset time:', sunsettime.format('HH:mm'))
+                    print('Cloudiness:', cloudstatus, '%')
+                    print('Weather description:', weather_description, '\n')
 
                     """Add the weather icon at the top left corner"""
-                    image.paste(im_open(wpath + weathericons[weathericon] +'.jpeg'), wiconplace)
+                    write_text(70,70, weathericons[weathericon], wiconplace, font = w_font_l)
 
                     """Add the temperature icon at it's position"""
-                    image.paste(tempicon, tempplace)
+                    write_text(35,35, '\uf055', tempplace, font = w_font_s)
 
                     """Add the humidity icon and display the humidity"""
-                    image.paste(humicon, humplace)
+                    write_text(35,35, '\uf07a', humplace, font = w_font_s)
                     write_text(50, 35, Humidity + " %", (334, 35))
 
-                    """Add the sunrise icon and display the sunrise time"""
-                    image.paste(sunriseicon, sunriseplace)
-                    write_text(50, 35, sunrisetime, (249, 0))
+                    """Add the sunrise/sunset icon and display the time"""
+                    if now >= sunsettime:
+                        write_text(35,35, '\uf051', sunriseplace, font = w_font_s)
+                        print('sunrise coming next')
+                        if hours is "24":
+                            write_text(50, 35, sunrisetime.format('H:mm'), (249, 0))
+                        if hours is "12":
+                            write_text(50, 35, sunrisetime.format('h:mm'), (249, 0))
 
-                    """Add the sunset icon and display the sunrise time"""
-                    image.paste(sunseticon, sunsetplace)
-                    write_text(50, 35, sunsettime, (249, 35))
+                    else:
+                        write_text(35,35, '\uf052', sunriseplace, font = w_font_s)
+                        print('sunset coming next')
+                        if hours is "24":
+                            write_text(50, 35, sunsettime.format('H:mm'), (249, 0))
+                        if hours is "12":
+                            write_text(50, 35, sunsettime.format('h:mm'), (249, 0))
 
                     """Add the wind icon at it's position"""
-                    image.paste(windicon, windiconspace)
+                    write_text(35,35, '\uf050', windiconspace, font = w_font_s)
 
                     """Add a short weather description"""
-                    write_text(144, 35, weather_description, (70, 35))
+                    write_text(229, 35, weather_description, (70, 35))
 
                 except Exception as e:
                     """If no response was received from the openweathermap
                     api server, add the cloud with question mark"""
                     print('__________OWM-ERROR!__________'+'\n')
                     print('Reason: ',e,'\n')
-                    image.paste(no_response, wiconplace)
+                    write_text(70,70, '\uf07b', wiconplace, font = w_font_l)
                     pass
 
             """Set the Calendar to start on the day specified by the settings file """
@@ -218,7 +223,7 @@ def main():
                 if week_starts_on is "Sunday":
                     prev_weekstart = now.replace(days = - now.isoweekday())
                     image.paste(weekday, weekday_pos['pos'+str(now.isoweekday())], weekday)
-                
+
                 weekday_names_list = []
                 for i in range(7):
                     weekday_name = prev_weekstart.replace(days=+i)
@@ -328,7 +333,7 @@ def main():
 
                 """Create a time span using the events_max_range value (in days)
                 to filter events in that range"""
-                
+
                 time_span_calendar = time + timedelta(days=int(events_max_range))
                 time_span_agenda = time + timedelta(days=22)
 
@@ -393,7 +398,7 @@ def main():
                                         agenda_list.append({'value':events.begin.to(system_tz).format('hh:mm a')+ ' '+ str(events.name), 'type':'timed_event'})
                                 else:
                                     agenda_list.append({'value':events.name, 'type':'full_day_event'})
-  
+
                     if bottom_section is not "":
                         del agenda_list[16:]
                         image.paste(seperator2, agenda_view_lines['line17'])
@@ -453,12 +458,12 @@ def main():
             buffer = np.array(image)
             r,g,b = buffer[:,:,0], buffer[:,:,1], buffer[:,:,2]
             if display_colours is "bwr":
-                buffer[np.logical_and(r > 240, g > 240)] = [255,255,255] #white
-                buffer[np.logical_and(r > 240, g < 240)] = [255,0,0] #red
+                buffer[np.logical_and(r > 250, g > 250)] = [255,255,255] #white
+                buffer[np.logical_and(r > 250, g < 250)] = [255,0,0] #red
                 buffer[np.logical_and(r != 255, r == g )] = [0,0,0] #black
 
             if display_colours is "bw":
-                buffer[np.logical_and(r > 240, g > 240)] = [255,255,255] #white
+                buffer[np.logical_and(r > 250, g > 250)] = [255,255,255] #white
                 buffer[g < 255] = [0,0,0] #black
 
             improved_image = Image.fromarray(buffer).rotate(270, expand=True)
