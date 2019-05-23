@@ -18,6 +18,10 @@ dpath = path+'days/'
 opath = path+'other/'
 fpath = path+'fonts/'
 
+NotoSansCJK = 'NotoSansCJK/NotoSansCJKsc-'
+NotoSans = 'NotoSans/NotoSans-SemiCondensed'
+weather_font = 'WeatherFont/weathericons-regular-webfont.ttf'
+
 weekday = im_open(opath+'weekday.png')
 eventicon = im_open(opath+'event.png')
 dateicon = im_open(opath+'today.png')
@@ -129,12 +133,10 @@ weekday_pos = {
     }
 
 weathericons = {
-    '01d': 'wi-day-sunny', '02d':'wi-day-cloudy', '03d': 'wi-cloudy',
-    '04d': 'wi-cloudy-windy', '09d': 'wi-showers', '10d':'wi-rain',
-    '11d':'wi-thunderstorm', '13d':'wi-snow', '50d': 'wi-fog',
-    '01n': 'wi-night-clear', '02n':'wi-night-cloudy',
-    '03n': 'wi-night-cloudy', '04n': 'wi-night-cloudy',
-    '09n': 'wi-night-showers', '10n':'wi-night-rain',
-    '11n':'wi-night-thunderstorm', '13n':'wi-night-snow',
-    '50n': 'wi-night-alt-cloudy-windy'
+    '01d': '\uf00d', '02d': '\uf002', '03d': '\uf013',
+    '04d': '\uf012', '09d': '\uf01a', '10d': '\uf019',
+    '11d': '\uf01e', '13d': '\uf01b', '50d': '\uf014',
+    '01n': '\uf02e', '02n': '\uf013', '03n': '\uf013',
+    '04n': '\uf013', '09n': '\uf037', '10n': '\uf036',
+    '11n': '\uf03b', '13n': '\uf038', '50n': '\uf023'
     }
