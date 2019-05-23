@@ -19,6 +19,7 @@ import random
 import gc
 import feedparser
 import numpy as np
+from pytz import timezone
 
 from settings import *
 from image_data import *
@@ -52,13 +53,20 @@ else:
 
 im_open = Image.open
 
+'''Get system timezone and set timezone accordingly'''
+file = open('/etc/timezone','r')
+lines = file.readlines()
+system_tz = lines[0].rstrip()
+local_tz = timezone(system_tz)
+
+
 owm = pyowm.OWM(api_key)
 
 """Main loop starts from here"""
 def main():
     calibration_countdown = 'initial'
     while True:
-        time = datetime.now()
+        time = datetime.now().replace(tzinfo=local_tz)
         hour = int(time.strftime("%-H"))
         month = int(time.now().strftime('%-m'))
         year = int(time.now().strftime('%Y'))
@@ -179,7 +187,7 @@ def main():
                     """If no response was received from the openweathermap
                     api server, add the cloud with question mark"""
                     print('__________OWM-ERROR!__________'+'\n')
-                    print('Reason: ',e+'\n')
+                    print('Reason: ',e,'\n')
                     image.paste(no_response, wiconplace)
                     pass
 
@@ -320,8 +328,10 @@ def main():
 
                 """Create a time span using the events_max_range value (in days)
                 to filter events in that range"""
-                agenda_max_days = arrow.now().replace(days=+22)
-                calendar_max_days = arrow.now().replace(days=+int(events_max_range))
+                
+                time_span_calendar = time + timedelta(days=int(events_max_range))
+                time_span_agenda = time + timedelta(days=22)
+
                 if internet_available() is True:
                     print('Internet connection test passed'+'\n')
                     print('Fetching events from your calendar'+'\n')
@@ -335,13 +345,26 @@ def main():
                                 decode = decode[:beginAlarmIndex] + decode[endAlarmIndex+12:]
                         ical = Calendar(decode)
                         for events in ical.events:
-                            if events.begin.date().year == today.year and events.begin.date().month is today.month:
+                            if events.begin.date().year == today.year and events.begin.date().month == today.month:
                                 if int((events.begin).format('D')) not in events_this_month:
                                     events_this_month.append(int((events.begin).format('D')))
-                            if middle_section is 'Agenda' and events in ical.timeline.included(now, agenda_max_days):
+                            if middle_section is 'Agenda' and time <= events.end.datetime <= time_span_agenda:
                                 upcoming.append(events)
-                            if middle_section is 'Calendar' and events in ical.timeline.included(now, calendar_max_days):
+                            if middle_section is 'Calendar' and time <= events.end.datetime <= time_span_calendar:
                                 upcoming.append(events)
+
+                    '''Fix some known bugs from ics.py'''
+                    for events in upcoming:
+                        if events.all_day and events.duration.days > 1:
+                            events.end = events.end.replace(days=-2)
+                            for i in range(1, events.duration.days):
+                                cc = events.clone()
+                                cc.begin = cc.begin.replace(days=+i)
+                                upcoming.append(cc)
+
+                    for events in upcoming:
+                        if events.begin.format('HH:mm') == '00:00':
+                            events.make_all_day()
 
                     def event_begins(elem):
                         return elem.begin
@@ -351,7 +374,6 @@ def main():
                 else:
                     print("Could not fetch events from your iCalendar.")
                     print("Either the internet connection is too weak or we're offline.")
-
 
                 if middle_section is 'Agenda':
                     """For the agenda view, create a list containing dates and events of the next 22 days"""
@@ -365,9 +387,13 @@ def main():
                         for events in upcoming:
                             if events.begin.date().day == date.day:
                                 if not events.all_day:
-                                    agenda_list.append({'value':events.begin.format('HH:mm')+ ' '+ str(events.name), 'type':'timed_event'})
+                                    if hours is '24':
+                                        agenda_list.append({'value':events.begin.to(system_tz).format('HH:mm')+ ' '+ str(events.name), 'type':'timed_event'})
+                                    if hours is '12':
+                                        agenda_list.append({'value':events.begin.to(system_tz).format('hh:mm a')+ ' '+ str(events.name), 'type':'timed_event'})
                                 else:
                                     agenda_list.append({'value':events.name, 'type':'full_day_event'})
+  
                     if bottom_section is not "":
                         del agenda_list[16:]
                         image.paste(seperator2, agenda_view_lines['line17'])
@@ -406,18 +432,18 @@ def main():
                 if len(cal) is 5:
                     del upcoming[6:]
                     for dates in range(len(upcoming)):
-                        readable_date = datetime.strptime(upcoming[dates]['date'], '%Y %m %d').strftime('%-d %b')
+                        readable_date = upcoming[dates].begin.format('D MMM', locale=language)
                         write_text(70, 25, readable_date, date_positions['d'+str(dates+1)])
                     for events in range(len(upcoming)):
-                        write_text(314, 25, (upcoming[events]['event']), event_positions['e'+str(events+1)], alignment = 'left')
+                        write_text(314, 25, upcoming[events].name, event_positions['e'+str(events+1)], alignment = 'left')
 
                 if len(cal) is 6:
                     del upcoming[4:]
                     for dates in range(len(upcoming)):
-                        readable_date = datetime.strptime(upcoming[dates]['date'], '%Y %m %d').strftime('%-d %b')
+                        readable_date = upcoming[dates].begin.format('D MMM', locale=language)
                         write_text(70, 25, readable_date, date_positions['d'+str(dates+3)])
                     for events in range(len(upcoming)):
-                        write_text(314, 25, (upcoming[events]['event']), event_positions['e'+str(events+3)], alignment = 'left')
+                        write_text(314, 25, upcoming[events].name, event_positions['e'+str(events+3)], alignment = 'left')
 
 
             """
