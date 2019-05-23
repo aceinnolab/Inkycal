@@ -197,6 +197,24 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
 	sudo pip3 install feedparser
     fi
     
+    #pytz for user pi  
+    echo -e "\e[1;36m"Checking if pytz is installed for user pi"\e[0m"
+    if python3.5 -c "import pytz" &> /dev/null; then
+        echo 'pytz is installed, skipping installation of this package.'
+    else
+        echo 'pytz is not installed, attempting to install now'
+	pip3 install pytz
+    fi
+    
+    #pytz for user sudo
+    echo -e "\e[1;36m"Checking if pytz is installed for user sudo"\e[0m"
+    if sudo python3.5 -c "import pytz" &> /dev/null; then
+        echo 'pytz is installed, skipping installation of this package.'
+    else
+        echo 'pytz is not installed, attempting to install now'
+	sudo pip3 install pytz
+    fi
+    
     echo -e "\e[1;36m"Finished installing all dependencies"\e[0m"
     
     # Clone the repository, then delete some non-required files
