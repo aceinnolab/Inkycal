@@ -166,7 +166,7 @@ def main():
                     write_text(50, 35, Humidity + " %", (334, 35))
 
                     """Add the sunrise/sunset icon and display the time"""
-                    if now >= sunsettime:
+                    if (now <= sunrisetime and now <= sunsettime) or (now >= sunrisetime and now >= sunsettime):
                         write_text(35,35, '\uf051', sunriseplace, font = w_font_s)
                         print('sunrise coming next')
                         if hours is "24":
@@ -174,7 +174,7 @@ def main():
                         if hours is "12":
                             write_text(50, 35, sunrisetime.format('h:mm'), (249, 0))
 
-                    else:
+                    if now >= sunrisetime and now <= sunsettime:
                         write_text(35,35, '\uf052', sunriseplace, font = w_font_s)
                         print('sunset coming next')
                         if hours is "24":
@@ -458,12 +458,12 @@ def main():
             buffer = np.array(image)
             r,g,b = buffer[:,:,0], buffer[:,:,1], buffer[:,:,2]
             if display_colours is "bwr":
-                buffer[np.logical_and(r > 250, g > 250)] = [255,255,255] #white
-                buffer[np.logical_and(r > 250, g < 250)] = [255,0,0] #red
+                buffer[np.logical_and(r > 245, g > 245)] = [255,255,255] #white
+                buffer[np.logical_and(r > 245, g < 245)] = [255,0,0] #red
                 buffer[np.logical_and(r != 255, r == g )] = [0,0,0] #black
 
             if display_colours is "bw":
-                buffer[np.logical_and(r > 250, g > 250)] = [255,255,255] #white
+                buffer[np.logical_and(r > 245, g > 245)] = [255,255,255] #white
                 buffer[g < 255] = [0,0,0] #black
 
             improved_image = Image.fromarray(buffer).rotate(270, expand=True)
