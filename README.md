@@ -57,7 +57,7 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 ## Installing required packages for python 3.x
 Execute the following command in the Terminal to install all required packages. Please use Raspbian Stretch with Desktop (preferably the latest version). Support for Raspbian Stretch Lite is temporarily dropped due to some changes, but will be available again soon once it has been tested.
 
-**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/Stable/Installer-with-debug.sh)"`**
+**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/master/Installer-with-debug.sh)"`**
 
 If the Installer should fail for any reason, kindly open an issue and paste the error. Thanks.
 
