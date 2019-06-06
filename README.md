@@ -22,7 +22,7 @@ This software fully supports the 3-Colour **and** 2-Colour version of the 7.5" E
 
 ## Preview
 <p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/v1-5-mar-19.JPG" width="600">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/Stable/Gallery/v1-5-mar-19.JPG" width="600">
 </p>
 
 ## Main features
