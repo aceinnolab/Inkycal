@@ -62,6 +62,7 @@ with open('/etc/timezone','r') as file:
     system_tz = lines[0].rstrip()
     local_tz = timezone(system_tz)
 
+print('Initialising weather')
 owm = pyowm.OWM(api_key, language=language)
 
 """Main loop starts from here"""
@@ -449,6 +450,13 @@ def main():
                         write_text(70, 25, readable_date, date_positions['d'+str(dates+3)])
                     for events in range(len(upcoming)):
                         write_text(314, 25, upcoming[events].name, event_positions['e'+str(events+3)], alignment = 'left')
+
+            'Show the time of the last update if set in the settings file'
+            if show_last_update_time is 'True':
+                if hours is "24":
+                    write_text(384, 25, 'Image created at '+now.format('H:mm'), (0, 615))
+                if hours is "12":
+                    write_text(384, 25, 'Image created at '+now.format('h:mm a'), (0, 615))
 
 
             """
