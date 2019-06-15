@@ -71,9 +71,9 @@ python3.5 /home/pi/Inky-Calendar/Calendar/E-Paper.py.
 If you encounter any issues, please leave a comment in the issues or via email. Thanks in advance.
 
 ## iCalendar
-Currently, only Google Calendar is fully supported and has proven to run more stable than others. While it is possible that a non-Google iCalendar may work, it is often not the case. If you're not using Google-Calendar and the script is throwing errors related to your iCalendar, please export your iCalendar (as an .ics file), create a new Calendar at Google Calendar and import your previous Calendar's .ics file. After importing, navigate to the section 'Integrate Calendar', copy the 'Secret address in iCal format' and paste it in the ical_urls section in the settings.py file (see instructions above). 
+With the latest release (v1.6), most iCalendars (google, yahoo, etc.) will work right away after entering the iCalendar URL in the settings (via the web-UI). Although other iCalendar work with the software, google iCalendar is recommended as it has proven to be more reliable than others.
 
-Try avoiding too long event names in your Calendar. If an event is too long, it'll be 'chunked off', letter by letter, from the end until it fits.
+Try avoiding too long event names in your Calendar. If an event-name is too long, it'll be 'chunked off', letter by letter, from the end until it fits in the lines.
 
 Event dates and names are displayed in chronological order below the Calendar. The small squares on the monthly Calendar indicate events on those days. For example, if you see a small square on the 14th of the current month, it means you have/had an event in your iCalendar on that day.
 
