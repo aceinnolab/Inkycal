@@ -35,27 +35,16 @@ if [ "$option" = 3 ]; then
 fi
 
 if [ "$option" = 1 ]; then
-    echo -e "\e[1;36m"Checking if the settings.py exists..."\e[0m"
-    if [ -e /home/pi/Inky-Calendar/Calendar/settings.py ]; then
-        echo -e "Found an E-Paper settings file."
-        sleep 2
-	echo "Backing up the current settings file in the home directory."
+    echo -e "\e[1;36m"Checking if the Inky-Calendar folder exists..."\e[0m"
+    if [ -d "/home/pi/Inky-Calendar" ]; then
+        echo -e "Found Inky-Calendar directory in /home/pi"
 	sleep 2
-	cp /home/pi/Inky-Calendar/Calendar/settings.py /home/pi/settings-old.py
-	echo -e "renaming the old E-Paper software folder"
-	sleep 2
-	cp -r /home/pi/Inky-Calendar /home/pi/Inky-Calendar-old
-	sudo rm -r /home/pi/Inky-Calendar
-	mv /home/pi/Inky-Calendar-old/Calendar /home/pi/Inky-Calendar-old/Calendar-old #added due to relative path which searches for 
-	# the 'Calendar' folder
-	echo "Updating now..."
-        cd
+        echo -e "To prevent overwriting the Inky-Calendar folder, the installer will not continue."
+	echo -e "Please rename the Inky-Calendar folder and then re-run the installer"
+	exit
     else
-        # Ask to update anyway. May not work always, but can help with new versions.
-	echo -e "\e[1;36m"Could not find the configuration file -settings.py- in /home/pi/Inky-Calendar/Calendar"\e[0m"
-	sleep 2
-	echo -e "\e[1;36m"Would you like to update the Inky-Calendar software anyway?"\e[0m"
-        echo -e "\e[97mPlease type [y] for yes or [n] for no and confirm your selection with [ENTER]"
+	echo -e "\e[1;36m"No folder named 'Inky-Calendar' found. Continuing"\e[0m"
+        echo -e "\e[97mPlease type [y] to update or [n] to abort c and confirm your selection with [ENTER]"
         read -r -p 'Waiting for input...  ' update_anyway
     
         if [ "$update_anyway" != Y ] && [ "$update_anyway" != y ] && [ "$update_anyway" != N ] && [ "$update_anyway" != n ]; then
