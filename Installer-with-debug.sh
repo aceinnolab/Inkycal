@@ -156,7 +156,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
         echo 'ics is installed, skipping installation of this package.'
     else
         echo 'ics is not installed, attempting to install now'
-	pip3 install ics
+	pip3 install ics==0.4
     fi
     
     #Ics.py for user sudo
@@ -165,7 +165,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
         echo 'ics is installed, skipping installation of this package.'
     else
         echo 'ics is not installed, attempting to install now'
-	sudo pip3 install ics
+	sudo pip3 install ics==0.4
     fi
 
     #feedparser for user pi  
