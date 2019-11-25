@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-Calendar module for Inky-Calendar Project
-
+Agenda module for Inky-Calendar Project
 Copyright by aceisace
 """
 from __future__ import print_function
@@ -11,77 +10,126 @@ from configuration import *
 from settings import *
 import arrow
 
+fontsize = 12
+show_events = True
+print_events = False
+style = 'D MMM YY HH:mm'
+
+"""Add a border to increase readability"""
+border_top = int(middle_section_height * 0.02)
+border_left = int(middle_section_width * 0.02)
+
+"""Choose font optimised for the agenda section"""
+font = ImageFont.truetype(NotoSans+'.ttf', fontsize)
+line_height = int(font.getsize('hg')[1] * 1.2) + 1
+line_width = int(middle_section_width - (border_left*2))
+
+"""Set some positions for events, dates and times"""
+date_col_width = int(line_width * 0.20)
+time_col_width = int(line_width * 0.15)
+event_col_width = int(line_width - date_col_width - time_col_width)
+
+date_col_start = border_left
+time_col_start = date_col_start + date_col_width
+event_col_start = time_col_start + time_col_width
 
 """Find max number of lines that can fit in the middle section and allocate
 a position for each line"""
-lines = middle_section_height // line_height
-line_pos = {}
-for i in range(lines):
-  y = top_section_height + i * line_height
-  line_pos['pos'+str(i+1)] = (x_padding, y)
+max_lines = int((middle_section_height - border_top*2) // line_height)
+line_pos = [(border_left, int(top_section_height + line * line_height))
+  for line in range(max_lines)]
 
+draw = ImageDraw.Draw(image)
 
-"""Create a list of dictionaries containing dates of the next days"""
-now = arrow.now()
-agenda_list = [{'date':now.replace(days=+i),
-  'date_str':now.replace(days=+i).format('ddd D MMM YY',locale=language),
-  'type':'date'} for i in range(lines)]
+def main():
+  try:
+    print('Agenda module: Generating image...', end = '')
+    now = arrow.now()
 
+    """Create a list of dictionaries containing dates of the next days"""
+    agenda_events = [{'date':now.replace(days=+_),
+      'date_str': now.replace(days=+_).format('ddd D MMM',locale=language),
+      'type':'date'} for _ in range(max_lines)]
 
-"""Copy the list from the icalendar module"""
-filtered_events = upcoming_events.copy()
+    """Copy the list from the icalendar module with some conditions"""
+    filtered_events = [events for events in upcoming_events if
+                           events.end.to(get_tz()) > now]
 
-"""Print events with some styling"""
-"""
-style = 'D MMM YY HH:mm'
-if filtered_events:
-  line_width = max(len(i.name) for i in filtered_events)
-  for events in filtered_events:
-    print('{0} {1} | {2} | {3} |'.format(events.name,
-          ' '* (line_width - len(events.name)), events.begin.format(style),
+    """Set print_events_to True to print all events in this month"""
+    if print_events == True and filtered_events:
+      auto_line_width = max(len(_.name) for _ in filtered_events)
+      for events in filtered_events:
+        print('{0} {1} | {2} | {3} | All day ='.format(events.name,
+          ' '* (auto_line_width - len(events.name)), events.begin.format(style),
           events.end.format(style)), events.all_day)
-"""
+    
+    """Convert the event-timings from utc to the specified locale's time
+    and create a ready-to-display list for the agenda view"""
+    for events in filtered_events:
+      if not events.all_day:
 
-"""Convert the event-timings from utc to the specified locale's time
-and create a ready-to-display list for the agenda view"""
-for events in filtered_events:
-  if not events.all_day:
-    events.end = events.end.to(get_tz())
-    events.begin = events.begin.to(get_tz())
-    if hours == '24':
-        agenda_list.append({'date': events.begin,
-          'title':events.begin.format('HH:mm')+' '+ str(events.name),
+        events.end = events.end.to(get_tz())
+        events.begin = events.begin.to(get_tz())
+
+        agenda_events.append({'date': events.begin, 'time': events.begin.format(
+          'HH:mm' if hours == '24' else 'hh:mm a'), 'name':str(events.name),
           'type':'timed_event'})
-    if hours == '12':
-        agenda_list.append({'date': events.begin,
-          'title':events.begin.format('hh:mm a')+' '+str(events.name),
-          'type':'timed_event'})
-  else:
-    if events.duration.days == 1:
-      agenda_list.append({'date': events.begin,'title':events.name, 'type':'full_day_event'})
-    else:
-      for days in range(events.duration.days):
-        agenda_list.append({'date': events.begin.replace(days=+i),'title':events.name, 'type':'full_day_event'})
+      else:
+        if events.duration.days == 1:
+          agenda_events.append({'date': events.begin,'time':'All day',
+                                'name': events.name,'type':'full_day_event'})
+        else:
+          for days in range(events.duration.days):
+            agenda_events.append({'date': events.begin.replace(days=+_),
+              'time':'All day','title':events.name, 'type':'full_day_event'})
 
-"""Sort events and dates in chronological order"""
-agenda_list = sorted(agenda_list, key = lambda i: i['date'])
+    """Sort events and dates in chronological order"""
+    agenda_events = sorted(agenda_events, key = lambda event: event['date'])
 
-"""Crop the agenda_list in case it's too long"""
-if len(agenda_list) > len(line_pos):
-  del agenda_list[len(line_pos):]
+    """Crop the agenda_events in case it's too long"""
+    del agenda_events[max_lines:]
 
-"""Display all events and dates on the display"""
-for i in range(len(agenda_list)):
-  if agenda_list[i]['type'] == 'date':
-    write_text(line_width, line_height, agenda_list[i]['date_str'],
-      line_pos['pos'+str(i+1)], alignment = 'left')
-  elif agenda_list[i]['type'] is 'timed_event':
-    write_text(line_width, line_height, agenda_list[i]['title'],
-      line_pos['pos'+str(i+1)], alignment = 'left')
-  else:
-    write_text(line_width, line_height, agenda_list[i]['title'],
-      line_pos['pos'+str(i+1)])
+    """Display all events, dates and times on the display"""
+    if show_events == True:
+      previous_date = None
+      for events in range(len(agenda_events)):
+        if agenda_events[events]['type'] == 'date':
+          if previous_date == None or previous_date != agenda_events[events][
+            'date']:
+            write_text(date_col_width, line_height,
+              agenda_events[events]['date_str'], line_pos[events], font = font)
+            
+          previous_date = agenda_events[events]['date']        
+          draw.line((date_col_start, line_pos[events][1],
+            line_width,line_pos[events][1]), fill = 'black')
 
-"""Crop the image to show only the middle section"""
-image.crop((0, top_section_height, display_width,
-            display_height-bottom_section_height)).save('agenda.png')
+        elif agenda_events[events]['type'] == 'timed_event':
+          write_text(time_col_width, line_height, agenda_events[events]['time'],
+            (time_col_start, line_pos[events][1]), font = font)
+         
+          write_text(event_col_width, line_height, ('• '+agenda_events[events][
+            'name']), (event_col_start, line_pos[events][1]),
+             alignment = 'left', font = font)
+
+        else:
+          write_text(time_col_width, line_height, agenda_events[events]['time'],
+            (time_col_start, line_pos[events][1]), font = font)
+         
+          write_text(event_col_width, line_height, ('• '+agenda_events[events]['name']),
+            (event_col_start, line_pos[events][1]), alignment = 'left', font = font)
+
+    """Crop the image to show only the middle section"""
+    agenda_image = image.crop((0, top_section_height, display_width,
+      display_height-bottom_section_height))
+    agenda_image.save(image_path+'agenda.png')
+    print('Done')
+
+  except Exception as e:
+    """If something went wrong, print a Error message on the Terminal"""
+    print('Failed!')
+    print('Error in Agenda module!')
+    print('Reason: ',e)
+    pass
+
+if __name__ == '__main__':
+  main()
