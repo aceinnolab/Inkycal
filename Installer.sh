@@ -1,7 +1,6 @@
 #!/bin/bash
-# E-Paper-Calendar software installer for Raspberry pi
-# Version: 1.6 (Mid April 2019)
-# Stability status of this installer: Stable
+# E-Paper-Calendar software installer for Raspberry Pi running Debian 10 (a.k.a. Buster) with Desktop
+# Version: 1.7 (Early Dec 2019)
 
 echo -e "\e[1mPlease select an option from below:"
 echo -e "\e[97mEnter \e[91m1 \e[97m to update the E-Paper software"
@@ -112,7 +111,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
 
     # Installing dependencies
     
-    #PYOWM for user pi
+    #PYOWM (v2.10.0) for user pi
     echo -e "\e[1;36m"Installing dependencies for the Inky-Calendar software"\e[0m"
     
     echo -e "\e[1;36m"Checking if pyowm is installed for user pi"\e[0m"
@@ -120,16 +119,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
         echo 'pyowm is installed, skipping installation of this package.'
     else
         echo 'pywom is not installed, attempting to install now'
-	pip3 install pyowm
-    fi
-    
-    #PYOWM for user sudo
-    echo -e "\e[1;36m"Checking if pyowm is installed for user sudo"\e[0m"
-    if sudo python3.5 -c "import pyowm" &> /dev/null; then
-        echo 'pyowm is installed, skipping installation of this package.'
-    else
-        echo 'pywom is not installed, attempting to install now'
-	sudo pip3 install pyowm
+	pip3 install pyowm==2.10.0
     fi
     
     #Pillow for user pi  
@@ -141,15 +131,6 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
 	pip3 install Pillow==5.3.0
     fi
     
-    #Pillow for user sudo
-    echo -e "\e[1;36m"Checking if Pillow is installed for user sudo"\e[0m"
-    if sudo python3.5 -c "import PIL" &> /dev/null; then
-        echo 'Pillow is installed, skipping installation of this package.'
-    else
-        echo 'Pillow is not installed, attempting to install now'
-	sudo pip3 install Pillow==5.3.0
-    fi
-    
     #Ics.py for user pi  
     echo -e "\e[1;36m"Checking if ics is installed for user pi"\e[0m"
     if python3.5 -c "import ics" &> /dev/null; then
@@ -159,31 +140,13 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
 	pip3 install ics==0.4
     fi
     
-    #Ics.py for user sudo
-    echo -e "\e[1;36m"Checking if ics is installed for user sudo"\e[0m"
-    if sudo python3.5 -c "import ics" &> /dev/null; then
-        echo 'ics is installed, skipping installation of this package.'
-    else
-        echo 'ics is not installed, attempting to install now'
-	sudo pip3 install ics==0.4
-    fi
-
     #feedparser for user pi  
     echo -e "\e[1;36m"Checking if feedparser is installed for user pi"\e[0m"
     if python3.5 -c "import feedparser" &> /dev/null; then
         echo 'feedparser is installed, skipping installation of this package.'
     else
         echo 'feedparser is not installed, attempting to install now'
-	pip3 install feedparser
-    fi
-    
-    #feedparser for user sudo
-    echo -e "\e[1;36m"Checking if feedparser is installed for user sudo"\e[0m"
-    if sudo python3.5 -c "import feedparser" &> /dev/null; then
-        echo 'feedparser is installed, skipping installation of this package.'
-    else
-        echo 'feedparser is not installed, attempting to install now'
-	sudo pip3 install feedparser
+	pip3 install feedparser==5.2.1
     fi
     
     #pytz for user pi  
@@ -192,16 +155,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
         echo 'pytz is installed, skipping installation of this package.'
     else
         echo 'pytz is not installed, attempting to install now'
-	pip3 install pytz
-    fi
-    
-    #pytz for user sudo
-    echo -e "\e[1;36m"Checking if pytz is installed for user sudo"\e[0m"
-    if sudo python3.5 -c "import pytz" &> /dev/null; then
-        echo 'pytz is installed, skipping installation of this package.'
-    else
-        echo 'pytz is not installed, attempting to install now'
-	sudo pip3 install pytz
+	pip3 install pytz==2019.3
     fi
     
     echo -e "\e[1;36m"Finished installing all dependencies"\e[0m"
@@ -229,9 +183,9 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     cat > /home/pi/Inky-Calendar/Info.txt << EOF
 This document contains a short info of the Inky-Calendar software version
 
-Version: 1.6
-Installer version: 1.6 (Mid April 2019)
-configuration file: /home/pi/Inky-Calendar/Calendar/settings.py
+Version: 1.7
+Installer version: 1.7 (Mid April 2019)
+configuration file: /home/pi/Inky-Calendar/settings/settings.py
 If the time was set correctly, you installed this software on:
 EOF
     echo "$(date)" >> /home/pi/Inky-Calendar/Info.txt
@@ -242,12 +196,13 @@ EOF
     sudo apt-get install supervisor -y
 
     sudo bash -c 'cat > /etc/supervisor/conf.d/E-Paper.conf' << EOF
-[program:E-Paper]
-command = sudo /usr/bin/python3.5 /home/pi/Inky-Calendar/Calendar/E-Paper.py
-stdout_logfile = /home/pi/Inky-Calendar/E-Paper.log
-stdout_logfile_maxbytes = 1MB
-stderr_logfile = /home/pi/Inky-Calendar/E-Paper-err.log
-stderr_logfile_maxbytes = 1MB
+[program:Inky-Calendar]
+command = /usr/bin/python3 /home/pi/Inky-Calendar/modules/inkycal.py
+
+stdout_logfile = /home/pi/Inky-Calendar/logs/logfile.log
+stdout_logfile_maxbytes = 5MB
+stderr_logfile = /home/pi/Inky-Calendar/logs/errors.log
+stderr_logfile_maxbytes = 5MB
 autorestart = true
 EOF
 
