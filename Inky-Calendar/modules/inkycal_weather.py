@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-Weather module for Inky-Calendar software. In development...
+Weather module for Inky-Calendar software.
 
-The lunar phase calculation algorithm was taken from Michael Bishop
-from Github after being granted permission. Thanks, Michael Bishop for your
-awesome code!
+The lunar phase calculation is from Sean B. Palmer, inamidst.com.
+Thank You Palmer for the awesome code!
 
 Copyright by aceisace
 """
@@ -31,7 +30,6 @@ weathericons = {
   '04n': '\uf013', '09n': '\uf037', '10n': '\uf036',
   '11n': '\uf03b', '13n': '\uf038', '50n': '\uf023'
   }
-
 
 """Add a border to increase readability"""
 border_top = int(top_section_height * 0.05)
@@ -81,24 +79,24 @@ sunset_icon_now_pos = (coloumn3, row3)
 sunset_time_now_pos = (coloumn3+ icon_small, row3)
 
 """Allocate positions for weather forecast after 3 hours"""
-text_3h_pos = (coloumn4, row1)
-icon_3h_pos = (coloumn4, row2)
-temperature_3h_pos = (coloumn4, row3)
+text_fc1_pos = (coloumn4, row1)
+icon_fc1_pos = (coloumn4, row2)
+temperature_fc1_pos = (coloumn4, row3)
 
 """Allocate positions for weather forecast after 6 hours"""
-text_6h_pos = (coloumn5, row1)
-icon_6h_pos = (coloumn5, row2)
-temperature_6h_pos = (coloumn5, row3)
+text_fc2_pos = (coloumn5, row1)
+icon_fc2_pos = (coloumn5, row2)
+temperature_fc2_pos = (coloumn5, row3)
 
 """Allocate positions for weather forecast after 9 hours"""
-text_9h_pos = (coloumn6, row1)
-icon_9h_pos = (coloumn6, row2)
-temperature_9h_pos = (coloumn6, row3)
+text_fc3_pos = (coloumn6, row1)
+icon_fc3_pos = (coloumn6, row2)
+temperature_fc3_pos = (coloumn6, row3)
 
 """Allocate positions for weather forecast after 12 hours"""
-text_12h_pos = (coloumn7, row1)
-icon_12h_pos = (coloumn7, row2)
-temperature_12h_pos = (coloumn7, row3)
+text_fc4_pos = (coloumn7, row1)
+icon_fc4_pos = (coloumn7, row2)
+temperature_fc4_pos = (coloumn7, row3)
 
 """Windspeed (m/s) to beaufort (index of list) conversion"""
 windspeed_to_beaufort = [0.02, 1.5, 3.3, 5.4, 7.9, 10.7, 13.8, 17.1, 20.7,
@@ -117,7 +115,7 @@ def to_units(kelvin):
 def to_hours(datetime_object, simple = False):
   if hours == '24':
     if simple == True:
-      converted_time = datetime_object.format('H')
+      converted_time = datetime_object.format('H') + '.00'
     else:
       converted_time = datetime_object.format('HH:mm')
   else:
@@ -127,167 +125,180 @@ def to_hours(datetime_object, simple = False):
       converted_time = datetime_object.format('hh:mm')
   return str(converted_time)
 
-#def main():
-try:
+"""Choose font optimised for the weather section"""
+fontsize = 8
+font = ImageFont.truetype(NotoSans+'.ttf', fontsize)
+fill_height = 0.8
+
+while font.getsize('hg')[1] <= (row_height * fill_height):
+  fontsize += 1
+  font = ImageFont.truetype(NotoSans+'.ttf', fontsize)
+
+def main():
   """Connect to Openweathermap API and fetch weather data"""
   if top_section == "Weather" and api_key != "" and owm.is_API_online() is True:
-    #try:
-    print("Fetching weather data from openweathermap API...",end = ' ')
-    current_weather_setup = owm.weather_at_place(location)
-    weather = current_weather_setup.get_weather()
+    try:
+      print('Weather module: Connectivity check passed, Generating image...',
+        end = '')
+      current_weather_setup = owm.weather_at_place(location)
+      weather = current_weather_setup.get_weather()
 
-    """Set-up and get weather forecast data"""
-    forecast = owm.three_hours_forecast(location)
-    print("Done")
+      """Set-up and get weather forecast data"""
+      forecast = owm.three_hours_forecast(location)
 
-    """Round the hour to the nearest multiple of 3"""
-    now = arrow.now(tz=get_tz())
-    hour_gap = (now.hour % 3)
+      """Round the hour to the nearest multiple of 3"""
+      now = arrow.now(tz=get_tz())
+      if (now.hour % 3) != 0:
+        hour_gap = 3 - (now.hour % 3)
+      else:
+        hour_gap = 3
 
-    """Prepare timings for forecasts"""
-    in_3h = now.replace(hours = + hour_gap + 3)
-    in_6h = now.replace(hours = + hour_gap + 6)
-    in_9h = now.replace(hours = + hour_gap + 9)
-    in_12h = now.replace(hours = + hour_gap + 12)
+      """Prepare timings for forecasts"""
+      fc1 = now.replace(hours = + hour_gap)
+      fc2 = now.replace(hours = + hour_gap + 3)
+      fc3 = now.replace(hours = + hour_gap + 6)
+      fc4 = now.replace(hours = + hour_gap + 9)
 
-    """Prepare forecast objects for the specified timings"""
-    forecast_3h = forecast.get_weather_at(in_3h.datetime)
-    forecast_6h = forecast.get_weather_at(in_6h.datetime)
-    forecast_9h = forecast.get_weather_at(in_9h.datetime)
-    forecast_12h = forecast.get_weather_at(in_12h.datetime)
+      """Prepare forecast objects for the specified timings"""
+      forecast_fc1 = forecast.get_weather_at(fc1.datetime)
+      forecast_fc2 = forecast.get_weather_at(fc2.datetime)
+      forecast_fc3 = forecast.get_weather_at(fc3.datetime)
+      forecast_fc4 = forecast.get_weather_at(fc4.datetime)
 
-    """Get the current temperature and forcasts temperatures"""
-    temperature_now = to_units(weather.get_temperature()['temp'])
-    temperature_3h = to_units(forecast_3h.get_temperature()['temp'])
-    temperature_6h = to_units(forecast_6h.get_temperature()['temp'])
-    temperature_9h = to_units(forecast_9h.get_temperature()['temp'])
-    temperature_12h = to_units(forecast_12h.get_temperature()['temp'])
+      """Get the current temperature and forcasts temperatures"""
+      temperature_now = to_units(weather.get_temperature()['temp'])
+      temperature_fc1 = to_units(forecast_fc1.get_temperature()['temp'])
+      temperature_fc2 = to_units(forecast_fc2.get_temperature()['temp'])
+      temperature_fc3 = to_units(forecast_fc3.get_temperature()['temp'])
+      temperature_fc4 = to_units(forecast_fc4.get_temperature()['temp'])
 
-    """Get current and forecast weather icon names"""
-    weather_icon_now = weather.get_weather_icon_name()
-    weather_icon_3h = forecast_3h.get_weather_icon_name()
-    weather_icon_6h = forecast_6h.get_weather_icon_name()
-    weather_icon_9h = forecast_9h.get_weather_icon_name()
-    weather_icon_12h = forecast_12h.get_weather_icon_name()
+      """Get current and forecast weather icon names"""
+      weather_icon_now = weather.get_weather_icon_name()
+      weather_icon_fc1 = forecast_fc1.get_weather_icon_name()
+      weather_icon_fc2 = forecast_fc2.get_weather_icon_name()
+      weather_icon_fc3 = forecast_fc3.get_weather_icon_name()
+      weather_icon_fc4 = forecast_fc4.get_weather_icon_name()
 
-    """Parse current weather details"""
-    sunrise_time_now = arrow.get(weather.get_sunrise_time()).to(get_tz())
-    sunset_time_now = arrow.get(weather.get_sunset_time()).to(get_tz())
-    humidity_now = str(weather.get_humidity())
-    cloudstatus_now = str(weather.get_clouds())
-    weather_description_now = str(weather.get_detailed_status())
-    windspeed_now = weather.get_wind(unit='meters_sec')['speed']
+      """Parse current weather details"""
+      sunrise_time_now = arrow.get(weather.get_sunrise_time()).to(get_tz())
+      sunset_time_now = arrow.get(weather.get_sunset_time()).to(get_tz())
+      humidity_now = str(weather.get_humidity())
+      cloudstatus_now = str(weather.get_clouds())
+      weather_description_now = str(weather.get_detailed_status())
+      windspeed_now = weather.get_wind(unit='meters_sec')['speed']
 
-    beaufort = str([windspeed_to_beaufort.index(_) for _ in windspeed_to_beaufort
-      if windspeed_now < _][0])
+      beaufort = str([windspeed_to_beaufort.index(_) for _ in
+        windspeed_to_beaufort if windspeed_now < _][0])
 
+      """Calculate the moon phase"""
+      def get_moon_phase():
+       diff = now - arrow.get(2001, 1, 1)
+       days = dec(diff.days) + (dec(diff.seconds) / dec(86400))
+       lunations = dec("0.20439731") + (days * dec("0.03386319269"))
+       position = lunations % dec(1)
+       index = math.floor((position * dec(8)) + dec("0.5"))
+       return {0: '\uf095',1: '\uf099',2: '\uf09c',3: '\uf0a0',
+               4: '\uf0a3',5: '\uf0a7',6: '\uf0aa',7: '\uf0ae' }[int(index) & 7]
 
-    """Calculate the moon phase"""
-    def get_moon_phase():
-     diff = now - arrow.get(2001, 1, 1)
-     days = dec(diff.days) + (dec(diff.seconds) / dec(86400))
-     lunations = dec("0.20439731") + (days * dec("0.03386319269"))
-     position = lunations % dec(1)
-     index = math.floor((position * dec(8)) + dec("0.5"))
-     return {0: '\uf095',1: '\uf099',2: '\uf09c',3: '\uf0a0',
-             4: '\uf0a3',5: '\uf0a7',6: '\uf0aa',7: '\uf0ae' }[int(index) & 7]
+      moonphase = get_moon_phase()
 
-    moonphase = get_moon_phase()
+      """Add weather details in column 1"""
+      write_text(coloumn_width, row_height, 'now', text_now_pos, font = font)
+      write_text(icon_medium, icon_medium, weathericons[weather_icon_now],
+        weather_icon_now_pos, font = w_font, fill_width = 0.9)
 
-    print('Adding weather details on the image...', end = ' ')
+      """Add weather details in column 2"""
+      write_text(icon_small, icon_small, '\uf053', temperature_icon_now_pos,
+        font = w_font, fill_height = 0.9)
+      write_text(icon_small, icon_small, '\uf07a', humidity_icon_now_pos,
+        font = w_font, fill_height = 0.9)
+      write_text(icon_small, icon_small, '\uf050', windspeed_icon_now_pos,
+        font = w_font, fill_height = 0.9)
 
-    """Add weather details in column 1"""
-    write_text(coloumn_width, row_height, 'now', text_now_pos)
-    write_text(icon_medium, icon_medium, weathericons[weather_icon_now],
-      weather_icon_now_pos, font = w_font, adapt_fontsize = True)
+      write_text(coloumn_width-icon_small, row_height,
+        temperature_now, temperature_now_pos, font = font)
+      write_text(coloumn_width-icon_small, row_height, humidity_now+'%',
+        humidity_now_pos, font = font)
+      write_text(coloumn_width-icon_small, row_height, beaufort,
+        windspeed_now_pos, font = font)
 
-    """Add weather details in column 2"""
-    write_text(icon_small, icon_small, '\uf053', temperature_icon_now_pos,
-      font = w_font, adapt_fontsize = True)
-    write_text(icon_small, icon_small, '\uf07a', humidity_icon_now_pos,
-      font = w_font, adapt_fontsize = True)
-    write_text(icon_small, icon_small, '\uf050', windspeed_icon_now_pos,
-      font = w_font, adapt_fontsize = True)
+      """Add weather details in column 3"""
+      write_text(coloumn_width, row_height, moonphase , moon_phase_now_pos,
+        font = w_font, fill_height = 0.9)
+      write_text(icon_small, icon_small, '\uf051', sunrise_icon_now_pos,
+        font = w_font, fill_height = 0.9)
+      write_text(icon_small, icon_small, '\uf052', sunset_icon_now_pos,
+        font = w_font, fill_height = 0.9)
 
-    write_text(coloumn_width-icon_small, row_height,
-      temperature_now, temperature_now_pos)
-    write_text(coloumn_width-icon_small, row_height, humidity_now+'%',
-      humidity_now_pos)
-    write_text(coloumn_width-icon_small, row_height, beaufort,
-      windspeed_now_pos)
+      write_text(coloumn_width-icon_small, row_height,
+        to_hours(sunrise_time_now), sunrise_time_now_pos, font = font,
+                 fill_width = 0.9)
+      write_text(coloumn_width-icon_small, row_height,
+        to_hours(sunset_time_now), sunset_time_now_pos, font = font,
+                 fill_width = 0.9)
 
-    """Add weather details in column 3"""
-    write_text(coloumn_width, row_height, moonphase , moon_phase_now_pos,
-      font = w_font, adapt_fontsize = True)
-    write_text(icon_small, icon_small, '\uf051', sunrise_icon_now_pos,
-      font = w_font, adapt_fontsize = True)
-    write_text(icon_small, icon_small, '\uf052', sunset_icon_now_pos,
-      font = w_font, adapt_fontsize = True)
+      """Add weather details in column 4"""
+      write_text(coloumn_width, row_height, to_hours(fc1, simple=True),
+        text_fc1_pos, font = font)
+      write_text(coloumn_width, row_height, weathericons[weather_icon_fc1],
+        icon_fc1_pos, font = w_font, fill_height = 1.0)
+      write_text(coloumn_width, row_height, temperature_fc1,
+          temperature_fc1_pos, font = font)
 
-    write_text(coloumn_width-icon_small, row_height, to_hours(sunrise_time_now),
-      sunrise_time_now_pos)
-    write_text(coloumn_width-icon_small, row_height, to_hours(sunset_time_now),
-      sunset_time_now_pos)
+      """Add weather details in column 5"""
+      write_text(coloumn_width, row_height, to_hours(fc2, simple=True),
+        text_fc2_pos, font = font)
+      write_text(coloumn_width, row_height, weathericons[weather_icon_fc2],
+        icon_fc2_pos, font = w_font, fill_height = 1.0)
+      write_text(coloumn_width, row_height, temperature_fc2,
+          temperature_fc2_pos, font = font)
 
-    """Add weather details in column 4"""
-    write_text(coloumn_width, row_height, to_hours(in_3h, simple=True),
-      text_3h_pos)
-    write_text(coloumn_width, row_height, weathericons[weather_icon_3h],
-      icon_3h_pos, font = w_font, adapt_fontsize = True)
-    write_text(coloumn_width, row_height, temperature_3h,
-        temperature_3h_pos)
+      """Add weather details in column 6"""
+      write_text(coloumn_width, row_height, to_hours(fc3, simple=True),
+        text_fc3_pos, font = font)
+      write_text(coloumn_width, row_height, weathericons[weather_icon_fc3],
+        icon_fc3_pos, font = w_font, fill_height = 1.0)
+      write_text(coloumn_width, row_height, temperature_fc3,
+          temperature_fc3_pos, font = font)
 
-    """Add weather details in column 5"""
-    write_text(coloumn_width, row_height, to_hours(in_6h, simple=True),
-      text_6h_pos)
-    write_text(coloumn_width, row_height, weathericons[weather_icon_6h],
-      icon_6h_pos, font = w_font, adapt_fontsize = True)
-    write_text(coloumn_width, row_height, temperature_6h,
-        temperature_6h_pos)
-
-    """Add weather details in column 6"""
-    write_text(coloumn_width, row_height, to_hours(in_9h, simple=True),
-      text_9h_pos)
-    write_text(coloumn_width, row_height, weathericons[weather_icon_9h],
-      icon_9h_pos, font = w_font, adapt_fontsize = True)
-    write_text(coloumn_width, row_height, temperature_9h,
-        temperature_9h_pos)
-
-    """Add weather details in column 7"""
-    write_text(coloumn_width, row_height, to_hours(in_12h, simple=True),
-      text_12h_pos)
-    write_text(coloumn_width, row_height, weathericons[weather_icon_12h],
-      icon_12h_pos, font = w_font, adapt_fontsize = True)
-    write_text(coloumn_width, row_height, temperature_12h,
-        temperature_12h_pos)
-
-
-    """Add seperators between section4 and section7"""
-    draw = ImageDraw.Draw(image)
-    line_start_y = int(top_section_height*0.1)
-    line_end_y = int(top_section_height*0.9)
-
-    draw.line((coloumn4, line_start_y, coloumn4, line_end_y), fill='black')
-    draw.line((coloumn5, line_start_y, coloumn5, line_end_y), fill='black')
-    draw.line((coloumn6, line_start_y, coloumn6, line_end_y), fill='black')
-    draw.line((coloumn7, line_start_y, coloumn7, line_end_y), fill='black')
-    draw.line((0, top_section_height-border_top, top_section_width-border_left,
-      top_section_height-border_top), fill='red', width=3)
-
-    print('Done'+'\n')
-    image.crop((0,0, top_section_width, top_section_height)).save('weather.png')
-
-except Exception as e:
-  """If no response was received from the openweathermap
-  api server, add the cloud with question mark"""
-  print('__________OWM-ERROR!__________')
-  print('Reason: ',e)
-  write_text(icon_medium, icon_medium, '\uf07b', weather_icon_now_pos,
-  font = w_font, adapt_fontsize = True)
-  message = 'No internet connectivity or API timeout'
-  write_text(coloumn_width*6, row_height, message, humidity_icon_now_pos)
-  pass
+      """Add weather details in last coloumn"""
+      write_text(coloumn_width, row_height, to_hours(fc4, simple=True),
+        text_fc4_pos, font = font)
+      write_text(coloumn_width, row_height, weathericons[weather_icon_fc4],
+        icon_fc4_pos, font = w_font, fill_height = 1.0)
+      write_text(coloumn_width, row_height, temperature_fc4,
+          temperature_fc4_pos, font = font)
 
 
-#if __name__ == '__main__':
-    #main()
+      """Add vertical lines between forecast sections"""
+      draw = ImageDraw.Draw(image)
+      line_start_y = int(top_section_height*0.1)
+      line_end_y = int(top_section_height*0.9)
+
+      draw.line((coloumn4, line_start_y, coloumn4, line_end_y), fill='black')
+      draw.line((coloumn5, line_start_y, coloumn5, line_end_y), fill='black')
+      draw.line((coloumn6, line_start_y, coloumn6, line_end_y), fill='black')
+      draw.line((coloumn7, line_start_y, coloumn7, line_end_y), fill='black')
+      draw.line((0, top_section_height-border_top, top_section_width-
+        border_left, top_section_height-border_top),
+        fill='red' if display_type == 'colour' else 'black' , width=3)
+
+      weather_image = image.crop((0,0, top_section_width, top_section_height))    
+      weather_image.save(image_path+'weather.png')
+      print('Done')
+
+    except Exception as e:
+      """If no response was received from the openweathermap
+      api server, add the cloud with question mark"""
+      print('__________OWM-ERROR!__________')
+      print('Reason: ',e)
+      write_text(icon_medium, icon_medium, '\uf07b', weather_icon_now_pos,
+      font = w_font, fill_height = 1.0)
+      message = 'No internet connectivity or API timeout'
+      write_text(coloumn_width*6, row_height, message, humidity_icon_now_pos,
+        font = font)
+      pass
+
+
+if __name__ == '__main__':
+  main()
