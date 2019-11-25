@@ -4,6 +4,20 @@ The order is from latest to oldest and structured in the following way:
 * Version name with date of publishing
 * Sections with either 'added', 'fixed', 'updated' and 'changed'
 
+## [1.7] Mid December 2019 (date not confirmed yet)
+
+### Added
+* To-Do
+### Changed
+* To-Do
+### Removed
+* To-Do
+### Fixed
+* To-Do
+
+
+
+
 ## [1.6] Mid May 2019
 
 ### Added
