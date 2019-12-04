@@ -17,6 +17,19 @@ import arrow
 import math, decimal
 dec = decimal.Decimal
 
+
+"""Optional parameters"""
+round_temperature = True
+round_windspeed = True
+use_beaufort = True
+show_wind_direction = False
+use_wind_direction_icon = False
+
+
+"""Set the optional parameters"""
+decimal_places_temperature = None if round_temperature == True else 1
+decimal_places_windspeed = None if round_windspeed == True else 1
+
 print('Initialising weather...', end=' ')
 owm = pyowm.OWM(api_key, language=language)
 print('Done')
@@ -102,13 +115,25 @@ temperature_fc4_pos = (coloumn7, row3)
 windspeed_to_beaufort = [0.02, 1.5, 3.3, 5.4, 7.9, 10.7, 13.8, 17.1, 20.7,
   24.4, 28.4, 32.6, 100]
 
-"""Function to convert tempertures from kelvin to celcius or fahrenheit"""
 def to_units(kelvin):
+  """Function to convert tempertures from kelvin to celcius or fahrenheit"""
+  degrees_celsius = round(kelvin - 273.15, ndigits = decimal_places_temperature)
+  fahrenheit = round((kelvin - 273.15) * 9/5 + 32,
+                     ndigits = decimal_places_temperature)
   if units == 'metric':
-    conversion =  str(int(kelvin - 273.15)) + '°C'
-  else:
-    conversion = str(int((kelvin - 273.15) * 9/5 + 32)) + 'F'
+    conversion = str(degrees_celsius) + '°C'
+      
+  if units == 'imperial':
+    conversion = str(fahrenheit) + 'F'
+
   return conversion
+
+def red_temp(negative_temperature):
+  if display_type == 'colour' and negative_temperature[0] == '-' and units == 'metric':
+    colour = 'red'
+  else:
+    colour = 'black'
+  return colour
 
 """Function to convert time objects to specified format 12/24 hours"""
 """Simple means just the hour and if 12 hours, am/pm as well"""
@@ -186,9 +211,23 @@ def main():
       cloudstatus_now = str(weather.get_clouds())
       weather_description_now = str(weather.get_detailed_status())
       windspeed_now = weather.get_wind(unit='meters_sec')['speed']
+      wind_degrees = forecast_fc1.get_wind()['deg']
+      wind_direction = ["N","NE","E","SE","S","SW","W","NW"][round(
+        wind_degrees/45) % 8]
 
-      beaufort = str([windspeed_to_beaufort.index(_) for _ in
-        windspeed_to_beaufort if windspeed_now < _][0])
+      if use_beaufort == True:
+        wind = str([windspeed_to_beaufort.index(_) for _ in
+          windspeed_to_beaufort if windspeed_now < _][0])
+      else:
+        meters_sec = round(windspeed_now, ndigits = windspeed_decimal_places)
+        miles_per_hour = round(windspeed_now * 2,23694,
+                               ndigits = windspeed_decimal_places)
+        if units == 'metric':
+          wind = str(meters_sec) + 'm/s'
+        if units == 'imperial':
+          wind = str(miles_per_hour) + 'mph'
+      if show_wind_direction == True:
+        wind += '({0})'.format(wind_direction)
 
       """Calculate the moon phase"""
       def get_moon_phase():
@@ -212,15 +251,21 @@ def main():
         font = w_font, fill_height = 0.9)
       write_text(icon_small, icon_small, '\uf07a', humidity_icon_now_pos,
         font = w_font, fill_height = 0.9)
-      write_text(icon_small, icon_small, '\uf050', windspeed_icon_now_pos,
-        font = w_font, fill_height = 0.9)
+      
+      if use_wind_direction_icon == False:  
+        write_text(icon_small, icon_small, '\uf050', windspeed_icon_now_pos,
+          font = w_font, fill_height = 0.9)
+      else:
+        write_text(icon_small, icon_small, '\uf0b1', windspeed_icon_now_pos,
+          font = w_font, fill_height = 0.9, rotation = -wind_degrees)
 
       write_text(coloumn_width-icon_small, row_height,
-        temperature_now, temperature_now_pos, font = font)
+        temperature_now, temperature_now_pos, font = font, text_colour =
+                 red_temp(temperature_now))
       write_text(coloumn_width-icon_small, row_height, humidity_now+'%',
         humidity_now_pos, font = font)
-      write_text(coloumn_width-icon_small, row_height, beaufort,
-        windspeed_now_pos, font = font)
+      write_text(coloumn_width-icon_small, row_height, wind,
+        windspeed_now_pos, font = font, autofit = True)
 
       """Add weather details in column 3"""
       write_text(coloumn_width, row_height, moonphase , moon_phase_now_pos,
@@ -237,38 +282,41 @@ def main():
         to_hours(sunset_time_now), sunset_time_now_pos, font = font,
                  fill_width = 0.9)
 
-      """Add weather details in column 4"""
+      """Add weather details in column 4 (forecast 1)"""
       write_text(coloumn_width, row_height, to_hours(fc1, simple=True),
         text_fc1_pos, font = font)
       write_text(coloumn_width, row_height, weathericons[weather_icon_fc1],
         icon_fc1_pos, font = w_font, fill_height = 1.0)
       write_text(coloumn_width, row_height, temperature_fc1,
-          temperature_fc1_pos, font = font)
+        temperature_fc1_pos, font = font, text_colour = red_temp(
+          temperature_fc1))
 
-      """Add weather details in column 5"""
+      """Add weather details in column 5 (forecast 2)"""
       write_text(coloumn_width, row_height, to_hours(fc2, simple=True),
         text_fc2_pos, font = font)
       write_text(coloumn_width, row_height, weathericons[weather_icon_fc2],
         icon_fc2_pos, font = w_font, fill_height = 1.0)
       write_text(coloumn_width, row_height, temperature_fc2,
-          temperature_fc2_pos, font = font)
+          temperature_fc2_pos, font = font, text_colour = red_temp(
+          temperature_fc2))
 
-      """Add weather details in column 6"""
+      """Add weather details in column 6 (forecast 3)"""
       write_text(coloumn_width, row_height, to_hours(fc3, simple=True),
         text_fc3_pos, font = font)
       write_text(coloumn_width, row_height, weathericons[weather_icon_fc3],
         icon_fc3_pos, font = w_font, fill_height = 1.0)
       write_text(coloumn_width, row_height, temperature_fc3,
-          temperature_fc3_pos, font = font)
+          temperature_fc3_pos, font = font, text_colour = red_temp(
+          temperature_fc3))
 
-      """Add weather details in last coloumn"""
+      """Add weather details in coloumn 7 (forecast 4)"""
       write_text(coloumn_width, row_height, to_hours(fc4, simple=True),
         text_fc4_pos, font = font)
       write_text(coloumn_width, row_height, weathericons[weather_icon_fc4],
         icon_fc4_pos, font = w_font, fill_height = 1.0)
       write_text(coloumn_width, row_height, temperature_fc4,
-          temperature_fc4_pos, font = font)
-
+          temperature_fc4_pos, font = font, text_colour = red_temp(
+          temperature_fc4))
 
       """Add vertical lines between forecast sections"""
       draw = ImageDraw.Draw(image)
@@ -298,7 +346,6 @@ def main():
       write_text(coloumn_width*6, row_height, message, humidity_icon_now_pos,
         font = font)
       pass
-
 
 if __name__ == '__main__':
   main()
