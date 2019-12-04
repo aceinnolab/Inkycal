@@ -15,6 +15,7 @@ print_events = False
 show_events = True
 max_event_lines = 4
 style = "DD MMM"
+event_icon = 'square' # dot #square
 
 if show_events == True:
   from inkycal_icalendar import upcoming_events
@@ -91,6 +92,21 @@ def main():
       if calendar_flat[i] != 0:
         write_text(icon_width, icon_height, str(calendar_flat[i]), grid[i])
 
+    """Draw a red/black circle with the current day of month in white"""
+    icon = Image.new('RGBA', (icon_width, icon_height))
+    current_day_pos = grid[calendar_flat.index(now.day)]
+    x_circle,y_circle = int(icon_width/2), int(icon_height/2)
+    radius = int(icon_width * 0.25)
+    text_width, text_height = default.getsize(str(now.day))
+    x_text = int((icon_width / 2) - (text_width / 2))
+    y_text = int((icon_height / 2) - (text_height / 1.7))
+    ImageDraw.Draw(icon).ellipse((x_circle-radius, y_circle-radius,
+      x_circle+radius, y_circle+radius), fill= 'red' if
+      display_type == 'colour' else 'black', outline=None)
+    ImageDraw.Draw(icon).text((x_text, y_text), str(now.day), fill='white',
+      font=bold)
+    image.paste(icon, current_day_pos, icon)
+
     """Create some reference points for the current month"""
     days_current_month = calendar.monthrange(now.year, now.month)[1]
     month_start = now.replace(days =-now.day+1)
@@ -113,10 +129,21 @@ def main():
               int(events.begin.replace(days=+i).format('D')))
       days_with_events = set(days_with_events)
 
-      for days in days_with_events:
-        write_text(icon_width, int(icon_height * 0.2), '•',
-          (grid[calendar_flat.index(days)][0],
-           int(grid[calendar_flat.index(days)][1] + icon_height*0.8)))
+      if event_icon == 'dot':
+        for days in days_with_events:
+          write_text(icon_width, int(icon_height * 0.2), '•',
+            (grid[calendar_flat.index(days)][0],
+             int(grid[calendar_flat.index(days)][1] + icon_height*0.8)))
+
+      if event_icon == 'square':
+        square_size = int(icon_width *0.6)
+        center_x = int((icon_width - square_size) / 2)
+        center_y = int((icon_height - square_size) / 2)
+        for days in days_with_events:
+          draw_square((int(grid[calendar_flat.index(days)][0]+center_x),
+             int(grid[calendar_flat.index(days)][1] + center_y )),
+             8, square_size , square_size)
+
 
       """Add a small section showing events of today and tomorrow"""
       event_list = ['{0} at {1} : {2}'.format('today', event.begin.format(
@@ -139,21 +166,6 @@ def main():
       write_text(main_area_width, int(events_height/max_event_lines),
        'No events today or tomorrow', event_lines[0], alignment='left',
        fill_height = 0.7)
-
-    """Draw a red/black circle with the current day of month in white"""
-    space = Image.new('RGB', (icon_width, icon_height), color=background_colour)
-    current_day_pos = grid[calendar_flat.index(now.day)]
-    x_circle,y_circle = int(icon_width/2), int(icon_height/2)
-    radius = int(icon_width * 0.3)
-    text_width, text_height = default.getsize(str(now.day))
-    x_text = int((icon_width / 2) - (text_width / 2))
-    y_text = int((icon_height / 2) - (text_height / 1.7))
-    ImageDraw.Draw(space).ellipse((x_circle-radius, y_circle-radius,
-      x_circle+radius, y_circle+radius), fill= 'red' if
-      display_type == 'colour' else 'black', outline=None)
-    ImageDraw.Draw(space).text((x_text, y_text), str(now.day), fill='white',
-      font=default)
-    image.paste(space, current_day_pos)
 
     """Set print_events_to True to print all events in this month"""
     style = 'DD MMM YY HH:mm'
