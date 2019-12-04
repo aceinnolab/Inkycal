@@ -11,7 +11,7 @@ import arrow
 from ics import Calendar
 
 print_events = False
-style = 'DD MMM YY HH:mm' #D MMM YY HH:mm
+style = 'DD MMM YY HH:mm'
 
 """Set timelines for filtering upcoming events"""
 now = arrow.now(tz=get_tz())
