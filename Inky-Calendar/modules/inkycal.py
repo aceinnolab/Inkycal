@@ -26,79 +26,81 @@ calibration_countdown = 'initial'
 image_cleanup()
 
 """Check time and calibrate display if time """
-#while True:
-now = arrow.now(tz=get_tz())
-for _ in range(1):
-  
-  """------------------Add short info------------------"""
-  print('Current Date: {0} \nCurrent Time: {1}'.format(now.format(
-    'D MMM YYYY'), now.format('HH:mm')))
-  print('-----------Main programm started now----------')
-
-
-
-  """------------------Calibration check----------------"""
-  if skip_calibration != True:
-    print('Calibration..', end = ' ')
-    if now.hour in calibration_hours:
-      if calibration_countdown == 'initial':
-        print('required. Performing calibration now.')
-        calibration_countdown = 0
-        display.calibrate_display(3)
-      else:
-        if calibration_countdown % (60 // int(update_interval)) == 0:
-          display.calibrate_display(3)
-          calibration_countdown = 0
-    else:
-      print('not required. Continuing...')
-  else:
-    print('Calibration skipped!. Please note that not calibrating epaper',
-          'displays causes ghosting')
-
-  """----------------Generating and assembling images------"""
-  if top_section == 'Weather':
-    weather.main()
-    weather_image = Image.open(image_path + 'weather.png')
-    image.paste(weather_image, (0, 0))
-
-  if middle_section == 'Calendar':
-    calendar.main()
-    calendar_image = Image.open(image_path + 'calendar.png')
-    image.paste(calendar_image, (0, middle_section_offset))
-    
-  if middle_section == 'Agenda':
-    agenda.main()
-    agenda_image = Image.open(image_path + 'agenda.png')
-    image.paste(agenda_image, (0, middle_section_offset))
-    
-  if bottom_section == 'RSS':
-    rss.main()
-    rss_image = Image.open(image_path + 'rss.png')
-    image.paste(rss_image, (0, bottom_section_offset))
-
-  image.save(image_path + 'canvas.png')
-
-  """---------Refreshing E-Paper with newly created image-----------"""
-  display.show_image(image)
-
-  """--------------Post processing after main loop-----------------"""
-  """Collect some garbage to free up some resources"""
-  gc.collect()
-
-  """Adjust calibration countdowns"""
-  if calibration_countdown == 'initial':
-      calibration_countdown = 0
-  calibration_countdown += 1
-
-  """Calculate duration until next display refresh"""
+while True:
+  now = arrow.now(tz=get_tz())
   for _ in range(1):
-    update_timings = [(60 - int(update_interval)*updates) for updates in
-      range(60//int(update_interval))]
-
-    minutes = [i - now.minute for i in update_timings if i >= now.minute]
-    refresh_countdown = minutes[0]*60 + (60 - now.second)
-
-    print('{0} Minutes left until next refresh'.format(minutes[0]))
+    image = Image.new('RGB', (display_width, display_height), background_colour)
     
-    del update_timings, minutes, image
-    #sleep(refresh_countdown)
+    """------------------Add short info------------------"""
+    print('Current Date: {0} \nCurrent Time: {1}'.format(now.format(
+      'D MMM YYYY'), now.format('HH:mm')))
+    print('-----------Main programm started now----------')
+
+
+
+    """------------------Calibration check----------------"""
+    if skip_calibration != True:
+      print('Calibration..', end = ' ')
+      if now.hour in calibration_hours:
+        if calibration_countdown == 'initial':
+          print('required. Performing calibration now.')
+          calibration_countdown = 0
+          display.calibrate_display(3)
+        else:
+          if calibration_countdown % (60 // int(update_interval)) == 0:
+            display.calibrate_display(3)
+            calibration_countdown = 0
+      else:
+        print('not required. Continuing...')
+    else:
+      print('Calibration skipped!. Please note that not calibrating epaper',
+            'displays causes ghosting')
+
+    """----------------Generating and assembling images------"""
+    if top_section == 'Weather':
+      weather.main()
+      weather_image = Image.open(image_path + 'weather.png')
+      image.paste(weather_image, (0, 0))
+
+    if middle_section == 'Calendar':
+      calendar.main()
+      calendar_image = Image.open(image_path + 'calendar.png')
+      image.paste(calendar_image, (0, middle_section_offset))
+      
+    if middle_section == 'Agenda':
+      agenda.main()
+      agenda_image = Image.open(image_path + 'agenda.png')
+      image.paste(agenda_image, (0, middle_section_offset))
+      
+    if bottom_section == 'RSS':
+      rss.main()
+      rss_image = Image.open(image_path + 'rss.png')
+      image.paste(rss_image, (0, bottom_section_offset))
+
+    image.save(image_path + 'canvas.png')
+    display.reduce_colours(image)    
+
+    """---------Refreshing E-Paper with newly created image-----------"""
+    display.show_image(image)
+
+    """--------------Post processing after main loop-----------------"""
+    """Collect some garbage to free up some resources"""
+    gc.collect()
+
+    """Adjust calibration countdowns"""
+    if calibration_countdown == 'initial':
+        calibration_countdown = 0
+    calibration_countdown += 1
+
+    """Calculate duration until next display refresh"""
+    for _ in range(1):
+      update_timings = [(60 - int(update_interval)*updates) for updates in
+        range(60//int(update_interval))]
+
+      minutes = [i - now.minute for i in update_timings if i >= now.minute]
+      refresh_countdown = minutes[0]*60 + (60 - now.second)
+
+      print('{0} Minutes left until next refresh'.format(minutes[0]))
+      
+      del update_timings, minutes, image
+      sleep(refresh_countdown)
