@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 """
 Advanced configuration options for Inky-Calendar software.
 Contains some useful functions for correctly rendering text,
@@ -5,7 +7,8 @@ calibrating (E-Paper display), checking internet connectivity
 
 Copyright by aceisace
 """
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageColor
+import numpy
 from urllib.request import urlopen
 from settings import language
 from pytz import timezone
@@ -64,12 +67,12 @@ w_font = ImageFont.truetype(weatherfont, 10)
 
 """Create image with given parameters"""
 image = Image.new('RGB', (display_width, display_height), background_colour)
-
+draw = ImageDraw.Draw(image)
 
 """Custom function to add text on an image"""
 def write_text(space_width, space_height, text, tuple,
   font=default, alignment='middle', autofit = False, fill_width = 1.0,
-  fill_height = 0.8):
+  fill_height = 0.8, text_colour = text_colour, rotation = None):
 
   if autofit == True or fill_width != 1.0 or fill_height != 0.8:
     size = 8
@@ -94,13 +97,16 @@ def write_text(space_width, space_height, text, tuple,
   else:
     y = y = int((space_height / 2) - (text_height / 2))
 
-  space = Image.new('RGB', (space_width, space_height), color=background_colour)
+  space = Image.new('RGBA', (space_width, space_height))
   ImageDraw.Draw(space).text((x, y), text, fill=text_colour, font=font)
-  image.paste(space, tuple)
+  if rotation != None:
+    space.rotate(rotation, expand = True)
+  image.paste(space, tuple, space)
 
 
-"""Custom function to display longer text into multiple lines (wrapping)"""
+
 def text_wrap(text, font=default, line_width = display_width):
+  """Split long text into smaller lists"""
   counter, padding = 0, 40
   lines = []
   if font.getsize(text)[0] < line_width:
@@ -116,16 +122,40 @@ def text_wrap(text, font=default, line_width = display_width):
   return lines
 
 
-"""Function to check internet connectivity"""
+def draw_square(tuple, radius, width, height, colour=text_colour, line_width=1):
+  """Draws a square with round corners at position (x,y) from tuple"""
+  x, y, diameter = tuple[0], tuple[1],  radius*2
+  line_length = width - diameter
+  
+  p1, p2 = (x+radius, y), (x+radius+line_length, y)  
+  p3, p4 = (x+width, y+radius), (x+width, y+radius+line_length)
+  p5, p6 = (p2[0], y+height), (p1[0], y+height)
+  p7, p8  = (x, p4[1]), (x,p3[1])
+  c1, c2 = (x,y), (x+diameter, y+diameter)
+  c3, c4 = ((x+width)-diameter, y), (x+width, y+diameter)
+  c5, c6 = ((x+width)-diameter, (y+height)-diameter), (x+width, y+height)
+  c7, c8 = (x, (y+height)-diameter), (x+diameter, y+height)
+  
+  draw.line( (p1, p2) , fill=colour, width = line_width)
+  draw.line( (p3, p4) , fill=colour, width = line_width)
+  draw.line( (p5, p6) , fill=colour, width = line_width)
+  draw.line( (p7, p8) , fill=colour, width = line_width)
+  draw.arc(  (c1, c2) , 180, 270, fill=colour, width=line_width)
+  draw.arc(  (c3, c4) , 270, 360, fill=colour, width=line_width)
+  draw.arc(  (c5, c6) , 0, 90, fill=colour, width=line_width)
+  draw.arc(  (c7, c8) , 90, 180, fill=colour, width=line_width)
+
 def internet_available():
+  """check if the internet is available"""
   try:
     urlopen('https://google.com',timeout=5)
     return True
   except URLError as err:
     return False
 
-"""Function to get the system timezone"""
+
 def get_tz():
+  """Get the system timezone"""
   with open('/etc/timezone','r') as file:
     lines = file.readlines()
     system_tz = lines[0].rstrip()
@@ -133,6 +163,7 @@ def get_tz():
   return local_tz
 
 def fix_ical(ical_url):
+  """Use iCalendars in compatability mode (without alarms)"""
   ical = str(urlopen(ical_url).read().decode())
   beginAlarmIndex = 0
   while beginAlarmIndex >= 0:
@@ -142,8 +173,8 @@ def fix_ical(ical_url):
       ical = ical[:beginAlarmIndex] + ical[endAlarmIndex+12:]
   return ical
 
-"""Function to clear images folder"""
 def image_cleanup():
+  """Delete all files in the image folder"""
   print('Cleanup of previous images...', end = '')
   for temp_files in glob(image_path+'*'):
       os.remove(temp_files)
