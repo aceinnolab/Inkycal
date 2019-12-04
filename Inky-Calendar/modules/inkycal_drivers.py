@@ -154,23 +154,42 @@ class EPD:
     self.digital_write(self.reset_pin, GPIO.HIGH)
     self.delay_ms(200)
 
-  def calibrate_display(no_of_cycles):
+  def calibrate_display(self, no_of_cycles):
     """Function for Calibration"""
-    black = Image.new('1', (EPD_WIDTH, EPD_HEIGHT), 'black')
-    white = Image.new('1', (EPD_WIDTH, EPD_HEIGHT), 'white')
-    red = Image.new('RGB', (EPD_WIDTH, EPD_HEIGHT), 'red')
+    
+    if display_type == 'colour':
+      packets = int(self.width / 2 * self.height)
+    if display_type == 'black_and_white':
+      packets = int(self.width / 4 * self.height)
+    
+    white, red, black = 0x33, 0x04, 0x00
+    
+    self.init()
     print('----------Started calibration of E-Paper display----------')
     for _ in range(no_of_cycles):
+      self.send_command(DATA_START_TRANSMISSION_1)
       print('Calibrating black...')
-      self.show_image(black)
-      if display_type == "colour":
-        print('calibrating red...')
-        self.show_image(red)
+      [self.send_data(black) for i in range(packets)]
+      self.send_command(DISPLAY_REFRESH)
+      self.wait_until_idle()
+      
+      if display_type == 'colour':
+        print('Calibrating red...')
+        self.send_command(DATA_START_TRANSMISSION_1)
+        [self.send_data(red) for i in range(packets)]
+        self.send_command(DISPLAY_REFRESH)
+        self.wait_until_idle()
+
       print('Calibrating white...')
-      self.show_image(white)
+      self.send_command(DATA_START_TRANSMISSION_1)
+      [self.send_data(white) for i in range(packets)]
+      self.send_command(DISPLAY_REFRESH)
+      self.wait_until_idle()
 
       print('Cycle {0} of {1} complete'.format(_+1, no_of_cycles))
-      print('-----------Calibration complete----------')
+      
+    print('-----------Calibration complete----------')
+    self.sleep()
 
   def reduce_colours(self, image):
     buffer = numpy.array(image)
@@ -187,6 +206,26 @@ class EPD:
 
     image = Image.fromarray(buffer)
     return image
+
+  def clear(self, colour='white'):
+    if display_type == 'colour':
+      packets = int(self.width / 2 * self.height)
+    if display_type == 'black_and_white':
+      packets = int(self.width / 4 * self.height)
+    
+    if colour == 'white': data = 0x33
+    if colour == 'red': data = 0x04
+    if colour == 'black': data = 0x00
+
+    self.init()
+    self.send_command(DATA_START_TRANSMISSION_1)
+    [self.send_data(data) for _ in range(packets)]
+    self.send_command(DISPLAY_REFRESH)
+    print('waiting until E-Paper is not busy')
+    self.delay_ms(100)
+    self.wait_until_idle()
+    print('E-Paper free')
+    self.sleep()
 
   def get_frame_buffer(self, image):
     imwidth, imheight = image.size
@@ -237,20 +276,20 @@ class EPD:
         j = 0
         while (j < 4):
           if ((temp1 & 0xC0) == 0xC0):
-            temp2 = 0x03
+            temp2 = 0x03 #white
           elif ((temp1 & 0xC0) == 0x00):
-            temp2 = 0x00
+            temp2 = 0x00 #black
           else:
-            temp2 = 0x04
+            temp2 = 0x04 #red
           temp2 = (temp2 << 4) & 0xFF
           temp1 = (temp1 << 2) & 0xFF
           j += 1
           if((temp1 & 0xC0) == 0xC0):
-            temp2 |= 0x03
+            temp2 |= 0x03 #white
           elif ((temp1 & 0xC0) == 0x00):
-            temp2 |= 0x00
+            temp2 |= 0x00 #black
           else:
-            temp2 |= 0x04
+            temp2 |= 0x04 #red
           temp1 = (temp1 << 2) & 0xFF
           self.send_data(temp2)
           j += 1
@@ -261,16 +300,16 @@ class EPD:
         j = 0
         while (j < 8):
           if(temp1 & 0x80):
-            temp2 = 0x03
+            temp2 = 0x03 #white
           else:
-            temp2 = 0x00
+            temp2 = 0x00 #black
           temp2 = (temp2 << 4) & 0xFF
           temp1 = (temp1 << 1) & 0xFF
           j += 1
           if(temp1 & 0x80):
-            temp2 |= 0x03
+            temp2 |= 0x03 #white
           else:
-            temp2 |= 0x00
+            temp2 |= 0x00 #black
           temp1 = (temp1 << 1) & 0xFF
           self.send_data(temp2)
           j += 1
