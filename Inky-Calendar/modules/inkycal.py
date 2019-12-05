@@ -53,29 +53,41 @@ while True:
       else:
         print('not required. Continuing...')
     else:
-      print('Calibration skipped!. Please note that not calibrating epaper',
+      print('Calibration skipped!. Please note that not calibrating e-paper',
             'displays causes ghosting')
 
     """----------------Generating and assembling images------"""
     if top_section == 'Weather':
-      weather.main()
-      weather_image = Image.open(image_path + 'weather.png')
-      image.paste(weather_image, (0, 0))
+      try:
+        weather.main()
+        weather_image = Image.open(image_path + 'weather.png')
+        image.paste(weather_image, (0, 0))
+      except:
+        pass
 
     if middle_section == 'Calendar':
-      calendar.main()
-      calendar_image = Image.open(image_path + 'calendar.png')
-      image.paste(calendar_image, (0, middle_section_offset))
+      try:
+        calendar.main()
+        calendar_image = Image.open(image_path + 'calendar.png')
+        image.paste(calendar_image, (0, middle_section_offset))
+      except:
+        pass
       
     if middle_section == 'Agenda':
-      agenda.main()
-      agenda_image = Image.open(image_path + 'agenda.png')
-      image.paste(agenda_image, (0, middle_section_offset))
+      try:
+        agenda.main()
+        agenda_image = Image.open(image_path + 'agenda.png')
+        image.paste(agenda_image, (0, middle_section_offset))
+      except:
+        pass
       
     if bottom_section == 'RSS':
-      rss.main()
-      rss_image = Image.open(image_path + 'rss.png')
-      image.paste(rss_image, (0, bottom_section_offset))
+      try:
+        rss.main()
+        rss_image = Image.open(image_path + 'rss.png')
+        image.paste(rss_image, (0, bottom_section_offset))
+      except:
+        pass
 
     image.save(image_path + 'canvas.png')
     display.reduce_colours(image)    
