@@ -36,6 +36,7 @@ line_positions = [(border_left, bottom_section_offset +
 def main():
   if bottom_section == "RSS" and rss_feeds != [] and internet_available() == True:
     try:
+      clear_image('bottom_section')
       print('RSS module: Connectivity check passed. Generating image...',
             end = '')
 
@@ -69,8 +70,7 @@ def main():
 
       del filtered_feeds, parsed_feeds
 
-      rss_image = image.crop((0,bottom_section_offset, display_width,
-        display_height))
+      rss_image = crop_image(image, 'bottom_section')
       rss_image.save(image_path+'rss.png')
       print('Done')
 
