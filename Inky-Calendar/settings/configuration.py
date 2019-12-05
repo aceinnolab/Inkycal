@@ -72,7 +72,7 @@ draw = ImageDraw.Draw(image)
 """Custom function to add text on an image"""
 def write_text(space_width, space_height, text, tuple,
   font=default, alignment='middle', autofit = False, fill_width = 1.0,
-  fill_height = 0.8, text_colour = text_colour, rotation = None):
+  fill_height = 0.8, colour = text_colour, rotation = None):
 
   if autofit == True or fill_width != 1.0 or fill_height != 0.8:
     size = 8
@@ -98,12 +98,24 @@ def write_text(space_width, space_height, text, tuple,
     y = y = int((space_height / 2) - (text_height / 2))
 
   space = Image.new('RGBA', (space_width, space_height))
-  ImageDraw.Draw(space).text((x, y), text, fill=text_colour, font=font)
+  ImageDraw.Draw(space).text((x, y), text, fill=colour, font=font)
   if rotation != None:
     space.rotate(rotation, expand = True)
   image.paste(space, tuple, space)
 
+def clear_image(section, colour = background_colour):
+  """Clear the image"""
+  width, height = eval(section+'_width'), eval(section+'_height')
+  position = (0, eval(section+'_offset'))
+  box = Image.new('RGB', (width, height), colour)
+  image.paste(box, position)
 
+def crop_image(input_image, section):
+  """Crop an input image to the desired section"""
+  x1, y1 = 0, eval(section+'_offset')
+  x2, y2 = eval(section+'_width'), y1 + eval(section+'_height')
+  image = input_image.crop((x1,y1,x2,y2))
+  return image
 
 def text_wrap(text, font=default, line_width = display_width):
   """Split long text into smaller lists"""
