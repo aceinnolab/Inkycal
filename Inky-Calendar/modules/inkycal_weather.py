@@ -163,11 +163,12 @@ def main():
   """Connect to Openweathermap API and fetch weather data"""
   if top_section == "Weather" and api_key != "" and owm.is_API_online() is True:
     try:
+      clear_image('top_section')
       print('Weather module: Connectivity check passed, Generating image...',
         end = '')
       current_weather_setup = owm.weather_at_place(location)
       weather = current_weather_setup.get_weather()
-
+      
       """Set-up and get weather forecast data"""
       forecast = owm.three_hours_forecast(location)
 
@@ -260,7 +261,7 @@ def main():
           font = w_font, fill_height = 0.9, rotation = -wind_degrees)
 
       write_text(coloumn_width-icon_small, row_height,
-        temperature_now, temperature_now_pos, font = font, text_colour =
+        temperature_now, temperature_now_pos, font = font, colour =
                  red_temp(temperature_now))
       write_text(coloumn_width-icon_small, row_height, humidity_now+'%',
         humidity_now_pos, font = font)
@@ -288,7 +289,7 @@ def main():
       write_text(coloumn_width, row_height, weathericons[weather_icon_fc1],
         icon_fc1_pos, font = w_font, fill_height = 1.0)
       write_text(coloumn_width, row_height, temperature_fc1,
-        temperature_fc1_pos, font = font, text_colour = red_temp(
+        temperature_fc1_pos, font = font, colour = red_temp(
           temperature_fc1))
 
       """Add weather details in column 5 (forecast 2)"""
@@ -297,7 +298,7 @@ def main():
       write_text(coloumn_width, row_height, weathericons[weather_icon_fc2],
         icon_fc2_pos, font = w_font, fill_height = 1.0)
       write_text(coloumn_width, row_height, temperature_fc2,
-          temperature_fc2_pos, font = font, text_colour = red_temp(
+          temperature_fc2_pos, font = font, colour = red_temp(
           temperature_fc2))
 
       """Add weather details in column 6 (forecast 3)"""
@@ -306,7 +307,7 @@ def main():
       write_text(coloumn_width, row_height, weathericons[weather_icon_fc3],
         icon_fc3_pos, font = w_font, fill_height = 1.0)
       write_text(coloumn_width, row_height, temperature_fc3,
-          temperature_fc3_pos, font = font, text_colour = red_temp(
+          temperature_fc3_pos, font = font, colour = red_temp(
           temperature_fc3))
 
       """Add weather details in coloumn 7 (forecast 4)"""
@@ -315,7 +316,7 @@ def main():
       write_text(coloumn_width, row_height, weathericons[weather_icon_fc4],
         icon_fc4_pos, font = w_font, fill_height = 1.0)
       write_text(coloumn_width, row_height, temperature_fc4,
-          temperature_fc4_pos, font = font, text_colour = red_temp(
+          temperature_fc4_pos, font = font, colour = red_temp(
           temperature_fc4))
 
       """Add vertical lines between forecast sections"""
@@ -331,7 +332,7 @@ def main():
         border_left, top_section_height-border_top),
         fill='red' if display_type == 'colour' else 'black' , width=3)
 
-      weather_image = image.crop((0,0, top_section_width, top_section_height))    
+      weather_image = crop_image(image, 'top_section')    
       weather_image.save(image_path+'weather.png')
       print('Done')
 
@@ -345,6 +346,8 @@ def main():
       message = 'No internet connectivity or API timeout'
       write_text(coloumn_width*6, row_height, message, humidity_icon_now_pos,
         font = font)
+      weather_image = crop_image(image, 'top_section')
+      weather_image.save(image_path+'weather.png')
       pass
 
 if __name__ == '__main__':
