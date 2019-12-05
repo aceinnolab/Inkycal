@@ -42,7 +42,7 @@ def epd_init():
   GPIO.setup(DC_PIN, GPIO.OUT)
   GPIO.setup(CS_PIN, GPIO.OUT)
   GPIO.setup(BUSY_PIN, GPIO.IN)
-  SPI.max_speed_hz = 2000000
+  SPI.max_speed_hz = 4000000
   SPI.mode = 0b00
   return 0;
 
@@ -196,13 +196,13 @@ class EPD:
     r,g,b = buffer[:,:,0], buffer[:,:,1], buffer[:,:,2]
 
     if display_type == "colour":
-        buffer[numpy.logical_and(r > 245, g > 245)] = [255,255,255] #white
-        buffer[numpy.logical_and(r > 245, g < 245)] = [255,0,0] #red
-        buffer[numpy.logical_and(r != 255, r == g )] = [0,0,0] #black
+      buffer[numpy.logical_and(r <= 180, r == g)] = [0,0,0] #black
+      buffer[numpy.logical_and(r >= 150, g >= 150)] = [255,255,255] #white
+      buffer[numpy.logical_and(r >= 150, g <= 90)] = [255,0,0] #red
 
     if display_type == "black_and_white":
-        buffer[numpy.logical_and(r > 245, g > 245)] = [255,255,255] #white
-        buffer[g < 255] = [0,0,0] #black
+      buffer[numpy.logical_and(r > 245, g > 245)] = [255,255,255] #white
+      buffer[g < 255] = [0,0,0] #black
 
     image = Image.fromarray(buffer)
     return image
