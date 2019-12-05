@@ -7,7 +7,7 @@ Copyright by aceisace
 from __future__ import print_function
 import calendar
 from configuration import *
-from settings import middle_section, week_starts_on, language, hours, display_type
+from settings import *
 import arrow
 from PIL import Image, ImageDraw
 
@@ -18,7 +18,7 @@ style = "DD MMM"
 event_icon = 'square' # dot #square
 
 if show_events == True:
-  from inkycal_icalendar import upcoming_events
+  from inkycal_icalendar import fetch_events
 
 """Add a border to increase readability"""
 border_top = int(middle_section_height * 0.02)
@@ -59,6 +59,7 @@ event_lines = [(border_left,(bottom_section_offset - events_height)+
 
 def main():
   try:
+    clear_image('middle_section')
     print('Calendar module: Generating image...', end = '')
     now = arrow.now(tz = get_tz())
 
@@ -114,6 +115,7 @@ def main():
 
     if show_events == True:
       """Filter events which begin before the end of this month"""
+      upcoming_events = fetch_events()
       calendar_events = [events for events in upcoming_events if
                          events.begin.to(get_tz()) < month_end and
                          events.begin.month == now.month]
@@ -152,8 +154,7 @@ def main():
       
       event_list += ['{0} at {1} : {2}'.format('tomorrow', event.begin.format(
         'HH:mm' if hours == 24 else 'hh:mm'), event.name)
-        for event in calendar_events
-        if event.begin.day == now.replace(days=+1).day]
+        for event in calendar_events if event.begin.day == now.replace(days=+1).day]
 
       del event_list[4:]
 
@@ -176,8 +177,7 @@ def main():
           ' ' * (line_width - len(events.name)), events.begin.format(style),
           events.end.format(style)), events.all_day)
 
-    calendar_image = image.crop((0, top_section_height, display_width,
-      display_height-bottom_section_height))
+    calendar_image = crop_image(image, 'middle_section')
     calendar_image.save(image_path+'calendar.png')
 
     print('Done')
