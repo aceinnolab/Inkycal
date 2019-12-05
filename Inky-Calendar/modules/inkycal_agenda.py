@@ -5,8 +5,8 @@ Agenda module for Inky-Calendar Project
 Copyright by aceisace
 """
 from __future__ import print_function
-from inkycal_icalendar import upcoming_events
-from configuration import *
+from inkycal_icalendar import fetch_events
+from configuration import*
 from settings import *
 import arrow
 
@@ -39,10 +39,10 @@ max_lines = int((middle_section_height - border_top*2) // line_height)
 line_pos = [(border_left, int(top_section_height + line * line_height))
   for line in range(max_lines)]
 
-draw = ImageDraw.Draw(image)
-
 def main():
   try:
+    clear_image('middle_section')
+                
     print('Agenda module: Generating image...', end = '')
     now = arrow.now()
 
@@ -52,6 +52,7 @@ def main():
       'type':'date'} for _ in range(max_lines)]
 
     """Copy the list from the icalendar module with some conditions"""
+    upcoming_events = fetch_events()
     filtered_events = [events for events in upcoming_events if
                            events.end.to(get_tz()) > now]
 
@@ -79,9 +80,9 @@ def main():
           agenda_events.append({'date': events.begin,'time':'All day',
                                 'name': events.name,'type':'full_day_event'})
         else:
-          for days in range(events.duration.days):
-            agenda_events.append({'date': events.begin.replace(days=+_),
-              'time':'All day','title':events.name, 'type':'full_day_event'})
+          for day in range(events.duration.days):
+            agenda_events.append({'date': events.begin.replace(days=+day),
+              'time':'All day','name':events.name, 'type':'full_day_event'})
 
     """Sort events and dates in chronological order"""
     agenda_events = sorted(agenda_events, key = lambda event: event['date'])
@@ -101,7 +102,7 @@ def main():
             
           previous_date = agenda_events[events]['date']        
           draw.line((date_col_start, line_pos[events][1],
-            line_width,line_pos[events][1]), fill = 'black')
+            line_width,line_pos[events][1]), fill = 'red' if display_type == 'colour' else 'black')
 
         elif agenda_events[events]['type'] == 'timed_event':
           write_text(time_col_width, line_height, agenda_events[events]['time'],
@@ -119,8 +120,7 @@ def main():
             (event_col_start, line_pos[events][1]), alignment = 'left', font = font)
 
     """Crop the image to show only the middle section"""
-    agenda_image = image.crop((0, top_section_height, display_width,
-      display_height-bottom_section_height))
+    agenda_image = crop_image(image, 'middle_section')
     agenda_image.save(image_path+'agenda.png')
     print('Done')
 
