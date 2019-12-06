@@ -3,37 +3,42 @@
 # Version: 1.7 (Early Dec 2019)
 
 echo -e "\e[1mPlease select an option from below:"
-echo -e "\e[97mEnter \e[91m1 \e[97m to update the E-Paper software"
-echo -e "\e[97mEnter \e[91m2 \e[97m to install the E-Paper software"
-echo -e "\e[97mEnter \e[91m3 \e[97m to uninstall the E-Paper software"
+echo -e "\e[97mEnter \e[91m1 \e[97m to update the E-Paper software"        #Option 1 : UPDATE
+echo -e "\e[97mEnter \e[91m2 \e[97m to install the E-Paper software"       #Option 2 : INSTALL
+echo -e "\e[97mEnter \e[91m3 \e[97m to uninstall the E-Paper software"     #Option 3 : UNINSTALL
 echo -e "\e[97mConfirm your selection with [ENTER]"
 read -r -p 'Waiting for input...  ' option
 
+# Invalid number selected, abort
 if [ "$option" != 1 ] && [ "$option" != 2 ] && [ "$option" != 3 ]; then
     echo -e "invalid number, aborting now"
     exit
 fi
+
+# No option selected, abort
 if [ -z "$option" ]; then
     echo -e "You didn't enter anything, aborting now."
     exit
 fi
+
+ # What to do when uninstalling software
 if [ "$option" = 3 ]; then
     echo -e "\e[1;36m"Removing the E-Paper software now..."\e[0m"
-    pip3 uninstall Pillow -y && sudo pip3 uninstall Pillow -y && sudo pip3 uninstall pyowm -y&& sudo pip3 uninstall ics -y && pip3 uninstall pyowm -y && pip3 uninstall ics -y && sudo apt-get remove supervisor -y && pip3 uninstall feedparser -y && sudo pip3 uninstall feedparser -y && sudo apt-get clean && sudo apt-get autoremove -y
-    if [ -e /etc/supervisor/conf.d/E-Paper.conf ]; then
-        sudo rm /etc/supervisor/conf.d/E-Paper.conf
+    pip3 uninstall Pillow -y pyowm -y ics -y feedparser -y && sudo apt-get remove supervisor -y && sudo apt-get clean && sudo apt-get autoremove -y
+    if [ -e /etc/supervisor/conf.d/Inky-Calendar.conf ]; then
+        sudo rm /etc/supervisor/conf.d/Inky-Calendar.conf
     fi
     echo -e "\e[1;36m"The libraries have been removed successfully"\e[0m"
     sleep 1
     echo -e "Removing the Inky-Calendar folder if it exists"
     if [ -d "/home/pi/Inky-Calendar" ]; then
         sudo rm -r /home/pi/Inky-Calendar/
-	echo -e "\e[1;36m"Found the E-Paper-software folder and deleted it"\e[0m"
+	echo -e "\e[1;36m"Found Inky-Calendar folder and deleted it"\e[0m"
     fi
     echo -e "\e[1;36m"All done!"\e[0m"
 fi
 
-if [ "$option" = 1 ]; then
+if [ "$option" = 1 ]; then #UPDATE software
     echo -e "\e[1;36m"Checking if the Inky-Calendar folder exists..."\e[0m"
     if [ -d "/home/pi/Inky-Calendar" ]; then
         echo -e "Found Inky-Calendar directory in /home/pi"
@@ -43,7 +48,7 @@ if [ "$option" = 1 ]; then
 	exit
     else
 	echo -e "\e[1;36m"No folder named 'Inky-Calendar' found. Continuing"\e[0m"
-        echo -e "\e[97mPlease type [y] to update or [n] to abort c and confirm your selection with [ENTER]"
+        echo -e "\e[97mPlease type [y] to force-update or [n] to abort c and confirm your selection with [ENTER]"
         read -r -p 'Waiting for input...  ' update_anyway
     
         if [ "$update_anyway" != Y ] && [ "$update_anyway" != y ] && [ "$update_anyway" != N ] && [ "$update_anyway" != n ]; then
@@ -64,7 +69,7 @@ if [ "$option" = 1 ]; then
     fi
 fi
 
-if [ "$option" = 2 ]; then
+if [ "$option" = 2 ]; then # Install software
     echo -e "\e[1;36m"Setting up the system by installing some required libraries for python3"\e[0m"
 
     # Installing a few packages which are missing on Raspbian Stretch Lite
@@ -98,7 +103,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
         echo -e "You didn't enter anything, aborting now."
         exit
     fi
-    
+
     if [ "$update" = Y ] || [ "$update" = y ]; then
         # Updating and upgrading the system, without taking too much space
         echo -e "\e[1;36m"Running apt-get update and apt-get dist-upgrade for you..."\e[0m"
@@ -114,50 +119,8 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     #PYOWM (v2.10.0) for user pi
     echo -e "\e[1;36m"Installing dependencies for the Inky-Calendar software"\e[0m"
     
-    echo -e "\e[1;36m"Checking if pyowm is installed for user pi"\e[0m"
-    if python3.5 -c "import pyowm" &> /dev/null; then
-        echo 'pyowm is installed, skipping installation of this package.'
-    else
-        echo 'pywom is not installed, attempting to install now'
-	pip3 install pyowm==2.10.0
-    fi
-    
-    #Pillow for user pi  
-    echo -e "\e[1;36m"Checking if Pillow is installed for user pi"\e[0m"
-    if python3.5 -c "import PIL" &> /dev/null; then
-        echo 'Pillow is installed, skipping installation of this package.'
-    else
-        echo 'Pillow is not installed, attempting to install now'
-	pip3 install Pillow==5.3.0
-    fi
-    
-    #Ics.py for user pi  
-    echo -e "\e[1;36m"Checking if ics is installed for user pi"\e[0m"
-    if python3.5 -c "import ics" &> /dev/null; then
-        echo 'ics is installed, skipping installation of this package.'
-    else
-        echo 'ics is not installed, attempting to install now'
-	pip3 install ics==0.4
-    fi
-    
-    #feedparser for user pi  
-    echo -e "\e[1;36m"Checking if feedparser is installed for user pi"\e[0m"
-    if python3.5 -c "import feedparser" &> /dev/null; then
-        echo 'feedparser is installed, skipping installation of this package.'
-    else
-        echo 'feedparser is not installed, attempting to install now'
-	pip3 install feedparser==5.2.1
-    fi
-    
-    #pytz for user pi  
-    echo -e "\e[1;36m"Checking if pytz is installed for user pi"\e[0m"
-    if python3.5 -c "import pytz" &> /dev/null; then
-        echo 'pytz is installed, skipping installation of this package.'
-    else
-        echo 'pytz is not installed, attempting to install now'
-	pip3 install pytz==2019.3
-    fi
-    
+    pip3 install pyowm==2.10.0 Pillow==5.3.0 ics==0.4 feedparser==5.2.1 pytz==2019.3
+
     echo -e "\e[1;36m"Finished installing all dependencies"\e[0m"
     
     # Clone the repository, then delete some non-required files
@@ -170,7 +133,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     cp README.md /home/pi/Inky-Calendar/
     cp LICENSE /home/pi/Inky-Calendar/
     cp -r .git /home/pi/Inky-Calendar/
-    
+
     # Make a copy of the sample settings.py file
     cd /home/pi/Inky-Calendar/Calendar
     cp settings.py.sample settings.py
@@ -184,7 +147,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
 This document contains a short info of the Inky-Calendar software version
 
 Version: 1.7
-Installer version: 1.7 (Mid April 2019)
+Installer version: 1.7 (Early December 2019)
 configuration file: /home/pi/Inky-Calendar/settings/settings.py
 If the time was set correctly, you installed this software on:
 EOF
@@ -219,8 +182,8 @@ EOF
     echo -e "\e[1;36m"To do so, open the file Settings-Web-UI.html from"\e[0m"
     echo -e "\e[1;36m"/home/pi/Inky-Calendar/Settings-Web-UI.html with your browser,"\e[0m"
     echo -e "\e[1;36m"add your details, click on generate and copy the settings.py"\e[0m"
-    echo -e "\e[1;36m"file to /home/pi/Inky-Calendar/Calendar/"\e[0m"
+    echo -e "\e[1;36m"file to /home/pi/Inky-Calendar/settings/setting.py"\e[0m"
     
     echo -e "\e[1;36m"You can test if the programm works by typing:"\e[0m"
-    echo -e "\e[1;36m"python3.5 /home/pi/Inky-Calendar/Calendar/E-Paper.py"\e[0m"
+    echo -e "\e[1;36m"python3 /home/pi/Inky-Calendar/Calendar/E-Paper.py"\e[0m"
 fi
