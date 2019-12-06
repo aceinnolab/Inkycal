@@ -7,15 +7,39 @@ The order is from latest to oldest and structured in the following way:
 ## [1.7] Mid December 2019 (date not confirmed yet)
 
 ### Added
-* To-Do
+* Added support for sections (top-,middle-,and bottom section)
+* Added support for weather forecasts. 
+* Added support for moon phase
+* Added support for events in Calendar module
+* Added support for coloured negative temperature
+* Added support to automatically rotate the image if required
+* Added support for wind direction in weather module
+* Added support for decimal places in weather module
+* Added extra customisation options (see configuration file)
+
 ### Changed
-* To-Do
+* Refactoring of software. Split software into several smaller modules
+* Re-arranged weather section layout
+* Icons (today, events) are generated on demand
+* Merged calibration files into inkycal_drivers
+* Changed layout of Agenda module
+* Changed icons for marking today on Calendar module
+* Added more options in function 'write_text'
+* Text does not have any background colour anymore (transparent)
+* Optimised calibration function for faster calibration, especially for coloured E-Papers
+* Changed settings file
+
 ### Removed
-* To-Do
+* Removed last-updated feature
+* Removed all icons stored as images
+* Removed calibration file (calibration.py)
+
+
 ### Fixed
-* To-Do
-
-
+* Fixed a few bugs related to the ics library
+* Fine-tuned image pre-processing (mapping pixels to specific colours)
+* Fixed a problem where RSS feeds would not display more than one post
+* Fixed a problem where certain weather icons would not be shown
 
 
 ## [1.6] Mid May 2019
