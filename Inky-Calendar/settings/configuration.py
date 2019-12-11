@@ -53,16 +53,14 @@ weatherfont = fontpath+'WeatherFont/weathericons-regular-webfont.ttf'
 
 """Automatically select correct fonts to support set language"""
 if language in ['ja','zh','zh_tw','ko']:
-  default = ImageFont.truetype(NotoSansCJK+'Light.otf', 18)
-  semi = ImageFont.truetype(NotoSansCJK+'DemiLight.otf', 18)
-  bold = ImageFont.truetype(NotoSansCJK+'Regular.otf', 18)
-  month_font = ImageFont.truetype(NotoSansCJK+'DemiLight.otf', 40)
+  default = ImageFont.truetype(NotoSansCJK+'Regular.otf', 18)
+  semi = ImageFont.truetype(NotoSansCJK+'Medium.otf', 18)
+  bold = ImageFont.truetype(NotoSansCJK+'Bold.otf', 18)
 else:
-  default = ImageFont.truetype(NotoSans+'Light.ttf', 18)
-  semi = ImageFont.truetype(NotoSans+'.ttf', 18)
-  bold = ImageFont.truetype(NotoSans+'Medium.ttf', 18)
-  month_font = ImageFont.truetype(NotoSans+'Light.ttf', 40)
-
+  default = ImageFont.truetype(NotoSans+'.ttf', 18)
+  semi = ImageFont.truetype(NotoSans+'Medium.ttf', 18)
+  bold = ImageFont.truetype(NotoSans+'SemiBold.ttf', 18)
+  
 w_font = ImageFont.truetype(weatherfont, 10)
 
 """Create image with given parameters"""

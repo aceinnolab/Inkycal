@@ -152,7 +152,7 @@ def to_hours(datetime_object, simple = False):
 
 """Choose font optimised for the weather section"""
 fontsize = 8
-font = ImageFont.truetype(NotoSans+'.ttf', fontsize)
+font = ImageFont.truetype(NotoSans+'Medium.ttf', fontsize)
 fill_height = 0.8
 
 while font.getsize('hg')[1] <= (row_height * fill_height):
