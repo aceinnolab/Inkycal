@@ -20,7 +20,7 @@ border_top = int(middle_section_height * 0.02)
 border_left = int(middle_section_width * 0.02)
 
 """Choose font optimised for the agenda section"""
-font = ImageFont.truetype(NotoSans+'.ttf', fontsize)
+font = ImageFont.truetype(NotoSans+'Medium.ttf', fontsize)
 line_height = int(font.getsize('hg')[1] * 1.2) + 1
 line_width = int(middle_section_width - (border_left*2))
 
@@ -44,17 +44,18 @@ def main():
     clear_image('middle_section')
                 
     print('Agenda module: Generating image...', end = '')
-    now = arrow.now()
+    now = arrow.now(get_tz())
+    today_start = arrow.get(now.year, now.month, now.day)
 
     """Create a list of dictionaries containing dates of the next days"""
-    agenda_events = [{'date':now.replace(days=+_),
+    agenda_events = [{'date':today_start.replace(days=+_),
       'date_str': now.replace(days=+_).format('ddd D MMM',locale=language),
       'type':'date'} for _ in range(max_lines)]
 
     """Copy the list from the icalendar module with some conditions"""
     upcoming_events = fetch_events()
     filtered_events = [events for events in upcoming_events if
-                           events.end.to(get_tz()) > now]
+                       events.end > now]
 
     """Set print_events_to True to print all events in this month"""
     if print_events == True and filtered_events:
@@ -68,10 +69,6 @@ def main():
     and create a ready-to-display list for the agenda view"""
     for events in filtered_events:
       if not events.all_day:
-
-        events.end = events.end.to(get_tz())
-        events.begin = events.begin.to(get_tz())
-
         agenda_events.append({'date': events.begin, 'time': events.begin.format(
           'HH:mm' if hours == '24' else 'hh:mm a'), 'name':str(events.name),
           'type':'timed_event'})
