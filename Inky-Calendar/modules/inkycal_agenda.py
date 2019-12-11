@@ -35,14 +35,19 @@ event_col_start = time_col_start + time_col_width
 
 """Find max number of lines that can fit in the middle section and allocate
 a position for each line"""
-max_lines = int((middle_section_height - border_top*2) // line_height)
-line_pos = [(border_left, int(top_section_height + line * line_height))
+if bottom_section:
+  max_lines = int((middle_section_height - border_top*2) // line_height)
+else:
+  max_lines = int(middle_section_height+bottom_section_height -
+                  (border_top * 2))// line_height
+
+line_pos = [(border_left, int(top_section_height + border_top + line * line_height))
   for line in range(max_lines)]
 
 def main():
   try:
     clear_image('middle_section')
-                
+
     print('Agenda module: Generating image...', end = '')
     now = arrow.now(get_tz())
     today_start = arrow.get(now.year, now.month, now.day)
@@ -64,7 +69,7 @@ def main():
         print('{0} {1} | {2} | {3} | All day ='.format(events.name,
           ' '* (auto_line_width - len(events.name)), events.begin.format(style),
           events.end.format(style)), events.all_day)
-    
+
     """Convert the event-timings from utc to the specified locale's time
     and create a ready-to-display list for the agenda view"""
     for events in filtered_events:
@@ -96,15 +101,15 @@ def main():
             'date']:
             write_text(date_col_width, line_height,
               agenda_events[events]['date_str'], line_pos[events], font = font)
-            
-          previous_date = agenda_events[events]['date']        
+
+          previous_date = agenda_events[events]['date']
           draw.line((date_col_start, line_pos[events][1],
             line_width,line_pos[events][1]), fill = 'red' if display_type == 'colour' else 'black')
 
         elif agenda_events[events]['type'] == 'timed_event':
           write_text(time_col_width, line_height, agenda_events[events]['time'],
             (time_col_start, line_pos[events][1]), font = font)
-         
+
           write_text(event_col_width, line_height, ('• '+agenda_events[events][
             'name']), (event_col_start, line_pos[events][1]),
              alignment = 'left', font = font)
@@ -112,12 +117,16 @@ def main():
         else:
           write_text(time_col_width, line_height, agenda_events[events]['time'],
             (time_col_start, line_pos[events][1]), font = font)
-         
+
           write_text(event_col_width, line_height, ('• '+agenda_events[events]['name']),
             (event_col_start, line_pos[events][1]), alignment = 'left', font = font)
 
     """Crop the image to show only the middle section"""
-    agenda_image = crop_image(image, 'middle_section')
+    if bottom_section:
+      agenda_image = crop_image(image, 'middle_section')
+    else:
+      agenda_image = image.crop((0,middle_section_offset,display_width, display_height))
+
     agenda_image.save(image_path+'agenda.png')
     print('Done')
 
