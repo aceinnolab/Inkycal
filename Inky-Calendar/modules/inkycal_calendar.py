@@ -116,9 +116,9 @@ def main():
     if show_events == True:
       """Filter events which begin before the end of this month"""
       upcoming_events = fetch_events()
+
       calendar_events = [events for events in upcoming_events if
-                         events.begin.to(get_tz()) < month_end and
-                         events.begin.month == now.month]
+        events.begin < month_end and events.begin.month == now.month]
 
       """Find days with events in the current month"""
       days_with_events = []
