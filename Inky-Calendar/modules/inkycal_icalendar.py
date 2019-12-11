@@ -38,6 +38,11 @@ def fetch_events():
   for events in upcoming_events:
     if events.all_day and events.duration.days > 1:
       events.end = events.end.replace(days=-2)
+      
+    if not events.all_day:
+      events.begin = events.begin.to(get_tz())
+      events.end = events.end.to(get_tz())
+    
 
   """ The list upcoming_events should not be modified. If you need the data from
   this one, copy the list or the contents to another one."""
