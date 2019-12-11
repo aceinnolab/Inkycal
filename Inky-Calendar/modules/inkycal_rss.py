@@ -17,7 +17,7 @@ border_top = int(bottom_section_height * 0.05)
 border_left = int(bottom_section_width * 0.02)
 
 """Choose font optimised for the weather section"""
-font = ImageFont.truetype(NotoSans+'Light.ttf', fontsize)
+font = ImageFont.truetype(NotoSans+'.ttf', fontsize)
 space_between_lines = 1
 line_height = font.getsize('hg')[1] + space_between_lines
 line_width = bottom_section_width - (border_left*2)
