@@ -59,7 +59,7 @@ if language in ['ja','zh','zh_tw','ko']:
 else:
   default = ImageFont.truetype(NotoSans+'.ttf', 18)
   semi = ImageFont.truetype(NotoSans+'Medium.ttf', 18)
-  bold = ImageFont.truetype(NotoSans+'Bold.ttf', 18)
+  bold = ImageFont.truetype(NotoSans+'SemiBold.ttf', 18)
   
 w_font = ImageFont.truetype(weatherfont, 10)
 
