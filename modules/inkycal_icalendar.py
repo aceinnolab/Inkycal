@@ -46,20 +46,24 @@ def fetch_events():
           else:
             events.begin = events.begin.to(timezone)
             events.end = events.end.to(timezone)
-          rule = re.search('RRULE:(.+?)\n', event_str).group(0)[:-2]
-          if re.search('UNTIL=(.+?);', rule) and not re.search('UNTIL=(.+?)Z;', rule):
-            rule = re.sub('UNTIL=(.+?);', 'UNTIL='+re.search('UNTIL=(.+?);', rule).group(0)[6:-1]+'T000000Z;', rule)
-          dates = rrulestr(rule, dtstart= events.begin.datetime).between(after= now.datetime, before = further_future.datetime)
+          try:
+            rule = re.search('RRULE:(.+?)\n', event_str).group(0)[:-2]
+            if re.search('UNTIL=(.+?);', rule) and not re.search('UNTIL=(.+?)Z;', rule):
+              rule = re.sub('UNTIL=(.+?);', 'UNTIL='+re.search('UNTIL=(.+?);', rule).group(0)[6:-1]+'T000000Z;', rule)
+            dates = rrulestr(rule, dtstart= events.begin.datetime).between(after= now.datetime, before = further_future.datetime)
 
-          if dates:
-            duration = events.duration
-            for date in dates:
-              cc = events.clone()
-              cc.end = arrow.get(date+duration)
-              cc.begin = arrow.get(date)
-              upcoming_events.append(cc)
-              #print("Added '{}' with new start at {}".format(cc.name, cc.begin.format('DD MMM YY')))
+            if dates:
+              duration = events.duration
+              for date in dates:
+                cc = events.clone()
+                cc.end = arrow.get(date+duration)
+                cc.begin = arrow.get(date)
+                upcoming_events.append(cc)
+                #print("Added '{}' with new start at {}".format(cc.name, cc.begin.format('DD MMM YY')))
 
+          except Exception as e:
+            print('Something went wrong while parsing recurring events')
+            pass
 
   """Sort events according to their beginning date"""
   def sort_dates(event):
