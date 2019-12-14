@@ -10,13 +10,19 @@ from settings import ical_urls
 import arrow
 from ics import Calendar
 
+use_recurring_events = False ## Attention: experimental feature!
 print_events = False
 style = 'DD MMM YY HH:mm'
 
 
+if use_recurring_events == True:
+  from dateutil.rrule import rrulestr, rruleset
+  import re
+
 def fetch_events():
   """Set timelines for filtering upcoming events"""
-  now = arrow.now(tz=get_tz())
+  timezone = get_tz()
+  now = arrow.now(tz=timezone)
   beginning_of_month = now.replace(days= - now.day +1)
   near_future = now.replace(days= 30)
   further_future = now.replace(days=40)
@@ -29,6 +35,32 @@ def fetch_events():
     if beginning_of_month  <= events.end <= further_future or
     beginning_of_month <= events.begin <= near_future]
 
+  """Try to parse recurring events. This is clearly experimental! """
+  if use_recurring_events == True:
+    for ical in calendars:
+      for events in ical.events:
+        event_str = str(events)
+        if re.search('RRULE:(.+?)\n', event_str):
+          if events.all_day and events.duration.days > 1:
+            events.end = events.end.replace(days=-2)
+          else:
+            events.begin = events.begin.to(timezone)
+            events.end = events.end.to(timezone)
+          rule = re.search('RRULE:(.+?)\n', event_str).group(0)[:-2]
+          if re.search('UNTIL=(.+?);', rule) and not re.search('UNTIL=(.+?)Z;', rule):
+            rule = re.sub('UNTIL=(.+?);', 'UNTIL='+re.search('UNTIL=(.+?);', rule).group(0)[6:-1]+'T000000Z;', rule)
+          dates = rrulestr(rule, dtstart= events.begin.datetime).between(after= now.datetime, before = further_future.datetime)
+
+          if dates:
+            duration = events.duration
+            for date in dates:
+              cc = events.clone()
+              cc.end = arrow.get(date+duration)
+              cc.begin = arrow.get(date)
+              upcoming_events.append(cc)
+              #print("Added '{}' with new start at {}".format(cc.name, cc.begin.format('DD MMM YY')))
+
+
   """Sort events according to their beginning date"""
   def sort_dates(event):
     return event.begin
@@ -38,11 +70,10 @@ def fetch_events():
   for events in upcoming_events:
     if events.all_day and events.duration.days > 1:
       events.end = events.end.replace(days=-2)
-      
+
     if not events.all_day:
-      events.begin = events.begin.to(get_tz())
-      events.end = events.end.to(get_tz())
-    
+      events.begin = events.begin.to(timezone)
+      events.end = events.end.to(timezone)
 
   """ The list upcoming_events should not be modified. If you need the data from
   this one, copy the list or the contents to another one."""
