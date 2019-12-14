@@ -13,9 +13,12 @@ from PIL import Image, ImageDraw
 
 print_events = False
 show_events = True
-max_event_lines = 4
-style = "DD MMM"
+fontsize = 16
 event_icon = 'square' # dot #square
+style = "DD MMM"
+
+font = ImageFont.truetype(NotoSans+'.ttf', fontsize)
+space_between_lines = 1
 
 if show_events == True:
   from inkycal_icalendar import fetch_events
@@ -26,6 +29,9 @@ border_left = int(middle_section_width * 0.02)
 
 main_area_height = middle_section_height-border_top*2
 main_area_width = middle_section_width-border_left*2
+
+line_height = font.getsize('hg')[1] + space_between_lines
+line_width = middle_section_width - (border_left*2)
 
 """Calculate height for each sub-section"""
 month_name_height = int(main_area_height*0.1)
@@ -53,9 +59,11 @@ grid = [(grid_start_x + icon_width*x, grid_start_y + icon_height*y)
 weekday_pos = [(grid_start_x + icon_width*_, middle_section_offset +
                 month_name_height) for _ in range(calendar_coloumns)]
 
+max_event_lines = (events_height - border_top) // (font.getsize('hg')[1]
+  + space_between_lines)
+
 event_lines = [(border_left,(bottom_section_offset - events_height)+
-                int(events_height/max_event_lines*_)) for _ in
-               range(max_event_lines)]
+  int(events_height/max_event_lines*_)) for _ in range(max_event_lines)]
 
 def main():
   try:
@@ -156,7 +164,7 @@ def main():
         'HH:mm' if hours == 24 else 'hh:mm'), event.name)
         for event in calendar_events if event.begin.day == now.replace(days=+1).day]
 
-      del event_list[4:]
+      del event_list[max_lines:]
 
     if event_list:
       for lines in event_list:
