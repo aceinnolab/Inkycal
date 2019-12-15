@@ -10,7 +10,7 @@ from configuration import*
 from settings import *
 import arrow
 
-fontsize = 12
+fontsize = 14
 show_events = True
 print_events = False
 style = 'D MMM YY HH:mm'
