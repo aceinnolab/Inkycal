@@ -60,7 +60,7 @@ else:
   default = ImageFont.truetype(NotoSans+'.ttf', 18)
   semi = ImageFont.truetype(NotoSans+'Medium.ttf', 18)
   bold = ImageFont.truetype(NotoSans+'SemiBold.ttf', 18)
-  
+
 w_font = ImageFont.truetype(weatherfont, 10)
 
 """Create image with given parameters"""
