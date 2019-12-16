@@ -200,10 +200,6 @@ class EPD:
       buffer[numpy.logical_and(r >= 150, g >= 150)] = [255,255,255] #white
       buffer[numpy.logical_and(r >= 150, g <= 90)] = [255,0,0] #red
 
-    if display_type == "black_and_white":
-      buffer[numpy.logical_and(r > 245, g > 245)] = [255,255,255] #white
-      buffer[g < 255] = [0,0,0] #black
-
     image = Image.fromarray(buffer)
     return image
 
@@ -241,7 +237,7 @@ class EPD:
 
     if display_type == 'colour':
       buf = [0x00] * int(self.width * self.height / 4)
-      image_grayscale = image.convert('L', dither=None)
+      image_grayscale = image.convert('L')
       pixels = image_grayscale.load()
 
       for y in range(self.height):
@@ -257,7 +253,7 @@ class EPD:
 
     if display_type == 'black_and_white':
       buf = [0x00] * int(self.width * self.height / 8)
-      image_monocolor = image.convert('1')
+      image_monocolor = image.convert('1', dither = True)
 
       pixels = image_monocolor.load()
       for y in range(self.height):
