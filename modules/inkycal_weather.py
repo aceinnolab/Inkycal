@@ -24,6 +24,7 @@ round_windspeed = True
 use_beaufort = True
 show_wind_direction = False
 use_wind_direction_icon = False
+now_str = 'now'
 
 
 """Set the optional parameters"""
@@ -243,7 +244,7 @@ def main():
       moonphase = get_moon_phase()
 
       """Add weather details in column 1"""
-      write_text(coloumn_width, row_height, 'now', text_now_pos, font = font)
+      write_text(coloumn_width, row_height, now_str, text_now_pos, font = font)
       write_text(icon_medium, icon_medium, weathericons[weather_icon_now],
         weather_icon_now_pos, font = w_font, fill_width = 0.9)
 
