@@ -89,11 +89,10 @@ while True:
       except:
         pass
 
-    image.save(image_path + 'canvas.png')
-    display.reduce_colours(image)    
+    image.save(image_path + 'canvas.png')   
 
     """---------Refreshing E-Paper with newly created image-----------"""
-    display.show_image(image)
+    display.show_image(image, reduce_colours=False)
 
     """--------------Post processing after main loop-----------------"""
     """Collect some garbage to free up some resources"""
