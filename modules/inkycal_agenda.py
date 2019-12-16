@@ -14,6 +14,7 @@ fontsize = 14
 show_events = True
 print_events = False
 style = 'D MMM YY HH:mm'
+all_day_str = 'All day'
 
 """Add a border to increase readability"""
 border_top = int(middle_section_height * 0.02)
@@ -79,12 +80,12 @@ def main():
           'type':'timed_event'})
       else:
         if events.duration.days == 1:
-          agenda_events.append({'date': events.begin,'time':'All day',
+          agenda_events.append({'date': events.begin,'time': all_day_str,
                                 'name': events.name,'type':'full_day_event'})
         else:
           for day in range(events.duration.days):
             agenda_events.append({'date': events.begin.replace(days=+day),
-              'time':'All day','name':events.name, 'type':'full_day_event'})
+              'time': all_day_str,'name':events.name, 'type':'full_day_event'})
 
     """Sort events and dates in chronological order"""
     agenda_events = sorted(agenda_events, key = lambda event: event['date'])
