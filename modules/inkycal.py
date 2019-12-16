@@ -92,7 +92,7 @@ while True:
     image.save(image_path + 'canvas.png')   
 
     """---------Refreshing E-Paper with newly created image-----------"""
-    display.show_image(image, reduce_colours=False)
+    display.show_image(image, reduce_colours= True)
 
     """--------------Post processing after main loop-----------------"""
     """Collect some garbage to free up some resources"""
