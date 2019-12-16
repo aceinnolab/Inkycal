@@ -13,12 +13,15 @@ from PIL import Image, ImageDraw
 
 print_events = False
 show_events = True
-fontsize = 16
+today_in_your_language = 'today'
+tomorrow_in_your_language = 'tomorrow'
+at_in_your_language = 'at'
 event_icon = 'square' # dot #square
 style = "DD MMM"
 
+fontsize = 16
 font = ImageFont.truetype(NotoSans+'.ttf', fontsize)
-space_between_lines = 1
+space_between_lines = 0
 
 if show_events == True:
   from inkycal_icalendar import fetch_events
@@ -156,15 +159,25 @@ def main():
 
 
       """Add a small section showing events of today and tomorrow"""
-      event_list = ['{0} at {1} : {2}'.format('today', event.begin.format(
-        'HH:mm' if hours == 24 else 'hh:mm'), event.name)
-        for event in calendar_events if event.begin.day == now.day]
-      
-      event_list += ['{0} at {1} : {2}'.format('tomorrow', event.begin.format(
-        'HH:mm' if hours == 24 else 'hh:mm'), event.name)
-        for event in calendar_events if event.begin.day == now.replace(days=+1).day]
+      event_list = ['{0} {1} {2} : {3}'.format(today_in_your_language,
+        at_in_your_language, event.begin.format('HH:mm' if hours == 24 else
+        'hh:mm'), event.name) for event in calendar_events if event.begin.day
+        == now.day and now < event.end]
 
-      del event_list[max_lines:]
+
+      event_list += ['{0} {1} {2} : {3}'.format(tomorrow_in_your_language,
+        at_in_your_language, event.begin.format('HH:mm' if hours == 24 else
+        'hh:mm'), event.name) for event in calendar_events if event.begin.day
+        == now.replace(day=1).day]
+
+      after_two_days = now.replace(days=2).floor('day')
+
+      event_list += ['{0} {1} {2} : {3}'.format(event.begin.format('D MMM'),
+        at_in_your_language, event.begin.format('HH:mm' if hours == 24 else
+        'hh:mm'), event.name) for event in upcoming_events if event.end >
+         after_two_days]
+
+      del event_list[max_event_lines:]
 
     if event_list:
       for lines in event_list:
@@ -173,7 +186,7 @@ def main():
           fill_height = 0.7)
     else:
       write_text(main_area_width, int(events_height/max_event_lines),
-       'No events today or tomorrow', event_lines[0], alignment='left',
+       'No upcoming events', event_lines[0], alignment='left',
        fill_height = 0.7)
 
     """Set print_events_to True to print all events in this month"""
