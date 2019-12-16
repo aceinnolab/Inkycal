@@ -15,7 +15,6 @@ sed -n -e "/^update_interval/r $in" -i -e "/^update_interval/d" $out
 sed -n -e "/^api_key/r $in" -i -e "/^api_key/d" $out
 sed -n -e "/^location/r $in" -i -e "/^location/d" $out
 sed -n -e "/^week_starts_on/r $in" -i -e "/^week_starts_on/d" $out
-sed -n -e "/^events_max_range/r $in" -i -e "/^events_max_range/d" $out
 sed -n -e "/^calibration_hours/r $in" -i -e "/^calibration_hours/d" $out
 sed -n -e "/^display_colours/r $in" -i -e "/^display_colours/d" $out
 sed -n -e "/^language/r $in" -i -e "/^language/d" $out
