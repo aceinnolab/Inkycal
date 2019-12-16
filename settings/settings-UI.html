@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Settings-File Generator</title>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.js"></script>
+<style>
+body{
+  background-color:#eaeaea;
+}
+</style>
+</head>
+<body>
+<br><br>
+  <div class="ts container">
+  <div class="ts segment">
+    <div class="ts header">
+      Setting Generator
+      <div class="sub header"><a href="https://github.com/aceisace/Inky-Calendar">For Inky-Calendar Project of Ace-Innovation Laboratory (by aceisace)</a><br>
+      <img src="https://github.com/aceisace/Inky-Calendar/blob/Stable/Gallery/Inky-Calendar-logo.png?raw=true" width="800" alt="Inky-Calendar-logo">
+      <div>
+      </div>
+      <ins>If no value is filled in for any of the row, the default value will be used.</ins>
+      </div>
+      
+    </div>
+  </div>
+    <form class="ts form">
+      <div class="field">
+        <label>iCalendar URLs in the following format: 'URL 1', 'URL 2', 'URL 3'</label>
+        <input id="ical_urls" type="text" placeholder="'https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics'">
+      </div>
+
+            <div class="field">
+        <label>RSS-Feed URL/s in the following format: 'URL 1', 'URL 2', 'URL 3'</label>
+        <input id="rss_urls" type="text" placeholder="'http://feeds.bbci.co.uk/news/world/rss.xml#'">
+      </div>
+
+      <div class="field">
+        <label>How often should the display be refreshed?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="update_15_mins" type="radio" name="aa">
+            <label for="update_15_mins">every 15 minutes</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="update_20_mins" type="radio" name="aa">
+            <label for="update_20_mins">every 20 minutes</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="update_30_mins" type="radio" name="aa">
+            <label for="update_30_mins">every 30 minutes</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="update_60_mins" type="radio" name="aa" checked>
+            <label for="update_60_mins">every 60 minutes</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Openweathermap API Key</label>
+        <details class="ts accordion">
+          <summary>
+            <i class="dropdown icon"></i> Info
+          </summary>
+          <div class="content">
+        <p> Please insert your own Openweathermap API-key to fetch the latest weather info. To find out how to create your own key, please click here: <a href="https://github.com/aceisace/Inky-Calendar/wiki/Openweathermap-API">Creating an openweathermap api-key</a>. If you don't add an api-key, the top section will not show any weather info</p></div>
+        </details>
+        <input id="api_key" type="text" placeholder="">
+      </div>
+
+
+      <div class="field">
+        <label>Location (for weather data)</label>
+        <details class="ts accordion">
+          <summary>
+            <i class="dropdown icon"></i> Info
+          </summary>
+          <div class="content">
+        <p>Location refers to the closest weather station from your place. It isn't necessarily the place you live in. To find this location, type your city name in the search box on <a href="https://openweathermap.org/">openweathermap</a>. The output should be in the following format: City Name, Country ISO-Code. Not sure what your ISO code is? Check here: <a href="https://countrycode.org/">(find iso-code)</a></p></div>
+        </details>
+        <input id="location" type="text" placeholder="Stuttgart, DE">
+      </div>
+    
+      <div class="field">
+        <label>On which day does the week start on in your country?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="week_monday" type="radio" name="hr" checked>
+            <label for="week_monday">Monday</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="week_sunday" type="radio" name="hr">
+            <label for="week_sunday">Sunday</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>At which hours (in 24 hour-format) should the display be calibrated? Leave blank if you're not sure.</label>
+        <details class="ts accordion">
+          <summary>
+            <i class="dropdown icon"></i> Info
+          </summary>
+          <div class="content">
+        <p>Calibration refers to the process of flushing the display with a single colour to prevent 'ghosting' (an effect specific to E-Paper displays where the remnants of the previous image can be seen on the current one). It takes several minutes to finish the calibration(around 10 mins for the 2-colour displays and around 20 mins for the 3-colour displays) so please choose hours where you are less likely to need the display. It is recommended to calibrate at least thrice a day.</p></div>
+        </details>
+        <input id="calibration_hours" type="text" placeholder="0,12,18">
+      </div>
+
+      <div class="field">
+        <label>Which Colours does your E-Paper Display support?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="colour" type="radio" name="dp" checked>
+            <label for="colour">Coloured (3 colours)</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="black-and-white" type="radio" name="dp">
+            <label for="black-and-white">Black and White</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Which language should be used in the software?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="language_en" type="radio" name="la" checked>
+            <label for="language_en">English</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_de" type="radio" name="la">
+            <label for="language_de">German</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_ru" type="radio" name="la">
+            <label for="language_ru">Russian</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_it" type="radio" name="la">
+            <label for="language_it">Italian</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_es" type="radio" name="la">
+            <label for="language_es">Spanish</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_fr" type="radio" name="la">
+            <label for="language_fr">French</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_el" type="radio" name="la">
+            <label for="language_el">Greek</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_sv" type="radio" name="la">
+            <label for="language_sv">Swedish</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_nl" type="radio" name="la">
+            <label for="language_nl">Dutch</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_pl" type="radio" name="la">
+            <label for="language_pl">Polish</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_ua" type="radio" name="la">
+            <label for="language_ua">Ukrainian</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_nb" type="radio" name="la">
+            <label for="language_nb">Norwegian</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_vi" type="radio" name="la">
+            <label for="language_vi">Vietnamese</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_zh_tw" type="radio" name="la">
+            <label for="language_zh_tw">Chinese-Taiwanese</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_zh" type="radio" name="la">
+            <label for="language_zh">Chinese</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_ja" type="radio" name="la">
+            <label for="language_ja">Japanese</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="language_ko" type="radio" name="la">
+            <label for="language_ko">Korean</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Which units are used in your country?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="metric" type="radio" name="un" checked>
+            <label for="metric">Metric</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="imperial" type="radio" name="un">
+            <label for="imperial">Imperial</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Which hour-format do you prefer?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="24_hours" type="radio" name="tf" checked>
+            <label for="24_hours">24-hour format</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="12_hours" type="radio" name="tf">
+            <label for="12_hours">12-hour format</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>What should be displayed in the top section?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="Weather" type="radio" name="ts" checked>
+            <label for="Weather">Weather</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="top_blank" type="radio" name="ts">
+            <label for="top_blank">Nothing</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>What should be displayed in the middle (main) section?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="Calendar" type="radio" name="ms" checked>
+            <label for="Calendar">A monthly Calendar</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="Agenda" type="radio" name="ms">
+            <label for="Agenda">Agenda of upcoming events</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="middle_blank" type="radio" name="ms">
+            <label for="middle_blank">Nothing</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>What should be displayed in the bottom section?</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="RSS" type="radio" name="bs" checked>
+            <label for="RSS">RSS-feeds</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="bottom_blank" type="radio" name="bs">
+            <label for="bottom_blank">Nothing</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+      <p>Instructions<br>
+Insert your peesonal details and preferences and click on 'Generate'. Copy the downloaded file to the Raspberry Pi and place it in: '/home/pi/Inky-Calendar/settings/' (inside the settings folder within the Inky-Calendar folder. Lastly, reboot the Raspberry Pi to apply the changes. You can also manually run the software with:
+python3 /home/pi/Inky-Calendar/modules/inkycal.py.</p>
+    </div>
+
+    </form>
+    <br>
+    <button class="ts primary button" onClick="generate();">Generate</button>
+  <br><br>
+  <kbd>Developed by Toby Chui for Inky-Calendar Project, modified by aceisace. Licensed under MIT</kbd>
+  <details class="ts accordion">
+    <summary>
+      <i class="dropdown icon"></i> MIT License
+    </summary>
+    <div class="content">
+      <p>Copyright 2019 Toby Chui <br>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+    </div>
+  </details>
+  </div>
+  <br>
+  <br>
+  
+  <script>
+  var template = 'ical_urls = [{ical_urls}]\nrss_feeds = [{rss_urls}]\nupdate_interval = "{update_interval}"\napi_key = "{api_key}"\nlocation = "{location}"\nweek_starts_on = "{week_starts_on}"\ncalibration_hours = [{calibration_hours}]\ndisplay_colours = "{display_colours}"\nlanguage = "{language}"\nunits = "{units}"\nhours = "{hours}"\ntop_section = "{top_section}"\nmiddle_section = "{middle_section}"\nbottom_section = "{bottom_section}"';
+  
+  function generate(){
+    var ical_urls = $("#ical_urls").val().trim();
+    if (ical_urls == ""){
+      ical_urls = $("#ical_urls").attr("placeholder");
+    }
+
+    var rss_urls = $("#rss_urls").val().trim();
+    if (rss_urls == ""){
+      rss_urls = $("#rss_urls").attr("placeholder");
+    }
+
+    var update_interval = "60";
+    if ($('#update_15_mins').is(':checked')){
+      update_interval = "15";
+    }
+    if ($('#update_20_mins').is(':checked')){
+      update_interval = "20";
+    }
+    if ($('#update_30_mins').is(':checked')){
+      update_interval = "30";
+    }
+    if ($('#update_60_mins').is(':checked')){
+      update_interval = "60";
+    }
+
+    var api_key = $("#api_key").val().trim();
+    if (api_key == ""){
+      api_key = "";
+    }
+
+    var location = $("#location").val().trim();
+    if (location == ""){
+      location = $("#location").attr("placeholder");
+    }
+
+    var week_starts_on = "Monday";
+    if ($('#week_sunday').is(':checked')){
+      week_starts_on = "Sunday";
+    }
+
+    var calibration_hours = $("#calibration_hours").val().trim();
+    if (calibration_hours == ""){
+      calibration_hours = $("#calibration_hours").attr("placeholder");
+    }
+
+    var display_colours = "black_and_white";
+    if ($('#colour').is(':checked')){
+      display_colours = "colour";
+    }
+
+    var language = "en";
+    if ($('#language_de').is(':checked')){
+      language = "de";
+    }
+    if ($('#language_ru').is(':checked')){
+      language = "ru";
+    }
+    if ($('#language_it').is(':checked')){
+      language = "it";
+    }
+    if ($('#language_es').is(':checked')){
+      language = "es";
+    }
+    if ($('#language_fr').is(':checked')){
+      language = "fr";
+    }
+    if ($('#language_el').is(':checked')){
+      language = "el";
+    }
+    if ($('#language_sv').is(':checked')){
+      language = "sv";
+    }
+    if ($('#language_nl').is(':checked')){
+      language = "nl";
+    }
+    if ($('#language_pl').is(':checked')){
+      language = "pl";
+    }
+    if ($('#language_ua').is(':checked')){
+      language = "ua";
+    }
+    if ($('#language_nb').is(':checked')){
+      language = "nb";
+    }
+    if ($('#language_vi').is(':checked')){
+      language = "vi";
+    }
+    if ($('#language_zh_tw').is(':checked')){
+      language = "zh_tw";
+    }
+    if ($('#language_zh').is(':checked')){
+      language = "zh";
+    }
+    if ($('#language_ja').is(':checked')){
+      language = "ja";
+    }
+    if ($('#language_ko').is(':checked')){
+      language = "ko";
+    }
+
+    var units = "metric";
+    if ($('#imperial').is(':checked')){
+      units = "imperial";
+    }
+
+    var hours = "24";
+    if ($('#12_hours').is(':checked')){
+      hours = "12";
+    }
+
+    var top_section = "Weather";
+    if ($('#top_blank').is(':checked')){
+      top_section = "";
+    }
+    
+    var middle_section = "Calendar";
+    if ($('#Agenda').is(':checked')){
+      middle_section = "Agenda";
+    }
+    if ($('#middle_blank').is(':checked')){
+      middle_section = "";
+    }
+
+    var bottom_section = "RSS";
+    if ($('#Events').is(':checked')){
+      bottom_section = "Events";
+    }
+    if ($('#bottom_blank').is(':checked')){
+      bottom_section = "";
+    }
+
+    var last_update = "False";
+    if ($('#last_update_true').is(':checked')){
+      last_update = "True";
+    }
+
+    //console.log(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, display_colours, language, units, hours, top_section, middle_section, bottom_section);
+    createPythonSetting(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, display_colours, language, units, hours, top_section, middle_section, bottom_section);
+  }
+  
+  function rk(content,key,value){
+    //Use to replace key-value pair in template string
+    return content.split("{" + key + "}").join(value);
+  }
+  
+  function createPythonSetting(a,b,c,d,e,f,g,h,i,j,k,l,m,n){
+    var box = template;
+    box = rk(box,"ical_urls",a);
+    box = rk(box,"rss_urls",b);
+    box = rk(box,"update_interval",c);
+    box = rk(box,"api_key",d);
+    box = rk(box,"location",e);
+    box = rk(box,"week_starts_on",f);
+    box = rk(box,"calibration_hours",g);
+    box = rk(box,"display_colours",h);
+    box = rk(box,"language",i);
+    box = rk(box,"units",j);
+    box = rk(box,"hours",k);
+    box = rk(box,"top_section",l);
+    box = rk(box,"middle_section",m);
+    box = rk(box,"bottom_section",n);
+
+
+    var config = new Blob([box], {type : "text/plain"});
+    var link = document.createElement('link');
+    link.href = window.URL.createObjectURL(config);
+    var a = document.createElement('A');
+    a.href = link.href;
+    a.download = link.href.substr(link.href.lastIndexOf('/') + 1);
+    document.body.appendChild(a);
+    $(a).attr('download','settings.py');
+    a.click();
+    document.body.removeChild(a);
+  }
+  
+  </script>
+</body>
+</html>
