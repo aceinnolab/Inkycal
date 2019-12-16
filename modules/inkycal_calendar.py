@@ -121,15 +121,15 @@ def main():
 
     """Create some reference points for the current month"""
     days_current_month = calendar.monthrange(now.year, now.month)[1]
-    month_start = now.replace(days =-now.day+1)
-    month_end = now.replace(days=+(days_current_month-now.day))
+    month_start = now.floor('month')
+    month_end = now.ceil('month')
 
     if show_events == True:
       """Filter events which begin before the end of this month"""
       upcoming_events = fetch_events()
 
       calendar_events = [events for events in upcoming_events if
-        events.begin < month_end and events.begin.month == now.month]
+        month_start <= events.end <= month_end ]
 
       """Find days with events in the current month"""
       days_with_events = []
@@ -164,11 +164,10 @@ def main():
         'hh:mm'), event.name) for event in calendar_events if event.begin.day
         == now.day and now < event.end]
 
-
       event_list += ['{0} {1} {2} : {3}'.format(tomorrow_in_your_language,
         at_in_your_language, event.begin.format('HH:mm' if hours == 24 else
         'hh:mm'), event.name) for event in calendar_events if event.begin.day
-        == now.replace(day=1).day]
+        == now.replace(days=1).day]
 
       after_two_days = now.replace(days=2).floor('day')
 
@@ -186,7 +185,7 @@ def main():
           fill_height = 0.7)
     else:
       write_text(main_area_width, int(events_height/max_event_lines),
-       'No upcoming events', event_lines[0], alignment='left',
+       'No upcoming events.', event_lines[0], alignment='left',
        fill_height = 0.7)
 
     """Set print_events_to True to print all events in this month"""
