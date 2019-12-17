@@ -438,12 +438,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       bottom_section = "";
     }
 
-    var last_update = "False";
-    if ($('#last_update_true').is(':checked')){
-      last_update = "True";
-    }
 
-    //console.log(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, display_colours, language, units, hours, top_section, middle_section, bottom_section);
+    //console.log(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, display_type, language, units, hours, top_section, middle_section, bottom_section);
     createPythonSetting(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, display_colours, language, units, hours, top_section, middle_section, bottom_section);
   }
   
