@@ -156,9 +156,9 @@ EOF
 
 	# What to do when uninstalling software
 	if [ "$settings" = 1 ]; then
-		echo -e "\e[1;36m"Opening web-UI for adding details..."\e[0m"
+		echo -e "\e[1;36m"Add your details, click on generate, keep the file and close the browser"\e[0m"
+		sleep 5
 		chromium-browser /home/"$USER"/Inky-Calendar/settings/settings-UI.html
-		sleep 2
 		echo -e "\e[97mHave you added your details and clicked on 'Generate'?"
 		echo -e "\e[97mPress [Y] for yes."
 		read -r -p 'Waiting for input...  ' complete
