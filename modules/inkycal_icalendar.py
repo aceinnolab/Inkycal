@@ -10,7 +10,7 @@ from settings import ical_urls
 import arrow
 from ics import Calendar
 
-use_recurring_events = False ## Attention: experimental feature!
+use_recurring_events = True
 print_events = False
 style = 'DD MMM YY HH:mm'
 
