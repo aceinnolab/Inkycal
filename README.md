@@ -10,7 +10,7 @@
   [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/SaadNaseer)
 </p>
 
-A python 3 software for 7.5" E-Paper displays from waveshare/gooddisplay to display events from iCalendars, weather from openweathermap and RSS feeds.
+A python 3 software for 7.5" E-Paper displays from waveshare/gooddisplay to display events from iCalendars, weather from openweathermap and RSS feeds. 
 
 ## Main features
 * Monthly Calendar that shows events from your Google (or other) iCalendar/s
