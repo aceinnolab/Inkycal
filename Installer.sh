@@ -3,9 +3,9 @@
 # Version: 1.7 (Early Dec 2019)
 
 echo -e "\e[1mPlease select an option from below:"
-echo -e "\e[97mEnter \e[91m[1] \e[97m to update Inky-Calendar software"        #Option 1 : UPDATE
-echo -e "\e[97mEnter \e[91m[2] \e[97m to install Inky-Calendar software"       #Option 2 : INSTALL
-echo -e "\e[97mEnter \e[91m[3] \e[97m to uninstall Inky-Calendar software"     #Option 3 : UNINSTALL
+echo -e "\e[97mEnter \e[91m[1]\e[97m to update Inky-Calendar software"        #Option 1 : UPDATE
+echo -e "\e[97mEnter \e[91m[2]\e[97m to install Inky-Calendar software"       #Option 2 : INSTALL
+echo -e "\e[97mEnter \e[91m[3]\e[97m to uninstall Inky-Calendar software"     #Option 3 : UNINSTALL
 echo -e "\e[97mConfirm your selection with [ENTER]"
 read -r -p 'Waiting for input...  ' option
 
