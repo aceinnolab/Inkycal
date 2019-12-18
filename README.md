@@ -27,7 +27,11 @@ A python 3 software for 7.5" E-Paper displays from waveshare/gooddisplay to disp
 
 ## Preview
 <p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/v1-5-mar-19.JPG" width="600">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/calendar-view.JPG" width="400"><img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/image-rendering.JPG" width="420">
+</p>
+
+<p align="center">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/agenda-view-rss.jpg" width="400"><img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/extended-agenda-view.JPG" width="420">
 </p>
 
 ## Hardware required
