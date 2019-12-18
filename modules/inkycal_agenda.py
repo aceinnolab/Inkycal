@@ -48,6 +48,8 @@ line_pos = [(border_left, int(top_section_height + border_top + line * line_heig
 def main():
   try:
     clear_image('middle_section')
+    if not bottom_section:
+      clear_image('bottom_section')
 
     print('Agenda module: Generating image...', end = '')
     now = arrow.now(get_tz())
