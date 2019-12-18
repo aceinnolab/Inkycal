@@ -54,7 +54,7 @@ A python 3 software for 7.5" E-Paper displays from waveshare/gooddisplay to disp
 ## Installing required packages for python 3.x
 Execute the following command in the Terminal to install all required packages. Please use Raspbian Buster with Desktop (preferably the latest version). Raspbian Buster **LITE** is not supported.
 
-**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/Stable/Installer.sh)"`**
+**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/master/Installer.sh)"`**
 
 If the Installer should fail for any reason, kindly open an issue and paste the error. Thanks.
 
