@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/Gallery/Inky-Calendar-logo.png" width="800">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/Inky-Calendar-logo.png" width="800">
 </p>
 
 <p align="center">
@@ -27,7 +27,7 @@ A python 3 software for 7.5" E-Paper displays from waveshare/gooddisplay to disp
 
 ## Preview
 <p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/Gallery/v1-5-mar-19.JPG" width="600">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/v1-5-mar-19.JPG" width="600">
 </p>
 
 ## Hardware required
