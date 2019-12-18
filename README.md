@@ -60,7 +60,7 @@ If the Installer should fail for any reason, kindly open an issue and paste the 
 
 **Screenshot of the installer:**
 
-<img src="https://github.com/aceisace/Inky-Calendar/Gallery/installer-v1.6-part1.png" width="650"><img src="https://github.com/aceisace/Inky-Calendar/Gallery/installer-v1.6-part2.png" width="650">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/installer-preview.png" width="650">
 
 ## Adding details to the programm
 When you run the installer, you can add details in the last step. For new-users, it is recommended to use the 'web-UI' option.
