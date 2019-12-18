@@ -63,8 +63,9 @@ Execute the following command in the Terminal to install all required packages. 
 If the Installer should fail for any reason, kindly open an issue and paste the error. Thanks.
 
 **Screenshot of the installer:**
-
-<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/installer-preview.png" width="650">
+<p align="center">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/installer-preview.png" width="700">
+</p>
 
 ## Adding details to the programm
 When you run the installer, you can add details in the last step. For new-users, it is recommended to use the 'web-UI' option.
