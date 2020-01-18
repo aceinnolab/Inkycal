@@ -44,8 +44,8 @@ def fetch_events():
           if events.all_day and events.duration.days > 1:
             events.end = events.end.replace(days=-2)
           else:
-            events.begin = events.begin.to(timezone)
             events.end = events.end.to(timezone)
+            events.begin = events.begin.to(timezone)
           try:
             rule = re.search('RRULE:(.+?)\n', event_str).group(0)[:-2]
             if re.search('UNTIL=(.+?);', rule) and not re.search('UNTIL=(.+?)Z;', rule):
@@ -76,8 +76,8 @@ def fetch_events():
       events.end = events.end.replace(days=-2)
 
     if not events.all_day:
-      events.begin = events.begin.to(timezone)
       events.end = events.end.to(timezone)
+      events.begin = events.begin.to(timezone)
 
   """ The list upcoming_events should not be modified. If you need the data from
   this one, copy the list or the contents to another one."""

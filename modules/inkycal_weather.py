@@ -10,10 +10,7 @@ Copyright by aceisace
 """
 from __future__ import print_function
 import pyowm
-from settings import *
 from configuration import *
-from PIL import Image, ImageDraw, ImageFont
-import arrow
 import math, decimal
 dec = decimal.Decimal
 
@@ -130,7 +127,7 @@ def to_units(kelvin):
   return conversion
 
 def red_temp(negative_temperature):
-  if display_type == 'colour' and negative_temperature[0] == '-' and units == 'metric':
+  if three_colour_support == True and negative_temperature[0] == '-' and units == 'metric':
     colour = 'red'
   else:
     colour = 'black'
@@ -160,9 +157,9 @@ while font.getsize('hg')[1] <= (row_height * fill_height):
   fontsize += 1
   font = ImageFont.truetype(NotoSans+'.ttf', fontsize)
 
-def main():
+def generate_image():
   """Connect to Openweathermap API and fetch weather data"""
-  if top_section == "Weather" and api_key != "" and owm.is_API_online() is True:
+  if top_section == "inkycal_weather" and api_key != "" and owm.is_API_online() is True:
     try:
       clear_image('top_section')
       print('Weather module: Connectivity check passed, Generating image...',
@@ -331,10 +328,10 @@ def main():
       draw.line((coloumn7, line_start_y, coloumn7, line_end_y), fill='black')
       draw.line((0, top_section_height-border_top, top_section_width-
         border_left, top_section_height-border_top),
-        fill='red' if display_type == 'colour' else 'black' , width=3)
+        fill='red' if three_colour_support == 'True' else 'black' , width=3)
 
       weather_image = crop_image(image, 'top_section')    
-      weather_image.save(image_path+'weather.png')
+      weather_image.save(image_path+'inkycal_weather.png')
       print('Done')
 
     except Exception as e:
@@ -348,8 +345,10 @@ def main():
       write_text(coloumn_width*6, row_height, message, humidity_icon_now_pos,
         font = font)
       weather_image = crop_image(image, 'top_section')
-      weather_image.save(image_path+'weather.png')
+      weather_image.save(image_path+'inkycal_weather.png')
       pass
 
-if __name__ == '__main__':
-  main()
+def main():
+  generate_image()
+
+main()

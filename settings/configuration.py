@@ -9,18 +9,27 @@ Copyright by aceisace
 """
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 import numpy
+import arrow
 from urllib.request import urlopen
-from settings import language
+from settings import *
 from pytz import timezone
 import os
 from glob import glob
+import importlib
 
 """Set the image background colour and text colour"""
 background_colour = 'white'
 text_colour = 'black'
 
-"""Set the display height and width (in pixels)"""
-display_height, display_width = 640, 384
+"""Set some display parameters"""
+driver = importlib.import_module('drivers.'+model)
+display_height, display_width = driver.EPD_WIDTH, driver.EPD_HEIGHT
+
+"""Check if the display supports 3 colours"""
+if 'colour' in model:
+  three_colour_support = True
+else:
+  three_colour_support = False
 
 """Create 3 sections of the display, based on percentage"""
 top_section_width = middle_section_width = bottom_section_width = display_width
@@ -189,3 +198,50 @@ def image_cleanup():
   for temp_files in glob(image_path+'*'):
       os.remove(temp_files)
   print('Done')
+
+def split_colours(image):
+  if three_colour_support == True:
+    """Split image into two, one for red pixels, the other for black pixels"""
+    buffer = numpy.array(image.convert('RGB'))
+    red, green = buffer[:, :, 0], buffer[:, :, 1]
+    buffer_red, buffer_black = numpy.array(image), numpy.array(image)
+
+    buffer_red[numpy.logical_and(red >= 200, green <= 90)] = [0,0,0] #red->black
+    red1 = buffer_red[:,:,0]
+    buffer_red[red1 != 0] = [255,255,255] #white
+    red_im = Image.fromarray(buffer_red).convert('1',dither=True).rotate(270,expand=True)
+
+    buffer_black[numpy.logical_and(red <= 180, red == green)] = [0,0,0] #black
+    red2 = buffer_black[:,:,0]
+    buffer_black[red2 != 0] = [255,255,255] # white
+    black_im = Image.fromarray(buffer_black).convert('1', dither=True).rotate(270,expand=True)
+    return black_im, red_im
+
+def calibrate_display(no_of_cycles):
+  """How many times should each colour be calibrated? Default is 3"""
+  epaper = driver.EPD()
+  epaper.init()
+
+  white = Image.new('1', (display_width, display_height), 'white')
+  black = Image.new('1', (display_width, display_height), 'black')
+
+  print('----------Started calibration of E-Paper display----------')
+  if 'colour' in model:
+    for _ in range(no_of_cycles):
+      print('Calibrating black...')
+      epaper.display(epaper.getbuffer(black), epaper.getbuffer(white))
+      print('Calibrating red/yellow...')
+      epaper.display(epaper.getbuffer(white), epaper.getbuffer(black))
+      print('Calibrating white...')
+      epaper.display(epaper.getbuffer(white), epaper.getbuffer(white))
+      print('Cycle {0} of {1} complete'.format(_+1, no_of_cycles))
+  else:
+    for _ in range(no_of_cycles):
+      print('Calibrating black...')
+      epaper.display(epaper.getbuffer(black))
+      print('Calibrating white...')
+      epaper.display(epaper.getbuffer(white)),
+      print('Cycle {0} of {1} complete'.format(_+1, no_of_cycles))
+        
+    print('-----------Calibration complete----------')
+    epaper.sleep()
