@@ -19,6 +19,7 @@ A python 3 software for 7.5" E-Paper displays from waveshare/gooddisplay to disp
 * RSS feeds from various providers to keep up to date with news, quotes etc. 
 
 ## News:
+* **Version 1.7.1 released with support for 4.2", 5.83", 7.5" (v1) and 7.5" (v2) E-Paper displays** (Mid January 2020)
 * **Version 1.7 released with weather forecasts and fully new UI** (Mid December 2019)
 * **Thank You everyone for the first 100 stars :D**
 * **Added support for recurring events**
