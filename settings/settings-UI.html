@@ -44,6 +44,10 @@ body{
         <label>How often should the display be refreshed?</label>
         <div class="ts checkboxes">
           <div class="ts radio checkbox">
+            <input id="update_10_mins" type="radio" name="aa">
+            <label for="update_10_mins">every 10 minutes. Not recommended for 3-colour E-Papers.</label>
+          </div>
+          <div class="ts radio checkbox">
             <input id="update_15_mins" type="radio" name="aa">
             <label for="update_15_mins">every 15 minutes</label>
           </div>
@@ -114,15 +118,39 @@ body{
       </div>
 
       <div class="field">
-        <label>Which Colours does your E-Paper Display support?</label>
+        <label>Which E-Paper model are you using?</label>
         <div class="ts checkboxes">
           <div class="ts radio checkbox">
-            <input id="colour" type="radio" name="dp" checked>
-            <label for="colour">Coloured (3 colours)</label>
+            <input id="epd_7_in_5_v2_colour" type="radio" name="dp" checked>
+            <label for="epd_7_in_5_v2_colour">7.5" v2 (800x400px) colour</label>
           </div>
           <div class="ts radio checkbox">
-            <input id="black-and-white" type="radio" name="dp">
-            <label for="black-and-white">Black and White</label>
+            <input id="epd_7_in_5_v2" type="radio" name="dp">
+            <label for="epd_7_in_5_v2">7.5" v2 (800x400px) black-white</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="epd_7_in_5_colour" type="radio" name="dp">
+            <label for="epd_7_in_5_colour">7.5" v1 (600x384px) colour</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="epd_7_in_5" type="radio" name="dp">
+            <label for="epd_7_in_5">7.5" v1 (600x384px) black-white</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="epd_5_in_83_colour" type="radio" name="dp">
+            <label for="epd_5_in_83_colour">5.83" colour</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="epd_5_in_83" type="radio" name="dp">
+            <label for="epd_5_in_83">5.83" black-white</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="epd_4_in_2_colour" type="radio" name="dp">
+            <label for="epd_4_in_2_colour">4.2" colour</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="epd_4_in_2" type="radio" name="dp">
+            <label for="epd_4_in_2">4.2" black-white</label>
           </div>
         </div>
       </div>
@@ -305,7 +333,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <br>
   
   <script>
-  var template = 'ical_urls = [{ical_urls}]\nrss_feeds = [{rss_urls}]\nupdate_interval = "{update_interval}"\napi_key = "{api_key}"\nlocation = "{location}"\nweek_starts_on = "{week_starts_on}"\ncalibration_hours = [{calibration_hours}]\ndisplay_type = "{display_colours}"\nlanguage = "{language}"\nunits = "{units}"\nhours = "{hours}"\ntop_section = "{top_section}"\nmiddle_section = "{middle_section}"\nbottom_section = "{bottom_section}"';
+  var template = 'ical_urls = [{ical_urls}]\nrss_feeds = [{rss_urls}]\nupdate_interval = "{update_interval}"\napi_key = "{api_key}"\nlocation = "{location}"\nweek_starts_on = "{week_starts_on}"\ncalibration_hours = [{calibration_hours}]\nmodel = "{model}"\nlanguage = "{language}"\nunits = "{units}"\nhours = "{hours}"\ntop_section = "{top_section}"\nmiddle_section = "{middle_section}"\nbottom_section = "{bottom_section}"';
   
   function generate(){
     var ical_urls = $("#ical_urls").val().trim();
@@ -319,6 +347,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
     var update_interval = "60";
+    if ($('#update_10_mins').is(':checked')){
+      update_interval = "10";
+    }
     if ($('#update_15_mins').is(':checked')){
       update_interval = "15";
     }
@@ -352,9 +383,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       calibration_hours = $("#calibration_hours").attr("placeholder");
     }
 
-    var display_colours = "black_and_white";
-    if ($('#colour').is(':checked')){
-      display_colours = "colour";
+    var model = "epd_7_in_5_v2_colour";
+    if ($('#epd_7_in_5_v2').is(':checked')){
+      model = "epd_7_in_5_v2";
+    }
+    if ($('#epd_7_in_5_colour').is(':checked')){
+      model = "epd_7_in_5_colour";
+    }
+    if ($('#epd_7_in_5').is(':checked')){
+      model = "epd_7_in_5";
+    }
+    if ($('#epd_5_in_83_colour').is(':checked')){
+      model = "epd_5_in_83_colour";
+    }
+    if ($('#epd_5_in_83').is(':checked')){
+      model = "epd_5_in_83";
+    }
+    if ($('#epd_4_in_2_colour').is(':checked')){
+      model = "epd_4_in_2_colour";
+    }
+    if ($('#epd_4_in_2').is(':checked')){
+      model = "epd_4_in_2";
     }
 
     var language = "en";
@@ -417,30 +466,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       hours = "12";
     }
 
-    var top_section = "Weather";
+    var top_section = "inkycal_weather";
     if ($('#top_blank').is(':checked')){
       top_section = "";
     }
     
-    var middle_section = "Calendar";
+    var middle_section = "inkycal_calendar";
     if ($('#Agenda').is(':checked')){
-      middle_section = "Agenda";
+      middle_section = "inkycal_agenda";
     }
     if ($('#middle_blank').is(':checked')){
       middle_section = "";
     }
 
-    var bottom_section = "RSS";
-    if ($('#Events').is(':checked')){
-      bottom_section = "Events";
-    }
+    var bottom_section = "inkycal_rss";
     if ($('#bottom_blank').is(':checked')){
       bottom_section = "";
     }
 
 
-    //console.log(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, display_type, language, units, hours, top_section, middle_section, bottom_section);
-    createPythonSetting(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, display_colours, language, units, hours, top_section, middle_section, bottom_section);
+    //console.log(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section);
+    createPythonSetting(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section);
   }
   
   function rk(content,key,value){
@@ -457,7 +503,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     box = rk(box,"location",e);
     box = rk(box,"week_starts_on",f);
     box = rk(box,"calibration_hours",g);
-    box = rk(box,"display_colours",h);
+    box = rk(box,"model",h);
     box = rk(box,"language",i);
     box = rk(box,"units",j);
     box = rk(box,"hours",k);
