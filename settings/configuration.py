@@ -22,8 +22,8 @@ background_colour = 'white'
 text_colour = 'black'
 
 """Set some display parameters"""
-e_paper = importlib.import_module('drivers.'+model)
-display_height, display_width = e_paper.EPD_WIDTH, e_paper.EPD_HEIGHT
+driver = importlib.import_module('drivers.'+model)
+display_height, display_width = driver.EPD_WIDTH, driver.EPD_HEIGHT
 
 """Check if the display supports 3 colours"""
 if 'colour' in model:
@@ -216,3 +216,32 @@ def split_colours(image):
     buffer_black[red2 != 0] = [255,255,255] # white
     black_im = Image.fromarray(buffer_black).convert('1', dither=True).rotate(270,expand=True)
     return black_im, red_im
+
+def calibrate_display(no_of_cycles):
+  """How many times should each colour be calibrated? Default is 3"""
+  epaper = driver.EPD()
+  epaper.init()
+
+  white = Image.new('1', (display_width, display_height), 'white')
+  black = Image.new('1', (display_width, display_height), 'black')
+
+  print('----------Started calibration of E-Paper display----------')
+  if 'colour' in model:
+    for _ in range(no_of_cycles):
+      print('Calibrating black...')
+      epaper.display(epaper.getbuffer(black), epaper.getbuffer(white))
+      print('Calibrating red/yellow...')
+      epaper.display(epaper.getbuffer(white), epaper.getbuffer(black))
+      print('Calibrating white...')
+      epaper.display(epaper.getbuffer(white), epaper.getbuffer(white))
+      print('Cycle {0} of {1} complete'.format(_+1, no_of_cycles))
+  else:
+    for _ in range(no_of_cycles):
+      print('Calibrating black...')
+      epaper.display(epaper.getbuffer(black))
+      print('Calibrating white...')
+      epaper.display(epaper.getbuffer(white)),
+      print('Cycle {0} of {1} complete'.format(_+1, no_of_cycles))
+        
+    print('-----------Calibration complete----------')
+    epaper.sleep()
