@@ -180,5 +180,5 @@ EOF
 	fi
 
     echo -e "\e[1;36m"You can test if the programm works by running:"\e[0m"
-    echo -e "\e[1;36m"python3 /home/"$USER"/Inky-Calendar/Calendar/inkycal.py"\e[0m"
+    echo -e "\e[1;36m"python3 /home/"$USER"/Inky-Calendar/modules/inkycal.py"\e[0m"
 fi
