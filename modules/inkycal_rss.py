@@ -7,7 +7,6 @@ Copyright by aceisace
 from __future__ import print_function
 import feedparser
 from random import shuffle
-from settings import *
 from configuration import *
 
 fontsize = 14
@@ -33,8 +32,8 @@ y_padding = int( (bottom_section_height % line_height) / 2 )
 line_positions = [(border_left, bottom_section_offset +
   border_top + y_padding + _*line_height ) for _ in range(max_lines)]
 
-def main():
-  if bottom_section == "RSS" and rss_feeds != [] and internet_available() == True:
+def generate_image():
+  if bottom_section == "inkycal_rss" and rss_feeds != [] and internet_available() == True:
     try:
       clear_image('bottom_section')
       print('RSS module: Connectivity check passed. Generating image...',
@@ -71,7 +70,7 @@ def main():
       del filtered_feeds, parsed_feeds
 
       rss_image = crop_image(image, 'bottom_section')
-      rss_image.save(image_path+'rss.png')
+      rss_image.save(image_path+'inkycal_rss.png')
       print('Done')
 
     except Exception as e:
@@ -81,5 +80,7 @@ def main():
       print('Reason: ',e)
       pass
 
-if __name__ == '__main__':
-  main()
+def main():
+  generate_image()
+
+main()
