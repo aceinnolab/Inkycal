@@ -9,19 +9,14 @@ assembles them and sends it to the E-Paper
 Copyright by aceisace
 """
 from __future__ import print_function
+from configuration import *
 import arrow
 from time import sleep
 import gc
-import inkycal_rss as rss
-import inkycal_weather as weather
-import inkycal_calendar as calendar
-import inkycal_agenda as agenda
 
-from configuration import *
-import importlib
-driver = importlib.import_module('drivers.'+model)
-
-"""Remove previously generated images"""
+"""Perepare for execution of main programm"""
+calibration_countdown = 'initial'
+skip_calibration = False
 image_cleanup()
 
 """Check time and calibrate display if time """
@@ -35,38 +30,46 @@ while True:
       'D MMM YYYY'), now.format('HH:mm')))
     print('-----------Main programm started now----------')
 
+    """------------------Calibration check----------------"""
+    if skip_calibration != True:
+      print('Calibration..', end = ' ')
+      if now.hour in calibration_hours:
+        if calibration_countdown == 'initial':
+          print('required. Performing calibration now.')
+          calibration_countdown = 0
+          calibrate_display(3)
+        else:
+          if calibration_countdown % (60 // int(update_interval)) == 0:
+            calibrate_display(3)
+            calibration_countdown = 0
+      else:
+        print('not required. Continuing...')
+    else:
+      print('Calibration skipped!. Please note that not calibrating e-paper',
+            'displays causes ghosting')
+
+
     """----------------Generating and assembling images------"""
-    if top_section == 'Weather':
-      try:
-        weather.main()
-        weather_image = Image.open(image_path + 'weather.png')
-        image.paste(weather_image, (0, 0))
-      except:
-        pass
+    try:
+      top_section_module = importlib.import_module(top_section)
+      top_section_image = Image.open(image_path + top_section+'.png')
+      image.paste(top_section_image, (0, 0))
+    except:
+      pass
 
-    if middle_section == 'Calendar':
-      try:
-        calendar.main()
-        calendar_image = Image.open(image_path + 'calendar.png')
-        image.paste(calendar_image, (0, middle_section_offset))
-      except:
-        pass
+    try:
+      middle_section_module = importlib.import_module(middle_section)
+      middle_section_image = Image.open(image_path + middle_section+'.png')
+      image.paste(middle_section_image, (0, middle_section_offset))
+    except:
+      pass
 
-    if middle_section == 'Agenda':
-      try:
-        agenda.main()
-        agenda_image = Image.open(image_path + 'agenda.png')
-        image.paste(agenda_image, (0, middle_section_offset))
-      except:
-        pass
-
-    if bottom_section == 'RSS':
-      try:
-        rss.main()
-        rss_image = Image.open(image_path + 'rss.png')
-        image.paste(rss_image, (0, bottom_section_offset))
-      except:
-        pass
+    try:
+      bottom_section_module = importlib.import_module(bottom_section)
+      bottom_section_image = Image.open(image_path + bottom_section+'.png')
+      image.paste(bottom_section_image, (0, bottom_section_offset))
+    except:
+      pass
 
     image.save(image_path + 'canvas.png')
 
@@ -93,6 +96,11 @@ while True:
     """--------------Post processing after main loop-----------------"""
     """Collect some garbage to free up some resources"""
     gc.collect()
+
+    """Adjust calibration countdowns"""
+    if calibration_countdown == 'initial':
+        calibration_countdown = 0
+    calibration_countdown += 1
 
     """Calculate duration until next display refresh"""
     for _ in range(1):
