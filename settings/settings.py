@@ -1,11 +1,11 @@
 ical_urls = ["https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"]
 rss_feeds = ["http://feeds.bbci.co.uk/news/world/rss.xml#"] # Use any RSS feed
 
-
 update_interval = "60"         # "15" # "30" # "60"
 api_key = ""                   # Your openweathermap API-KEY -> "api-key"
 location = "Stuttgart, DE"     # "City name, Country code"
 week_starts_on = "Monday"      # "Monday" # "Sunday"
+calibration_hours = [0,12,18]  # Do not change unlesss you know what you are doing
 model = "epd_7_in_5_v2_colour" # Choose the E-Paper model (see below)
 language = "en"                # "en" # "de" # "fr" # "jp" etc.
 units = "metric"               # "metric" # "imperial"
