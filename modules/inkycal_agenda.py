@@ -106,7 +106,7 @@ def generate_image():
 
             previous_date = agenda_events[events]['date']
             draw.line((date_col_start, line_pos[events][1],
-              line_width,line_pos[events][1]), fill = 'red' if three_colour_support == True' else 'black')
+              line_width,line_pos[events][1]), fill = 'red' if three_colour_support == True else 'black')
 
           elif agenda_events[events]['type'] == 'timed_event':
             write_text(time_col_width, line_height, agenda_events[events]['time'],
