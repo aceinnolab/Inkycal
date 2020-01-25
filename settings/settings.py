@@ -1,19 +1,17 @@
-ical_urls = ["https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"]
+ical_urls = ["https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"] #iCal URLs
 rss_feeds = ["http://feeds.bbci.co.uk/news/world/rss.xml#"] # Use any RSS feed
-
-update_interval = "60"         # "15" # "30" # "60"
-api_key = ""                   # Your openweathermap API-KEY -> "api-key"
-location = "Stuttgart, DE"     # "City name, Country code"
-week_starts_on = "Monday"      # "Monday" # "Sunday"
-calibration_hours = [0,12,18]  # Do not change unlesss you know what you are doing
-model = "epd_7_in_5_v2_colour" # Choose the E-Paper model (see below)
-language = "en"                # "en" # "de" # "fr" # "jp" etc.
-units = "metric"               # "metric" # "imperial"
-hours = "24"                   # "24" # "12"
-top_section = "Weather"        # "Weather"
-middle_section = "Calendar"    # "Agenda" #"Calendar"
-bottom_section = "RSS"         # "RSS"
-
+update_interval = "60"                # "10" # "15" # "20" # "30" # "60"
+api_key = ""                          # Your openweathermap API-KEY -> "api-key"
+location = "Stuttgart, DE"            # "City name, Country code"
+week_starts_on = "Monday"             # 'Sunday' # Monday
+calibration_hours = [0,12,18]         # Do not change unlesss you know what you are doing
+model = "epd_7_in_5_v2_colour"        # Choose the E-Paper model (see below)
+language = "en"                       # "en" # "de" # "fr" # "jp" etc.
+units = "metric"                      # "metric" # "imperial"
+hours = "24"                          # "24" # "12"
+top_section = "inkycal_weather"       # "inkycal_weather"
+middle_section = "inkycal_calendar"   # "inkycal_agenda" #"inkycal_calendar"
+bottom_section = "RSS"                # "inkycal_rss"
 
 """Adding multiple iCalendar URLs or RSS feed URLs"""
 # Single URL:
