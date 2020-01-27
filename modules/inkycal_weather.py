@@ -178,10 +178,10 @@ def generate_image():
         hour_gap = 3
 
       """Prepare timings for forecasts"""
-      fc1 = now.replace(hours = + hour_gap)
-      fc2 = now.replace(hours = + hour_gap + 3)
-      fc3 = now.replace(hours = + hour_gap + 6)
-      fc4 = now.replace(hours = + hour_gap + 9)
+      fc1 = now.replace(hours = + hour_gap).floor('hour')
+      fc2 = now.replace(hours = + hour_gap + 3).floor('hour')
+      fc3 = now.replace(hours = + hour_gap + 6).floor('hour')
+      fc4 = now.replace(hours = + hour_gap + 9).floor('hour')
 
       """Prepare forecast objects for the specified timings"""
       forecast_fc1 = forecast.get_weather_at(fc1.datetime)
