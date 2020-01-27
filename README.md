@@ -19,9 +19,8 @@ A python 3 software for 7.5" E-Paper displays from waveshare/gooddisplay to disp
 * RSS feeds from various providers to keep up to date with news, quotes etc. 
 
 ## News:
+* **Important bugfix: At 28 Jan 2020, an important bugfix was pushed here. Please update if you are using an older version**
 * **Version 1.7.1 released with support for 4.2", 5.83", 7.5" (v1) and 7.5" (v2) E-Paper displays** (Mid January 2020)
-* **Version 1.7 released with weather forecasts and fully new UI** (Mid December 2019)
-* **Thank You everyone for the first 100 stars :D**
 * **Added support for recurring events**
 * **Added support for Debian Buster, Buster Lite is not supported!**
 * **Added a user-friendly Web-UI for adding details to the programm** (Credit to TobyChui for the template)
