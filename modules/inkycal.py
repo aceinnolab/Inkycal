@@ -19,6 +19,10 @@ calibration_countdown = 'initial'
 skip_calibration = False
 image_cleanup()
 
+top_section_module = importlib.import_module(top_section)
+middle_section_module = importlib.import_module(middle_section)
+bottom_section_module = importlib.import_module(bottom_section)
+
 """Check time and calibrate display if time """
 while True:
   now = arrow.now(tz=get_tz())
@@ -51,24 +55,30 @@ while True:
 
     """----------------Generating and assembling images------"""
     try:
-      top_section_module = importlib.import_module(top_section)
+      top_section_module.main()
       top_section_image = Image.open(image_path + top_section+'.png')
       image.paste(top_section_image, (0, 0))
-    except:
+      print('Done')
+    except Exception as error:
+      print(error)
       pass
 
     try:
-      middle_section_module = importlib.import_module(middle_section)
+      middle_section_module.main()
       middle_section_image = Image.open(image_path + middle_section+'.png')
       image.paste(middle_section_image, (0, middle_section_offset))
-    except:
+      print('Done')
+    except Exception as error:
+      print(error)
       pass
 
     try:
-      bottom_section_module = importlib.import_module(bottom_section)
+      bottom_section_module.main()
       bottom_section_image = Image.open(image_path + bottom_section+'.png')
       image.paste(bottom_section_image, (0, bottom_section_offset))
-    except:
+      print('Done')
+    except Exception as error:
+      print(error)
       pass
 
     image.save(image_path + 'canvas.png')
@@ -116,4 +126,5 @@ while True:
       print('{0} Minutes left until next refresh'.format(minutes))
 
       del update_timings, minutes, image
+      image_cleanup()
       sleep(refresh_countdown)
