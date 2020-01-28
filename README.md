@@ -60,7 +60,7 @@ Execute the following command in the Terminal to install all required packages. 
 
 **`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/master/Installer.sh)"`**
 
-If you get some red lines, please run `pip3 install Pillow`.
+If you get some red lines, please run `pip3 install Pillow==6.2.0`.
 
 If the installer is broken, please follow the instructions here [manual installation](https://github.com/aceisace/Inky-Calendar/wiki/Manual-installation)
 
