@@ -70,9 +70,9 @@ If the installer is broken, please follow the instructions here [manual installa
 
 If the Installer should fail for any reason, kindly open an issue and paste the error. Thanks.
 
-**Screenshot of the installer:**
+**Preview of Installer:**
 <p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/installer-preview.png" width="700">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/Installer-gif.gif" width="700">
 </p>
 
 ## Adding details to the programm
