@@ -19,7 +19,7 @@ A python 3 software for 7.5" E-Paper displays from waveshare/gooddisplay to disp
 * RSS feeds from various providers to keep up to date with news, quotes etc. 
 
 ## News:
-* **Discord chat open now. Please see announcement issue for more details.**
+* **Discord chat open now. [Click here to enter](https://discord.gg/sHYKeSM)**
 * **Important bugfix: At 28 Jan 2020, an important bugfix was pushed here. Please update if you are using an older version**
 * **Version 1.7.1 released with support for 4.2", 5.83", 7.5" (v1) and 7.5" (v2) E-Paper displays** (Mid January 2020)
 * **Added support for recurring events**
@@ -28,11 +28,7 @@ A python 3 software for 7.5" E-Paper displays from waveshare/gooddisplay to disp
 
 ## Preview
 <p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/calendar-view.JPG" width="400"><img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/image-rendering.JPG" width="420">
-</p>
-
-<p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/agenda-view-rss.jpg" width="400"><img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/extended-agenda-view.JPG" width="420">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/inkycal-modes.gif" width="900"><img 
 </p>
 
 ## Hardware required
@@ -103,4 +99,4 @@ The average response time for issues, PRs and emails is usually 24 hours. In som
 
 ## Contact
 * Email: aceisace63@yahoo.com (average response time < 24 hours)
-* Website: aceinnolab.com (coming soon)
+* Discord: [Inky-Calendar chatroom](https://discord.gg/sHYKeSM)
