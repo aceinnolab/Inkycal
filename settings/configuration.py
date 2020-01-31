@@ -61,21 +61,21 @@ NotoSans = fontpath+'NotoSans/NotoSans-SemiCondensed'
 weatherfont = fontpath+'WeatherFont/weathericons-regular-webfont.ttf'
 
 """Fonts sizes"""
+default_font_size = 18
 agenda_font_size = 14
 calendar_font_size = 16
 rss_font_size = 14
-locales_font_size = 18
 weather_font_size = 12
 
 """Automatically select correct fonts to support set language"""
 if language in ['ja','zh','zh_tw','ko']:
-  default = ImageFont.truetype(NotoSansCJK+'Regular.otf', locales_font_size)
-  semi = ImageFont.truetype(NotoSansCJK+'Medium.otf', locales_font_size)
-  bold = ImageFont.truetype(NotoSansCJK+'Bold.otf', locales_font_size)
+  default = ImageFont.truetype(NotoSansCJK+'Regular.otf', default_font_size)
+  semi = ImageFont.truetype(NotoSansCJK+'Medium.otf', default_font_size)
+  bold = ImageFont.truetype(NotoSansCJK+'Bold.otf', default_font_size)
 else:
-  default = ImageFont.truetype(NotoSans+'.ttf', locales_font_size)
-  semi = ImageFont.truetype(NotoSans+'Medium.ttf', locales_font_size)
-  bold = ImageFont.truetype(NotoSans+'SemiBold.ttf', locales_font_size)
+  default = ImageFont.truetype(NotoSans+'.ttf', default_font_size)
+  semi = ImageFont.truetype(NotoSans+'Medium.ttf', default_font_size)
+  bold = ImageFont.truetype(NotoSans+'SemiBold.ttf', default_font_size)
 
 w_font = ImageFont.truetype(weatherfont, weather_font_size)
 
