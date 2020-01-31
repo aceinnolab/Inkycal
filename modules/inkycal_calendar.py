@@ -16,8 +16,7 @@ at_in_your_language = 'at'
 event_icon = 'square' # dot #square
 style = "DD MMM"
 
-fontsize = 16
-font = ImageFont.truetype(NotoSans+'.ttf', fontsize)
+font = ImageFont.truetype(NotoSans+'.ttf', calendar_font_size)
 space_between_lines = 0
 
 if show_events == True:
