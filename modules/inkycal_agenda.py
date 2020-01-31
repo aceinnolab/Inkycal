@@ -8,7 +8,6 @@ from __future__ import print_function
 from inkycal_icalendar import fetch_events
 from configuration import*
 
-fontsize = 14
 show_events = True
 print_events = False
 style = 'D MMM YY HH:mm'
@@ -19,7 +18,7 @@ border_top = int(middle_section_height * 0.02)
 border_left = int(middle_section_width * 0.02)
 
 """Choose font optimised for the agenda section"""
-font = ImageFont.truetype(NotoSans+'Medium.ttf', fontsize)
+font = ImageFont.truetype(NotoSans+'Medium.ttf', agenda_font_size)
 line_height = int(font.getsize('hg')[1] * 1.2) + 1
 line_width = int(middle_section_width - (border_left*2))
 
