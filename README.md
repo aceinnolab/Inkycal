@@ -20,11 +20,12 @@ A python 3 software for 7.5" E-Paper displays from waveshare/gooddisplay to disp
 
 ## News:
 * **Discord chat open now. [Click here to enter](https://discord.gg/sHYKeSM)**
-* **Important bugfix: At 28 Jan 2020, an important bugfix was pushed here. Please update if you are using an older version**
 * **Version 1.7.1 released with support for 4.2", 5.83", 7.5" (v1) and 7.5" (v2) E-Paper displays** (Mid January 2020)
-* **Added support for recurring events**
 * **Added support for Debian Buster, Buster Lite is not supported!**
 * **Added a user-friendly Web-UI for adding details to the programm** (Credit to TobyChui for the template)
+
+## Development status
+This software is in (highly) active development. To see the current development status, [[Click here]](https://github.com/aceisace/Inky-Calendar/projects/2).
 
 ## Preview
 <p align="center">
