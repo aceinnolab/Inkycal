@@ -74,6 +74,7 @@ def fetch_events():
   for events in upcoming_events:
     if events.all_day and events.duration.days > 1:
       events.end = events.end.replace(days=-2)
+      events.make_all_day()
 
     if not events.all_day:
       events.end = events.end.to(timezone)
