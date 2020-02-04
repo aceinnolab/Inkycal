@@ -16,7 +16,7 @@ at_in_your_language = 'at'
 event_icon = 'square' # dot #square
 style = "DD MMM"
 
-font = ImageFont.truetype(NotoSans+'.ttf', calendar_font_size)
+font = ImageFont.truetype(NotoSans+'.ttf', calendar_fontsize)
 space_between_lines = 0
 
 if show_events == True:
@@ -98,7 +98,7 @@ def generate_image():
 
       """Add the numbers on the correct positions"""
       for i in range(len(calendar_flat)):
-        if calendar_flat[i] != 0:
+        if calendar_flat[i] not in (0, int(now.day)):
           write_text(icon_width, icon_height, str(calendar_flat[i]), grid[i])
 
       """Draw a red/black circle with the current day of month in white"""
@@ -110,11 +110,13 @@ def generate_image():
       x_text = int((icon_width / 2) - (text_width / 2))
       y_text = int((icon_height / 2) - (text_height / 1.7))
       ImageDraw.Draw(icon).ellipse((x_circle-radius, y_circle-radius,
-        x_circle+radius, y_circle+radius), fill= 'red' if
-        three_colour_support == True else 'black', outline=None)
+        x_circle+radius, y_circle+radius), fill= 'black', outline=None)
       ImageDraw.Draw(icon).text((x_text, y_text), str(now.day), fill='white',
         font=bold)
-      image.paste(icon, current_day_pos, icon)
+      if three_colour_support == True:
+        image_col.paste(icon, current_day_pos, icon)
+      else:
+        image.paste(icon, current_day_pos, icon)
 
       """Create some reference points for the current month"""
       days_current_month = calendar.monthrange(now.year, now.month)[1]
@@ -152,38 +154,47 @@ def generate_image():
           for days in days_with_events:
             draw_square((int(grid[calendar_flat.index(days)][0]+center_x),
                int(grid[calendar_flat.index(days)][1] + center_y )),
-               8, square_size , square_size)
+               8, square_size , square_size, colour='black')
 
 
         """Add a small section showing events of today and tomorrow"""
-        event_list = ['{0} {1} {2} : {3}'.format(today_in_your_language,
-          at_in_your_language, event.begin.format('HH:mm' if hours == 24 else
-          'hh:mm'), event.name) for event in calendar_events if event.begin.day
-          == now.day and now < event.end]
-
-        event_list += ['{0} {1} {2} : {3}'.format(tomorrow_in_your_language,
-          at_in_your_language, event.begin.format('HH:mm' if hours == 24 else
-          'hh:mm'), event.name) for event in calendar_events if event.begin.day
-          == now.replace(days=1).day]
-
+        event_list = []
         after_two_days = now.replace(days=2).floor('day')
 
-        event_list += ['{0} {1} {2} : {3}'.format(event.begin.format('D MMM'),
-          at_in_your_language, event.begin.format('HH:mm' if hours == 24 else
-          'hh:mm'), event.name) for event in upcoming_events if event.end >
-           after_two_days]
+        for event in calendar_events:
+          if event.begin.day == now.day and now < event.end:
+            if event.all_day:
+              event_list.append('{}: {}'.format(today_in_your_language, event.name))
+            else:
+              event_list.append('{0} {1} {2} : {3}'.format(today_in_your_language,
+          at_in_your_language, event.begin.format('HH:mm' if hours == '24' else
+          'hh:mm a'), event.name))
+
+          if event.begin.day == now.replace(days=1).day:
+            if event.all_day:
+              event_list.append('{}: {}'.format(tomorrow_in_your_language, event.name))
+            else:
+              event_list.append('{0} {1} {2} : {3}'.format(tomorrow_in_your_language,
+          at_in_your_language, event.begin.format('HH:mm' if hours == '24' else
+          'hh:mm a'), event.name))
+
+          if event.end > after_two_days:
+            if event.all_day:
+              event_list.append('{}: {}'.format(event.begin.format('D MMM'), event.name))
+            else:
+              event_list.append('{0} {1} {2} : {3}'.format(event.begin.format('D MMM'),
+          at_in_your_language, event.begin.format('HH:mm' if hours == '24' else
+          'hh:mm a'), event.name))
 
         del event_list[max_event_lines:]
 
       if event_list:
         for lines in event_list:
           write_text(main_area_width, int(events_height/max_event_lines), lines,
-            event_lines[event_list.index(lines)], alignment='left',
-            fill_height = 0.7)
+            event_lines[event_list.index(lines)], font=font, alignment='left')
       else:
         write_text(main_area_width, int(events_height/max_event_lines),
-         'No upcoming events.', event_lines[0], alignment='left',
-         fill_height = 0.7)
+         'No upcoming events.', event_lines[0], font=font, alignment='left')
 
       """Set print_events_to True to print all events in this month"""
       style = 'DD MMM YY HH:mm'
@@ -197,6 +208,10 @@ def generate_image():
       calendar_image = crop_image(image, 'middle_section')
       calendar_image.save(image_path+'inkycal_calendar.png')
 
+      if three_colour_support == True:
+        calendar_image_col = crop_image(image_col, 'middle_section')
+        calendar_image_col.save(image_path+'inkycal_calendar_col.png')
+
       print('Done')
 
     except Exception as e:
@@ -204,6 +219,11 @@ def generate_image():
       print('Failed!')
       print('Error in Calendar module!')
       print('Reason: ',e)
+      clear_image('middle_section')
+      write_text(middle_section_width, middle_section_height, str(e),
+                 (0, middle_section_offset), font = font)
+      calendar_image = crop_image(image, 'middle_section')
+      calendar_image.save(image_path+'inkycal_calendar.png')
       pass
 
 def main():
