@@ -14,7 +14,7 @@ border_top = int(bottom_section_height * 0.05)
 border_left = int(bottom_section_width * 0.02)
 
 """Choose font optimised for the weather section"""
-font = ImageFont.truetype(NotoSans+'.ttf', rss_font_size)
+font = ImageFont.truetype(NotoSans+'.ttf', rss_fontsize)
 space_between_lines = 1
 line_height = font.getsize('hg')[1] + space_between_lines
 line_width = bottom_section_width - (border_left*2)
@@ -69,6 +69,11 @@ def generate_image():
 
       rss_image = crop_image(image, 'bottom_section')
       rss_image.save(image_path+'inkycal_rss.png')
+      
+      if three_colour_support == True:
+        rss_image_col = crop_image(image_col, 'bottom_section')
+        rss_image_col.save(image_path+'inkycal_rss_col.png')
+
       print('Done')
 
     except Exception as e:
@@ -76,7 +81,13 @@ def generate_image():
       print('Failed!')
       print('Error in RSS module!')
       print('Reason: ',e)
+      clear_image('bottom_section')
+      write_text(bottom_section_width, bottom_section_height, str(e),
+                 (0, bottom_section_offset), font = font)
+      rss = crop_image(image, 'bottom_section')
+      rss.save(image_path+'inkycal_rss.png')
       pass
+
 
 def main():
   generate_image()
