@@ -120,7 +120,7 @@ def to_units(kelvin):
                      ndigits = decimal_places_temperature)
   if units == 'metric':
     conversion = str(degrees_celsius) + '°C'
-      
+
   if units == 'imperial':
     conversion = str(fahrenheit) + 'F'
 
@@ -171,7 +171,7 @@ def generate_image():
       forecast = owm.three_hours_forecast(location)
 
       """Round the hour to the nearest multiple of 3"""
-      now = arrow.now(tz=get_tz())
+      now = arrow.utcnow()
       if (now.hour % 3) != 0:
         hour_gap = 3 - (now.hour % 3)
       else:
@@ -258,9 +258,10 @@ def generate_image():
         write_text(icon_small, icon_small, '\uf0b1', windspeed_icon_now_pos,
           font = w_font, fill_height = 0.9, rotation = -wind_degrees)
 
-      write_text(coloumn_width-icon_small, row_height,
-        temperature_now, temperature_now_pos, font = font, colour =
-                 red_temp(temperature_now))
+      write_text(coloumn_width-icon_small, row_height, temperature_now,
+        temperature_now_pos, font = font, colour= red_temp(temperature_now))
+
+
       write_text(coloumn_width-icon_small, row_height, humidity_now+'%',
         humidity_now_pos, font = font)
       write_text(coloumn_width-icon_small, row_height, wind,
@@ -326,24 +327,31 @@ def generate_image():
       draw.line((coloumn5, line_start_y, coloumn5, line_end_y), fill='black')
       draw.line((coloumn6, line_start_y, coloumn6, line_end_y), fill='black')
       draw.line((coloumn7, line_start_y, coloumn7, line_end_y), fill='black')
-      draw.line((0, top_section_height-border_top, top_section_width-
-        border_left, top_section_height-border_top),
-        fill='red' if three_colour_support == 'True' else 'black' , width=3)
 
-      weather_image = crop_image(image, 'top_section')    
+      if three_colour_support == True:
+        draw_col.line((0, top_section_height-border_top, top_section_width-
+        border_left, top_section_height-border_top), fill='black', width=3)
+      else:
+        draw.line((0, top_section_height-border_top, top_section_width-
+        border_left, top_section_height-border_top), fill='black', width=3)
+
+      weather_image = crop_image(image, 'top_section')  
       weather_image.save(image_path+'inkycal_weather.png')
+
+      if three_colour_support == True:
+        weather_image_col = crop_image(image_col, 'top_section')  
+        weather_image_col.save(image_path+'inkycal_weather_col.png')
+        
       print('Done')
 
     except Exception as e:
-      """If no response was received from the openweathermap
-      api server, add the cloud with question mark"""
-      print('__________OWM-ERROR!__________')
+      """If something went wrong, print a Error message on the Terminal"""
+      print('Failed!')
+      print('Error in weather module!')
       print('Reason: ',e)
-      write_text(icon_medium, icon_medium, '\uf07b', weather_icon_now_pos,
-      font = w_font, fill_height = 1.0)
-      message = 'No internet connectivity or API timeout'
-      write_text(coloumn_width*6, row_height, message, humidity_icon_now_pos,
-        font = font)
+      clear_image('top_section')
+      write_text(top_section_width, top_section_height, str(e),
+                 (0, 0), font = font)
       weather_image = crop_image(image, 'top_section')
       weather_image.save(image_path+'inkycal_weather.png')
       pass
