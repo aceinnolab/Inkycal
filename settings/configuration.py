@@ -34,10 +34,26 @@ else:
 """Create 3 sections of the display, based on percentage"""
 top_section_width = middle_section_width = bottom_section_width = display_width
 
-top_section_height = int(display_height*0.11)
-middle_section_height = int(display_height*0.65)
-bottom_section_height = int(display_height - middle_section_height -
-                            top_section_height)
+if top_section and bottom_section:
+  print('top and bottom section occupied')
+  top_section_height = int(display_height*0.11)
+  bottom_section_height = int(display_height*0.24)
+
+elif top_section and not bottom_section:
+  print('top section occupied')
+  top_section_height = int(display_height*0.11)
+  bottom_section_height = 0
+
+elif bottom_section and not top_section:
+  print('bottom_section occupied')
+  top_section_height = 0
+  bottom_section_height = int(display_height*0.24)
+
+elif not top_section and not bottom_section:
+  top_section_height = bottom_section_height = 0
+
+middle_section_height = int(display_height - top_section_height -
+                            bottom_section_height)
 
 """Find out the y-axis position of each section"""
 top_section_offset = 0
@@ -60,48 +76,52 @@ NotoSansCJK = fontpath+'NotoSansCJK/NotoSansCJKsc-'
 NotoSans = fontpath+'NotoSans/NotoSans-SemiCondensed'
 weatherfont = fontpath+'WeatherFont/weathericons-regular-webfont.ttf'
 
-"""Fonts sizes"""
-default_font_size = 18
-agenda_font_size = 14
-calendar_font_size = 16
-rss_font_size = 14
-weather_font_size = 12
+"""Fontsizes"""
+default_fontsize = 18
+agenda_fontsize = 14
+calendar_fontsize = 14
+rss_fontsize = 14
+weather_fontsize = 12
 
 """Automatically select correct fonts to support set language"""
 if language in ['ja','zh','zh_tw','ko']:
-  default = ImageFont.truetype(NotoSansCJK+'Regular.otf', default_font_size)
-  semi = ImageFont.truetype(NotoSansCJK+'Medium.otf', default_font_size)
-  bold = ImageFont.truetype(NotoSansCJK+'Bold.otf', default_font_size)
+  default = ImageFont.truetype(NotoSansCJK+'Regular.otf', default_fontsize)
+  semi = ImageFont.truetype(NotoSansCJK+'Medium.otf', default_fontsize)
+  bold = ImageFont.truetype(NotoSansCJK+'Bold.otf', default_fontsize)
 else:
-  default = ImageFont.truetype(NotoSans+'.ttf', default_font_size)
-  semi = ImageFont.truetype(NotoSans+'Medium.ttf', default_font_size)
-  bold = ImageFont.truetype(NotoSans+'SemiBold.ttf', default_font_size)
+  default = ImageFont.truetype(NotoSans+'.ttf', default_fontsize)
+  semi = ImageFont.truetype(NotoSans+'Medium.ttf', default_fontsize)
+  bold = ImageFont.truetype(NotoSans+'SemiBold.ttf', default_fontsize)
 
-w_font = ImageFont.truetype(weatherfont, weather_font_size)
+w_font = ImageFont.truetype(weatherfont, weather_fontsize)
 
-"""Create image with given parameters"""
+"""Create a blank image for black pixels and a colour image for coloured pixels"""
 image = Image.new('RGB', (display_width, display_height), background_colour)
+image_col = Image.new('RGB', (display_width, display_height), 'white')
+
 draw = ImageDraw.Draw(image)
+draw_col = ImageDraw.Draw(image_col)
+
 
 """Custom function to add text on an image"""
 def write_text(space_width, space_height, text, tuple,
   font=default, alignment='middle', autofit = False, fill_width = 1.0,
   fill_height = 0.8, colour = text_colour, rotation = None):
-
+  """tuple refers to (x,y) position on display"""
   if autofit == True or fill_width != 1.0 or fill_height != 0.8:
     size = 8
     font = ImageFont.truetype(font.path, size)
-    text_width, text_height = font.getsize(text)
+    text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
     while text_width < int(space_width * fill_width) and text_height < int(space_height * fill_height):
       size += 1
       font = ImageFont.truetype(font.path, size)
-      text_width, text_height = font.getsize(text)
+      text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
 
-  text_width, text_height = font.getsize(text)
+  text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
 
   while (text_width, text_height) > (space_width, space_height):
     text=text[0:-1]
-    text_width, text_height = font.getsize(text)
+    text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
   if alignment is "" or "middle" or None:
     x = int((space_width / 2) - (text_width / 2))
   if alignment is 'left':
@@ -115,7 +135,11 @@ def write_text(space_width, space_height, text, tuple,
   ImageDraw.Draw(space).text((x, y), text, fill=colour, font=font)
   if rotation != None:
     space.rotate(rotation, expand = True)
-  image.paste(space, tuple, space)
+
+  if colour == 'black' or 'white':
+    image.paste(space, tuple, space)
+  else:
+    image_col.paste(space, tuple, space)
 
 def clear_image(section, colour = background_colour):
   """Clear the image"""
@@ -123,6 +147,10 @@ def clear_image(section, colour = background_colour):
   position = (0, eval(section+'_offset'))
   box = Image.new('RGB', (width, height), colour)
   image.paste(box, position)
+
+  if three_colour_support == True:
+    image_col.paste(box, position)
+    
 
 def crop_image(input_image, section):
   """Crop an input image to the desired section"""
@@ -161,15 +189,26 @@ def draw_square(tuple, radius, width, height, colour=text_colour, line_width=1):
   c3, c4 = ((x+width)-diameter, y), (x+width, y+diameter)
   c5, c6 = ((x+width)-diameter, (y+height)-diameter), (x+width, y+height)
   c7, c8 = (x, (y+height)-diameter), (x+diameter, y+height)
-  
-  draw.line( (p1, p2) , fill=colour, width = line_width)
-  draw.line( (p3, p4) , fill=colour, width = line_width)
-  draw.line( (p5, p6) , fill=colour, width = line_width)
-  draw.line( (p7, p8) , fill=colour, width = line_width)
-  draw.arc(  (c1, c2) , 180, 270, fill=colour, width=line_width)
-  draw.arc(  (c3, c4) , 270, 360, fill=colour, width=line_width)
-  draw.arc(  (c5, c6) , 0, 90, fill=colour, width=line_width)
-  draw.arc(  (c7, c8) , 90, 180, fill=colour, width=line_width)
+
+  if three_colour_support == True:
+    draw_col.line( (p1, p2) , fill=colour, width = line_width)
+    draw_col.line( (p3, p4) , fill=colour, width = line_width)
+    draw_col.line( (p5, p6) , fill=colour, width = line_width)
+    draw_col.line( (p7, p8) , fill=colour, width = line_width)
+    draw_col.arc(  (c1, c2) , 180, 270, fill=colour, width=line_width)
+    draw_col.arc(  (c3, c4) , 270, 360, fill=colour, width=line_width)
+    draw_col.arc(  (c5, c6) , 0, 90, fill=colour, width=line_width)
+    draw_col.arc(  (c7, c8) , 90, 180, fill=colour, width=line_width)
+  else:
+    draw.line( (p1, p2) , fill=colour, width = line_width)
+    draw.line( (p3, p4) , fill=colour, width = line_width)
+    draw.line( (p5, p6) , fill=colour, width = line_width)
+    draw.line( (p7, p8) , fill=colour, width = line_width)
+    draw.arc(  (c1, c2) , 180, 270, fill=colour, width=line_width)
+    draw.arc(  (c3, c4) , 270, 360, fill=colour, width=line_width)
+    draw.arc(  (c5, c6) , 0, 90, fill=colour, width=line_width)
+    draw.arc(  (c7, c8) , 90, 180, fill=colour, width=line_width)
+    
 
 def internet_available():
   """check if the internet is available"""
@@ -206,24 +245,6 @@ def image_cleanup():
       os.remove(temp_files)
   print('Done')
 
-def split_colours(image):
-  if three_colour_support == True:
-    """Split image into two, one for red pixels, the other for black pixels"""
-    buffer = numpy.array(image.convert('RGB'))
-    red, green = buffer[:, :, 0], buffer[:, :, 1]
-    buffer_red, buffer_black = numpy.array(image), numpy.array(image)
-
-    buffer_red[numpy.logical_and(red >= 200, green <= 90)] = [0,0,0] #red->black
-    red1 = buffer_red[:,:,0]
-    buffer_red[red1 != 0] = [255,255,255] #white
-    red_im = Image.fromarray(buffer_red).convert('1',dither=True).rotate(270,expand=True)
-
-    buffer_black[numpy.logical_and(red <= 180, red == green)] = [0,0,0] #black
-    red2 = buffer_black[:,:,0]
-    buffer_black[red2 != 0] = [255,255,255] # white
-    black_im = Image.fromarray(buffer_black).convert('1', dither=True).rotate(270,expand=True)
-    return black_im, red_im
-
 def calibrate_display(no_of_cycles):
   """How many times should each colour be calibrated? Default is 3"""
   epaper = driver.EPD()
@@ -235,18 +256,20 @@ def calibrate_display(no_of_cycles):
   print('----------Started calibration of E-Paper display----------')
   if 'colour' in model:
     for _ in range(no_of_cycles):
-      print('Calibrating black...')
+      print('Calibrating...', end= ' ')
+      print('black...', end= ' ')
       epaper.display(epaper.getbuffer(black), epaper.getbuffer(white))
-      print('Calibrating red/yellow...')
+      print('colour...', end = ' ')
       epaper.display(epaper.getbuffer(white), epaper.getbuffer(black))
-      print('Calibrating white...')
+      print('white...')
       epaper.display(epaper.getbuffer(white), epaper.getbuffer(white))
       print('Cycle {0} of {1} complete'.format(_+1, no_of_cycles))
   else:
     for _ in range(no_of_cycles):
-      print('Calibrating black...')
+      print('Calibrating...', end= ' ')
+      print('black...', end = ' ')
       epaper.display(epaper.getbuffer(black))
-      print('Calibrating white...')
+      print('white...')
       epaper.display(epaper.getbuffer(white)),
       print('Cycle {0} of {1} complete'.format(_+1, no_of_cycles))
         
