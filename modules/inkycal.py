@@ -17,17 +17,35 @@ import gc
 """Perepare for execution of main programm"""
 calibration_countdown = 'initial'
 skip_calibration = False
+upside_down = False
+
 image_cleanup()
 
-top_section_module = importlib.import_module(top_section)
-middle_section_module = importlib.import_module(middle_section)
-bottom_section_module = importlib.import_module(bottom_section)
+try:
+  top_section_module = importlib.import_module(top_section)
+except ValueError:
+  print('Something went wrong while importing the top-section module:', top_section)
+  pass
+
+try:
+  middle_section_module = importlib.import_module(middle_section)
+except ValueError:
+  print('Something went wrong while importing the middle_section module', middle_section)
+  pass
+
+try:
+  bottom_section_module = importlib.import_module(bottom_section)
+except ValueError:
+  print('Something went wrong while importing the bottom_section module', bottom_section)
+  pass
 
 """Check time and calibrate display if time """
 while True:
   now = arrow.now(tz=get_tz())
   for _ in range(1):
     image = Image.new('RGB', (display_width, display_height), background_colour)
+    if three_colour_support == True:
+      image_col = Image.new('RGB', (display_width, display_height), 'white')
 
     """------------------Add short info------------------"""
     print('Current Date: {0} \nCurrent Time: {1}'.format(now.format(
@@ -53,35 +71,58 @@ while True:
             'displays causes ghosting')
 
 
-    """----------------Generating and assembling images------"""
+    """----------------------top-section-image-----------------------------"""
     try:
       top_section_module.main()
-      top_section_image = Image.open(image_path + top_section+'.png')
+      top_section_image = Image.open(image_path + top_section+'.png').convert('1', dither=True)
       image.paste(top_section_image, (0, 0))
-      print('Done')
+
+      if three_colour_support == True:
+        top_section_image_col = Image.open(image_path + top_section+'_col.png').convert('1', dither=True)
+        image_col.paste(top_section_image_col, (0, 0))
+
     except Exception as error:
       print(error)
       pass
 
+    """----------------------middle-section-image---------------------------"""
     try:
       middle_section_module.main()
-      middle_section_image = Image.open(image_path + middle_section+'.png')
+      middle_section_image = Image.open(image_path + middle_section+'.png').convert('1', dither=True)
       image.paste(middle_section_image, (0, middle_section_offset))
-      print('Done')
+
+      if three_colour_support == True:
+        middle_section_image_col = Image.open(image_path + middle_section+'_col.png').convert('1', dither=True)
+        image_col.paste(middle_section_image_col, (0, middle_section_offset))
+
     except Exception as error:
       print(error)
       pass
 
+
+    """----------------------bottom-section-image---------------------------"""
     try:
       bottom_section_module.main()
-      bottom_section_image = Image.open(image_path + bottom_section+'.png')
+      bottom_section_image = Image.open(image_path + bottom_section+'.png').convert('1', dither=True)
       image.paste(bottom_section_image, (0, bottom_section_offset))
-      print('Done')
+
+      if three_colour_support == True:
+        bottom_section_image_col = Image.open(image_path + bottom_section+'_col.png').convert('1', dither=True)
+        image_col.paste(bottom_section_image_col, (0, bottom_section_offset))
+
     except Exception as error:
       print(error)
       pass
 
+    """---------------------------------------------------------------------"""
+    if upside_down == True:
+      image = image.rotate(180, expand=True)
+      if three_colour_support == True:
+        image_col = image_col.rotate(180, expand=True)
+
     image.save(image_path + 'canvas.png')
+    if three_colour_support == True:
+      image_col.save(image_path+'canvas_col.png')
 
     """---------Refreshing E-Paper with newly created image-----------"""
     epaper = driver.EPD()
@@ -91,8 +132,7 @@ while True:
 
     if three_colour_support == True:
       print('Sending image data and refreshing display...', end='')
-      black_im, red_im = split_colours(image)
-      epaper.display(epaper.getbuffer(black_im), epaper.getbuffer(red_im))
+      epaper.display(epaper.getbuffer(image), epaper.getbuffer(image_col))
       print('Done')
     else:
       print('Sending image data and refreshing display...', end='')
