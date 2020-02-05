@@ -13,6 +13,14 @@ top_section = "inkycal_weather"       # "inkycal_weather"
 middle_section = "inkycal_calendar"   # "inkycal_agenda" #"inkycal_calendar"
 bottom_section = "inkycal_rss"        # "inkycal_rss"
 
+# The Url to obtain the image from
+# The following parameters will be substituted
+# - model
+# - width
+# - height
+# Sample https://inkycal.robertsirre.nl/panel/test/{model}/image?width={width}&height={height}
+webimage_url = "https://inkycal.robertsirre.nl/panel/test/{model}/image?width={width}&height={height}"
+
 """Adding multiple iCalendar URLs or RSS feed URLs"""
 # Single URL:
 # ical_urls/rss_feeds = ["url1"]
