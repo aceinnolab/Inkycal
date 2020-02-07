@@ -77,6 +77,8 @@ When you run the installer, you can add details in the last step. For new-users,
 
 You can also manually edit the settings file like this: `nano /home/$USER/Inky-Calendar/settings/settings.py`
 
+Once your details are added, run the software with: `python3 /home/$USER/Inky-Calendar/modules/inkycal.py`. If everything is working correctly, you'll see some lines being printed on the console (not red ones). Lastly, the E-Paper display will show a fresh image.
+
 If you encounter any issues, please leave a comment in the issues or via email. Thanks in advance.
 
 ## iCalendar
