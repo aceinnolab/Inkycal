@@ -120,8 +120,7 @@ if colours != 'bw':
   palette_im = Image.new('P', (3,1))
   palette_im.putpalette(pal * 64)
   quantized_im = im.quantize(palette=palette_im)
-  quantized_im.convert('RGB').save(output)
-  quantized_im.save('/home/pi/Desktop/quan.png')
+  quantized_im.convert('RGB')
 
   """Create buffer for coloured pixels"""
   buffer1 = numpy.array(quantized_im.convert('RGB'))
