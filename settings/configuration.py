@@ -16,6 +16,7 @@ from pytz import timezone
 import os
 from glob import glob
 import importlib
+import subprocess as subp
 
 """Set the image background colour and text colour"""
 background_colour = 'white'
@@ -279,3 +280,17 @@ def calibrate_display(no_of_cycles):
 
     print('-----------Calibration complete----------')
     epaper.sleep()
+
+def check_for_updates():
+  with open(path+'Info.txt','r') as file:
+    lines = file.readlines()
+    installed_release = 'v'+lines[2].rstrip().split(' ')[1]
+  temp = subp.check_output(['curl','-s','https://github.com/aceisace/Inky-Calendar/releases/latest'])
+  latest_release_url = str(temp).split('"')[1]
+  latest_release = latest_release_url.split('/tag/')[1]
+  if installed_release == latest_release:
+    print('You are using the latest version of the Inky-Calendar software:', end = ' ')
+    print(installed_release)
+  else:
+    print('New update available!. Please update to the latest version')
+    print('current release:', installed_release, 'new version:', latest_release)
