@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-v1.7.1
+v1.7.2
 
 Main file of Inky-Calendar software. Creates dynamic images for each section,
 assembles them and sends it to the E-Paper
@@ -74,11 +74,11 @@ while True:
     """----------------------top-section-image-----------------------------"""
     try:
       top_section_module.main()
-      top_section_image = Image.open(image_path + top_section+'.png').convert('1', dither=True)
+      top_section_image = Image.open(image_path + top_section+'.png')
       image.paste(top_section_image, (0, 0))
 
       if three_colour_support == True:
-        top_section_image_col = Image.open(image_path + top_section+'_col.png').convert('1', dither=True)
+        top_section_image_col = Image.open(image_path + top_section+'_col.png')
         image_col.paste(top_section_image_col, (0, 0))
 
     except Exception as error:
@@ -88,11 +88,11 @@ while True:
     """----------------------middle-section-image---------------------------"""
     try:
       middle_section_module.main()
-      middle_section_image = Image.open(image_path + middle_section+'.png').convert('1', dither=True)
+      middle_section_image = Image.open(image_path + middle_section+'.png')
       image.paste(middle_section_image, (0, middle_section_offset))
 
       if three_colour_support == True:
-        middle_section_image_col = Image.open(image_path + middle_section+'_col.png').convert('1', dither=True)
+        middle_section_image_col = Image.open(image_path + middle_section+'_col.png')
         image_col.paste(middle_section_image_col, (0, middle_section_offset))
 
     except Exception as error:
@@ -103,11 +103,11 @@ while True:
     """----------------------bottom-section-image---------------------------"""
     try:
       bottom_section_module.main()
-      bottom_section_image = Image.open(image_path + bottom_section+'.png').convert('1', dither=True)
+      bottom_section_image = Image.open(image_path + bottom_section+'.png')
       image.paste(bottom_section_image, (0, bottom_section_offset))
 
       if three_colour_support == True:
-        bottom_section_image_col = Image.open(image_path + bottom_section+'_col.png').convert('1', dither=True)
+        bottom_section_image_col = Image.open(image_path + bottom_section+'_col.png')
         image_col.paste(bottom_section_image_col, (0, bottom_section_offset))
 
     except Exception as error:
@@ -120,8 +120,11 @@ while True:
       if three_colour_support == True:
         image_col = image_col.rotate(180, expand=True)
 
+    image = optimise_colours(image)
     image.save(image_path + 'canvas.png')
+
     if three_colour_support == True:
+      image_col = optimise_colours(image_col)
       image_col.save(image_path+'canvas_col.png')
 
     """---------Refreshing E-Paper with newly created image-----------"""
@@ -136,7 +139,7 @@ while True:
       print('Done')
     else:
       print('Sending image data and refreshing display...', end='')
-      epaper.display(epaper.getbuffer(image.convert('1', dither=True)))
+      epaper.display(epaper.getbuffer(image))
       print('Done')
 
     print('Sending E-Paper to deep sleep...', end = '')
