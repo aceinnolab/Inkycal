@@ -2,82 +2,166 @@
 # -*- coding: utf-8 -*-
 """
 Experimental image module for Inky-Calendar software
-Displays an image on the E-Paper. Currently only supports black and white
+Displays an image on the E-Paper. Work in progress!
 Copyright by aceisace
 """
 from __future__ import print_function
-from PIL import Image
 from configuration import *
-import os
+from os import path
+from PIL import ImageOps
+import requests
+import numpy
 
-import inkycal_drivers as drivers
+"""----------------------------------------------------------------"""
+#path = 'https://github.com/aceisace/Inky-Calendar/raw/master/Gallery/Inky-Calendar-logo.png'
+path  ='/home/pi/Inky-Calendar/images/canvas.png'
+mode = 'auto'         # 'horizontal' # 'vertical' # 'auto'
+upside_down = True    # Flip image by 180 deg (upside-down)
+alignment = 'center'  # top_center, top_left, center_left, bottom_right etc.
+colours = 'bwr'       # bwr # bwy # bw
+render = True         # show image on E-Paper?
+"""----------------------------------------------------------------"""
 
-display = drivers.EPD()
+"""Try to open the image if it exists and is an image file"""
+try:
+  if 'http' in path:
+    im = Image.open(requests.get(path, stream=True).raw)
+  else:
+    im = Image.open(path)
+except FileNotFoundError:
+  print('Your file could not be found. Please check the path to your file.')
+  raise
+except OSError:
+  print('Please check if the path points to an image file.')
+  raise
 
-# Where is the image?
-path = '/home/pi//Desktop/test.JPG'
+"""Turn image upside-down if specified"""
+if upside_down == True:
+  im.rotate(180, expand = True)
 
-class inkycal_image:
+if mode == 'horizontal':
+  display_width, display_height == display_height, display_width
 
-  def __init__(self, path):
-    self.image = Image.open(path)
-    self.im_width = self.image.width
-    self.im_height = self.image.height
+if mode == 'vertical':
+  pass
 
-  def check_mode(self):
-    if self.image.mode != 'RGB' or 'L' or '1':
-      print('Image mode not supported, converting')
-      self.image = self.image.convert('RGB')
+if mode == 'auto':
+  if (im.width > im.height) and (display_width < display_height):
+    print('display vertical, image horizontal -> flipping image')
+    im = im.rotate(90, expand=True)
+  if (im.width < im.height) and (display_width > display_height):
+    print('display horizontal, image vertical -> flipping image')
+    im = im.rotate(90, expand=True)
 
-  def preview(self):
-    self.image.save(path+'temp.png')
-    os.system("gpicview "+path+'temp.png')
-    os.system('rm '+path+'temp.png')
-    
+def fit_width(image, width):
+  """Resize an image to desired width"""
+  print('resizing width from', image.width, 'to', end = ' ')
+  wpercent = (display_width/float(image.width))
+  hsize = int((float(image.height)*float(wpercent)))
+  img = image.resize((width, hsize), Image.ANTIALIAS)
+  print(img.width)
+  return img
 
-  def check_size(self, alignment = 'middle', padding_colour='white'):
-    if display_height < self.im_height or display_width < self.im_width:
-      print('Image too large for the display, cropping image')
-      if alignment == 'middle' or None:
-        x1 = int((self.im_width - display_width) / 2)
-        y1 = int((self.im_height - display_height) / 2)
-        x2,y2 = x1+display_width, y1+display_height
-        self.image = self.image.crop((x1,y1,x2,y2))
-        
-      if alignment != 'middle' or None:
-        print('Sorry, this feature has not been implemented yet')
-        raise NotImplementedError
+def fit_height(image, height):
+  """Resize an image to desired height"""
+  print('resizing height from', image.height, 'to', end = ' ')
+  hpercent = (height / float(image.height))
+  wsize = int(float(image.width) * float(hpercent))
+  img = image.resize((wsize, height), Image.ANTIALIAS)
+  print(img.height)
+  return img
 
-    elif display_height > self.im_height and display_width > self.im_width:
-      print('Image smaller than display, shifting image to center')
-      x = int( (display_width - self.im_width) /2)
-      y = int( (display_height - self.im_height) /2)
-      canvas = Image.new('RGB', (display_width, display_height), color=padding_colour)
-      canvas.paste(self.image, (x,y))
-      self.image = canvas
+if im.width > display_width:
+  im = fit_width(im, display_width)
+if im.height > display_height:
+  im = fit_height(im, display_height)
 
-    else:
-      print('Image file exact. no further action required')
+if alignment == 'center':
+  x,y = int((display_width-im.width)/2), int((display_height-im.height)/2)
+elif alignment == 'center_right':
+  x, y = display_width-im.width, int((display_height-im.height)/2)
+elif alignment == 'center_left':
+  x, y = 0, int((display_height-im.height)/2)
 
-  def auto_flip(self):
-    if self.im_height < self.im_width:
-      print('rotating image')
-      self.image = self.image.rotate(270, expand=True)
-      self.im_width = self.image.width
-      self.im_height = self.image.height
-      
-  
-  def to_mono(self):
-    self.image = self.image.convert('1', dither=True)
+elif alignment == 'top_center':
+  x, y = int((display_width-im.width)/2), 0
+elif alignment == 'top_right':
+  x, y = display_width-im.width, 0
+elif alignment == 'top_left':
+  x, y = 0, 0
 
-  def prepare_image(self, alignment='middle'):
-    self.check_mode()
-    self.auto_flip()
-    self.check_size(alignment = alignment)
-    self.to_mono()
+elif alignment == 'bottom_center':
+  x, y = int((display_width-im.width)/2), display_height-im.height
+elif alignment == 'bottom_right':
+  x, y = display_width-im.width, display_height-im.height
+elif alignment == 'bottom_left':
+  x, y = display_width-im.width, display_height-im.height
 
-    return self.image
+if len(im.getbands()) == 4:
+  print('removing transparency')
+  bg = Image.new('RGBA', (im.width, im.height), 'white')
+  im = Image.alpha_composite(bg, im)
 
-#single line command:
-display.show_image(inkycal_image(path).prepare_image(), reduce_colours=False)
-        
+image.paste(im, (x,y))
+im = image
+
+if colours == 'bw':
+  """For black-white images, use monochrome dithering"""
+  black = im.convert('1', dither=True)
+elif colours == 'bwr':
+  """For black-white-red images, create corresponding palette"""
+  pal = [255,255,255, 0,0,0, 255,0,0, 255,255,255]
+elif colours == 'bwy':
+  """For black-white-yellow images, create corresponding palette"""
+  pal = [255,255,255, 0,0,0, 255,255,0, 255,255,255]
+
+
+"""Map each pixel of the opened image to the Palette"""
+if colours != 'bw':
+  palette_im = Image.new('P', (3,1))
+  palette_im.putpalette(pal * 64)
+  quantized_im = im.quantize(palette=palette_im)
+  quantized_im.convert('RGB')
+
+  """Create buffer for coloured pixels"""
+  buffer1 = numpy.array(quantized_im.convert('RGB'))
+  r1,g1,b1 = buffer1[:, :, 0], buffer1[:, :, 1], buffer1[:, :, 2]
+
+  """Create buffer for black pixels"""
+  buffer2 = numpy.array(quantized_im.convert('RGB'))
+  r2,g2,b2 = buffer2[:, :, 0], buffer2[:, :, 1], buffer2[:, :, 2]
+
+  if colours == 'bwr':
+    """Create image for only red pixels"""
+    buffer2[numpy.logical_and(r2 ==  0, b2 == 0)] = [255,255,255] # black->white
+    buffer2[numpy.logical_and(r2 ==  255, b2 == 0)] = [0,0,0] #red->black
+    colour = Image.fromarray(buffer2)
+    """Create image for only black pixels"""
+    buffer1[numpy.logical_and(r1 ==  255, b1 == 0)] = [255,255,255]
+    black = Image.fromarray(buffer1)
+
+  if colours == 'bwy':
+    """Create image for only yellow pixels"""
+    buffer2[numpy.logical_and(r2 ==  0, b2 == 0)] = [255,255,255] # black->white
+    buffer2[numpy.logical_and(g2 == 255, b2 == 0)] = [0,0,0] #yellow -> black
+    colour = Image.fromarray(buffer2)
+    """Create image for only black pixels"""
+    buffer1[numpy.logical_and(g1 == 255, b1 == 0)] = [255,255,255]
+    black = Image.fromarray(buffer1)
+
+if render == True:
+  epaper = driver.EPD()
+  print('Initialising E-Paper...', end = '')
+  epaper.init()
+  print('Done')
+
+  print('Sending image data and refreshing display...', end='')
+  if three_colour_support == True:
+    epaper.display(epaper.getbuffer(black), epaper.getbuffer(colour))
+  else:
+    epaper.display(epaper.getbuffer(black))
+  print('Done')
+
+  print('Sending E-Paper to deep sleep...', end = '')
+  epaper.sleep()
+print('Done')
