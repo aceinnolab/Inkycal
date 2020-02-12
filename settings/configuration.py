@@ -35,17 +35,14 @@ else:
 top_section_width = middle_section_width = bottom_section_width = display_width
 
 if top_section and bottom_section:
-  print('top and bottom section occupied')
   top_section_height = int(display_height*0.11)
   bottom_section_height = int(display_height*0.24)
 
 elif top_section and not bottom_section:
-  print('top section occupied')
   top_section_height = int(display_height*0.11)
   bottom_section_height = 0
 
 elif bottom_section and not top_section:
-  print('bottom_section occupied')
   top_section_height = 0
   bottom_section_height = int(display_height*0.24)
 
@@ -150,7 +147,7 @@ def clear_image(section, colour = background_colour):
 
   if three_colour_support == True:
     image_col.paste(box, position)
-    
+
 
 def crop_image(input_image, section):
   """Crop an input image to the desired section"""
@@ -180,8 +177,8 @@ def draw_square(tuple, radius, width, height, colour=text_colour, line_width=1):
   """Draws a square with round corners at position (x,y) from tuple"""
   x, y, diameter = tuple[0], tuple[1],  radius*2
   line_length = width - diameter
-  
-  p1, p2 = (x+radius, y), (x+radius+line_length, y)  
+
+  p1, p2 = (x+radius, y), (x+radius+line_length, y)
   p3, p4 = (x+width, y+radius), (x+width, y+radius+line_length)
   p5, p6 = (p2[0], y+height), (p1[0], y+height)
   p7, p8  = (x, p4[1]), (x,p3[1])
@@ -208,7 +205,7 @@ def draw_square(tuple, radius, width, height, colour=text_colour, line_width=1):
     draw.arc(  (c3, c4) , 270, 360, fill=colour, width=line_width)
     draw.arc(  (c5, c6) , 0, 90, fill=colour, width=line_width)
     draw.arc(  (c7, c8) , 90, 180, fill=colour, width=line_width)
-    
+
 
 def internet_available():
   """check if the internet is available"""
@@ -245,6 +242,13 @@ def image_cleanup():
       os.remove(temp_files)
   print('Done')
 
+def optimise_colours(image, threshold=220):
+  buffer = numpy.array(image.convert('RGB'))
+  red, green = buffer[:, :, 0], buffer[:, :, 1]
+  buffer[numpy.logical_and(red <= threshold, green <= threshold)] = [0,0,0] #grey->black
+  image = Image.fromarray(buffer)
+  return image
+
 def calibrate_display(no_of_cycles):
   """How many times should each colour be calibrated? Default is 3"""
   epaper = driver.EPD()
@@ -272,6 +276,6 @@ def calibrate_display(no_of_cycles):
       print('white...')
       epaper.display(epaper.getbuffer(white)),
       print('Cycle {0} of {1} complete'.format(_+1, no_of_cycles))
-        
+
     print('-----------Calibration complete----------')
     epaper.sleep()
