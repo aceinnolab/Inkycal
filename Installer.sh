@@ -92,11 +92,11 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then # This happens when installing o
     ln -s /home/"$USER"/Inky-Calendar/settings/configuration.py /home/"$USER"/Inky-Calendar/modules/
 
     # add a short info
+    currentRelease=$(cat release.txt)
     cat > /home/pi/Inky-Calendar/Info.txt << EOF
 This document contains a short info of the Inky-Calendar software version
 
-Version: 1.7.2
-Installer version: 1.7.2 (Mid Feb 2020)
+Version: $currentRelease
 settings file: /home/$USER/Inky-Calendar/settings/settings.py
 If the time was set correctly, you installed this software on:
 $(date)
