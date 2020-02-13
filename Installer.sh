@@ -90,17 +90,6 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then # This happens when installing o
     # Create symlinks of settings and configuration file
     ln -s /home/"$USER"/Inky-Calendar/settings/settings.py /home/"$USER"/Inky-Calendar/modules/
     ln -s /home/"$USER"/Inky-Calendar/settings/configuration.py /home/"$USER"/Inky-Calendar/modules/
-
-    # add a short info
-    currentRelease=$(cat release.txt)
-    cat > /home/pi/Inky-Calendar/Info.txt << EOF
-This document contains a short info of the Inky-Calendar software version
-
-Version: $currentRelease
-settings file: /home/$USER/Inky-Calendar/settings/settings.py
-If the time was set correctly, you installed this software on:
-$(date)
-EOF
     echo ""
 
     echo -e "\e[97mDo you want the software to start automatically at boot?"
