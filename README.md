@@ -10,7 +10,7 @@
   [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/SaadNaseer)
 </p>
 
-A python 3 software for 7.5" E-Paper displays from waveshare/gooddisplay to display events from iCalendars, weather from openweathermap and RSS feeds. 
+A python3 software for displaying events (from iCalendars), weather (from openweathermap) and RSS feeds on selected E-Paper displays (4.2", 5.83", 7.5"(v1), 7.5"(v2)) from Waveshare/GoodDisplay.
 
 ## Main features
 * Monthly Calendar that shows events from your Google (or other) iCalendar/s
@@ -25,7 +25,7 @@ A python 3 software for 7.5" E-Paper displays from waveshare/gooddisplay to disp
 * **Added a user-friendly Web-UI for adding details to the programm** (Credit to TobyChui for the template)
 
 ## Development status
-This software is in (highly) active development. To see the current development status, [[Click here]](https://github.com/aceisace/Inky-Calendar/projects/2).
+This software is in active development. To see the current development status, [[Click here]](https://github.com/aceisace/Inky-Calendar/projects/2).
 
 ## Preview
 <p align="center">
