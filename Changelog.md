@@ -4,11 +4,30 @@ The order is from latest to oldest and structured in the following way:
 * Version name with date of publishing
 * Sections with either 'added', 'fixed', 'updated' and 'changed'
 
-## [1.7] Mid December 2019 (date not confirmed yet)
+## [1.7.1] Mid January 2020
+
+### Added
+* Added support for 4.2", 5.83", 7.5" (v2) E-Paper display
+* Added driver files for above mentioned E-Paper displays
+
+### Changed
+* Slight changes in naming of generated images
+* Slight changes in importing module names (now using dynamic imports)
+* Changed driver files for all E-Papers with the latest ones from waveshare (v4)
+* Slightly changed the way modules are executed
+
+### Removed
+* Removed option for selecting colour from settings file
+
+### Fixed
+* Fixed a problem where the calibration function would only update half the display on the 7.5" black-white E-Paper
+* Implemented a possible bugfix for 'begin must be before end' error.
+
+## [1.7] Mid December 2019
 
 ### Added
 * Added support for sections (top-,middle-,and bottom section)
-* Added support for weather forecasts. 
+* Added support for weather forecasts.
 * Added support for moon phase
 * Added support for events in Calendar module
 * Added support for coloured negative temperature
@@ -16,31 +35,37 @@ The order is from latest to oldest and structured in the following way:
 * Added support for wind direction in weather module
 * Added support for decimal places in weather module
 * Added extra customisation options (see configuration file)
+* Added support for recurring events
+* Added forecasts in weather module
+* Added info about moon phase in weather module
+* Added info about sunrise and sunset time in weather module
+* Added support for colour-changing temperature (for coloured E-Paper displays, the temperature will red if it drops below 0°Celcius)
+* Added support for decimal places in weather section (wind speed, temperature)
+* Added beaufort scale to show windspeed
+* Added option to show wind direction with an arrow
+* Added new event and today icon in Calendar module
+* Added sections showing upcoming events within Calendar module
+* Added configuration file for additional configuration options
+* Added new fonts with better readability
+* Added support to manually change fontsize in each module
+* Added more design customisation (text colour, background colours etc.)
 
 ### Changed
-* Refactoring of software. Split software into several smaller modules
-* Re-arranged weather section layout
-* Icons (today, events) are generated on demand
-* Merged calibration files into inkycal_drivers
-* Changed layout of Agenda module
-* Changed icons for marking today on Calendar module
-* Added more options in function 'write_text'
-* Text does not have any background colour anymore (transparent)
-* Optimised calibration function for faster calibration, especially for coloured E-Papers
-* Changed settings file
+* Changed folder structure (Full software refactoring)
+* Split main file into smaller modules, each with a specific task
+* Changed layout of E-Paper (top_section, middle_section, bottom_section)
+* Changed settings file, installer and web-UI
+* Black and white E-Papers now use dithering option to map pixels to either black and white
 
 ### Removed
-* Removed last-updated feature
-* Removed all icons stored as images
-* Removed calibration file (calibration.py)
-
+* Removed non-readable fonts
+* Removed all icons in form of image files. The new icons are generated with PIL on the spot
+* Removed option to reduce colours for black and white E-Papers
 
 ### Fixed
-* Fixed a few bugs related to the ics library
-* Fine-tuned image pre-processing (mapping pixels to specific colours)
-* Fixed a problem where RSS feeds would not display more than one post
-* Fixed a problem where certain weather icons would not be shown
-
+* Fixed problem with RSS feeds not displaying more than one feed
+* Fixed image rendering
+* Fixed problems when setting the weekstart to Sunday
 
 ## [1.6] Mid May 2019
 
