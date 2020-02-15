@@ -14,7 +14,9 @@ import numpy
 
 """----------------------------------------------------------------"""
 #path = 'https://github.com/aceisace/Inky-Calendar/raw/master/Gallery/Inky-Calendar-logo.png'
-path  ='/home/pi/Inky-Calendar/images/canvas.png'
+#path  ='/home/pi/Inky-Calendar/images/canvas.png'
+path      = inkycal_image_path
+path_body = inkycal_image_path_body
 mode = 'auto'         # 'horizontal' # 'vertical' # 'auto'
 upside_down = True    # Flip image by 180 deg (upside-down)
 alignment = 'center'  # top_center, top_left, center_left, bottom_right etc.
@@ -22,10 +24,26 @@ colours = 'bwr'       # bwr # bwy # bw
 render = True         # show image on E-Paper?
 """----------------------------------------------------------------"""
 
+# First determine dimensions
+if mode == 'horizontal':
+  display_width, display_height == display_height, display_width
+
+if mode == 'vertical':
+  pass
+
+# .. Then substitute possibly parameterized path
+# TODO Get (assigned) panel dimensions instead of display dimensions
+path = path.replace('{model}', model).replace('{width}',str(display_width)).replace('{height}',str(display_height))
+
 """Try to open the image if it exists and is an image file"""
 try:
   if 'http' in path:
-    im = Image.open(requests.get(path, stream=True).raw)
+    if path_body is None:
+      # Plain GET
+      im = Image.open(requests.get(path, stream=True).raw)
+    else:
+      # POST request, passing path_body in the body
+      im = Image.open(requests.post(path, json=path_body, stream=True).raw)
   else:
     im = Image.open(path)
 except FileNotFoundError:
@@ -38,12 +56,6 @@ except OSError:
 """Turn image upside-down if specified"""
 if upside_down == True:
   im.rotate(180, expand = True)
-
-if mode == 'horizontal':
-  display_width, display_height == display_height, display_width
-
-if mode == 'vertical':
-  pass
 
 if mode == 'auto':
   if (im.width > im.height) and (display_width < display_height):
