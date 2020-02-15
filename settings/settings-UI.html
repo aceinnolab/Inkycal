@@ -78,7 +78,6 @@ body{
         <input id="api_key" type="text" placeholder="">
       </div>
 
-
       <div class="field">
         <label>Location (for weather data)</label>
         <details class="ts accordion">
@@ -273,7 +272,7 @@ body{
 
       <div class="field">
         <label>What should be displayed in the middle (main) section?</label>
-        <div class="ts checkboxes">
+        <div class="ts checkboxes" id="cb_middle_section">
           <div class="ts radio checkbox">
             <input id="Calendar" type="radio" name="ms" checked>
             <label for="Calendar">A monthly Calendar</label>
@@ -283,10 +282,51 @@ body{
             <label for="Agenda">Agenda of upcoming events</label>
           </div>
           <div class="ts radio checkbox">
+            <input id="Image" type="radio" name="ms">
+            <label for="Image">An image</label>
+          </div>
+          <div class="ts radio checkbox">
             <input id="middle_blank" type="radio" name="ms">
             <label for="middle_blank">Nothing</label>
           </div>
         </div>
+        
+      </div>
+      <div class="field" id="Image_Config" style="display:none;">
+          <div class="field">
+            <label>What is the URl or path of the image?</label>
+            <details class="ts accordion">
+              <summary>
+                <i class="dropdown icon"></i> Info
+              </summary>
+              <div class="content">
+                The following parameters will be substituted:
+                <ul>
+                  <li><code>{model}</code> - substituted by the E-Paper model name.</li>
+                  <li><code>{width}</code> - substituted by the panel width.</li>
+                  <li><code>{height}</code> - substituted by the panel width.</li>
+                </ul>
+              </div>
+            </details>
+            <input id="image_path" type="text" placeholder="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/Inky-Calendar-logo.png?raw=true"/>
+          </div>
+
+          <div class="field">
+            <label>Do you want to send extra data while obtaining the image?</label>
+            <details class="ts accordion">
+              <summary>
+                <i class="dropdown icon"></i> Info
+              </summary>
+              <div class="content">
+                <p>Optional data. When specified, this data is sent as Json to the image url using POST.
+                  <br/>This is useful for some dynamically generated images.
+                </p>
+              </div>
+            </details>
+            <textarea  id="image_path_body" type="text" rows="4" placeholder='[
+  "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"
+]'></textarea>
+          </div>
       </div>
 
       <div class="field">
@@ -333,8 +373,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <br>
   
   <script>
-  var template = 'ical_urls = [{ical_urls}]\nrss_feeds = [{rss_urls}]\nupdate_interval = "{update_interval}"\napi_key = "{api_key}"\nlocation = "{location}"\nweek_starts_on = "{week_starts_on}"\ncalibration_hours = [{calibration_hours}]\nmodel = "{model}"\nlanguage = "{language}"\nunits = "{units}"\nhours = "{hours}"\ntop_section = "{top_section}"\nmiddle_section = "{middle_section}"\nbottom_section = "{bottom_section}"';
+  var template = `ical_urls = [{ical_urls}]
+rss_feeds = [{rss_urls}]
+update_interval = "{update_interval}"
+api_key = "{api_key}"
+location = "{location}"
+week_starts_on = "{week_starts_on}"
+calibration_hours = [{calibration_hours}]
+model = "{model}"
+language = "{language}"
+units = "{units}"
+hours = "{hours}"
+top_section = "{top_section}"
+middle_section = "{middle_section}"
+bottom_section = "{bottom_section}"
+inkycal_image_path = "{image_path}"
+inkycal_image_path_body = "{image_path_body}"`;
   
+  $('#cb_middle_section').change(function(){
+    if($('#Image').prop("checked")) {
+      $('#Image_Config').show();
+    } else {
+      $('#Image_Config').hide();
+    }
+  });
+
   function generate(){
     var ical_urls = $("#ical_urls").val().trim();
     if (ical_urls == ""){
@@ -475,6 +538,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if ($('#Agenda').is(':checked')){
       middle_section = "inkycal_agenda";
     }
+    if ($('#Image').is(':checked')){
+      middle_section = "inkycal_image";
+    }
     if ($('#middle_blank').is(':checked')){
       middle_section = "";
     }
@@ -484,9 +550,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       bottom_section = "";
     }
 
+    var image_path = $("#image_path").val().trim();
+    if (image_path == ""){
+      image_path = $("#image_path").attr("placeholder");
+    }
+
+    var image_path_body = $("#image_path").val().trim();
 
     //console.log(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section);
-    createPythonSetting(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section);
+    createPythonSetting(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section, image_path, image_path_body);
   }
   
   function rk(content,key,value){
@@ -494,7 +566,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return content.split("{" + key + "}").join(value);
   }
   
-  function createPythonSetting(a,b,c,d,e,f,g,h,i,j,k,l,m,n){
+  function createPythonSetting(a,b,c,d,e,f,g,h,i,j,k,l,m,n, image_path, image_path_body){
     var box = template;
     box = rk(box,"ical_urls",a);
     box = rk(box,"rss_urls",b);
@@ -510,7 +582,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     box = rk(box,"top_section",l);
     box = rk(box,"middle_section",m);
     box = rk(box,"bottom_section",n);
-
+    box = rk(box,"image_path",image_path);
+    box = rk(box,"image_path_body",image_path_body);
 
     var config = new Blob([box], {type : "text/plain"});
     var link = document.createElement('link');
