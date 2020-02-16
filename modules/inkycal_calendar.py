@@ -170,7 +170,7 @@ def generate_image():
           at_in_your_language, event.begin.format('HH:mm' if hours == '24' else
           'hh:mm a'), event.name))
 
-          if event.begin.day == now.replace(days=1).day:
+          elif event.begin.day == now.replace(days=1).day:
             if event.all_day:
               event_list.append('{}: {}'.format(tomorrow_in_your_language, event.name))
             else:
@@ -178,7 +178,7 @@ def generate_image():
           at_in_your_language, event.begin.format('HH:mm' if hours == '24' else
           'hh:mm a'), event.name))
 
-          if event.end > after_two_days:
+          elif event.begin > after_two_days:
             if event.all_day:
               event_list.append('{}: {}'.format(event.begin.format('D MMM'), event.name))
             else:
