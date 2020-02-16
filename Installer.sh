@@ -1,6 +1,6 @@
 #!/bin/bash
 # E-Paper-Calendar software installer for Raspberry Pi running Debian 10 (a.k.a. Buster) with Desktop
-# Version: 1.7 (Early Dec 2019)
+# Version: 1.7.2 (Mid Feb 2020)
 
 echo -e "\e[1mPlease select an option from below:"
 echo -e "\e[97mEnter \e[91m[1]\e[97m to update Inky-Calendar software"        #Option 1 : UPDATE
@@ -90,17 +90,6 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then # This happens when installing o
     # Create symlinks of settings and configuration file
     ln -s /home/"$USER"/Inky-Calendar/settings/settings.py /home/"$USER"/Inky-Calendar/modules/
     ln -s /home/"$USER"/Inky-Calendar/settings/configuration.py /home/"$USER"/Inky-Calendar/modules/
-
-    # add a short info
-    cat > /home/pi/Inky-Calendar/Info.txt << EOF
-This document contains a short info of the Inky-Calendar software version
-
-Version: 1.7
-Installer version: 1.7 (Mid December 2019)
-settings file: /home/$USER/Inky-Calendar/settings/settings.py
-If the time was set correctly, you installed this software on:
-$(date)
-EOF
     echo ""
 
     echo -e "\e[97mDo you want the software to start automatically at boot?"

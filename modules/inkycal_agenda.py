@@ -18,7 +18,7 @@ border_top = int(middle_section_height * 0.02)
 border_left = int(middle_section_width * 0.02)
 
 """Choose font optimised for the agenda section"""
-font = ImageFont.truetype(NotoSans+'Medium.ttf', agenda_font_size)
+font = ImageFont.truetype(NotoSans+'Medium.ttf', agenda_fontsize)
 line_height = int(font.getsize('hg')[1] * 1.2) + 1
 line_width = int(middle_section_width - (border_left*2))
 
@@ -33,10 +33,7 @@ event_col_start = time_col_start + time_col_width
 
 """Find max number of lines that can fit in the middle section and allocate
 a position for each line"""
-if bottom_section:
-  max_lines = int((middle_section_height - border_top*2) // line_height)
-else:
-  max_lines = int(middle_section_height+bottom_section_height -
+max_lines = int(middle_section_height+bottom_section_height -
                   (border_top * 2))// line_height
 
 line_pos = [(border_left, int(top_section_height + border_top + line * line_height))
@@ -104,8 +101,14 @@ def generate_image():
                 agenda_events[events]['date_str'], line_pos[events], font = font)
 
             previous_date = agenda_events[events]['date']
-            draw.line((date_col_start, line_pos[events][1],
-              line_width,line_pos[events][1]), fill = 'red' if three_colour_support == True else 'black')
+            
+            if three_colour_support == True:
+              draw_col.line((date_col_start, line_pos[events][1],
+              line_width,line_pos[events][1]), fill = 'black')
+            else:
+              draw.line((date_col_start, line_pos[events][1],
+              line_width,line_pos[events][1]), fill = 'black')
+              
 
           elif agenda_events[events]['type'] == 'timed_event':
             write_text(time_col_width, line_height, agenda_events[events]['time'],
@@ -123,12 +126,13 @@ def generate_image():
               (event_col_start, line_pos[events][1]), alignment = 'left', font = font)
 
       """Crop the image to show only the middle section"""
-      if bottom_section:
-        agenda_image = crop_image(image, 'middle_section')
-      else:
-        agenda_image = image.crop((0,middle_section_offset,display_width, display_height))
-
+      agenda_image = image.crop((0,middle_section_offset,display_width, display_height))
       agenda_image.save(image_path+'inkycal_agenda.png')
+
+      if three_colour_support == True:
+        agenda_image_col = image_col.crop((0,middle_section_offset,display_width, display_height))
+        agenda_image_col.save(image_path+'inkycal_agenda_col.png')
+
       print('Done')
 
     except Exception as e:
@@ -136,7 +140,15 @@ def generate_image():
       print('Failed!')
       print('Error in Agenda module!')
       print('Reason: ',e)
+      
+      clear_image('middle_section')
+      write_text(middle_section_width, middle_section_height, str(e),
+                 (0, middle_section_offset), font = font)
+      calendar_image = crop_image(image, 'middle_section')
+      calendar_image.save(image_path+'inkycal_agenda.png')
       pass
+
+
 
 def main():
   generate_image()

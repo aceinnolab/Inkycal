@@ -23,6 +23,38 @@ bottom_section = "inkycal_rss"        # "inkycal_rss"
 # URLs should have this sign (") on both side -> "url1"
 # If more than one URL is used, separate each one with a comma -> "url1", "url2"
 
+########################
+# inkycal_image config:
+#
+# inkycal_image_path
+# The url or file path to obtain the image from.
+# The following parameters within accolades ({}) will be substituted:
+# - model
+# - width
+# - height
+#
+# Samples :
+# The inkycal logo:
+# inkycal_image_path = 'https://github.com/aceisace/Inky-Calendar/raw/master/Gallery/Inky-Calendar-logo.png'
+#
+# A dynamic image with a demo-calendar
+# inkycal_image_path = 'https://inkycal.robertsirre.nl/panel/test/{model}/image?width={width}&height={height}'
+#
+# Dynamic image with configurable calendars (see https://inkycal.robertsirre.nl/ and parameter inkycal_image_path_body)
+# inkycal_image_path = 'https://inkycal.robertsirre.nl/panel/calendar/{model}?width={width}&height={height}'
+
+inkycal_image_path  ='/home/pi/Inky-Calendar/images/canvas.png'
+
+# Optional: inkycal_image_path_body
+# Allows obtaining complexer configure images.
+# When inkycal_image_path starts with `http` and inkycal_image_path_body is specified, the image is obtained using POST instead of GET.
+# NOTE: structure of the body depends on the web-based image service
+# inkycal_image_path_body = [
+#   'https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics',
+#   'https://www.calendarlabs.com/ical-calendar/ics/101/Netherlands_Holidays.ics'
+# ]
+########################
+
 """Supported E-Paper models"""
 # epd_7_in_5_v2_colour # 7.5" high-res black-white-red/yellow
 # epd_7_in_5_v2        # 7.5" high-res black-white
