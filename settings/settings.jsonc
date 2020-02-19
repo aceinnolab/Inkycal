@@ -5,6 +5,7 @@
     "model"             : "epd_7_in_5_v2_colour", // For supported E-paper models, see below
     "update_interval"   : 60,                     // 10, 15, 20, 30, 60
     "calibration_hours" : [0,12,18],              // Do not change unlesss you know what you are doing
+    "display_orientation" : "normal",             // "normal", "upside_down"
 
     //For now three panels can be defined for three unique locations: 'top', 'middle' and 'bottom'
     "panels" : [
