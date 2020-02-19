@@ -19,7 +19,7 @@ body{
   <div class="ts container">
   <div class="ts segment">
     <div class="ts header">
-      Setting Generator
+      Setting Generator, v.1.1
       <div class="sub header"><a href="https://github.com/aceisace/Inky-Calendar">For Inky-Calendar Project of Ace-Innovation Laboratory (by aceisace)</a><br>
       <img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/Inky-Calendar-logo.png?raw=true" width="800" alt="Inky-Calendar-logo">
       <div>
@@ -343,6 +343,20 @@ body{
         </div>
       </div>
 
+      <div class="field">
+        <label>Display orientation</label>
+        <div class="ts checkboxes">
+          <div class="ts radio checkbox">
+            <input id="DisplayNotRotated" type="radio" name="bbs" checked>
+            <label for="DisplayNotRotated">Normal</label>
+          </div>
+          <div class="ts radio checkbox">
+            <input id="DisplayRotated" type="radio" name="bbs" >
+            <label for="DisplayRotated">Upside-down</label>
+          </div>
+        </div>
+      </div>
+
       <div class="content">
       <p>Instructions<br>
 Insert your personal details and preferences and click on 'Generate'. Copy the downloaded file to the Raspberry Pi and place it in: '/home/pi/Inky-Calendar/settings/' (inside the settings folder within the Inky-Calendar folder. Lastly, reboot the Raspberry Pi to apply the changes. You can also manually run the software with:
@@ -388,6 +402,7 @@ hours = "{hours}"
 top_section = "{top_section}"
 middle_section = "{middle_section}"
 bottom_section = "{bottom_section}"
+display_orientation = "{display_orientation}"
 inkycal_image_path = "{image_path}"
 inkycal_image_path_body = "{image_path_body}"`;
   
@@ -549,6 +564,11 @@ inkycal_image_path_body = "{image_path_body}"`;
     var bottom_section = "inkycal_rss";
     if ($('#bottom_blank').is(':checked')){
       bottom_section = "";
+    } 
+
+    var display_orientation = "normal";
+    if ($('#DisplayRotated').is(':checked')){
+      display_orientation = "upside_down";
     }
 
     var image_path = $("#image_path").val().trim();
@@ -560,9 +580,9 @@ inkycal_image_path_body = "{image_path_body}"`;
 
     //console.log(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section);
     if(json)
-      downloadSettingsAsJson(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section, image_path, image_path_body)
+      downloadSettingsAsJson(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section, display_orientation, image_path, image_path_body)
     else
-      createPythonSetting(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section, image_path, image_path_body);
+      createPythonSetting(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section, display_orientation, image_path, image_path_body);
   }
   
   function rk(content,key,value){
@@ -570,7 +590,7 @@ inkycal_image_path_body = "{image_path_body}"`;
     return content.split("{" + key + "}").join(value);
   }
   
-  function createPythonSetting(a,b,c,d,e,f,g,h,i,j,k,l,m,n, image_path, image_path_body){
+  function createPythonSetting(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o, image_path, image_path_body){
     var box = template;
     box = rk(box,"ical_urls",a);
     box = rk(box,"rss_urls",b);
@@ -586,6 +606,7 @@ inkycal_image_path_body = "{image_path_body}"`;
     box = rk(box,"top_section",l);
     box = rk(box,"middle_section",m);
     box = rk(box,"bottom_section",n);
+    box = rk(box,"display_orientation",o);
     box = rk(box,"image_path",image_path);
     box = rk(box,"image_path_body",image_path_body);
 
@@ -620,6 +641,7 @@ inkycal_image_path_body = "{image_path_body}"`;
     top_section,
     middle_section,
     bottom_section,
+    display_orientation,
     image_path,
     image_path_body
   ) {
@@ -630,6 +652,7 @@ inkycal_image_path_body = "{image_path_body}"`;
       "model"             : model,
       "update_interval"   : Number(update_interval),       // 10, 15, 20, 30, 60
       "calibration_hours" : calibration_hours.split(",").map(function(x){ return Number(x);}),              // Do not change unless you know what you are doing
+      "display_orientation" : display_orientation,
       "panels" : []
     };
 
