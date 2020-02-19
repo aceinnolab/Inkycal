@@ -17,7 +17,11 @@ import gc
 """Perepare for execution of main programm"""
 calibration_countdown = 'initial'
 skip_calibration = False
-upside_down = False
+
+if display_orientation == "normal":
+      upside_down = False
+else:
+      upside_down = True      
 
 image_cleanup()
 
