@@ -43,12 +43,10 @@ def generate_image():
   if middle_section == 'inkycal_agenda' and internet_available() == True:
     try:
       clear_image('middle_section')
-      if not bottom_section:
-        clear_image('bottom_section')
 
       print('Agenda module: Generating image...', end = '')
       now = arrow.now(get_tz())
-      today_start = arrow.get(now.year, now.month, now.day)
+      today_start = now.floor('day')
 
       """Create a list of dictionaries containing dates of the next days"""
       agenda_events = [{'date':today_start.replace(days=+_),
@@ -56,33 +54,31 @@ def generate_image():
         'type':'date'} for _ in range(max_lines)]
 
       """Copy the list from the icalendar module with some conditions"""
-      upcoming_events = fetch_events()
-      filtered_events = [events for events in upcoming_events if
-                         events.end > now]
+      in_60_days = now.replace(days=60).floor('day')
+      upcoming_events = fetch_events(now, in_60_days)
 
       """Set print_events_to True to print all events in this month"""
-      if print_events == True and filtered_events:
-        auto_line_width = max(len(_.name) for _ in filtered_events)
-        for events in filtered_events:
+      if print_events == True and upcoming_events:
+        auto_line_width = max(len(_.name) for _ in upcoming_events)
+        for events in upcoming_events:
           print('{0} {1} | {2} | {3} | All day ='.format(events.name,
             ' '* (auto_line_width - len(events.name)), events.begin.format(style),
             events.end.format(style)), events.all_day)
 
       """Convert the event-timings from utc to the specified locale's time
       and create a ready-to-display list for the agenda view"""
-      for events in filtered_events:
+      for events in upcoming_events:
         if not events.all_day:
           agenda_events.append({'date': events.begin, 'time': events.begin.format(
             'HH:mm' if hours == '24' else 'hh:mm a'), 'name':str(events.name),
             'type':'timed_event'})
-        else:
-          if events.duration.days == 1:
+        elif events.duration.days == 1:
             agenda_events.append({'date': events.begin,'time': all_day_str,
                                   'name': events.name,'type':'full_day_event'})
-          else:
-            for day in range(events.duration.days):
-              agenda_events.append({'date': events.begin.replace(days=+day),
-                'time': all_day_str,'name':events.name, 'type':'full_day_event'})
+        elif events.duration.days > 1:
+          for day in range(events.duration.days):
+            agenda_events.append({'date': events.begin.replace(days=+day),
+              'time': all_day_str,'name':events.name, 'type':'full_day_event'})
 
       """Sort events and dates in chronological order"""
       agenda_events = sorted(agenda_events, key = lambda event: event['date'])
