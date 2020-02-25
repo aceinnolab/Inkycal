@@ -10,9 +10,7 @@ from configuration import *
 
 print_events = False
 show_events = True
-today_in_your_language = 'today'
-tomorrow_in_your_language = 'tomorrow'
-at_in_your_language = 'at'
+
 event_icon = 'square' # dot #square
 style = "DD MMM"
 
@@ -63,6 +61,28 @@ max_event_lines = (events_height - border_top) // (font.getsize('hg')[1]
 
 event_lines = [(border_left,(bottom_section_offset - events_height)+
   int(events_height/max_event_lines*_)) for _ in range(max_event_lines)]
+
+if language == 'ko': language = 'en'
+
+translations = {'en': {'at': 'at', 'today': 'today', 'tomorrow': 'tomorrow'},
+  'de': {'at': 'um', 'today': 'heute', 'tomorrow': 'Morgen'},
+  'ru': {'at': 'в', 'today': 'сегодня', 'tomorrow': 'завтра'},
+  'it': {'at': 'a', 'today': 'oggi', 'tomorrow': 'Domani'},
+  'es': {'at': 'a', 'today': 'hoy', 'tomorrow': 'mañana'},
+  'fr': {'at': 'à', 'today': "aujourd'hui", 'tomorrow': 'demain'},
+  'el': {'at': 'σε', 'today': 'σήμερα', 'tomorrow': 'αύριο'},
+  'sv': {'at': 'vid', 'today': 'i dag', 'tomorrow': 'i morgon'},
+  'nl': {'at': 'bij', 'today': 'vandaag', 'tomorrow': 'morgen'},
+  'pl': {'at': 'w', 'today': 'dzisiaj', 'tomorrow': 'jutro'},
+  'ua': {'at': 'в', 'today': 'сьогодні', 'tomorrow': 'завтра'},
+  'nb': {'at': '1', 'today': 'i dag', 'tomorrow': 'i morgen'},
+  'vi': {'at': 'ở', 'today': 'hôm nay', 'tomorrow': 'Ngày mai'},
+  'zh_tw': {'at': '在1', 'today': '今天', 'tomorrow': '明天'},
+  'zh-cn': {'at': '在1', 'today': '今天', 'tomorrow': '明天'},
+  'ja': {'at': '1時', 'today': '今日', 'tomorrow': '明日'}}
+
+translate = translations[language]
+
 
 def generate_image():
   if middle_section == "inkycal_calendar" and internet_available() == True:
@@ -118,24 +138,18 @@ def generate_image():
       else:
         image.paste(icon, current_day_pos, icon)
 
-      """Create some reference points for the current month"""
-      days_current_month = calendar.monthrange(now.year, now.month)[1]
-      month_start = now.floor('month')
-      month_end = now.ceil('month')
-
       if show_events == True:
-        """Filter events which begin before the end of this month"""
-        upcoming_events = fetch_events()
-
-        calendar_events = [events for events in upcoming_events if
-          month_start <= events.end <= month_end ]
+        """Filter events from specified range"""
+        month_start = now.floor('month')
+        month_end = now.ceil('month')
+        events_this_month = fetch_events(month_start, month_end)
 
         """Find days with events in the current month"""
         days_with_events = []
-        for events in calendar_events:
+        for events in events_this_month:
           if events.duration.days <= 1:
             days_with_events.append(int(events.begin.format('D')))
-          else:
+          elif events.duration.days > 1:
             for day in range(events.duration.days):
               days_with_events.append(
                 int(events.begin.replace(days=+i).format('D')))
@@ -157,33 +171,36 @@ def generate_image():
                8, square_size , square_size, colour='black')
 
 
-        """Add a small section showing events of today and tomorrow"""
+        """Add a small section showing upcoming events"""
+        in_60_days = now.replace(days=60).floor('day')
+        upcoming_events = fetch_events(now, in_60_days)
+
         event_list = []
         after_two_days = now.replace(days=2).floor('day')
 
-        for event in calendar_events:
+        for event in upcoming_events:
           if event.begin.day == now.day and now < event.end:
             if event.all_day:
-              event_list.append('{}: {}'.format(today_in_your_language, event.name))
+              event_list.append('{}: {}'.format(translate['today'], event.name))
             else:
-              event_list.append('{0} {1} {2} : {3}'.format(today_in_your_language,
-          at_in_your_language, event.begin.format('HH:mm' if hours == '24' else
-          'hh:mm a'), event.name))
+              event_list.append('{0} {1} {2} : {3}'.format(translate['today'],
+                translate['at'], event.begin.format('HH:mm' if hours == '24'
+                else 'hh:mm a'), event.name))
 
           elif event.begin.day == now.replace(days=1).day:
             if event.all_day:
-              event_list.append('{}: {}'.format(tomorrow_in_your_language, event.name))
+              event_list.append('{}: {}'.format(translate['tomorrow'], event.name))
             else:
-              event_list.append('{0} {1} {2} : {3}'.format(tomorrow_in_your_language,
-          at_in_your_language, event.begin.format('HH:mm' if hours == '24' else
-          'hh:mm a'), event.name))
+              event_list.append('{0} {1} {2} : {3}'.format(translate['tomorrow'],
+                translate['at'], event.begin.format('HH:mm' if hours == '24' else
+                'hh:mm a'), event.name))
 
           elif event.begin > after_two_days:
             if event.all_day:
               event_list.append('{}: {}'.format(event.begin.format('D MMM'), event.name))
             else:
               event_list.append('{0} {1} {2} : {3}'.format(event.begin.format('D MMM'),
-          at_in_your_language, event.begin.format('HH:mm' if hours == '24' else
+          translate['at'], event.begin.format('HH:mm' if hours == '24' else
           'hh:mm a'), event.name))
 
         del event_list[max_event_lines:]
@@ -198,8 +215,8 @@ def generate_image():
 
       """Set print_events_to True to print all events in this month"""
       style = 'DD MMM YY HH:mm'
-      if print_events == True and calendar_events:
-        line_width = max(len(_.name) for _ in calendar_events)
+      if print_events == True and upcoming_events:
+        line_width = max(len(_.name) for _ in upcoming_events)
         for events in calendar_events:
           print('{0} {1} | {2} | {3} | All day ='.format(events.name,
             ' ' * (line_width - len(events.name)), events.begin.format(style),
