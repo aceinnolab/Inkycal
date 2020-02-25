@@ -19,7 +19,7 @@ body{
   <div class="ts container">
   <div class="ts segment">
     <div class="ts header">
-      Setting Generator, v.1.1
+      Setting Generator, v.2.0
       <div class="sub header"><a href="https://github.com/aceisace/Inky-Calendar">For Inky-Calendar Project of Ace-Innovation Laboratory (by aceisace)</a><br>
       <img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/Inky-Calendar-logo.png?raw=true" width="800" alt="Inky-Calendar-logo">
       <div>
@@ -359,14 +359,16 @@ body{
 
       <div class="content">
       <p>Instructions<br>
-Insert your personal details and preferences and click on 'Generate'. Copy the downloaded file to the Raspberry Pi and place it in: '/home/pi/Inky-Calendar/settings/' (inside the settings folder within the Inky-Calendar folder. Lastly, reboot the Raspberry Pi to apply the changes. You can also manually run the software with:
-python3 /home/pi/Inky-Calendar/modules/inkycal.py.</p>
+Insert your personal details and preferences and click on 'Generate'. Copy the downloaded file to the Raspberry Pi and place it in:
+<code>'/home/pi/Inky-Calendar/settings/'</code> (inside the settings folder within the Inky-Calendar folder. Lastly, reboot the
+ Raspberry Pi to apply the changes.
+ <br/>
+ You can also manually run the software with: <code>python3 /home/pi/Inky-Calendar/modules/inkycal.py</code>.</p>
     </div>
 
     </form>
     <br>
-    <button class="ts primary button" onClick="generate(false);">Generate</button>
-    <button class="ts secondary button" onClick="generate(true);">Generate (as JSON, experimental)</button>
+    <button class="ts primary button" onClick="generate()">Generate</button>
   <br><br>
   <kbd>Developed by Toby Chui for Inky-Calendar Project, modified by aceisace. Licensed under MIT</kbd>
   <details class="ts accordion">
@@ -387,25 +389,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <br>
   <br>
   
-  <script>
-  var template = `ical_urls = [{ical_urls}]
-rss_feeds = [{rss_urls}]
-update_interval = "{update_interval}"
-api_key = "{api_key}"
-location = "{location}"
-week_starts_on = "{week_starts_on}"
-calibration_hours = [{calibration_hours}]
-model = "{model}"
-language = "{language}"
-units = "{units}"
-hours = "{hours}"
-top_section = "{top_section}"
-middle_section = "{middle_section}"
-bottom_section = "{bottom_section}"
-display_orientation = "{display_orientation}"
-inkycal_image_path = "{image_path}"
-inkycal_image_path_body = "{image_path_body}"`;
-  
+  <script> 
   $('#cb_middle_section').change(function(){
     if($('#Image').prop("checked")) {
       $('#Image_Config').show();
@@ -414,7 +398,7 @@ inkycal_image_path_body = "{image_path_body}"`;
     }
   });
 
-  function generate(json){
+  function generate(){
     var ical_urls = $("#ical_urls").val().trim();
     if (ical_urls == ""){
       ical_urls = $("#ical_urls").attr("placeholder");
@@ -579,49 +563,9 @@ inkycal_image_path_body = "{image_path_body}"`;
     var image_path_body = $("#image_path").val().trim();
 
     //console.log(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section);
-    if(json)
-      downloadSettingsAsJson(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section, display_orientation, image_path, image_path_body)
-    else
-      createPythonSetting(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section, display_orientation, image_path, image_path_body);
+    downloadSettingsAsJson(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section, display_orientation, image_path, image_path_body)
   }
   
-  function rk(content,key,value){
-    //Use to replace key-value pair in template string
-    return content.split("{" + key + "}").join(value);
-  }
-  
-  function createPythonSetting(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o, image_path, image_path_body){
-    var box = template;
-    box = rk(box,"ical_urls",a);
-    box = rk(box,"rss_urls",b);
-    box = rk(box,"update_interval",c);
-    box = rk(box,"api_key",d);
-    box = rk(box,"location",e);
-    box = rk(box,"week_starts_on",f);
-    box = rk(box,"calibration_hours",g);
-    box = rk(box,"model",h);
-    box = rk(box,"language",i);
-    box = rk(box,"units",j);
-    box = rk(box,"hours",k);
-    box = rk(box,"top_section",l);
-    box = rk(box,"middle_section",m);
-    box = rk(box,"bottom_section",n);
-    box = rk(box,"display_orientation",o);
-    box = rk(box,"image_path",image_path);
-    box = rk(box,"image_path_body",image_path_body);
-
-    var config = new Blob([box], {type : "text/plain"});
-    var link = document.createElement('link');
-    link.href = window.URL.createObjectURL(config);
-    var a = document.createElement('A');
-    a.href = link.href;
-    a.download = link.href.substr(link.href.lastIndexOf('/') + 1);
-    document.body.appendChild(a);
-    $(a).attr('download','settings.py');
-    a.click();
-    document.body.removeChild(a);
-  }
-
   function TrimSingleQuotes(text){
       return text.replace(/^'+/g,"").replace(/'+$/g,"")
   }
