@@ -3,3 +3,4 @@ Pillow==6.2.0
 ics==0.4
 feedparser==5.2.1
 pytz==2019.3
+python-dateutil==2.6.1
