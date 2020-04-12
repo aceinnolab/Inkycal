@@ -9,11 +9,22 @@ import calendar
 from configuration import *
 
 print_events = False
-show_events = True
-today_in_your_language = 'today'
-tomorrow_in_your_language = 'tomorrow'
-at_in_your_language = 'at'
-event_icon = 'square' # dot #square
+try:
+  today_in_your_language
+except NameError:
+  today_in_your_language = "today"
+try:
+  tomorrow_in_your_language
+except NameError:
+  tomorrow_in_your_language = "tomorrow"
+try:
+  at_in_your_language
+except NameError:
+  at_in_your_language = "at"
+try:
+  event_icon
+except NameError:
+  event_icon = "square"  # dot #square
 style = "DD MMM"
 
 font = ImageFont.truetype(NotoSans+'.ttf', calendar_fontsize)
