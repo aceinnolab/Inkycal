@@ -63,16 +63,18 @@ background_colour = 'white'
 text_colour = 'black'
 
 """Set some display parameters"""
-display_height, display_width, three_colour_support = get_display_parameters(model)
+# Width and Height as swapped - display is rotated by 90 degree. TODO: refactoring
+display_width, display_height, three_colour_support = get_display_parameters(model)
+
 if eink_in_use:
   driver = importlib.import_module('drivers.'+model)
-  if display_height != driver.EPD_HEIGHT or display_width != driver.EPD_WIDTH:
+  if display_width != driver.EPD_HEIGHT or display_height != driver.EPD_WIDTH:
     logging.error('Inconsistency in display sizes:')
     logging.error('Driver: %d x %d' % (driver.EPD_HEIGHT, driver.EPD_WIDTH))
     logging.error('Config: %d x %d' % (display_height, display_width))
     # Grab driver's sizes
-    display_height = driver.EPD_HEIGHT
-    display_width = driver.EPD_WIDTH
+    display_width = driver.EPD_HEIGHT
+    display_height = driver.EPD_WIDTH
 
 
 """Create 3 sections of the display, based on percentage"""
