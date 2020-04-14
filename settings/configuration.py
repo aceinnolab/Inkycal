@@ -282,9 +282,10 @@ def fix_ical(ical_url):
 
 def image_cleanup():
   """Delete all files in the image folder"""
-  print('Cleanup of previous images...', end = '')
-  for temp_files in glob(image_path+'*'):
-      os.remove(temp_files)
+  if eink_in_use:
+    print('Cleanup of previous images...', end = '')
+    for temp_files in glob(image_path+'*'):
+        os.remove(temp_files)
   print('Done')
 
 def optimise_colours(image, threshold=220):
