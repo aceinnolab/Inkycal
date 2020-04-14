@@ -56,7 +56,7 @@ def get_display_parameters(model_name):
 
   logging.debug('Display model: %s' %  model_name)
   logging.debug('Width, Height, 3-colours: %d, %d, %s' % (width, height, three_colour_support))
-  return width, height, three_colour_support
+  return height, width, three_colour_support
 
 """Set the image background colour and text colour"""
 background_colour = 'white'
