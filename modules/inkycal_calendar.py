@@ -177,9 +177,12 @@ def generate_image():
 
         event_list = []
         after_two_days = now.replace(days=2).floor('day')
+        tomorrow = now.replace(days=+1)
+        tomorrow_no_tz = arrow.get(tomorrow.datetime.replace(tzinfo = None))
 
         for event in upcoming_events:
-          if event.begin.day == now.day and now < event.end:
+          now_no_tz = arrow.get(now.datetime.replace(tzinfo = None))
+          if event.begin.floor('day') == now_no_tz.floor('day'):
             if event.all_day:
               event_list.append('{}: {}'.format(translate['today'], event.name))
             else:
@@ -187,7 +190,7 @@ def generate_image():
                 translate['at'], event.begin.format('HH:mm' if hours == '24'
                 else 'hh:mm a'), event.name))
 
-          elif event.begin.day == now.replace(days=1).day:
+          elif event.begin.floor('day') == tomorrow_no_tz.floor('day'):
             if event.all_day:
               event_list.append('{}: {}'.format(translate['tomorrow'], event.name))
             else:
