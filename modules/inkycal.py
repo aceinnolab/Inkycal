@@ -13,6 +13,7 @@ from configuration import *
 import arrow
 from time import sleep
 import gc
+import logging
 
 """Perepare for execution of main programm"""
 calibration_countdown = 'initial'
@@ -57,23 +58,23 @@ while True:
     print('-----------Main programm started now----------')
 
     """------------------Calibration check----------------"""
-    if skip_calibration != True:
-      print('Calibration..', end = ' ')
-      if now.hour in calibration_hours:
-        if calibration_countdown == 'initial':
-          print('required. Performing calibration now.')
-          calibration_countdown = 0
-          calibrate_display(3)
-        else:
-          if calibration_countdown % (60 // int(update_interval)) == 0:
-            calibrate_display(3)
+    if eink_in_use:
+      if skip_calibration != True:
+        print('Calibration..', end = ' ')
+        if now.hour in calibration_hours:
+          if calibration_countdown == 'initial':
+            print('required. Performing calibration now.')
             calibration_countdown = 0
+            calibrate_display(3)
+          else:
+            if calibration_countdown % (60 // int(update_interval)) == 0:
+              calibrate_display(3)
+              calibration_countdown = 0
+        else:
+          print('not required. Continuing...')
       else:
-        print('not required. Continuing...')
-    else:
-      print('Calibration skipped!. Please note that not calibrating e-paper',
+        print('Calibration skipped!. Please note that not calibrating e-paper',
             'displays causes ghosting')
-
 
     """----------------------top-section-image-----------------------------"""
     try:
@@ -132,23 +133,24 @@ while True:
       image_col.save(image_path+'canvas_col.png')
 
     """---------Refreshing E-Paper with newly created image-----------"""
-    epaper = driver.EPD()
-    print('Initialising E-Paper...', end = '')
-    epaper.init()
-    print('Done')
-
-    if three_colour_support == True:
-      print('Sending image data and refreshing display...', end='')
-      epaper.display(epaper.getbuffer(image), epaper.getbuffer(image_col))
-      print('Done')
-    else:
-      print('Sending image data and refreshing display...', end='')
-      epaper.display(epaper.getbuffer(image))
+    if eink_in_use:
+      epaper = driver.EPD()
+      print('Initialising E-Paper...', end = '')
+      epaper.init()
       print('Done')
 
-    print('Sending E-Paper to deep sleep...', end = '')
-    epaper.sleep()
-    print('Done')
+      if three_colour_support == True:
+        print('Sending image data and refreshing display...', end='')
+        epaper.display(epaper.getbuffer(image), epaper.getbuffer(image_col))
+        print('Done')
+      else:
+        print('Sending image data and refreshing display...', end='')
+        epaper.display(epaper.getbuffer(image))
+        print('Done')
+
+      print('Sending E-Paper to deep sleep...', end = '')
+      epaper.sleep()
+      print('Done')
 
     """--------------Post processing after main loop-----------------"""
     """Collect some garbage to free up some resources"""

@@ -17,20 +17,65 @@ import os
 from glob import glob
 import importlib
 import subprocess as subp
+import logging
+
+"""Check if we have image-only rendering"""
+if render_target == 'image_only':
+  logging.basicConfig(level = logging.DEBUG)
+  eink_in_use = False
+else:
+  logging.basicConfig(level = logging.INFO)
+  eink_in_use = True
+
+logging.debug('Target: %s' % render_target)
+
+# TODO: refactoring is needed
+
+"""Function returns display's parameter according to the model name"""
+def get_display_parameters(model_name):
+  width, height = 0, 0
+  if 'colour' in model_name:
+    three_colour_support = True
+  else:
+    three_colour_support = False
+
+  if model_name == 'epd_7_in_5_v2_colour' or model_name == 'epd_7_in_5_v2':
+    width = 800
+    height = 480
+  elif model_name == 'epd_7_in_5_colour' or model_name == 'epd_7_in_5':
+    width = 640
+    height = 384
+  elif model_name == 'epd_5_in_83_colour' or model_name == 'epd_5_in_83':
+    width = 600
+    height = 448
+  elif model_name == 'epd_4_in_2_colour' or model_name == 'epd_4_in_2':
+    width = 400
+    height = 300
+  else:
+    logging.error('Unsupported display model: %s' % model_name)
+
+  logging.debug('Display model: %s' %  model_name)
+  logging.debug('Width, Height, 3-colours: %d, %d, %s' % (width, height, three_colour_support))
+  return height, width, three_colour_support
 
 """Set the image background colour and text colour"""
 background_colour = 'white'
 text_colour = 'black'
 
 """Set some display parameters"""
-driver = importlib.import_module('drivers.'+model)
-display_height, display_width = driver.EPD_WIDTH, driver.EPD_HEIGHT
+# Width and Height as swapped - display is rotated by 90 degree. TODO: refactoring
+display_width, display_height, three_colour_support = get_display_parameters(model)
 
-"""Check if the display supports 3 colours"""
-if 'colour' in model:
-  three_colour_support = True
-else:
-  three_colour_support = False
+if eink_in_use:
+  driver = importlib.import_module('drivers.'+model)
+  if display_width != driver.EPD_HEIGHT or display_height != driver.EPD_WIDTH:
+    logging.error('Inconsistency in display sizes:')
+    logging.error('Driver: %d x %d' % (driver.EPD_HEIGHT, driver.EPD_WIDTH))
+    logging.error('Config: %d x %d' % (display_height, display_width))
+    # Grab driver's sizes
+    display_width = driver.EPD_HEIGHT
+    display_height = driver.EPD_WIDTH
+
 
 """Create 3 sections of the display, based on percentage"""
 top_section_width = middle_section_width = bottom_section_width = display_width
@@ -99,7 +144,6 @@ image_col = Image.new('RGB', (display_width, display_height), 'white')
 
 draw = ImageDraw.Draw(image)
 draw_col = ImageDraw.Draw(image_col)
-
 
 """Custom function to add text on an image"""
 def write_text(space_width, space_height, text, tuple,
@@ -238,9 +282,10 @@ def fix_ical(ical_url):
 
 def image_cleanup():
   """Delete all files in the image folder"""
-  print('Cleanup of previous images...', end = '')
-  for temp_files in glob(image_path+'*'):
-      os.remove(temp_files)
+  if eink_in_use:
+    print('Cleanup of previous images...', end = '')
+    for temp_files in glob(image_path+'*'):
+        os.remove(temp_files)
   print('Done')
 
 def optimise_colours(image, threshold=220):
