@@ -98,6 +98,9 @@ All sorts of contributions are most welcome and appreciated. To start contributi
 
 The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer.
 
+## Setting up VS Code Remote development in WSL
+In order to speed up development, most development tasks (apart from the actual rending to E-Ink display) can be developed on more powerful machines and in richer environments than running this on a Pi zero. In case of Windows PC the most convenient way is to use VS Code Remote development in Windows Subsystem for Linux (WSL), please follow [Tutorial](https://code.visualstudio.com/remote-tutorials/wsl/getting-started). 
+
 ### Don't forget to check out the Wiki. It contains all the information to understanding and customising the script.
 
 **P.S:** Don't forget to star and/or watch the repo. For those who have done so already, thank you very much!
