@@ -13,4 +13,10 @@
 # Debugging
 | username | Name | Contribution details |
 | --- | --- | --- |
+
+# Modules
+| username | Name | Contribution details |
+| --- | --- | --- |
+| **efredericks** | [Erik Fredericks](https://github.com/efredericks) | for adding dadjoke module
+
 Coming soon
