@@ -274,7 +274,9 @@ def generate_image():
         font = w_font, fill_height = 0.9)
       write_text(icon_small, icon_small, '\uf051', sunrise_icon_now_pos,
         font = w_font, fill_height = 0.9)
-      write_text(icon_small, icon_small, '\uf052', sunset_icon_now_pos,
+# Workaround for Bug: sunset icon not shown
+# Issue seems to be related to my configuration. The icon size 'icon_small' is calculated from section_height and there seem to be some issue with specific values and icons (not only true for sunset icon). Changing either icon_small or section_height slightly in one or the other direction solves the issue for a specific icon.
+      write_text(icon_small-1, icon_small-1, '\uf052', sunset_icon_now_pos,
         font = w_font, fill_height = 0.9)
 
       write_text(coloumn_width-icon_small, row_height,
