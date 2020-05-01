@@ -243,7 +243,8 @@ def generate_image():
       moonphase = get_moon_phase()
 
       """Add weather details in column 1"""
-      write_text(coloumn_width, row_height, now_str_time, text_now_pos, font = font)
+      write_text(coloumn_width, row_height, now_str_time, text_now_pos, font = font,
+        alignment='left')
       write_text(icon_medium, icon_medium, weathericons[weather_icon_now],
         weather_icon_now_pos, font = w_font, fill_width = 0.9)
 
