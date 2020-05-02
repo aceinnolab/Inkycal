@@ -1,0 +1,8 @@
+# Python cache files
+__pycache__/
+
+# Temporary generated images
+images/
+
+# User-specific config files
+modules/settings.py
