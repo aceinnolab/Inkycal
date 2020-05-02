@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-Weather module for Inky-Calendar software.
+Alterantive weather module for Inky-Calendar software.
 
 The lunar phase calculation is from Sean B. Palmer, inamidst.com.
 Thank You Palmer for the awesome code!
 
-Copyright by aceisace
+Based on weather module by aceisace
 """
 from __future__ import print_function
 import pyowm
@@ -21,7 +21,6 @@ round_windspeed = True
 use_beaufort = True
 show_wind_direction = False
 use_wind_direction_icon = False
-now_str_time = time.strftime("@%H:%M")
 
 """Set the optional parameters"""
 decimal_places_temperature = None if round_temperature == True else 1
@@ -111,6 +110,21 @@ def to_hours(datetime_object, simple = False):
       converted_time = datetime_object.format('hh:mm')
   return str(converted_time)
 
+"""Function to return precipitation in mm"""
+def to_mm(rain):
+#  print('')
+#  print('** rain: ', rain)
+  if '1h' in rain:
+    converted_rain = rain['1h']
+#    print('** rain[1h]: ', converted_rain)
+  elif '3h' in rain:
+    converted_rain = rain['3h']
+#    print('** rain[3h]: ', converted_rain)
+  else:
+    converted_rain = 0
+#    print('** rain[0]: ', converted_rain)
+  return str("%0.1f mm" % (converted_rain))
+
 """Choose font optimised for the weather section"""
 fontsize = 8
 font = ImageFont.truetype(NotoSans+'Medium.ttf', fontsize)
@@ -166,27 +180,12 @@ def generate_image():
       weather_icon_fc3 = forecast_fc3.get_weather_icon_name()
       weather_icon_fc4 = forecast_fc4.get_weather_icon_name()
 
-      """Get current rain in mm/h"""
-      rain = weather.get_rain()
-#      print ('get_rain: ', rain)
-      if '1h' in rain:
-        rain_now = rain['1h']
-      elif '3h' in rain:
-        rain_now = rain['3h']/3
-      else:
-        rain_now = 0
-      rain_now = str("%0.1f" % (rain_now))
-#      print ('rain_now = ', rain_now)
-#      print ('fc1.get_rain',forecast_fc1.get_rain())
-#      rain = forecast_fc1.get_rain()
-#      if '1h' in rain:
-#        humidity_fc1 = rain['1h']
-#      elif '3h' in rain:
-#        humidity_fc1 = rain['3h']/3
-#        print('humidity_fc1', humidity_fc1)
-#      else:
-#        humidity_fc1 = 0
-#      humidity_fc1 = str("%0.2f" % (humidity_fc1))
+      """Get current rain in mm"""
+      rain_now = to_mm(weather.get_rain())
+      rain_fc1 = to_mm(forecast_fc1.get_rain())
+      rain_fc2 = to_mm(forecast_fc2.get_rain())
+      rain_fc3 = to_mm(forecast_fc3.get_rain())
+      rain_fc4 = to_mm(forecast_fc4.get_rain())
 
       """Parse current weather details"""
       sunrise_time_now = arrow.get(weather.get_sunrise_time()).to(get_tz())
@@ -223,46 +222,42 @@ def generate_image():
        return {0: '\uf095',1: '\uf099',2: '\uf09c',3: '\uf0a0',
                4: '\uf0a3',5: '\uf0a7',6: '\uf0aa',7: '\uf0ae' }[int(index) & 7]
 
-      moonphase = get_moon_phase()
+#      moonphase = get_moon_phase()
 
       """Add weather details in column 1"""
+      now_str_time = time.strftime("@%H:%M")
       write_text(column_width, row_height, now_str_time, (column1, row1),
-                 font = font, alignment='left')
-      write_text(icon_medium, icon_medium, weathericons[weather_icon_now],
-                 (column1, row2), font = w_font, fill_width = 0.9)
+        font = font)
+      write_text(column_width, row_height*2, weathericons[weather_icon_now],
+        (column1, row2), font = w_font, fill_width = 0.9)
       write_text(column_width, row_height, temperature_now, (column1,row4),
-                 font = font, alignment='middle')
+        font = font)
 
       """Add weather details in column 2"""
-      write_text(icon_small, icon_small, '\uf07a', (column2,row1),
+      write_text(column_width, row_height, '\uf07a', (column2, row1),
         font = w_font, fill_height = 0.9)
-      
+      write_text(column_width, row_height, rain_now, (column2, row2),
+        font = font)
       if use_wind_direction_icon == False:  
-        write_text(icon_small, icon_small, '\uf050', (column2,row3),
+        write_text(column_width, row_height, '\uf050', (column2, row3),
           font = w_font, fill_height = 0.9)
       else:
-        write_text(icon_small, icon_small, '\uf0b1', (column2,row3),
+        write_text(column_width, row_height, '\uf0b1', (column2, row3),
           font = w_font, fill_height = 0.9, rotation = -wind_degrees)
-
-      write_text(column_width, row_height, rain_now+'mm',
-        (column2,row2), font = font, alignment = 'left')
-      write_text(column_width, row_height, wind,
-        (column2,row4), font = font, alignment = 'left', autofit = True)
+      write_text(column_width, row_height, wind, (column2, row4),
+        font = font, autofit = True)
 
       """Add weather details in column 3"""
-#      write_text(column_width, row_height, moonphase , (column3, row1),
+#      write_text(column_width, row_height, moonphase, (column3, row1),
 #        font = w_font, fill_height = 0.9)
-      write_text(icon_small-1, icon_small-1, '\uf051', (column3, row1),
+      write_text(column_width, row_height, '\uf051', (column3, row1),
         font = w_font, fill_height = 0.9)
-      write_text(icon_small, icon_small, '\uf052', (column3, row3),
+      write_text(column_width, row_height, to_hours(sunrise_time_now),
+        (column3, row2), font = font, fill_width = 0.9)
+      write_text(column_width, row_height, '\uf052', (column3, row3),
         font = w_font, fill_height = 0.9)
-
-      write_text(column_width, row_height,
-        to_hours(sunrise_time_now), (column3, row2), font = font,
-                 fill_width = 0.9)
-      write_text(column_width, row_height,
-        to_hours(sunset_time_now), (column3, row4), font = font,
-                 fill_width = 0.9)
+      write_text(column_width, row_height, to_hours(sunset_time_now),
+        (column3, row4), font = font, fill_width = 0.9)
 
       """Add weather details in column 4 (forecast 1)"""
       write_text(column_width, row_height, to_hours(fc1.to(get_tz()),
@@ -270,34 +265,39 @@ def generate_image():
       write_text(column_width, row_height, weathericons[weather_icon_fc1],
         (column4, row2), font = w_font, fill_height = 1.0)
       write_text(column_width, row_height, temperature_fc1, (column4, row3),
-                 font = font, colour = red_temp(temperature_fc1))
+        font = font, colour = red_temp(temperature_fc1))
+      write_text(column_width, row_height, rain_fc1, (column4, row4),
+        font = font)
 
       """Add weather details in column 5 (forecast 2)"""
       write_text(column_width, row_height, to_hours(fc2.to(get_tz()),
         simple=True), (column5, row1), font = font)
       write_text(column_width, row_height, weathericons[weather_icon_fc2],
         (column5, row2), font = w_font, fill_height = 1.0)
-      write_text(column_width, row_height, temperature_fc2,
-          (column5, row3), font = font, colour = red_temp(
-          temperature_fc2))
+      write_text(column_width, row_height, temperature_fc2, (column5, row3),
+        font = font, colour = red_temp(temperature_fc2))
+      write_text(column_width, row_height, rain_fc2, (column5, row4),
+        font = font)
 
       """Add weather details in column 6 (forecast 3)"""
       write_text(column_width, row_height, to_hours(fc3.to(get_tz()),
         simple=True), (column6, row1), font = font)
       write_text(column_width, row_height, weathericons[weather_icon_fc3],
         (column6, row2), font = w_font, fill_height = 1.0)
-      write_text(column_width, row_height, temperature_fc3,
-          (column6, row3), font = font, colour = red_temp(
-          temperature_fc3))
+      write_text(column_width, row_height, temperature_fc3, (column6, row3),
+        font = font, colour = red_temp(temperature_fc3))
+      write_text(column_width, row_height, rain_fc3, (column6, row4),
+        font = font)
 
       """Add weather details in column 7 (forecast 4)"""
       write_text(column_width, row_height, to_hours(fc4.to(get_tz()),
         simple=True), (column7, row1), font = font)
       write_text(column_width, row_height, weathericons[weather_icon_fc4],
         (column7, row2), font = w_font, fill_height = 1.0)
-      write_text(column_width, row_height, temperature_fc4,
-          (column7, row3), font = font, colour = red_temp(
-          temperature_fc4))
+      write_text(column_width, row_height, temperature_fc4, (column7, row3),
+        font = font, colour = red_temp(temperature_fc4))
+      write_text(column_width, row_height, rain_fc4, (column7, row4),
+        font = font)
 
       """Add vertical lines between forecast sections"""
       draw = ImageDraw.Draw(image)
