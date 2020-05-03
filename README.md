@@ -94,7 +94,7 @@ If you encounter errors related to your iCalendar, please feel free to report th
 Before updating, re-name the current Inky-Calendar folder e.g. Inky-Calendar-old and then run the installer again (see above), choosing the **update** option.
 
 ## Contributing
-All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inky-Calendar/blob/master/CONTRIBUTING.md).
+All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inky-Calendar/blob/master/.github/CONTRIBUTING.md).
 
 The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer.
 
