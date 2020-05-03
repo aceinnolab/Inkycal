@@ -52,10 +52,6 @@ column_width = (top_section_width-(border_left*2)) // 7
 x_padding = int( (top_section_width % column_width) / 2 )
 y_padding = int( (top_section_height % row_height) / 2 )
 
-"""Allocate sizes for weather icons"""
-icon_small = row_height
-icon_medium = row_height * 2
-
 """Calculate the x-axis position of each column"""
 column1 = x_padding
 column2 = column1 + column_width
@@ -81,10 +77,10 @@ def to_units(kelvin):
   fahrenheit = round((kelvin - 273.15) * 9/5 + 32,
                      ndigits = decimal_places_temperature)
   if units == 'metric':
-    conversion = str(degrees_celsius) + '°C'
+    conversion = str(degrees_celsius) + ' °C'
 
   if units == 'imperial':
-    conversion = str(fahrenheit) + 'F'
+    conversion = str(fahrenheit) + ' F'
 
   return conversion
 
@@ -114,12 +110,12 @@ def to_hours(datetime_object, simple = False):
 def to_mm(rain):
 #  print('')
 #  print('** rain: ', rain)
-  if '1h' in rain:
-    converted_rain = rain['1h']
-#    print('** rain[1h]: ', converted_rain)
-  elif '3h' in rain:
+  if '3h' in rain:
     converted_rain = rain['3h']
 #    print('** rain[3h]: ', converted_rain)
+  elif '1h' in rain:
+    converted_rain = rain['1h']
+#    print('** rain[1h]: ', converted_rain)
   else:
     converted_rain = 0
 #    print('** rain[0]: ', converted_rain)
@@ -267,7 +263,7 @@ def generate_image():
       write_text(column_width, row_height, temperature_fc1, (column4, row3),
         font = font, colour = red_temp(temperature_fc1))
       write_text(column_width, row_height, rain_fc1, (column4, row4),
-        font = font)
+        font = font, fill_height = 0.7)
 
       """Add weather details in column 5 (forecast 2)"""
       write_text(column_width, row_height, to_hours(fc2.to(get_tz()),
@@ -277,7 +273,7 @@ def generate_image():
       write_text(column_width, row_height, temperature_fc2, (column5, row3),
         font = font, colour = red_temp(temperature_fc2))
       write_text(column_width, row_height, rain_fc2, (column5, row4),
-        font = font)
+        font = font, fill_height = 0.7)
 
       """Add weather details in column 6 (forecast 3)"""
       write_text(column_width, row_height, to_hours(fc3.to(get_tz()),
@@ -287,7 +283,7 @@ def generate_image():
       write_text(column_width, row_height, temperature_fc3, (column6, row3),
         font = font, colour = red_temp(temperature_fc3))
       write_text(column_width, row_height, rain_fc3, (column6, row4),
-        font = font)
+        font = font, fill_height = 0.7)
 
       """Add weather details in column 7 (forecast 4)"""
       write_text(column_width, row_height, to_hours(fc4.to(get_tz()),
@@ -297,7 +293,7 @@ def generate_image():
       write_text(column_width, row_height, temperature_fc4, (column7, row3),
         font = font, colour = red_temp(temperature_fc4))
       write_text(column_width, row_height, rain_fc4, (column7, row4),
-        font = font)
+        font = font, fill_height = 0.7)
 
       """Add vertical lines between forecast sections"""
       draw = ImageDraw.Draw(image)
