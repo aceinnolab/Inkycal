@@ -18,7 +18,7 @@ dec = decimal.Decimal
 """Optional parameters"""
 round_temperature = True
 round_windspeed = True
-use_beaufort = True
+use_beaufort = False
 show_wind_direction = False
 use_wind_direction_icon = False
 
@@ -195,18 +195,18 @@ def generate_image():
         wind_degrees/45) % 8]
 
       if use_beaufort == True:
-        wind = str([windspeed_to_beaufort.index(_) for _ in
+        wind_now = str([windspeed_to_beaufort.index(_) for _ in
           windspeed_to_beaufort if windspeed_now < _][0])
       else:
-        meters_sec = round(windspeed_now, ndigits = windspeed_decimal_places)
-        miles_per_hour = round(windspeed_now * 2,23694,
-                               ndigits = windspeed_decimal_places)
+        meters_sec = round(windspeed_now, ndigits = decimal_places_windspeed)
+        miles_per_hour = round(windspeed_now * 2.23694,
+                               ndigits = decimal_places_windspeed)
         if units == 'metric':
-          wind = str(meters_sec) + 'm/s'
+          wind_now = str(meters_sec) + ' m/s'
         if units == 'imperial':
-          wind = str(miles_per_hour) + 'mph'
+          wind_now = str(miles_per_hour) + ' mph'
       if show_wind_direction == True:
-        wind += '({0})'.format(wind_direction)
+        wind_now += '({0})'.format(wind_direction)
 
       """Calculate the moon phase"""
       def get_moon_phase():
@@ -240,8 +240,8 @@ def generate_image():
       else:
         write_text(column_width, row_height, '\uf0b1', (column2, row3),
           font = w_font, fill_height = 0.9, rotation = -wind_degrees)
-      write_text(column_width, row_height, wind, (column2, row4),
-        font = font, autofit = True)
+      write_text(column_width, row_height, wind_now, (column2, row4),
+        font = font)
 
       """Add weather details in column 3"""
 #      write_text(column_width, row_height, moonphase, (column3, row1),
