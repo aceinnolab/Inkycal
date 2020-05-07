@@ -1,0 +1,42 @@
+{
+	"language": "en",
+	"units": "metric",
+	"hours": 24,
+	"model": "epd_7_in_5_v2_colour",
+	"update_interval": 60,
+	"calibration_hours": [
+		0,
+		12,
+		18
+	],
+	"display_orientation": "normal",
+	"panels": [
+		{
+			"location": "top",
+			"type": "inkycal_weather",
+			"config": {
+				"api_key": "topsecret",
+				"location": "Stuttgart, DE"
+			}
+		},
+		{
+			"location": "middle",
+			"type": "inkycal_calendar",
+			"config": {
+				"week_starts_on": "Monday",
+				"ical_urls": [
+					"https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"
+				]
+			}
+		},
+		{
+			"location": "bottom",
+			"type": "inkycal_rss",
+			"config": {
+				"rss_urls": [
+					"http://feeds.bbci.co.uk/news/world/rss.xml#"
+				]
+			}
+		}
+	]
+}
