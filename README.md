@@ -1,3 +1,59 @@
+# Refactoring branch. Work in progress!
+Please do not use this branch as this is in pre-alpha stage. It it only intended for development purposes.
+
+
+## Short Summary
+Aim of refactoring:
+* Allow using settigs.json file
+* Fully dynamic images (changable section sizes)
+* dumb modules (no more preferred position or sizes)
+* Switch from scripts to classes
+* Allow using pip3 install .... to install inkycal
+* Update dependencies
+* Allow using on windows (no-render mode)
+* Implement features from dev branch
+
+
+## Info
+The main folder is now inkcal. 
+
+Folder structure:
+
+```bash
+│   Inkycal.py              -main file (work in progress)
+│   __init__.py
+│
+├───configuration           -handles parsing, validation etc. of settings.json file
+│   settings.json           -Sample settings file
+│   settings_parser.py      -parses settings.json file
+│   __init__.py
+│
+├───display                 - Handles everything replated to the display
+│   │   layout.py           - Set page layout
+│   │   __init__.py
+│   │
+│   ├───drivers             - driver files for supported ePaper displays
+│   │   epdconfig.py
+│   │   epd_4_in_2.py
+│   │   epd_4_in_2_colour.py
+│   │   epd_5_in_83.py
+│   │   epd_5_in_83_colour.py
+│   │   epd_7_in_5.py
+│   │   epd_7_in_5_colour.py
+│   │   epd_7_in_5_v2.py
+│   │   epd_7_in_5_v2_colour.py
+│   │    __init__.py
+│
+├───modules                 - folder containing all supported modules
+│       inkycal_rss.py      - inkycal_rss module
+│       __init__.py
+│
+└───render                  - Contains file to help with rendering
+        functions.py        - Inky-Calendar custom functions
+        __init__.py
+```
+
+
 <p align="center">
 <img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/Inky-Calendar-logo.png" width="800">
 </p>
