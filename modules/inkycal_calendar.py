@@ -147,12 +147,15 @@ def generate_image():
         """Find days with events in the current month"""
         days_with_events = []
         for events in events_this_month:
-          if events.duration.days <= 1:
+          if show_event_begin_only == 'true':
             days_with_events.append(int(events.begin.format('D')))
-          elif events.duration.days > 1:
-            for day in range(events.duration.days):
-              days_with_events.append(
-                int(events.begin.replace(days=+i).format('D')))
+          else:
+            if events.duration.days <= 1:
+              days_with_events.append(int(events.begin.format('D')))
+            elif events.duration.days > 1:
+              for day in range(events.duration.days):
+                days_with_events.append(
+                  int(events.begin.replace(days=+day).format('D')))
         days_with_events = set(days_with_events)
 
         if event_icon == 'dot':
