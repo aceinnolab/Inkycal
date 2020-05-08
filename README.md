@@ -106,6 +106,7 @@ The average response time for issues, PRs and emails is usually 24 hours. In som
 In order to speed up development, most development tasks (apart from the actual rending to E-Ink display) can be developed on more powerful machines and in richer environments than running this on a Pi zero. In case of Windows PC the most convenient way is to use VS Code Remote development in Windows Subsystem for Linux (WSL), please follow [Tutorial](https://code.visualstudio.com/remote-tutorials/wsl/getting-started). 
 
 To disable eInk functionality set following flag (in /settings/settings.py) to "image_only":
+
 `render_target = "image_only"` 
 
 ### Don't forget to check out the Wiki. It contains all the information to understanding and customising the script.
