@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  
+
   [![Version](https://img.shields.io/github/release/aceisace/Inky-Calendar.svg)](https://github.com/aceisace/Inky-Calendar/releases)
   [![Python](https://img.shields.io/pypi/pyversions/pyowm.svg)](https://img.shields.io/pypi/pyversions/pyowm.svg)
   [![Licence](https://img.shields.io/github/license/aceisace/Inky-Calendar.svg)](https://github.com/aceisace/Inky-Calendar/blob/Stable/LICENSE)
@@ -60,8 +60,12 @@ Execute the following command in the Terminal to install all required packages. 
 
 **`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/master/Installer.sh)"`**
 
-**Note**: If you were using a previous version, please use the web-ui for generating a new settings file. Settings files from previous versions are not compatible.
+**Installing tagged versions**: 
+If you want to install a different version than the *master* branch, insert the tag name into the above URL, e. g.
+`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/v1.7.1/Installer.sh)"`
 
+**Upgrading from old versions:**:
+If you were using a previous version, please use the web-ui for generating a new settings file. Settings files from previous versions are not compatible.
 
 If you get some red lines, please run `pip3 install Pillow==6.2.0`.
 
