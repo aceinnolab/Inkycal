@@ -36,7 +36,7 @@ else:
 top_section_width = middle_section_width = bottom_section_width = display_width
 
 if top_section and bottom_section:
-  top_section_height = int(display_height*0.11)
+  top_section_height = int(display_height*0.14)
   bottom_section_height = int(display_height*0.24)
 
 elif top_section and not bottom_section:
