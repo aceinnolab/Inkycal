@@ -105,7 +105,7 @@ The average response time for issues, PRs and emails is usually 24 hours. In som
 ## Setting up VS Code Remote development in WSL
 In order to speed up development, most development tasks (apart from the actual rending to E-Ink display) can be developed on more powerful machines and in richer environments than running this on a Pi zero. In case of Windows PC the most convenient way is to use VS Code Remote development in Windows Subsystem for Linux (WSL), please follow [Tutorial](https://code.visualstudio.com/remote-tutorials/wsl/getting-started). 
 
-To disable eInk functionality set following flag (in /settings/settings.py) to "image_only":
+To disable the eInk functionality set the flag to "image_only" (in /settings/settings.py):
 
 `render_target = "image_only"` 
 
