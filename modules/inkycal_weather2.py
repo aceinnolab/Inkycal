@@ -139,7 +139,7 @@ def generate_image():
         end = '')
       current_weather_setup = owm.weather_at_place(location)
       weather = current_weather_setup.get_weather()
-      
+
       """Set-up and get weather forecast data"""
       forecast = owm.three_hours_forecast(location)
 
@@ -234,7 +234,7 @@ def generate_image():
         font = w_font, fill_height = 0.9)
       write_text(column_width, row_height, rain_now, (column2, row2),
         font = font)
-      if use_wind_direction_icon == False:  
+      if use_wind_direction_icon == False:
         write_text(column_width, row_height, '\uf050', (column2, row3),
           font = w_font, fill_height = 0.9)
       else:
@@ -312,13 +312,13 @@ def generate_image():
         draw.line((0, top_section_height-border_top, top_section_width-
         border_left, top_section_height-border_top), fill='black', width=3)
 
-      weather_image = crop_image(image, 'top_section')  
+      weather_image = crop_image(image, 'top_section')
       weather_image.save(image_path+'inkycal_weather2.png')
 
       if three_colour_support == True:
-        weather_image_col = crop_image(image_col, 'top_section')  
+        weather_image_col = crop_image(image_col, 'top_section')
         weather_image_col.save(image_path+'inkycal_weather2_col.png')
-        
+
       print('Done')
 
     except Exception as e:
