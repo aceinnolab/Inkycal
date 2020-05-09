@@ -122,6 +122,8 @@ def write_text(space_width, space_height, text, tuple,
     text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
   if alignment is "" or "middle" or None:
     x = int((space_width / 2) - (text_width / 2))
+  if alignment is 'right':
+    x = int(space_width - text_width)
   if alignment is 'left':
     x = 0
   if font != w_font:
