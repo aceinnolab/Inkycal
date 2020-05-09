@@ -218,9 +218,9 @@ def generate_image():
         wind = str([windspeed_to_beaufort.index(_) for _ in
           windspeed_to_beaufort if windspeed_now < _][0])
       else:
-        meters_sec = round(windspeed_now, ndigits = windspeed_decimal_places)
-        miles_per_hour = round(windspeed_now * 2,23694,
-                               ndigits = windspeed_decimal_places)
+        meters_sec = round(windspeed_now, ndigits = decimal_places_windspeed)
+        miles_per_hour = round(windspeed_now * 2.23694,
+                               ndigits = decimal_places_windspeed)
         if units == 'metric':
           wind = str(meters_sec) + 'm/s'
         if units == 'imperial':
