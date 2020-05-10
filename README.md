@@ -47,7 +47,8 @@ This software is in active development. To see the current development status, [
 # Setup
 ## Getting the Raspberry Pi Zero W ready
 1. After [flashing Raspbian Buster (with Desktop)](https://www.raspberrypi.org/downloads/raspbian/), set up Wifi on the Raspberry Pi Zero W by copying the file [**wpa_supplicant.conf**](https://github.com/aceisace/Inky-Calendar/blob/installer/wpa_supplicant.conf) (from above) to the /boot directory and adding your Wifi details in that file.
-2. Create a simple text document named **ssh** in the boot directory to enable ssh.
+2. Create a simple text document named **ssh** in the boot directory to enable ssh. 
+3. Install the SD card and boot your Raspberry Pi. Connect to it over the network with ssh and login. 
 3. Expand the filesystem in the Terminal with **`sudo raspi-config --expand-rootfs`**
 4. Enable SPI by entering **`sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt`** in the Terminal
 5. Set the correct timezone with **`sudo dpkg-reconfigure tzdata`**, selecting the correct continent and then the capital of your country.
@@ -78,7 +79,7 @@ If the Installer should fail for any reason, kindly open an issue and paste the 
 <img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/Installer-gif.gif" width="700">
 </p>
 
-## Adding details to the programm
+## Adding details to the program
 When you run the installer, you can add details in the last step. For new-users, it is recommended to use the 'web-UI' option.
 
 You can also manually edit the settings file like this: `nano /home/$USER/Inky-Calendar/settings/settings.py`
