@@ -6,3 +6,7 @@ images/
 
 # User-specific config files
 modules/settings.py
+
+# Ignore IDE specific files
+# VS Code
+.vscode/settings.json
