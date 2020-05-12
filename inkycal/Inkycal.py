@@ -1,9 +1,6 @@
 from importlib import import_module
 
-from inkycal.configuration.settings_parser import inkycal_settings as settings
-from inkycal.display.layout import inkycal_layout as layout
-
-
+from inkycal.config import settings, layout
 
 ##modules = settings.which_modules()
 ##for module in modules:
@@ -12,23 +9,28 @@ from inkycal.display.layout import inkycal_layout as layout
 ##    #import_module('modules.'+module)
 ##print(module)
 
-settings_file = '/home/pi/Desktop/settings.json'
-
+settings_file = "/home/pi/Desktop/Inkycal/inkycal/config/settings.json"
 
 class inkycal:
+  """Main class for inkycal
+  """
+
   def __init__(self, settings_file_path):
     """Load settings file from path"""
+
     # Load settings file
     self.settings = settings(settings_file_path)
     self.model = self.settings.model
 
   def create_canvas(self):
     """Create a canvas with same size as the specified model"""
+
     self.layout = layout(model=self.model)
 
   def create_custom_canvas(self, width=None, height=None,
                            supports_colour=False):
     """Create a custom canvas by specifying height and width"""
+
     self.layout = layout(model=model, width=width, height=height,
                supports_colour=supports_colour)
 
