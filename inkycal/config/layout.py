@@ -1,5 +1,17 @@
-class inkycal_layout:
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+"""
+Layout module for Inky-Calendar software.
+Copyright by aceisace
+"""
+
+import logging
+
+class layout:
   """Page layout handling"""
+
+  logger = logging.getLogger(__name__)
+  logging.basicConfig(level=logging.DEBUG)
 
   def __init__(self, model=None, width=None, height=None,
                supports_colour=False):
@@ -7,8 +19,8 @@ class inkycal_layout:
     Use model parameter to specify display OR
     Crate a custom display with given width and height"""
 
-    self.background_colour = 'white' # Move to inkycal_rendering
-    self.text_colour = 'black'       # Move to inkycal_rendering
+    self.background_colour = 'white'
+    self.text_colour = 'black'
 
     if (model != None) and (width == None) and (height == None):
       display_dimensions = {
@@ -35,9 +47,9 @@ class inkycal_layout:
       print("Can't create a layout without given sizes")
       raise
 
-    self.__top_section_width = self.display_width
-    self.__middle_section_width = self.display_width
-    self.__bottom_section_width = self.display_width
+    self.top_section_width = self.display_width
+    self.middle_section_width = self.display_width
+    self.bottom_section_width = self.display_width
     self.create_sections()
 
   def create_sections(self, top_section=0.10, middle_section=0.65,
@@ -50,33 +62,41 @@ class inkycal_layout:
 
     if top_section == 0 or bottom_section == 0:
       if top_section == 0:
-        self.__top_section_height = 0
+        self.top_section_height = 0
 
       if bottom_section == 0:
-        self.__bottom_section_height = 0
+        self.bottom_section_height = 0
 
-      self.__middle_section_height = scale(1 - top_section - bottom_section)
+      self.middle_section_height = scale(1 - top_section - bottom_section)
     else:
       if top_section + middle_section + bottom_section > 1.0:
         print('All percentages should add up to max 100%, not more!')
         raise
 
-      self.__top_section_height = scale(top_section)
-      self.__middle_section_height = scale(middle_section)
-      self.__bottom_section_height = (self.display_height -
-        self.__top_section_height - self.__middle_section_height)
+      self.top_section_height = scale(top_section)
+      self.middle_section_height = scale(middle_section)
+      self.bottom_section_height = (self.display_height -
+        self.top_section_height - self.middle_section_height)
+
+    logging.debug('top-section size: {} x {} px'.format(
+      self.top_section_width, self.top_section_height))
+    logging.debug('middle-section size: {} x {} px'.format(
+      self.middle_section_width, self.middle_section_height))
+    logging.debug('bottom-section size: {} x {} px'.format(
+      self.bottom_section_width, self.bottom_section_height))
+
 
   def get_section_size(self, section):
     """Enter top/middle/bottom to get the size of the section as a tuple:
     (width, height)"""
+
     if section not in ['top','middle','bottom']:
-      print('Invalid section: ', section)
-      raise
+      raise Exception('Invalid section: ', section)
     else:
       if section == 'top':
-        size = (self.__top_section_width, self.__top_section_height)
+        size = (self.top_section_width, self.top_section_height)
       elif section == 'middle':
-        size = (self.__middle_section_width, self.__middle_section_height)
+        size = (self.middle_section_width, self.middle_section_height)
       elif section == 'bottom':
-        size = (self.__bottom_section_width, self.__bottom_section_height)
+        size = (self.bottom_section_width, self.bottom_section_height)
       return size
