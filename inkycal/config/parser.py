@@ -15,7 +15,7 @@ from os import chdir #Ad-hoc
 
 from os import path
 
-class inkycal_settings:
+class settings:
   """Load and validate settings from the settings file"""
 
   __supported_languages = ['en', 'de', 'ru', 'it', 'es', 'fr', 'el', 'sv', 'nl',
