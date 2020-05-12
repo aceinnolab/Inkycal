@@ -5,7 +5,7 @@ RSS module for Inky-Calendar Project
 Copyright by aceisace
 """
 
-from inkycal.custom import *
+from inkycal.render.functions import *
 from random import shuffle
 
 try:
@@ -20,13 +20,7 @@ size = (384, 160)
 config = {'rss_urls': ['http://feeds.bbci.co.uk/news/world/rss.xml#']}
 
 
-class rss:
-  """RSS class
-  parses rss feeds from given urls and writes them on the image
-  """
-
-  logger = logging.getLogger(__name__)
-  logging.basicConfig(level=logging.DEBUG)
+class inkycal_rss:
 
   def __init__(self, section_size, section_config):
     """Initialize inkycal_rss module"""
@@ -37,8 +31,8 @@ class rss:
     self.background_colour =  'white'
     self.font_colour = 'black'
     self.fontsize = 12
-    self.font = ImageFont.truetype(fonts['NotoSans-SemiCondensed'],
-                                   size = self.fontsize)
+    self.font = ImageFont.truetype(
+      fonts['NotoSans-SemiCondensed'], size = self.fontsize)
     self.padding_x = 0.02
     self.padding_y = 0.05
     print('{0} loaded'.format(self.name))
@@ -72,19 +66,10 @@ class rss:
     im_width = int(self.width - (self.width * 2 * self.padding_x))
     im_height = int(self.height - (self.height * 2 * self.padding_y))
     im_size = im_width, im_height
-    logging.info('image size: {} x {} px'.format(im_width, im_height))
 
     # Create an image for black pixels and one for coloured pixels
     im_black = Image.new('RGB', size = im_size, color = self.background_colour)
     im_colour = Image.new('RGB', size = im_size, color = 'white')
-
-    # Check if internet is available
-    if internet_available() == True:
-      logging.info('Connection test passed')
-    else:
-      logging.error('Network could not be reached :/')
-      raise Exception('Network could not be reached :(')
-
 
     # Set some parameters for formatting rss feeds
     line_spacing = 1
@@ -99,6 +84,11 @@ class rss:
     line_positions = [
       (0, spacing_top + _ * line_height ) for _ in range(max_lines)]
 
+    if internet_available() == True:
+      print('Connection test passed')
+    else:
+      # write 'No network available :('
+      raise Exception('Network could not be reached :(')
 
     try:
       # Create list containing all rss-feeds from all rss-feed urls
