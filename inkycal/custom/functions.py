@@ -139,6 +139,8 @@ def write(image, xy, box_size, text, font=None, **kwargs):
   draw  = ImageDraw.Draw(image)
   space = Image.new('RGBA', (box_width, box_height))
   ImageDraw.Draw(space).text((x, y), text, fill=colour, font=font)
+  # Uncomment following two lines, comment out above two lines to show
+  # red text-box with white text (debugging purposes)
 ##  space = Image.new('RGBA', (box_width, box_height), color= 'red')
 ##  ImageDraw.Draw(space).text((x, y), text, fill='white', font=font)
 
@@ -179,22 +181,26 @@ def internet_available():
     return False
 
 
-def draw_square(image, xy, size, radius=5, thickness=2):
-  """Draws a square with round corners at (x,y)
+def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1,0.1)):
+  """Draws a border with round corners at (x,y)
   xy = position e.g: (5,10)
-  size = size of square (width, height)
-  radius: corner radius
+  size = size of border (width, height), radius: corner radius
   thickness = border thickness
+  shrinkage = shrink and center border by given percentage:(width_%, height_%)
   """
   
-  x, y, diameter = xy[0], xy[1], radius*2
   colour='black'
-  width, height = size
-  lenght = width - diameter
+  # size from function paramter
+  width, height = size[0]*(1-shrinkage[0]), size[1]*(1-shrinkage[1])
+  offset_x, offset_y = int((size[0] - width)/2), int((size[1]- height)/2)
+  
+  x, y, diameter = xy[0]+offset_x, xy[1]+offset_y, radius*2
+  # lenght of rectangle size
+  a,b = (width - diameter), (height-diameter)
 
   # Set coordinates for round square
-  p1, p2 = (x+radius, y), (x+radius+lenght, y)
-  p3, p4 = (x+width, y+radius), (x+width, y+radius+lenght)
+  p1, p2 = (x+radius, y), (x+radius+a, y)
+  p3, p4 = (x+width, y+radius), (x+width, y+radius+b)
   p5, p6 = (p2[0], y+height), (p1[0], y+height)
   p7, p8  = (x, p4[1]), (x,p3[1])
   c1, c2 = (x,y), (x+diameter, y+diameter)
@@ -213,45 +219,6 @@ def draw_square(image, xy, size, radius=5, thickness=2):
   draw.arc(  (c3, c4) , 270, 360, fill=colour, width=thickness)
   draw.arc(  (c5, c6) , 0, 90, fill=colour, width=thickness)
   draw.arc(  (c7, c8) , 90, 180, fill=colour, width=thickness)
-
-
-##"""Custom function to add text on an image"""
-##def write_text(space_width, space_height, text, tuple,
-##  font=default, alignment='middle', autofit = False, fill_width = 1.0,
-##  fill_height = 0.8, colour = text_colour, rotation = None):
-##  """tuple refers to (x,y) position on display"""
-##  if autofit == True or fill_width != 1.0 or fill_height != 0.8:
-##    size = 8
-##    font = ImageFont.truetype(font.path, size)
-##    text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
-##    while text_width < int(space_width * fill_width) and text_height < int(space_height * fill_height):
-##      size += 1
-##      font = ImageFont.truetype(font.path, size)
-##      text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
-##
-##  text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
-##
-##  while (text_width, text_height) > (space_width, space_height):
-##    text=text[0:-1]
-##    text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
-##  if alignment is "" or "middle" or None:
-##    x = int((space_width / 2) - (text_width / 2))
-##  if alignment is 'left':
-##    x = 0
-##  if font != w_font:
-##    y = int((space_height / 2) - (text_height / 1.7))
-##  else:
-##    y = y = int((space_height / 2) - (text_height / 2))
-##
-##  space = Image.new('RGBA', (space_width, space_height))
-##  ImageDraw.Draw(space).text((x, y), text, fill=colour, font=font)
-##  if rotation != None:
-##    space.rotate(rotation, expand = True)
-##
-##  if colour == 'black' or 'white':
-##    image.paste(space, tuple, space)
-##  else:
-##    image_col.paste(space, tuple, space)
 
 
 """Not required anymore?"""

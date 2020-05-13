@@ -12,17 +12,17 @@ try:
   import feedparser
 except ImportError:
   print('feedparser is not installed! Please install with:')
-  print('pipe install feedparser')
+  print('pip3 install feedparser')
 
 
-# Debug Data
+# Debug Data (not for production use!)
 size = (384, 160)
 config = {'rss_urls': ['http://feeds.bbci.co.uk/news/world/rss.xml#']}
 
 
 class rss:
   """RSS class
-  parses rss feeds from given urls and writes them on the image
+  parses rss feeds from given urls
   """
 
   logger = logging.getLogger(__name__)
@@ -142,8 +142,8 @@ class rss:
       write(im_black, (0,0), (im_width, im_height), str(e), font = self.font)
 
     # Save image of black and colour channel in image-folder
-    im_black.save(images+self.name+'.png')
-    im_colour.save(images+self.name+'_colour.png')
+    im_black.save(images+self.name+'.png', 'PNG')
+    im_colour.save(images+self.name+'_colour.png', 'PNG')
 
 if __name__ == '__main__':
   print('running {0} in standalone mode'.format(

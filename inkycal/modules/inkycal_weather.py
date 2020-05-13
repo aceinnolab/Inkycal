@@ -6,15 +6,26 @@ Copyright by aceisace
 """
 
 from inkycal.custom import *
-import pyowm
 import math, decimal
 import arrow
 from locale import getdefaultlocale as sys_locale
 
-config = {'api_key': 'top-secret', 'location': 'Stuttgart, DE'}
+try:
+  import pyowm
+except ImportError:
+  print('pyowm is not installed! Please install with:')
+  print('pip3 install pyowm')
+
+
+# Debug Data (not for production use!)
+config = {'api_key': 'secret', 'location': 'Stuttgart, DE'}
 size = (384,80)
 
 class weather:
+  """weather class
+  parses weather details from openweathermap
+  """
+
   logger = logging.getLogger(__name__)
   logging.basicConfig(level=logging.INFO)
 
@@ -34,18 +45,16 @@ class weather:
     # Weather-specfic options
     self.owm = pyowm.OWM(config['api_key'])
     self.units = 'metric' # metric # imperial
-    self.hour_format = '12' # 12 #24
+    self.hour_format = '24' # 12 #24
     self.timezone = get_system_tz()
     self.round_temperature = True
     self.round_windspeed = True
     self.use_beaufort = True
-    self.show_wind_direction = False
-    self.use_wind_direction_icon = False
-    self.forecast_interval = 'hourly' # daily # hourly
+    self.forecast_interval = 'daily' # daily # hourly
     self.locale = sys_locale()[0]
     self.weatherfont = ImageFont.truetype(fonts['weathericons-regular-webfont'],
                                           size = self.fontsize)
-    
+
     print('{0} loaded'.format(self.name))
 
   def set(self, **kwargs):
@@ -111,7 +120,7 @@ class weather:
       """Check if temp is below freezing point of water (0°C/30°F)
       returns True if temp below freezing point, else False"""
       answer = False
-      
+
       if temp_unit == 'celsius' and round(float(temp.split('°')[0])) <= 0:
         answer = True
       elif temp_unit == 'fahrenheit' and round(float(temp.split('°')[0])) <= 0:
@@ -182,12 +191,12 @@ class weather:
 
     # Calculate size rows and columns
     col_width = im_width // 7
-    
+
     if (im_height // 3) > col_width//2:
       row_height = (im_height // 4)
     else:
       row_height = (im_height // 3)
-      
+
 
     # Adjust the fontsize to make use of most free space
     # self.font = auto_fontsize(self.font, row_height)
@@ -201,9 +210,6 @@ class weather:
     icon_medium = icon_small * 2
     icon_large = icon_small * 3
 
-    print('col_width=', col_width, 'row_height:', row_height)
-    print('small, medium ,large:', icon_small, icon_medium, icon_large)
-          
     # Calculate the x-axis position of each col
     col1 = spacing_top
     col2 = col1 + col_width
@@ -222,16 +228,8 @@ class weather:
     weather_icon_pos = (col1, row1)
     temperature_icon_pos = (col2, row1)
     temperature_pos = (col2+icon_small, row1)
-    
-    print('temp icon pos:', temperature_icon_pos)
-    print('temp:', temperature_pos)
-    
     humidity_icon_pos = (col2, row2)
     humidity_pos = (col2+icon_small, row2)
-    
-    print('hum icon pos:', humidity_icon_pos)
-    print('hum pos:', humidity_pos)
-
     windspeed_icon_pos = (col2, row3)
     windspeed_pos = (col2+icon_small, row3)
 
@@ -275,7 +273,7 @@ class weather:
       temp_unit = 'celsius'
     elif self.units == 'imperial':
       temp_unit = 'fahrenheit'
-      
+
 
     # Get current time
     now = arrow.utcnow()
@@ -344,7 +342,15 @@ class weather:
                                                          self.locale)
         return {'temp':temp_range, 'icon':status, 'stamp': weekday}
 
-      fc_data = [calculate_forecast(days) for days in range (1,5)]
+      forecasts = [calculate_forecast(days) for days in range (1,5)]
+
+      fc_data = {}
+      for forecast in forecasts:
+        fc_data['fc'+str(forecasts.index(forecast)+1)] = {
+          'temp':forecast['temp'],
+          'icon':forecast['icon'],
+          'stamp': forecast['stamp']
+          }
 
     for key,val in fc_data.items():
       logging.info((key,val))
@@ -354,9 +360,6 @@ class weather:
     weather_icon = weather.get_weather_icon_name()
     humidity = str(weather.get_humidity())
     windspeed = weather.get_wind(unit='meters_sec')['speed']
-    wind_angle = weather.get_wind()['deg']
-    wind_direction = ["N","NE","E","SE","S","SW","W","NW"][round(
-      wind_angle/45) % 8]
     sunrise_raw = arrow.get(weather.get_sunrise_time()).to(self.timezone)
     sunset_raw = arrow.get(weather.get_sunset_time()).to(self.timezone)
 
@@ -384,10 +387,6 @@ class weather:
       elif self.units == 'imperial':
         wind = str(miles_per_hour) + 'mph'
 
-    if self.show_wind_direction == True:
-      wind += '({0})'.format(wind_direction)
-
-
     dec = decimal.Decimal
     moonphase = get_moon_phase()
 
@@ -402,7 +401,7 @@ class weather:
 
     if is_negative(temperature):
        write(im_black, temperature_pos, (col_width-icon_small, row_height),
-          temperature, font = self.font, fill_height = 0.9)
+          temperature, font = self.font)
     else:
        write(im_black, temperature_pos, (col_width-icon_small, row_height),
           temperature, font = self.font)
@@ -411,28 +410,24 @@ class weather:
           '\uf07a')
 
     write(im_black, humidity_pos, (col_width-icon_small, row_height),
-          humidity+'%', font = self.font, fill_height = 0.9)
+          humidity+'%', font = self.font)
 
-    if self.use_wind_direction_icon == False:
-      draw_icon(im_colour, windspeed_icon_pos, (icon_small, icon_small),
+    draw_icon(im_colour, windspeed_icon_pos, (icon_small, icon_small),
                 '\uf050')
-    else:
-      draw_icon(im_colour, windspeed_icon_pos, (icon_small, icon_small),
-                '\uf0b1', rotation = -wind_degrees)    
 
     write(im_black, windspeed_pos, (col_width-icon_small, row_height),
-          wind, font=self.font, fill_height = 0.9)
+          wind, font=self.font)
 
     # Fill weather details in col 3 (moonphase, sunrise, sunset)
     draw_icon(im_colour, moonphase_pos, (col_width, row_height), moonphase)
 
     draw_icon(im_colour, sunrise_icon_pos, (icon_small, icon_small), '\uf051')
-    write(im_black, sunrise_time_pos, (col_width-icon_small, icon_small), sunrise,
-          font = self.font, autofit = True)
+    write(im_black, sunrise_time_pos, (col_width-icon_small, icon_small),
+          sunrise, font = self.font)
 
     draw_icon(im_colour, sunset_icon_pos, (icon_small, icon_small), '\uf052')
     write(im_black, sunset_time_pos, (col_width-icon_small, icon_small), sunset,
-          font = self.font, autofit = True)
+          font = self.font)
 
     # Add the forecast data to the correct places
     for pos in range(1, len(fc_data)+1):
@@ -446,31 +441,22 @@ class weather:
         icon)
       write(im_black, eval('temp_fc'+str(pos)), (col_width, row_height),
         temp, font = self.font)
-      
-    # Add borders around each sub-section
-    square_h = int((row_height*3)*0.9)
-    square_w = int((col_width*0.9))
-    draw_square(im_colour, (col1, row1), (col_width*3, square_h))
-    draw_square(im_colour, (col4, row1), (square_w, square_h))
-    draw_square(im_colour, (col5, row1), (square_w, square_h))
-    draw_square(im_colour, (col6, row1), (square_w, square_h))
-    draw_square(im_colour, (col7, row1), (square_w, square_h))
 
-##    except Exception as e:
-##      """If something went wrong, print a Error message on the Terminal"""
-##      print('Failed!')
-##      print('Error in weather module!')
-##      print('Reason: ',e)
-##      clear_image('top_section')
-##      write(top_section_width, top_section_height, str(e),
-##                 (0, 0), font = font)
-##      weather_image = crop_image(image, 'top_section')
-##      weather_image.save(image_path+'inkycal_weather.png')
-##      pass
-##
+    # Add borders around each sub-section
+    draw_border(im_black, (col1, row1), (col_width*3, im_height),
+                shrinkage=(0.02,0.1))
+    draw_border(im_black, (col4, row1), (col_width, im_height))
+    draw_border(im_black, (col5, row1), (col_width, im_height))
+    draw_border(im_black, (col6, row1), (col_width, im_height))
+    draw_border(im_black, (col7, row1), (col_width, im_height))
+
+##############################################################################
+#        Error Handling
+##############################################################################
+
     # Save image of black and colour channel in image-folder
-    im_black.save(images+self.name+'.png')
-    im_colour.save(images+self.name+'_colour.png')
+    im_black.save(images+self.name+'.png', "PNG")
+    im_colour.save(images+self.name+'_colour.png', "PNG")
 
 if __name__ == '__main__':
   print('running {0} in standalone mode'.format(
