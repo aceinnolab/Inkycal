@@ -20,36 +20,38 @@ The main folder is now inkcal.
 Folder structure:
 
 ```bash
-│   Inkycal.py              -main file (work in progress)
-│   __init__.py
-│
-├───configuration           -handles parsing, validation etc. of settings.json file
-│   settings.json           -Sample settings file
-│   settings_parser.py      -parses settings.json file
-│   __init__.py
-│
-├───display                 - Handles everything replated to the display
-│   │   layout.py           - Set page layout
-│   │   __init__.py
-│   │
-│   ├───drivers             - driver files for supported ePaper displays
-│   │   epdconfig.py
-│   │   epd_4_in_2.py
-│   │   epd_4_in_2_colour.py
-│   │   epd_5_in_83.py
-│   │   epd_5_in_83_colour.py
-│   │   epd_7_in_5.py
-│   │   epd_7_in_5_colour.py
-│   │   epd_7_in_5_v2.py
-│   │   epd_7_in_5_v2_colour.py
-│   │    __init__.py
-│
-├───modules                 - folder containing all supported modules
-│       inkycal_rss.py      - inkycal_rss module
-│       __init__.py
-│
-└───render                  - Contains file to help with rendering
-        functions.py        - Inky-Calendar custom functions
+|   Inkycal.py               -main file (work in progress)
+|   __init__.py
+|
++---config       
+|       layout.py            -handles layout of image (size, section-sizes)
+|       parser.py            -parse the settings.json file
+|       settings.json        -JSON file for all the user-config
+|       __init__.py
+|
++---custom
+|       functions.py         -custom functions of inkycal-software (writing text, etc..)
+|       __init__.py
+|
++---display
+|   |   __init__.py
+|   |
+|   \---drivers              - drivers....
+|           epdconfig.py
+|           epd_4_in_2.py
+|           epd_4_in_2_colour.py
+|           epd_5_in_83.py
+|           epd_5_in_83_colour.py
+|           epd_7_in_5.py
+|           epd_7_in_5_colour.py
+|           epd_7_in_5_v2.py
+|           epd_7_in_5_v2_colour.py
+|           __init__.py
+|
+\---modules                   - folder containing all modules
+        ical_parser.py        - parses icalendars
+        inkycal_rss.py        - parses rss feeds
+        inkycal_weather.py    - parses weather from openweathermap
         __init__.py
 ```
 
