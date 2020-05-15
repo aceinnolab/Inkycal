@@ -55,7 +55,7 @@ Folder structure:
 
 
 <p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/Inky-Calendar-logo.png" width="800">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/logo.png" width="800">
 </p>
 
 <p align="center">
