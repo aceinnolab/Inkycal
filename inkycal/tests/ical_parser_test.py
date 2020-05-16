@@ -3,7 +3,7 @@ from inkycal.modules.ical_parser import icalendar
 import arrow
 
 
-class ical_parser_tests(unittest.TestCase):
+class ical_parser_test(unittest.TestCase):
     
     def test_show_events(self):
         a = icalendar()
