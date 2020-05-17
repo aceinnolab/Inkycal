@@ -258,7 +258,7 @@ body{
 
       <div class="field">
         <label>What should be displayed in the top section?</label>
-        <div class="ts checkboxes">
+        <div class="ts checkboxes" id="cb_top_section">
           <div class="ts radio checkbox">
             <input id="Weather" type="radio" name="ts" checked>
             <label for="Weather">Weather</label>
@@ -268,6 +268,17 @@ body{
             <label for="top_blank">Nothing</label>
           </div>
         </div>
+      </div>
+      <div class="field" id="pnl_top_height">
+        <label>Height of the top section</label>
+        <details class="ts accordion">
+          <summary>
+            <i class="dropdown icon"></i> Info
+          </summary>
+          <div class="content">
+        <p>Section height is calculated relative to other sections. With this approach you can choose pixel-perfect, relative or percentage panel heights.</p></div>
+        </details>
+        <input id="top_height" type="number" min="1" max="10000" placeholder="10">
       </div>
 
       <div class="field">
@@ -290,8 +301,19 @@ body{
             <label for="middle_blank">Nothing</label>
           </div>
         </div>
-        
       </div>
+      <div class="field" id="pnl_middle_height">
+        <label>Height of the middle section</label>
+        <details class="ts accordion">
+          <summary>
+            <i class="dropdown icon"></i> Info
+          </summary>
+          <div class="content">
+        <p>Section height is calculated relative to other sections. With this approach you can choose pixel-perfect, relative or percentage panel heights.</p></div>
+        </details>
+        <input id="middle_height" type="number" min="1" max="10000" placeholder="65">
+      </div>
+
       <div class="field" id="Image_Config" style="display:none;">
           <div class="field">
             <label>What is the URl or path of the image?</label>
@@ -331,7 +353,7 @@ body{
 
       <div class="field">
         <label>What should be displayed in the bottom section?</label>
-        <div class="ts checkboxes">
+        <div class="ts checkboxes" id="cb_bottom_section">
           <div class="ts radio checkbox">
             <input id="RSS" type="radio" name="bs" checked>
             <label for="RSS">RSS-feeds</label>
@@ -341,6 +363,17 @@ body{
             <label for="bottom_blank">Nothing</label>
           </div>
         </div>
+      </div>
+      <div class="field" id="pnl_bottom_height">
+        <label>Height of the bottom section</label>
+        <details class="ts accordion">
+          <summary>
+            <i class="dropdown icon"></i> Info
+          </summary>
+          <div class="content">
+        <p>Section height is calculated relative to other sections. With this approach you can choose pixel-perfect, relative or percentage panel heights.</p></div>
+        </details>
+        <input id="bottom_height" type="number" min="1" max="10000" placeholder="25">
       </div>
 
       <div class="content">
@@ -386,16 +419,40 @@ language = "{language}"
 units = "{units}"
 hours = "{hours}"
 top_section = "{top_section}"
+top_section_height = {top_section_height}
 middle_section = "{middle_section}"
+middle_section_height = {middle_section_height}
 bottom_section = "{bottom_section}"
+bottom_section_height = {bottom_section_height}
 inkycal_image_path = "{image_path}"
 inkycal_image_path_body = "{image_path_body}"`;
   
+  $('#cb_top_section').change(function(){
+    if($('#top_blank').prop("checked")) {
+      $('#pnl_top_height').hide();
+    } else {
+      $('#pnl_top_height').show();
+    }
+  });
+
   $('#cb_middle_section').change(function(){
     if($('#Image').prop("checked")) {
       $('#Image_Config').show();
     } else {
       $('#Image_Config').hide();
+    }
+    if($('#middle_blank').prop("checked")) {
+      $('#pnl_middle_height').hide();
+    } else {
+      $('#pnl_middle_height').show();
+    }
+  });
+
+  $('#cb_bottom_section').change(function(){
+    if($('#bottom_blank').prop("checked")) {
+      $('#pnl_bottom_height').hide();
+    } else {
+      $('#pnl_bottom_height').show();
     }
   });
 
@@ -551,6 +608,16 @@ inkycal_image_path_body = "{image_path_body}"`;
       bottom_section = "";
     }
 
+    top_section_height    = $("#top_height").val().trim()
+    top_section_height = top_section_height=="" ? null : Number(top_section_height)
+
+    middle_section_height = $("#middle_height").val().trim()
+    middle_section_height = middle_section_height=="" ? null : Number(middle_section_height)
+
+    bottom_section_height = $("#bottom_height").val().trim()
+    bottom_section_height = bottom_section_height=="" ? null : Number(bottom_section_height)
+
+
     var image_path = $("#image_path").val().trim();
     if (image_path == ""){
       image_path = $("#image_path").attr("placeholder");
@@ -560,9 +627,9 @@ inkycal_image_path_body = "{image_path_body}"`;
 
     //console.log(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section);
     if(json)
-      downloadSettingsAsJson(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section, image_path, image_path_body)
+      downloadSettingsAsJson(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, top_section_height, middle_section, middle_section_height, bottom_section, bottom_section_height, image_path, image_path_body)
     else
-      createPythonSetting(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, middle_section, bottom_section, image_path, image_path_body);
+      createPythonSetting(ical_urls, rss_urls, update_interval, api_key, location, week_starts_on, calibration_hours, model, language, units, hours, top_section, top_section_height, middle_section, middle_section_height, bottom_section, bottom_section_height, image_path, image_path_body);
   }
   
   function rk(content,key,value){
@@ -570,7 +637,7 @@ inkycal_image_path_body = "{image_path_body}"`;
     return content.split("{" + key + "}").join(value);
   }
   
-  function createPythonSetting(a,b,c,d,e,f,g,h,i,j,k,l,m,n, image_path, image_path_body){
+  function createPythonSetting(a,b,c,d,e,f,g,h,i,j,k,l, top_section_height,m, bottom_section_height, n, bottom_section_height, image_path, image_path_body){
     var box = template;
     box = rk(box,"ical_urls",a);
     box = rk(box,"rss_urls",b);
@@ -584,8 +651,11 @@ inkycal_image_path_body = "{image_path_body}"`;
     box = rk(box,"units",j);
     box = rk(box,"hours",k);
     box = rk(box,"top_section",l);
+    box = rk(box,"top_section_height",top_section_height===null?"None":top_section_height);
     box = rk(box,"middle_section",m);
+    box = rk(box,"middle_section_height",middle_section_height===null?"None":middle_section_height);
     box = rk(box,"bottom_section",n);
+    box = rk(box,"bottom_section_height",bottom_section_height===null?"None":bottom_section_height);
     box = rk(box,"image_path",image_path);
     box = rk(box,"image_path_body",image_path_body);
 
@@ -618,8 +688,11 @@ inkycal_image_path_body = "{image_path_body}"`;
     units,
     hours,
     top_section,
+    top_section_height,
     middle_section,
+    middle_section_height,
     bottom_section,
+    bottom_section_height,
     image_path,
     image_path_body
   ) {
@@ -639,6 +712,7 @@ inkycal_image_path_body = "{image_path_body}"`;
           {
             "location"  : "top",
             "type"      : "inkycal_weather",
+            "height"    : top_section_height,
             "config"    : {
                 "api_key"  : api_key,     //Your openweathermap API-KEY -> "api-key"
                 "location" : location      //"City name, Country code"
@@ -657,6 +731,7 @@ inkycal_image_path_body = "{image_path_body}"`;
           {
             "location"  : "middle",
             "type"      : middle_section,
+            "height"    : middle_section_height,
             "config"    : {
                 "week_starts_on" : week_starts_on,    //"Sunday", "Monday"...
                 "ical_urls"  : ical_urls.split().map(function(x){ return TrimSingleQuotes(x);})
@@ -669,6 +744,7 @@ inkycal_image_path_body = "{image_path_body}"`;
           {
             "location"  : "middle",
             "type"      : middle_section,
+            "height"    : middle_section_height,
             "config"    : {
                 "image_path"  : TrimSingleQuotes(image_path),
                 "image_path_body" : image_path_body
@@ -686,6 +762,7 @@ inkycal_image_path_body = "{image_path_body}"`;
           {
             "location"  : "bottom",
             "type"      : bottom_section,
+            "height"    : bottom_section_height,
             "config"    : {
                 "rss_urls"  : rss_urls.split().map(function(x){ return TrimSingleQuotes(x);})
             }
