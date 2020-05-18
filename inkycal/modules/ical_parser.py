@@ -116,7 +116,8 @@ class icalendar:
       t_end <= arrow.get(events.get('dtend').dt) <= t_start
       ] #TODO: timezone-awareness?
 
-    if events: parsed_events += events
+    # if any recurring events were found, add them to parsed_events
+    if events: self.parsed_events += events
 
     # Recurring events time-span has to be in this format:
     # "%Y%m%dT%H%M%SZ" (python strftime)
@@ -132,20 +133,27 @@ class icalendar:
       'end':arrow.get(events.get("DTEND").dt)
       } for ical in recurring_events for events in ical]
 
+    # if any recurring events were found, add them to parsed_events
     if re_events: self.parsed_events += re_events
 
-    def sort_dates(event): ##required?
-      return event['begin']
-    self.parsed_events.sort(key=sort_dates)
+    # Sort events by their beginning date
+    self.sort()
+
     return self.parsed_events
 
   def sort(self):
     """Sort all parsed events"""
+    if not self.parsed_events:
+      logging.debug('no events found to be sorted')
+    else:
+      by_date = lambda event: event['begin']
+      self.parsed_events.sort(key=by_date)
 
-    def sort_dates(event):
-      return event['begin']
+  def clear_events(self):
+    """clear previously parsed events"""
 
-    self.parsed_events = self.parsed_events.sort(key=sort_dates)
+    self.parsed_events = []
+
 
   def show_events(self, fmt='DD MMM YY HH:mm'):
     """print all parsed events in a more readable way
@@ -153,18 +161,25 @@ class icalendar:
     see https://arrow.readthedocs.io/en/latest/#supported-tokens
     for more info tokens
     """
+
     if not self.parsed_events:
       logging.debug('no events found to be shown')
     else:
+##      line_width = line_width = max(len(_['title']) for _ in self.parsed_events)
+##      for events in self.parsed_events:
+##        title = events['title'],
+##        begin, end = events['begin'].format(fmt), events['end'].format(fmt)
+##        print('{0} {1} | {2} | {3}'.format(
+##          title, ' ' * (line_width - len(title)), begin, end))
       for events in self.parsed_events:
         title = events['title']
         begin, end = events['begin'].format(fmt), events['end'].format(fmt)
         print('start: {}, end : {}, title: {}'.format(begin,end,title))
 
 
-""" Sample usage...
+
+"""
 a = icalendar()
 a.load_url(urls)
 a.get_events(arrow.now(), arrow.now().shift(weeks=4))
-a.show_events()
 """

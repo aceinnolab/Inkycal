@@ -30,6 +30,7 @@ class rss:
 
   def __init__(self, section_size, section_config):
     """Initialize inkycal_rss module"""
+
     self.name = os.path.basename(__file__).split('.py')[0]
     self.config = section_config
     self.width, self.height = section_size
