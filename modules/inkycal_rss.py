@@ -9,6 +9,9 @@ import feedparser
 from random import shuffle
 from configuration import *
 
+"""Optional parameters"""
+sw_remove_tags = True # switch enabling removal of tags to keep text short
+
 """Add a border to increase readability"""
 border_top = int(bottom_section_height * 0.05)
 border_left = int(bottom_section_width * 0.02)
@@ -29,6 +32,19 @@ y_padding = int( (bottom_section_height % line_height) / 2 )
 """Create a list containing positions of each line"""
 line_positions = [(border_left, bottom_section_offset +
   border_top + y_padding + _*line_height ) for _ in range(max_lines)]
+
+"""Remove tags (such as links) to keep the text short"""
+def remove_tags(text):
+  finished = 0
+  while not finished:
+    finished = 1
+    start = text.find("<")
+    if start >= 0:
+      stop = text[start:].find(">")
+      if stop >= 0:
+        text = text[:start] + text[start+stop+1:]
+        finished = 0
+  return text
 
 def generate_image():
   if bottom_section == "inkycal_rss" and rss_feeds != [] and internet_available() == True:
@@ -54,6 +70,8 @@ def generate_image():
       filtered_feeds, counter = [], 0
 
       for posts in parsed_feeds:
+        if sw_remove_tags == True:
+          posts = remove_tags(posts)
         wrapped = text_wrap(posts, font = font, line_width = line_width)
         counter += len(filtered_feeds) + len(wrapped)
         if counter < max_lines:
