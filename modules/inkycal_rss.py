@@ -58,6 +58,12 @@ def generate_image():
         counter += len(filtered_feeds) + len(wrapped)
         if counter < max_lines:
           filtered_feeds.append(wrapped)
+        elif counter == len(wrapped): # implicitly len(filtered_feeds) == 0
+          # enter here if already first entry is too long to be shown completely...
+          print('\nWARNING! Already first entry is too long to be shown completely.')
+          print('         To avoid empty rss module, the entry will be cropped.')
+          del wrapped[max_lines:]
+          filtered_feeds.append(wrapped)
       filtered_feeds = flatten(filtered_feeds)
 
       """Write the correctly formatted text on the display"""
