@@ -36,9 +36,9 @@ class agenda:
 
     # Section specific config
     # Format for formatting dates
-    self.date_format = 'D MMM'
+    self.date_format = 'ddd D MMM'
     # Fromat for formatting event timings
-    self.event_format = "HH:mm" #use auto for 24/12 hour format?
+    self.time_format = "HH:mm" #use auto for 24/12 hour format?
     self.language = 'en' # Grab from settings file?
     self.timezone = get_system_tz()
     # urls of icalendars
@@ -121,7 +121,7 @@ class agenda:
     # Set the width for date, time and event titles
     date_width = int(max([self.font.getsize(
           dates['begin'].format(self.date_format, locale=self.language))[0]
-          for dates in agenda_events]) * 1.05)
+          for dates in agenda_events]) * 1.2)
     logging.debug(('date_width:', date_width))
 
     # Check if any events were filtered
@@ -129,8 +129,8 @@ class agenda:
       
       # Find out how much space the event times take
       time_width = int(max([self.font.getsize(
-          events['begin'].format(self.event_format, locale=self.language))[0]
-          for events in upcoming_events]) * 1.05)
+          events['begin'].format(self.time_format, locale=self.language))[0]
+          for events in upcoming_events]) * 1.2)
       logging.debug(('time_width:', time_width))
 
       # Calculate x-pos for time
@@ -178,12 +178,10 @@ class agenda:
 
         # Check if item is an event
         if 'end' in _:
-          time = _['begin'].format(self.event_format)
+          time = _['begin'].format(self.time_format)
 
-          # ad-hoc! Don't display event begin time if all day
-          # TODO: modifiy ical-parser to somehow tell if event is all day
-          # Maybe event.duration = arrow(end-start).days?
-          if time != '00:00':
+          # Check if event is all day, if not, add the time
+          if parser.all_day(_) == False:
             write(im_black, (x_time, line_pos[cursor][1]),
                 (time_width, line_height), time,
                 font = self.font, alignment='left')
@@ -193,10 +191,7 @@ class agenda:
                 '• '+title, font = self.font, alignment='left')
           cursor += 1
           
-############################################################################
-# Exception handling
-############################################################################
-
+    # If no events were found, write only dates and lines
     else:
       cursor = 0
       for _ in agenda_events:
@@ -212,6 +207,9 @@ class agenda:
 
       logging.info('no events found')
 
+############################################################################
+# Exception handling
+############################################################################
 
     # Save image of black and colour channel in image-folder
     im_black.save(images+self.name+'.png')

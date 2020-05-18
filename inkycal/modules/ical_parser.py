@@ -154,6 +154,22 @@ class icalendar:
 
     self.parsed_events = []
 
+  @staticmethod
+  def all_day(event):
+    """Check if an event is an all day event.
+    Returns True if event is all day, else False
+    """
+    if not ('end' and 'begin') in event:
+      print('Events must have a starting and ending time')
+      raise Exception('This event is not valid!')
+    else:
+      begin, end = event['begin'], event['end']
+      duration = end - begin
+      if (begin.format('HH:mm') == '00:00' and end.format('HH:mm') == '00:00'
+          and duration.days >= 1):
+        return True
+      else:
+        return False
 
   def show_events(self, fmt='DD MMM YY HH:mm'):
     """print all parsed events in a more readable way
