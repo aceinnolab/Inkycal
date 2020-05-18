@@ -12,18 +12,6 @@ import os
 import time
 
 
-##from glob import glob
-##import importlib
-##import subprocess as subp
-##import numpy
-##import arrow
-##from pytz import timezone
-
-
-
-##"""Set some display parameters"""
-##driver = importlib.import_module('drivers.'+model)
-
 # Get the path to the Inky-Calendar folder
 top_level = os.path.dirname(
   os.path.abspath(os.path.dirname(__file__))).split('/inkycal')[0]
@@ -123,7 +111,7 @@ def write(image, xy, box_size, text, font=None, **kwargs):
     while (text_width, text_height) > (box_width, box_height):
       text=text[0:-1]
       text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
-    logging.debug('truncated text:', text)
+    logging.debug(('truncated text:', text))
 
   # Align text to desired position
   if alignment == "center" or None:
