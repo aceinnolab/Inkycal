@@ -1,15 +1,15 @@
-ical_urls = ["https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"] #iCal URLs
+ical_urls = ["https://calendar.google.com/calendar/ical/de.german%23holiday%40group.v.calendar.google.com/public/basic.ics"] #iCal URLs
 rss_feeds = ["http://feeds.bbci.co.uk/news/world/rss.xml#"] # Use any RSS feed
 update_interval = "60"                # "10" # "15" # "20" # "30" # "60"
 api_key = ""                          # Your openweathermap API-KEY -> "api-key"
-location = "Stuttgart, DE"            # "City name, Country code"
+location = "Regensburg, DE"            # "City name, Country code"
 week_starts_on = "Monday"             # 'Sunday' # Monday
 calibration_hours = [0,12,18]         # Do not change unlesss you know what you are doing
-model = "epd_7_in_5_v2_colour"        # Choose the E-Paper model (see below)
-language = "en"                       # "en" # "de" # "fr" # "jp" etc.
+model = "epd_7_in_5_v2"               # Choose the E-Paper model (see below)
+language = "de"                       # "en" # "de" # "fr" # "jp" etc.
 units = "metric"                      # "metric" # "imperial"
 hours = "24"                          # "24" # "12"
-top_section = "inkycal_weather"       # "inkycal_weather"
+top_section = "inkycal_weather2"      # "inkycal_weather"
 middle_section = "inkycal_calendar"   # "inkycal_agenda" #"inkycal_calendar"
 bottom_section = "inkycal_rss"        # "inkycal_rss"
 
@@ -43,7 +43,7 @@ bottom_section = "inkycal_rss"        # "inkycal_rss"
 # Dynamic image with configurable calendars (see https://inkycal.robertsirre.nl/ and parameter inkycal_image_path_body)
 # inkycal_image_path = 'https://inkycal.robertsirre.nl/panel/calendar/{model}?width={width}&height={height}'
 
-inkycal_image_path  ='/home/pi/Inky-Calendar/images/canvas.png'
+inkycal_image_path  ='/usr/share/Inky-Calendar/Gallery/Inky-Calendar-logo.png'
 
 # Optional: inkycal_image_path_body
 # Allows obtaining complexer configure images.

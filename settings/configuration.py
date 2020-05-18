@@ -36,7 +36,7 @@ else:
 top_section_width = middle_section_width = bottom_section_width = display_width
 
 if top_section and bottom_section:
-  top_section_height = int(display_height*0.11)
+  top_section_height = int(display_height*0.14)
   bottom_section_height = int(display_height*0.24)
 
 elif top_section and not bottom_section:
@@ -122,6 +122,8 @@ def write_text(space_width, space_height, text, tuple,
     text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
   if alignment is "" or "middle" or None:
     x = int((space_width / 2) - (text_width / 2))
+  if alignment is 'right':
+    x = int(space_width - text_width)
   if alignment is 'left':
     x = 0
   if font != w_font:

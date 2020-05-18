@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-Weather module for Inky-Calendar software.
+Alterantive weather module for Inky-Calendar software.
 
 The lunar phase calculation is from Sean B. Palmer, inamidst.com.
 Thank You Palmer for the awesome code!
 
-Copyright by aceisace
+Based on weather module by aceisace
 """
 from __future__ import print_function
 import pyowm
@@ -15,16 +15,12 @@ import math, decimal
 import time
 dec = decimal.Decimal
 
-
 """Optional parameters"""
 round_temperature = True
 round_windspeed = True
 use_beaufort = False
 show_wind_direction = False
 use_wind_direction_icon = False
-now_str = 'now'
-now_str_time = time.strftime("@%H:%M")
-
 
 """Set the optional parameters"""
 decimal_places_temperature = None if round_temperature == True else 1
@@ -49,67 +45,27 @@ border_top = int(top_section_height * 0.05)
 border_left = int(top_section_width * 0.02)
 
 """Calculate size for each weather sub-section"""
-row_height = (top_section_height-(border_top*2)) // 3
-coloumn_width = (top_section_width-(border_left*2)) // 7
+row_height = (top_section_height-(border_top*2)) // 4
+column_width = (top_section_width-(border_left*2)) // 7
 
 """Calculate paddings"""
-x_padding = int( (top_section_width % coloumn_width) / 2 )
+x_padding = int( (top_section_width % column_width) / 2 )
 y_padding = int( (top_section_height % row_height) / 2 )
 
-"""Allocate sizes for weather icons"""
-icon_small = row_height
-icon_medium = row_height * 2
-
-"""Calculate the x-axis position of each coloumn"""
-coloumn1 = x_padding
-coloumn2 = coloumn1 + coloumn_width
-coloumn3 = coloumn2 + coloumn_width
-coloumn4 = coloumn3 + coloumn_width
-coloumn5 = coloumn4 + coloumn_width
-coloumn6 = coloumn5 + coloumn_width
-coloumn7 = coloumn6 + coloumn_width
+"""Calculate the x-axis position of each column"""
+column1 = x_padding
+column2 = column1 + column_width
+column3 = column2 + column_width
+column4 = column3 + column_width
+column5 = column4 + column_width
+column6 = column5 + column_width
+column7 = column6 + column_width
 
 """Calculate the y-axis position of each row"""
 row1 = y_padding
 row2 = row1 + row_height
 row3 = row2 + row_height
-
-"""Allocate positions for current weather details"""
-text_now_pos = (coloumn1, row1)
-weather_icon_now_pos = (coloumn1, row2)
-
-temperature_icon_now_pos = (coloumn2, row1)
-temperature_now_pos = (coloumn2+icon_small, row1)
-humidity_icon_now_pos = (coloumn2, row2)
-humidity_now_pos = (coloumn2+icon_small, row2)
-windspeed_icon_now_pos = (coloumn2, row3)
-windspeed_now_pos = (coloumn2+icon_small, row3)
-
-moon_phase_now_pos = (coloumn3, row1)
-sunrise_icon_now_pos = (coloumn3, row2)
-sunrise_time_now_pos = (coloumn3+icon_small, row2)
-sunset_icon_now_pos = (coloumn3, row3)
-sunset_time_now_pos = (coloumn3+ icon_small, row3)
-
-"""Allocate positions for weather forecast after 3 hours"""
-text_fc1_pos = (coloumn4, row1)
-icon_fc1_pos = (coloumn4, row2)
-temperature_fc1_pos = (coloumn4, row3)
-
-"""Allocate positions for weather forecast after 6 hours"""
-text_fc2_pos = (coloumn5, row1)
-icon_fc2_pos = (coloumn5, row2)
-temperature_fc2_pos = (coloumn5, row3)
-
-"""Allocate positions for weather forecast after 9 hours"""
-text_fc3_pos = (coloumn6, row1)
-icon_fc3_pos = (coloumn6, row2)
-temperature_fc3_pos = (coloumn6, row3)
-
-"""Allocate positions for weather forecast after 12 hours"""
-text_fc4_pos = (coloumn7, row1)
-icon_fc4_pos = (coloumn7, row2)
-temperature_fc4_pos = (coloumn7, row3)
+row4 = row3 + row_height
 
 """Windspeed (m/s) to beaufort (index of list) conversion"""
 windspeed_to_beaufort = [0.02, 1.5, 3.3, 5.4, 7.9, 10.7, 13.8, 17.1, 20.7,
@@ -121,10 +77,10 @@ def to_units(kelvin):
   fahrenheit = round((kelvin - 273.15) * 9/5 + 32,
                      ndigits = decimal_places_temperature)
   if units == 'metric':
-    conversion = str(degrees_celsius) + '°C'
+    conversion = str(degrees_celsius) + ' °C'
 
   if units == 'imperial':
-    conversion = str(fahrenheit) + 'F'
+    conversion = str(fahrenheit) + ' F'
 
   return conversion
 
@@ -150,6 +106,21 @@ def to_hours(datetime_object, simple = False):
       converted_time = datetime_object.format('hh:mm')
   return str(converted_time)
 
+"""Function to return precipitation in mm"""
+def to_mm(rain):
+#  print('')
+#  print('** rain: ', rain)
+  if '3h' in rain:
+    converted_rain = rain['3h']
+#    print('** rain[3h]: ', converted_rain)
+  elif '1h' in rain:
+    converted_rain = rain['1h']
+#    print('** rain[1h]: ', converted_rain)
+  else:
+    converted_rain = 0
+#    print('** rain[0]: ', converted_rain)
+  return str("%0.1f mm" % (converted_rain))
+
 """Choose font optimised for the weather section"""
 fontsize = 8
 font = ImageFont.truetype(NotoSans+'Medium.ttf', fontsize)
@@ -161,14 +132,14 @@ while font.getsize('hg')[1] <= (row_height * fill_height):
 
 def generate_image():
   """Connect to Openweathermap API and fetch weather data"""
-  if top_section == "inkycal_weather" and api_key != "" and owm.is_API_online() is True:
+  if top_section == "inkycal_weather2" and api_key != "" and owm.is_API_online() is True:
     try:
       clear_image('top_section')
       print('Weather module: Connectivity check passed, Generating image...',
         end = '')
       current_weather_setup = owm.weather_at_place(location)
       weather = current_weather_setup.get_weather()
-      
+
       """Set-up and get weather forecast data"""
       forecast = owm.three_hours_forecast(location)
 
@@ -205,10 +176,17 @@ def generate_image():
       weather_icon_fc3 = forecast_fc3.get_weather_icon_name()
       weather_icon_fc4 = forecast_fc4.get_weather_icon_name()
 
+      """Get current rain in mm"""
+      rain_now = to_mm(weather.get_rain())
+      rain_fc1 = to_mm(forecast_fc1.get_rain())
+      rain_fc2 = to_mm(forecast_fc2.get_rain())
+      rain_fc3 = to_mm(forecast_fc3.get_rain())
+      rain_fc4 = to_mm(forecast_fc4.get_rain())
+
       """Parse current weather details"""
       sunrise_time_now = arrow.get(weather.get_sunrise_time()).to(get_tz())
       sunset_time_now = arrow.get(weather.get_sunset_time()).to(get_tz())
-      humidity_now = str(weather.get_humidity())
+#      humidity_now = str(weather.get_humidity())
       cloudstatus_now = str(weather.get_clouds())
       weather_description_now = str(weather.get_detailed_status())
       windspeed_now = weather.get_wind(unit='meters_sec')['speed']
@@ -217,18 +195,18 @@ def generate_image():
         wind_degrees/45) % 8]
 
       if use_beaufort == True:
-        wind = str([windspeed_to_beaufort.index(_) for _ in
+        wind_now = str([windspeed_to_beaufort.index(_) for _ in
           windspeed_to_beaufort if windspeed_now < _][0])
       else:
         meters_sec = round(windspeed_now, ndigits = decimal_places_windspeed)
         miles_per_hour = round(windspeed_now * 2.23694,
                                ndigits = decimal_places_windspeed)
         if units == 'metric':
-          wind = str(meters_sec) + 'm/s'
+          wind_now = str(meters_sec) + ' m/s'
         if units == 'imperial':
-          wind = str(miles_per_hour) + 'mph'
+          wind_now = str(miles_per_hour) + ' mph'
       if show_wind_direction == True:
-        wind += '({0})'.format(wind_direction)
+        wind_now += '({0})'.format(wind_direction)
 
       """Calculate the moon phase"""
       def get_moon_phase():
@@ -240,98 +218,92 @@ def generate_image():
        return {0: '\uf095',1: '\uf099',2: '\uf09c',3: '\uf0a0',
                4: '\uf0a3',5: '\uf0a7',6: '\uf0aa',7: '\uf0ae' }[int(index) & 7]
 
-      moonphase = get_moon_phase()
+#      moonphase = get_moon_phase()
 
       """Add weather details in column 1"""
-      write_text(coloumn_width, row_height, now_str_time, text_now_pos, font = font,
-        alignment='left')
-      write_text(icon_medium, icon_medium, weathericons[weather_icon_now],
-        weather_icon_now_pos, font = w_font, fill_width = 0.9)
+      now_str_time = time.strftime("@%H:%M")
+      write_text(column_width, row_height, now_str_time, (column1, row1),
+        font = font)
+      write_text(column_width, row_height*2, weathericons[weather_icon_now],
+        (column1, row2), font = w_font, fill_width = 0.9)
+      write_text(column_width, row_height, temperature_now, (column1,row4),
+        font = font)
 
       """Add weather details in column 2"""
-      write_text(icon_small, icon_small, '\uf053', temperature_icon_now_pos,
+      write_text(column_width, row_height, '\uf07a', (column2, row1),
         font = w_font, fill_height = 0.9)
-      write_text(icon_small, icon_small, '\uf07a', humidity_icon_now_pos,
-        font = w_font, fill_height = 0.9)
-      
-      if use_wind_direction_icon == False:  
-        write_text(icon_small, icon_small, '\uf050', windspeed_icon_now_pos,
+      write_text(column_width, row_height, rain_now, (column2, row2),
+        font = font)
+      if use_wind_direction_icon == False:
+        write_text(column_width, row_height, '\uf050', (column2, row3),
           font = w_font, fill_height = 0.9)
       else:
-        write_text(icon_small, icon_small, '\uf0b1', windspeed_icon_now_pos,
+        write_text(column_width, row_height, '\uf0b1', (column2, row3),
           font = w_font, fill_height = 0.9, rotation = -wind_degrees)
-
-      write_text(coloumn_width-icon_small, row_height, temperature_now,
-        temperature_now_pos, font = font, colour= red_temp(temperature_now))
-
-
-      write_text(coloumn_width-icon_small, row_height, humidity_now+'%',
-        humidity_now_pos, font = font)
-      write_text(coloumn_width-icon_small, row_height, wind,
-        windspeed_now_pos, font = font, autofit = True)
+      write_text(column_width, row_height, wind_now, (column2, row4),
+        font = font)
 
       """Add weather details in column 3"""
-      write_text(coloumn_width, row_height, moonphase , moon_phase_now_pos,
+#      write_text(column_width, row_height, moonphase, (column3, row1),
+#        font = w_font, fill_height = 0.9)
+      write_text(column_width, row_height, '\uf051', (column3, row1),
         font = w_font, fill_height = 0.9)
-      write_text(icon_small, icon_small, '\uf051', sunrise_icon_now_pos,
+      write_text(column_width, row_height, to_hours(sunrise_time_now),
+        (column3, row2), font = font)
+      write_text(column_width, row_height, '\uf052', (column3, row3),
         font = w_font, fill_height = 0.9)
-# Workaround for Bug: sunset icon not shown
-# Issue seems to be related to my configuration. The icon size 'icon_small' is calculated from section_height and there seem to be some issue with specific values and icons (not only true for sunset icon). Changing either icon_small or section_height slightly in one or the other direction solves the issue for a specific icon.
-      write_text(icon_small-1, icon_small-1, '\uf052', sunset_icon_now_pos,
-        font = w_font, fill_height = 0.9)
-
-      write_text(coloumn_width-icon_small, row_height,
-        to_hours(sunrise_time_now), sunrise_time_now_pos, font = font,
-                 fill_width = 0.9)
-      write_text(coloumn_width-icon_small, row_height,
-        to_hours(sunset_time_now), sunset_time_now_pos, font = font,
-                 fill_width = 0.9)
+      write_text(column_width, row_height, to_hours(sunset_time_now),
+        (column3, row4), font = font)
 
       """Add weather details in column 4 (forecast 1)"""
-      write_text(coloumn_width, row_height, to_hours(fc1.to(get_tz()),
-        simple=True), text_fc1_pos, font = font)
-      write_text(coloumn_width, row_height, weathericons[weather_icon_fc1],
-        icon_fc1_pos, font = w_font, fill_height = 1.0)
-      write_text(coloumn_width, row_height, temperature_fc1,
-        temperature_fc1_pos, font = font, colour = red_temp(
-          temperature_fc1))
+      write_text(column_width, row_height, to_hours(fc1.to(get_tz()),
+        simple=True), (column4, row1), font = font)
+      write_text(column_width, row_height, weathericons[weather_icon_fc1],
+        (column4, row2), font = w_font, fill_height = 1.0)
+      write_text(column_width, row_height, temperature_fc1, (column4, row3),
+        font = font, colour = red_temp(temperature_fc1))
+      write_text(column_width, row_height, rain_fc1, (column4, row4),
+        font = font, fill_height = 0.7)
 
       """Add weather details in column 5 (forecast 2)"""
-      write_text(coloumn_width, row_height, to_hours(fc2.to(get_tz()),
-        simple=True), text_fc2_pos, font = font)
-      write_text(coloumn_width, row_height, weathericons[weather_icon_fc2],
-        icon_fc2_pos, font = w_font, fill_height = 1.0)
-      write_text(coloumn_width, row_height, temperature_fc2,
-          temperature_fc2_pos, font = font, colour = red_temp(
-          temperature_fc2))
+      write_text(column_width, row_height, to_hours(fc2.to(get_tz()),
+        simple=True), (column5, row1), font = font)
+      write_text(column_width, row_height, weathericons[weather_icon_fc2],
+        (column5, row2), font = w_font, fill_height = 1.0)
+      write_text(column_width, row_height, temperature_fc2, (column5, row3),
+        font = font, colour = red_temp(temperature_fc2))
+      write_text(column_width, row_height, rain_fc2, (column5, row4),
+        font = font, fill_height = 0.7)
 
       """Add weather details in column 6 (forecast 3)"""
-      write_text(coloumn_width, row_height, to_hours(fc3.to(get_tz()),
-        simple=True), text_fc3_pos, font = font)
-      write_text(coloumn_width, row_height, weathericons[weather_icon_fc3],
-        icon_fc3_pos, font = w_font, fill_height = 1.0)
-      write_text(coloumn_width, row_height, temperature_fc3,
-          temperature_fc3_pos, font = font, colour = red_temp(
-          temperature_fc3))
+      write_text(column_width, row_height, to_hours(fc3.to(get_tz()),
+        simple=True), (column6, row1), font = font)
+      write_text(column_width, row_height, weathericons[weather_icon_fc3],
+        (column6, row2), font = w_font, fill_height = 1.0)
+      write_text(column_width, row_height, temperature_fc3, (column6, row3),
+        font = font, colour = red_temp(temperature_fc3))
+      write_text(column_width, row_height, rain_fc3, (column6, row4),
+        font = font, fill_height = 0.7)
 
-      """Add weather details in coloumn 7 (forecast 4)"""
-      write_text(coloumn_width, row_height, to_hours(fc4.to(get_tz()),
-        simple=True), text_fc4_pos, font = font)
-      write_text(coloumn_width, row_height, weathericons[weather_icon_fc4],
-        icon_fc4_pos, font = w_font, fill_height = 1.0)
-      write_text(coloumn_width, row_height, temperature_fc4,
-          temperature_fc4_pos, font = font, colour = red_temp(
-          temperature_fc4))
+      """Add weather details in column 7 (forecast 4)"""
+      write_text(column_width, row_height, to_hours(fc4.to(get_tz()),
+        simple=True), (column7, row1), font = font)
+      write_text(column_width, row_height, weathericons[weather_icon_fc4],
+        (column7, row2), font = w_font, fill_height = 1.0)
+      write_text(column_width, row_height, temperature_fc4, (column7, row3),
+        font = font, colour = red_temp(temperature_fc4))
+      write_text(column_width, row_height, rain_fc4, (column7, row4),
+        font = font, fill_height = 0.7)
 
       """Add vertical lines between forecast sections"""
       draw = ImageDraw.Draw(image)
       line_start_y = int(top_section_height*0.1)
       line_end_y = int(top_section_height*0.9)
 
-      draw.line((coloumn4, line_start_y, coloumn4, line_end_y), fill='black')
-      draw.line((coloumn5, line_start_y, coloumn5, line_end_y), fill='black')
-      draw.line((coloumn6, line_start_y, coloumn6, line_end_y), fill='black')
-      draw.line((coloumn7, line_start_y, coloumn7, line_end_y), fill='black')
+      draw.line((column4, line_start_y, column4, line_end_y), fill='black')
+      draw.line((column5, line_start_y, column5, line_end_y), fill='black')
+      draw.line((column6, line_start_y, column6, line_end_y), fill='black')
+      draw.line((column7, line_start_y, column7, line_end_y), fill='black')
 
       if three_colour_support == True:
         draw_col.line((0, top_section_height-border_top, top_section_width-
@@ -340,13 +312,13 @@ def generate_image():
         draw.line((0, top_section_height-border_top, top_section_width-
         border_left, top_section_height-border_top), fill='black', width=3)
 
-      weather_image = crop_image(image, 'top_section')  
-      weather_image.save(image_path+'inkycal_weather.png')
+      weather_image = crop_image(image, 'top_section')
+      weather_image.save(image_path+'inkycal_weather2.png')
 
       if three_colour_support == True:
-        weather_image_col = crop_image(image_col, 'top_section')  
-        weather_image_col.save(image_path+'inkycal_weather_col.png')
-        
+        weather_image_col = crop_image(image_col, 'top_section')
+        weather_image_col.save(image_path+'inkycal_weather2_col.png')
+
       print('Done')
 
     except Exception as e:
@@ -358,7 +330,7 @@ def generate_image():
       write_text(top_section_width, top_section_height, str(e),
                  (0, 0), font = font)
       weather_image = crop_image(image, 'top_section')
-      weather_image.save(image_path+'inkycal_weather.png')
+      weather_image.save(image_path+'inkycal_weather2.png')
       pass
 
 def main():

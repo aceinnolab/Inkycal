@@ -19,7 +19,6 @@ A python3 software for displaying events (from iCalendars), weather (from openwe
 * RSS feeds from various providers to keep up to date with news, quotes etc. 
 
 ## News:
-* **Looking for a 3D-printable IKEA frame mount? [Check this out](https://www.thingiverse.com/thing:4159363) (Credit to Ribitsch)**
 * **Looking for a server-only solution? [This repo offers a server-only solution](https://github.com/Atrejoe/Inky-Calendar-Server) (Credit to Atrejoe)**
 * **Discord chat open now. [Click here to enter](https://discord.gg/sHYKeSM)**
 * **Version 1.7.1 released with support for 4.2", 5.83", 7.5" (v1) and 7.5" (v2) E-Paper displays** (Mid January 2020)
@@ -93,15 +92,10 @@ If you encounter errors related to your iCalendar, please feel free to report th
 ## Updating
 Before updating, re-name the current Inky-Calendar folder e.g. Inky-Calendar-old and then run the installer again (see above), choosing the **update** option.
 
+## Running Inky-Calendar manually and as service
+$ python3 modules/inkycal.py
+$ service supervisor start Inky-Calendar
+
 ## Contributing
+Please check-out the upstream project from aceisace/Inky-Calendar.
 All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inky-Calendar/blob/master/.github/CONTRIBUTING.md).
-
-The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer.
-
-### Don't forget to check out the Wiki. It contains all the information to understanding and customising the script.
-
-**P.S:** Don't forget to star and/or watch the repo. For those who have done so already, thank you very much!
-
-## Contact
-* Email: aceisace63@yahoo.com (average response time < 24 hours)
-* Discord: [Inky-Calendar chatroom](https://discord.gg/sHYKeSM)

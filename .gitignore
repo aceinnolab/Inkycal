@@ -1,0 +1,9 @@
+*.log
+*~
+modules/__pycache__/
+modules/drivers/__pycache__/
+modules/configuration.py
+modules/settings.py
+settings/settings.py
+images/
+tmp/
