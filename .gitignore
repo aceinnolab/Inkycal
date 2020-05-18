@@ -5,5 +5,5 @@ modules/drivers/__pycache__/
 modules/configuration.py
 modules/settings.py
 settings/settings.py
-images/weather.png
+images/
 tmp/
