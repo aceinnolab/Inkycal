@@ -37,7 +37,8 @@ class calendar:
 
     self.weekstart = 'Monday'
     self.show_events = True
-    self.event_format = "D MMM HH:mm"
+    self.date_format = 'D MMM' # used for dates 
+    self.time_format = "HH:mm" # used for timings
     self.language = 'en' # Grab from settings file?
     
     self.timezone = get_system_tz()
@@ -108,8 +109,8 @@ class calendar:
     icon_height = calendar_height // calendar_rows
 
     # Calculate spacings for calendar area
-    x_spacing_calendar = int((self.width % icon_width) / 2)
-    y_spacing_calendar = int((self.height % calendar_rows) / 2)
+    x_spacing_calendar = int((im_width % icon_width) / 2)
+    y_spacing_calendar = int((im_height % calendar_rows) / 2)
 
     # Calculate positions for days of month
     grid_start_y = (month_name_height + weekdays_height + y_spacing_calendar)
@@ -261,37 +262,56 @@ class calendar:
       if upcoming_events:
 
         # Find out how much space (width) the date format requires
-        fmt = self.event_format
         lang = self.language
 
         date_width = int(max([self.font.getsize(
-          events['begin'].format(fmt,locale=lang))[0]
-          for events in upcoming_events]) * 1.05)
+          events['begin'].format(self.date_format,locale=lang))[0]
+          for events in upcoming_events]) * 1.1)
+        
+        time_width = int(max([self.font.getsize(
+          events['begin'].format(self.time_format, locale=lang))[0]
+          for events in upcoming_events]) * 1.1)
 
         line_height = self.font.getsize('hg')[1] + line_spacing
-        event_width = im_width - date_width
+        
+        event_width_s = im_width - date_width - time_width
+        event_width_l = im_width - date_width
 
         # Display upcoming events below calendar
         tomorrow = now.shift(days=1).floor('day')
         in_two_days = now.shift(days=2).floor('day')
 
-        # Write events and dates below calendar
-        # TODO: check if events all-day and then don't display time
-
         cursor = 0
         for event in upcoming_events:
-          name, date = event['title'], event['begin'].format(fmt, locale=lang)
-          print(date)
+          name = event['title']
+          date = event['begin'].format(self.date_format, locale=lang)
+          time = event['begin'].format(self.time_format, locale=lang)
+
           if now < event['end']:
             write(im_colour, event_lines[cursor], (date_width, line_height),
                   date, font=self.font, alignment = 'left')
-            write(im_black, (date_width,event_lines[cursor][1]),
-                  (event_width, line_height), name, font=self.font,
+
+            # Check if event is all day
+            if parser.all_day(event) == True:
+              write(im_black, (date_width, event_lines[cursor][1]),
+                  (event_width_l, line_height), name, font=self.font,
+                  alignment = 'left')
+            else:
+              write(im_black, (time_width, event_lines[cursor][1]),
+                  (event_width, line_height), time, font=self.font,
+                  alignment = 'left')
+
+              write(im_black, (date_width+time_width,event_lines[cursor][1]),
+                  (event_width_s, line_height), name, font=self.font,
                   alignment = 'left')
             cursor += 1
       else:
-        #leave section empty? or display ----- (dotted line)
-        pass
+        symbol = '- '
+        while self.font.getsize(symbol)[0] < im_width*0.9:
+          symbol += ' -'
+        write(im_black, event_lines[0],
+              (im_width, self.font.getsize(symbol)[1]), symbol,
+              font = self.font)
 
 
 ###################################################################
