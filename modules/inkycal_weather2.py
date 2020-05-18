@@ -249,11 +249,11 @@ def generate_image():
       write_text(column_width, row_height, '\uf051', (column3, row1),
         font = w_font, fill_height = 0.9)
       write_text(column_width, row_height, to_hours(sunrise_time_now),
-        (column3, row2), font = font, fill_width = 0.9)
+        (column3, row2), font = font)
       write_text(column_width, row_height, '\uf052', (column3, row3),
         font = w_font, fill_height = 0.9)
       write_text(column_width, row_height, to_hours(sunset_time_now),
-        (column3, row4), font = font, fill_width = 0.9)
+        (column3, row4), font = font)
 
       """Add weather details in column 4 (forecast 1)"""
       write_text(column_width, row_height, to_hours(fc1.to(get_tz()),
