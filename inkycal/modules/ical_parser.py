@@ -5,9 +5,18 @@ iCalendar (parsing) module for Inky-Calendar Project
 Copyright by aceisace
 """
 
+""" ---info about iCalendars---
+• all day events start at midnight, ending at midnight of the next day
+• iCalendar saves all event timings in UTC -> need to be converted into local
+  time
+• Only non-all_day events or multi-day need to be converted to
+  local timezone. Converting all-day events to local timezone is a problem!
+"""
+
 import arrow
 from urllib.request import urlopen
 import logging
+import time # timezone, timing speed of execution
 
 try:
   import recurring_ical_events
@@ -21,14 +30,12 @@ except ModuleNotFoundError:
   print('icalendar library could not be found. Please install this with:')
   print('pip3 install icalendar')
 
-
-
 urls = [
   # Default calendar
-  'https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics'
+  'https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics',
+  # inkycal debug calendar
+  'https://calendar.google.com/calendar/ical/6nqv871neid5l0t7hgk6jgr24c%40group.calendar.google.com/private-c9ab692c99fb55360cbbc28bf8dedb3a/basic.ics'
   ]
-
-
 
 class icalendar:
   """iCalendar parsing moudule for inkycal.
@@ -92,29 +99,34 @@ class icalendar:
     self.icalendars += icals
     logging.info('loaded iCalendars from filepaths')
 
-  def get_events(self, timeline_start, timeline_end):
+  def get_events(self, timeline_start, timeline_end, timezone=None):
     """Input an arrow (time) object for:
     * the beginning of timeline (events have to end after this time)
     * the end of the timeline (events have to begin before this time)
+    * timezone if events should be formatted to local time
     Returns a list of events sorted by date
     """
     if type(timeline_start) == arrow.arrow.Arrow:
+      if timezone == None:
+        timezone = 'UTC'
       t_start = timeline_start
       t_end = timeline_end
     else:
-      raise Exception ('Please input a valid datetime or arrow object!')
+      raise Exception ('Please input a valid arrow object!')
 
-    # parse non-recurrig events
+    # parse non-recurring events
     events = [{
       'title':events.get('summary').lstrip(),
-      'begin':arrow.get(events.get('dtstart').dt),
-      'end':arrow.get(events.get('dtend').dt)
+      'begin':arrow.get(events.get('dtstart').dt).to(timezone
+        if arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00' else 'UTC'),
+      'end':arrow.get(events.get('dtend').dt).to(timezone
+        if arrow.get(events.get('dtend').dt).format('HH:mm') != '00:00' else 'UTC')
       }
       for ical in self.icalendars for events in ical.walk()
               if events.name == "VEVENT" and
       t_start <= arrow.get(events.get('dtstart').dt) <= t_end and
       t_end <= arrow.get(events.get('dtend').dt) <= t_start
-      ] #TODO: timezone-awareness?
+      ]
 
     # if any recurring events were found, add them to parsed_events
     if events: self.parsed_events += events
@@ -122,16 +134,21 @@ class icalendar:
     # Recurring events time-span has to be in this format:
     # "%Y%m%dT%H%M%SZ" (python strftime)
     fmt = lambda date: (date.year, date.month, date.day, date.hour, date.minute,
-                        date.second) #TODO: timezone-awareness?
+                        date.second)
 
     # Parse recurring events
     recurring_events = [recurring_ical_events.of(ical).between(
       fmt(t_start),fmt(t_end)) for ical in self.icalendars]
+    
     re_events = [{
       'title':events.get('SUMMARY').lstrip(),
-      'begin':arrow.get(events.get('DTSTART').dt),
-      'end':arrow.get(events.get("DTEND").dt)
+      'begin':arrow.get(events.get('DTSTART').dt).to(timezone
+        if arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00' else 'UTC'),
+      'end':arrow.get(events.get("DTEND").dt).to(timezone
+        if arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00' else 'UTC')
       } for ical in recurring_events for events in ical]
+
+
 
     # if any recurring events were found, add them to parsed_events
     if re_events: self.parsed_events += re_events
@@ -171,6 +188,18 @@ class icalendar:
       else:
         return False
 
+  @staticmethod
+  def get_system_tz():
+    """Get the timezone set by the system"""
+
+    try:
+      local_tz = time.tzname[1]
+    except:
+      print('System timezone could not be parsed!')
+      print('Please set timezone manually!. Setting timezone to None...')
+      local_tz = None
+    return local_tz
+
   def show_events(self, fmt='DD MMM YY HH:mm'):
     """print all parsed events in a more readable way
     use the format (fmt) parameter to specify the date format
@@ -181,21 +210,18 @@ class icalendar:
     if not self.parsed_events:
       logging.debug('no events found to be shown')
     else:
-##      line_width = line_width = max(len(_['title']) for _ in self.parsed_events)
-##      for events in self.parsed_events:
-##        title = events['title'],
-##        begin, end = events['begin'].format(fmt), events['end'].format(fmt)
-##        print('{0} {1} | {2} | {3}'.format(
-##          title, ' ' * (line_width - len(title)), begin, end))
+      line_width = max(len(_['title']) for _ in self.parsed_events)
       for events in self.parsed_events:
         title = events['title']
         begin, end = events['begin'].format(fmt), events['end'].format(fmt)
-        print('start: {}, end : {}, title: {}'.format(begin,end,title))
+        print('{0} {1} | {2} | {3}'.format(
+          title, ' ' * (line_width - len(title)), begin, end))
+
+##a = icalendar()
+##a.load_url(urls)
+##a.get_events(arrow.now(), arrow.now().shift(weeks=4), timezone = a.get_system_tz())
+##a.show_events()
 
 
 
-"""
-a = icalendar()
-a.load_url(urls)
-a.get_events(arrow.now(), arrow.now().shift(weeks=4))
-"""
+
