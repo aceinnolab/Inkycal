@@ -11,6 +11,7 @@ from configuration import *
 
 """Optional parameters"""
 sw_remove_tags = True # switch enabling removal of tags to keep text short
+sw_shuffle = False # switch enabling shuffling of list prior cropping to max lines
 
 """Add a border to increase readability"""
 border_top = int(bottom_section_height * 0.05)
@@ -61,9 +62,9 @@ def generate_image():
               parsed_feeds.append('•{0}: {1}'.format(posts.title, posts.summary))
 
       """Shuffle the list, then crop it to the max number of lines"""
-      shuffle(parsed_feeds)
+      if sw_shuffle == True:
+        shuffle(parsed_feeds)
       del parsed_feeds[max_lines:]
-
 
       """Check the lenght of each feed. Wrap the text if it doesn't fit on one line"""
       flatten = lambda z: [x for y in z for x in y]
