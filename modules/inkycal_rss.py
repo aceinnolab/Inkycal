@@ -74,8 +74,8 @@ def generate_image():
         if sw_remove_tags == True:
           posts = remove_tags(posts)
         wrapped = text_wrap(posts, font = font, line_width = line_width)
-        counter += len(filtered_feeds) + len(wrapped)
-        if counter < max_lines:
+        counter += len(wrapped)   # previously '+= len(filtered_feeds) + len(wrapped)'
+        if counter <= max_lines:  # previously 'counter < max_lines'
           filtered_feeds.append(wrapped)
         elif counter == len(wrapped): # implicitly len(filtered_feeds) == 0
           # enter here if already first entry is too long to be shown completely...
