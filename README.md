@@ -4,15 +4,26 @@ Please do not use this branch as this is in pre-alpha stage. It it only intended
 
 ## Short Summary
 Aim of refactoring:
-* Allow using settigs.json file
-* Fully dynamic images (changable section sizes)
-* dumb modules (no more preferred position or sizes)
-* Switch from scripts to classes
-* Allow using pip3 install .... to install inkycal
-* Update dependencies
-* Allow using on windows (no-render mode)
-* Implement features from dev branch
+* [x] Use settings.json file instead of .py file
+* [x] Fully dynamic images (changable section sizes)
+* [x] No preferred module positions or sizes
+* [x] Switch from scripts to classes
+* [ ] Allow using pip3 install .... to install inkycal
+* [x] Update dependencies
+* [x] Switch from ics to icalendar library for better parsing of iCalendars
+* [ ] Allow using on windows (no-render mode)
+* [x] Implement features from dev branch
+* [ ] Implement testing for each module
 
+
+## Testing
+While the main file is incomplete, you can still try out a few tests. To run these tests, please follow the steps below:
+* Clone this branch:
+`git clone -b dev_ver2_0 https://github.com/aceisace/Inky-Calendar inkycal`
+* Navigate to inkycal directory:
+`cd inkycal`
+* run tests:
+`python3 dev_tests.py`
 
 ## Info
 The main folder is now inkcal. 
