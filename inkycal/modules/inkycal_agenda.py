@@ -8,7 +8,7 @@ Copyright by aceisace
 from inkycal.custom import *
 import calendar as cal
 import arrow
-from ical_parser import icalendar
+from inkycal.modules.ical_parser import icalendar
 
 size = (400, 520)
 config = {'week_starts_on': 'Monday', 'ical_urls': ['https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics']}
