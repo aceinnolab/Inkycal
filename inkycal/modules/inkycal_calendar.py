@@ -26,15 +26,14 @@ class calendar:
     self.name = os.path.basename(__file__).split('.py')[0]
     self.config = section_config
     self.width, self.height = section_size
-
-    self.background_colour =  'white'
-    self.font_colour = 'black'
     self.fontsize = 12
     self.font = ImageFont.truetype(
       fonts['NotoSans-SemiCondensed'], size = self.fontsize)
     self.padding_x = 0.02
     self.padding_y = 0.05
 
+    self.num_font = ImageFont.truetype(
+      fonts['NotoSans-SemiCondensed'], size = self.fontsize)
     self.weekstart = 'Monday'
     self.show_events = True
     self.date_format = 'D MMM' # used for dates 
@@ -42,9 +41,7 @@ class calendar:
     self.language = 'en' # Grab from settings file?
     
     self.timezone = get_system_tz()
-    # urls of icalendars
     self.ical_urls = config['ical_urls']
-    # filepaths of icalendar files
     self.ical_files = []
     print('{0} loaded'.format(self.name))
 
@@ -84,7 +81,7 @@ class calendar:
     logging.info('Image size: {0}'.format(im_size))
 
     # Create an image for black pixels and one for coloured pixels
-    im_black = Image.new('RGB', size = im_size, color = self.background_colour)
+    im_black = Image.new('RGB', size = im_size, color = 'white')
     im_colour = Image.new('RGB', size = im_size, color = 'white')
 
     # Allocate space for month-names, weekdays etc.
@@ -105,11 +102,11 @@ class calendar:
 
     # Create grid and calculate icon sizes
     calendar_rows, calendar_cols = 6, 7
-    icon_width = self.width // calendar_cols
+    icon_width = im_width // calendar_cols
     icon_height = calendar_height // calendar_rows
 
     # Calculate spacings for calendar area
-    x_spacing_calendar = int((im_width % icon_width) / 2)
+    x_spacing_calendar = int((im_width % calendar_cols) / 2)
     y_spacing_calendar = int((im_height % calendar_rows) / 2)
 
     # Calculate positions for days of month
@@ -121,7 +118,6 @@ class calendar:
 
     weekday_pos = [(grid_start_x + icon_width*_, month_name_height) for _ in
                    range(calendar_cols)]
-
 
     now = arrow.now(tz = self.timezone)
 
@@ -169,28 +165,27 @@ class calendar:
           grid[i],
           (icon_width,icon_height),
           str(calendar_flat[i]),
-          font = self.font,
+          font = self.num_font, fill_height = 0.5
           )
 
     # Draw a red/black circle with the current day of month in white
     icon = Image.new('RGBA', (icon_width, icon_height))
     current_day_pos = grid[calendar_flat.index(now.day)]
     x_circle,y_circle = int(icon_width/2), int(icon_height/2)
-    radius = int(icon_width * 0.25)
-    text_width, text_height = self.font.getsize(str(now.day))
-    x_text = int((icon_width / 2) - (text_width / 2))
-    y_text = int((icon_height / 2) - (text_height / 1.7))
-    ImageDraw.Draw(icon).ellipse((x_circle-radius, y_circle-radius,
-      x_circle+radius, y_circle+radius), fill= 'black', outline=None)
-    ImageDraw.Draw(icon).text((x_text, y_text), str(now.day), fill='white',
-      font=self.font)
+    radius = int(icon_width * 0.3)
+    ImageDraw.Draw(icon).ellipse(
+      (x_circle-radius, y_circle-radius, x_circle+radius, y_circle+radius),
+      fill= 'black', outline=None)
+    write(icon, (0,0), (icon_width, icon_height), str(now.day),
+          font=self.num_font, fill_height = 0.5, colour='white')
     im_colour.paste(icon, current_day_pos, icon)
+    
 
     # If events should be loaded and shown...
     if self.show_events == True:
 
       # import the ical-parser
-      from ical_parser import icalendar
+      from inkycal.modules.ical_parser import icalendar
 
       # find out how many lines can fit at max in the event section
       line_spacing = 0
@@ -215,7 +210,7 @@ class calendar:
       # Filter events for full month (even past ones) for drawing event icons
       month_events = parser.get_events(month_start, month_end)
       parser.sort()
-      # parser.show_events() # uncomment to show events
+      self.month_events = month_events
 
       # find out on which days of this month events are taking place
       days_with_events = [int(events['begin'].format('D')) for events in
@@ -223,12 +218,7 @@ class calendar:
 
       # remove duplicates (more than one event in a single day)
       list(set(days_with_events)).sort()
-      print('days with events:', days_with_events)
-
-##      # calculate sizes for event-markers
-##      square_size = int(icon_width * 0.6)
-##      center_x = int((icon_width - square_size) / 2)
-##      center_y = int((icon_height - square_size) / 2)
+      self._days_with_events = days_with_events
 
       # Draw a border with specified parameters around days with events
       for days in days_with_events:
@@ -236,23 +226,15 @@ class calendar:
           im_colour,
           grid[calendar_flat.index(days)],
           (icon_width, icon_height),
-          radius = 4,
+          radius = 6,
           thickness= 1,
           shrinkage = (0.4, 0.4)
           )
-                    
-##        
-##        draw_square((int(grid[calendar_flat.index(days)][0]+center_x),
-##           int(grid[calendar_flat.index(days)][1] + center_y )),
-##           8, square_size , square_size, colour='black')
-
-
-
 
       # Filter upcoming events until 4 weeks in the future
       parser.clear_events()
       upcoming_events = parser.get_events(now, now.shift(weeks=4))
-      parser.show_events()
+      self._upcoming_events = upcoming_events
 
       # delete events which won't be able to fit (more events than lines)
       upcoming_events[max_event_lines:]
@@ -313,11 +295,6 @@ class calendar:
               (im_width, self.font.getsize(symbol)[1]), symbol,
               font = self.font)
 
-
-###################################################################
-## Exception handling
-#################################################################
-
     # Save image of black and colour channel in image-folder
     im_black.save(images+self.name+'.png')
     im_colour.save(images+self.name+'_colour.png')
@@ -325,3 +302,6 @@ class calendar:
 if __name__ == '__main__':
   print('running {0} in standalone mode'.format(
     os.path.basename(__file__).split('.py')[0]))
+
+##a = calendar(size, config)
+##a.generate_image()
