@@ -77,12 +77,10 @@ A python3 software for displaying events (from iCalendars), weather (from openwe
 * RSS feeds from various providers to keep up to date with news, quotes etc. 
 
 ## News:
-* **Looking for a 3D-printable IKEA frame mount? [Check this out](https://www.thingiverse.com/thing:4159363) (Credit to Ribitsch)**
 * **Looking for a server-only solution? [This repo offers a server-only solution](https://github.com/Atrejoe/Inky-Calendar-Server) (Credit to Atrejoe)**
 * **Discord chat open now. [Click here to enter](https://discord.gg/sHYKeSM)**
 * **Version 1.7.1 released with support for 4.2", 5.83", 7.5" (v1) and 7.5" (v2) E-Paper displays** (Mid January 2020)
 * **Added support for Debian Buster, Buster Lite is not supported!**
-* **Added a user-friendly Web-UI for adding details to the programm (Credit to TobyChui for the template)**
 
 ## Development status
 This software is in active development. To see the current development status, [[Click here]](https://github.com/aceisace/Inky-Calendar/projects/2).
@@ -115,14 +113,19 @@ This software is in active development. To see the current development status, [
 **[Disable on-board-led](https://www.jeffgeerling.com/blogs/jeff-geerling/controlling-pwr-act-leds-raspberry-pi)**
 
 ## Installing required packages for python 3.x
-Execute the following command in the Terminal to install all required packages. Please use Raspbian Buster with Desktop (preferably the latest version). Raspbian Buster **LITE** is not supported.
+Execute the following command in the Terminal to install all required packages. Please use Raspbian Buster with Desktop (preferably the latest version). Raspbian Buster **LITE** is __not__ supported.
 
 **`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/master/Installer.sh)"`**
 
-**Note**: If you were using a previous version, please use the web-ui for generating a new settings file. Settings files from previous versions are not compatible.
+**Installing tagged versions**: 
+If you want to install a different version than the *master* branch, insert the tag name into the above URL, e. g.
+`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/v1.7.1/Installer.sh)"`
+
+**Upgrading from old versions:**:
+If you were using a previous version, please use the web-ui for generating a new settings file. Settings files from previous versions are not compatible.
 
 
-If you get some red lines, please run `pip3 install Pillow==6.2.0`.
+If you get some red lines, please run `pip3 install Pillow`.
 
 If the installer is broken, please follow the instructions here [manual installation](https://github.com/aceisace/Inky-Calendar/wiki/Manual-installation)
 
@@ -136,26 +139,34 @@ If the Installer should fail for any reason, kindly open an issue and paste the 
 ## Adding details to the program
 When you run the installer, you can add details in the last step. For new-users, it is recommended to use the 'web-UI' option.
 
-You can also manually edit the settings file like this: `nano /home/$USER/Inky-Calendar/settings/settings.py`
+~~You can also manually edit the settings file like this: `nano /home/$USER/Inky-Calendar/settings/settings.py`~~
 
-Once your details are added, run the software with: `python3 /home/$USER/Inky-Calendar/modules/inkycal.py`. If everything is working correctly, you'll see some lines being printed on the console (not red ones). Lastly, the E-Paper display will show a fresh image.
+~~Once your details are added, run the software with: `python3 /home/$USER/Inky-Calendar/modules/inkycal.py`. If everything is working correctly, you'll see some lines being printed on the console (not red ones). Lastly, the E-Paper display will show a fresh image.~~
 
 If you encounter any issues, please leave a comment in the issues or via email. Thanks in advance.
 
 ## iCalendar
-With the latest release (v1.7), most iCalendars (Google, Yahoo, etc.) will work without problems. With Google and Yahoo, recurring events are now supported as well. With the other iCalendar providers, testing has not been done.
+Although Google Calendar is strongly recommended, iCalendars from other providors may work. Support for iCalendar requiring authentification (e.g. Owncloud) has been added, however this is still __experimental__.
 
 Event names will be truncated until they fit in their allocated space/line. Try avoiding too long event names.
 
 If you encounter errors related to your iCalendar, please feel free to report the error either by opening an issue or by sending a mail.
 
 ## Updating
-Before updating, re-name the current Inky-Calendar folder e.g. Inky-Calendar-old and then run the installer again (see above), choosing the **update** option.
+~~Before updating, re-name the current Inky-Calendar folder e.g. Inky-Calendar-old and then run the installer again (see above), choosing the **update** option.~~
 
 ## Contributing
 All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inky-Calendar/blob/master/CONTRIBUTING.md).
 
 The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer.
+
+## Setting up VS Code Remote development in WSL
+In order to speed up development, most development tasks (apart from the actual rending to E-Ink display) can be developed on more powerful machines and in richer environments than running this on a Pi zero. In case of Windows PC the most convenient way is to use VS Code Remote development in Windows Subsystem for Linux (WSL), please follow [Tutorial](https://code.visualstudio.com/remote-tutorials/wsl/getting-started). 
+
+
+~~To disable the eInk functionality set the flag to "image_only" (in /settings/settings.py):~~
+
+~~`render_target = "image_only"`~~
 
 ### Don't forget to check out the Wiki. It contains all the information to understanding and customising the script.
 
