@@ -107,11 +107,11 @@ def write(image, xy, box_size, text, font=None, **kwargs):
 
   # Truncate text if text is too long so it can fit inside the box
   if (text_width, text_height) > (box_width, box_height):
-    logging.debug('text too big for space, truncating now...')
+    logging.debug(('truncating {}'.format(text)))
     while (text_width, text_height) > (box_width, box_height):
       text=text[0:-1]
       text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
-    logging.debug(('truncated text:', text))
+    logging.debug((text))
 
   # Align text to desired position
   if alignment == "center" or None:
@@ -178,35 +178,41 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1,0.1)):
   """
   
   colour='black'
+  
   # size from function paramter
-  width, height = size[0]*(1-shrinkage[0]), size[1]*(1-shrinkage[1])
+  width, height = int(size[0]*(1-shrinkage[0])), int(size[1]*(1-shrinkage[1]))
+
+  # shift cursor to move rectangle to center
   offset_x, offset_y = int((size[0] - width)/2), int((size[1]- height)/2)
   
   x, y, diameter = xy[0]+offset_x, xy[1]+offset_y, radius*2
   # lenght of rectangle size
   a,b = (width - diameter), (height-diameter)
 
-  # Set coordinates for round square
+  # Set coordinates for staright lines
   p1, p2 = (x+radius, y), (x+radius+a, y)
   p3, p4 = (x+width, y+radius), (x+width, y+radius+b)
   p5, p6 = (p2[0], y+height), (p1[0], y+height)
   p7, p8  = (x, p4[1]), (x,p3[1])
-  c1, c2 = (x,y), (x+diameter, y+diameter)
-  c3, c4 = ((x+width)-diameter, y), (x+width, y+diameter)
-  c5, c6 = ((x+width)-diameter, (y+height)-diameter), (x+width, y+height)
-  c7, c8 = (x, (y+height)-diameter), (x+diameter, y+height)
+  if radius != 0:
+    # Set coordinates for arcs
+    c1, c2 = (x,y), (x+diameter, y+diameter)
+    c3, c4 = ((x+width)-diameter, y), (x+width, y+diameter)
+    c5, c6 = ((x+width)-diameter, (y+height)-diameter), (x+width, y+height)
+    c7, c8 = (x, (y+height)-diameter), (x+diameter, y+height)
 
   # Draw lines and arcs, creating a square with round corners
   draw = ImageDraw.Draw(image)
-
   draw.line( (p1, p2) , fill=colour, width = thickness)
   draw.line( (p3, p4) , fill=colour, width = thickness)
   draw.line( (p5, p6) , fill=colour, width = thickness)
   draw.line( (p7, p8) , fill=colour, width = thickness)
-  draw.arc(  (c1, c2) , 180, 270, fill=colour, width=thickness)
-  draw.arc(  (c3, c4) , 270, 360, fill=colour, width=thickness)
-  draw.arc(  (c5, c6) , 0, 90, fill=colour, width=thickness)
-  draw.arc(  (c7, c8) , 90, 180, fill=colour, width=thickness)
+
+  if radius != 0:
+    draw.arc(  (c1, c2) , 180, 270, fill=colour, width=thickness)
+    draw.arc(  (c3, c4) , 270, 360, fill=colour, width=thickness)
+    draw.arc(  (c5, c6) , 0, 90, fill=colour, width=thickness)
+    draw.arc(  (c7, c8) , 90, 180, fill=colour, width=thickness)
 
 
 """Not required anymore?"""
@@ -229,18 +235,6 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1,0.1)):
 ##  image = input_image.crop((x1,y1,x2,y2))
 ##  return image
 
-
-"""Not required anymore?"""
-##def fix_ical(ical_url):
-##  """Use iCalendars in compatability mode (without alarms)"""
-##  ical = str(urlopen(ical_url).read().decode())
-##  beginAlarmIndex = 0
-##  while beginAlarmIndex >= 0:
-##    beginAlarmIndex = ical.find('BEGIN:VALARM')
-##    if beginAlarmIndex >= 0:
-##      endAlarmIndex = ical.find('END:VALARM')
-##      ical = ical[:beginAlarmIndex] + ical[endAlarmIndex+12:]
-##  return ical
 
 
 """Not required anymore?"""
@@ -296,7 +290,7 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1,0.1)):
 ##  with open(path+'release.txt','r') as file:
 ##    lines = file.readlines()
 ##    installed_release = lines[0].rstrip()
-##
+
 ##  temp = subp.check_output(['curl','-s','https://github.com/aceisace/Inky-Calendar/releases/latest'])
 ##  latest_release_url = str(temp).split('"')[1]
 ##  latest_release = latest_release_url.split('/tag/')[1]

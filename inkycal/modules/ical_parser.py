@@ -5,7 +5,7 @@ iCalendar (parsing) module for Inky-Calendar Project
 Copyright by aceisace
 """
 
-""" ---info about iCalendars---
+"""               ---info about iCalendars---
 • all day events start at midnight, ending at midnight of the next day
 • iCalendar saves all event timings in UTC -> need to be converted into local
   time
@@ -17,6 +17,7 @@ import arrow
 from urllib.request import urlopen
 import logging
 import time # timezone, timing speed of execution
+import os
 
 try:
   import recurring_ical_events
@@ -30,19 +31,14 @@ except ModuleNotFoundError:
   print('icalendar library could not be found. Please install this with:')
   print('pip3 install icalendar')
 
-urls = [
-  # Default calendar
-  'https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics',
-  # inkycal debug calendar
-  'https://calendar.google.com/calendar/ical/6nqv871neid5l0t7hgk6jgr24c%40group.calendar.google.com/private-c9ab692c99fb55360cbbc28bf8dedb3a/basic.ics'
-  ]
+
+filename = os.path.basename(__file__).split('.py')[0]
+logger = logging.getLogger(filename)
+logger.setLevel(level=logging.INFO)
 
 class icalendar:
   """iCalendar parsing moudule for inkycal.
   Parses events from given iCalendar URLs / paths"""
-
-  logger = logging.getLogger(__name__)
-  logging.basicConfig(level=logging.DEBUG)
 
   def __init__(self):
     self.icalendars = []
@@ -82,7 +78,7 @@ class icalendar:
 
     # Add the parsed icalendar/s to the self.icalendars list
     if ical: self.icalendars += ical
-    logging.info('loaded iCalendars from URLs')
+    logger.info('loaded iCalendars from URLs')
 
   def load_from_file(self, filepath):
     """Input a string or list of strings containing valid iCalendar filepaths
@@ -97,7 +93,7 @@ class icalendar:
       raise Exception ("Input: '{}' is not a string or list!".format(url))
 
     self.icalendars += icals
-    logging.info('loaded iCalendars from filepaths')
+    logger.info('loaded iCalendars from filepaths')
 
   def get_events(self, timeline_start, timeline_end, timezone=None):
     """Input an arrow (time) object for:
@@ -148,8 +144,6 @@ class icalendar:
         if arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00' else 'UTC')
       } for ical in recurring_events for events in ical]
 
-
-
     # if any recurring events were found, add them to parsed_events
     if re_events: self.parsed_events += re_events
 
@@ -159,9 +153,9 @@ class icalendar:
     return self.parsed_events
 
   def sort(self):
-    """Sort all parsed events"""
+    """Sort all parsed events in order of beginning time"""
     if not self.parsed_events:
-      logging.debug('no events found to be sorted')
+      logger.debug('no events found to be sorted')
     else:
       by_date = lambda event: event['begin']
       self.parsed_events.sort(key=by_date)
@@ -208,7 +202,7 @@ class icalendar:
     """
 
     if not self.parsed_events:
-      logging.debug('no events found to be shown')
+      logger.debug('no events found to be shown')
     else:
       line_width = max(len(_['title']) for _ in self.parsed_events)
       for events in self.parsed_events:
@@ -216,6 +210,18 @@ class icalendar:
         begin, end = events['begin'].format(fmt), events['end'].format(fmt)
         print('{0} {1} | {2} | {3}'.format(
           title, ' ' * (line_width - len(title)), begin, end))
+
+
+if __name__ == '__main__':
+  print('running {0} in standalone mode'.format(filename))
+
+
+urls = [
+  # Default calendar
+  'https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics',
+  # inkycal debug calendar
+  'https://calendar.google.com/calendar/ical/6nqv871neid5l0t7hgk6jgr24c%40group.calendar.google.com/private-c9ab692c99fb55360cbbc28bf8dedb3a/basic.ics'
+  ]
 
 ##a = icalendar()
 ##a.load_url(urls)

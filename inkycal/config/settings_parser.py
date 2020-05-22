@@ -6,6 +6,7 @@ Copyright by aceisace
 """
 import json
 import os
+from inkycal.config.layout import layout
 
 class settings:
   """Load and validate settings from the settings file"""
@@ -25,7 +26,6 @@ class settings:
   def __init__(self, settings_file_path):
     """Load settings from path (folder or settings.json file)"""
     try:
-      # If
       if settings_file_path.endswith('settings.json'):
         folder = settings_file_path.split('/settings.json')[0]
       else:
@@ -39,14 +39,23 @@ class settings:
     except FileNotFoundError:
       print('No settings file found in specified location')
 
+    # Validate the settings
     self._validate()
+
+    # Get the height-percentages of the modules
+    heights = [_['height']/100 for _ in self._settings['panels']]
+
+    self.layout = layout(model=self.model)
+    self.layout.create_sections(top_section= heights[0],
+                           middle_section=heights[1],
+                           bottom_section=heights[2])
 
   def _validate(self):
     """Validate the basic config"""
     settings = self._settings
 
-    required =  ['language', 'units', 'hours', 'model', 'calibration_hours',
-            'display_orientation']
+    required =  ['language', 'units', 'hours', 'model', 'calibration_hours']
+            #'display_orientation']
 
     # Check if all required settings exist
     for param in required:
@@ -60,7 +69,7 @@ class settings:
     self.hours = settings['hours']
     self.model = settings['model']
     self.calibration_hours = settings['calibration_hours']
-    self.display_orientation = settings['display_orientation']
+    #self.display_orientation = settings['display_orientation']
 
     # Validate the parameters
     if (not isinstance(self.language, str) or self.language not in
@@ -87,30 +96,31 @@ class settings:
       print('calibration_hours not supported, switching to fallback, [0,12,18]')
       self.calibration_hours = [0,12,18]
 
-    if (not isinstance(self.display_orientation, str) or self.display_orientation not in
-        self._supported_display_orientation):
-      print('display orientation not supported, switching to fallback, normal')
-      self.display_orientation = 'normal'
+##    if (not isinstance(self.display_orientation, str) or self.display_orientation not in
+##        self._supported_display_orientation):
+##      print('display orientation not supported, switching to fallback, normal')
+##      self.display_orientation = 'normal'
 
-    print('Settings file loaded')
+    print('Settings file OK!')
 
-  def _active_modules(self):
+  def active_modules(self):
     modules = [section['type'] for section in self._settings['panels']]
     return modules
 
   def get_config(self, module_name):
-    """Ge the config of this module"""
-    if module_name not in self._active_modules():
+    """Ge the config of this module (size, config)"""
+    if module_name not in self.active_modules():
       print('No config is available for this module')
     else:
       for section in self._settings['panels']:
         if section['type'] == module_name:
           config = section['config']
-    return config
+          size = self.layout.get_size(self.get_position(module_name))
+    return {'size':size, 'config':config}
 
   def get_position(self, module_name):
     """Get the position of this module's image on the display"""
-    if module_name not in self._active_modules():
+    if module_name not in self.active_modules():
       print('No position is available for this module')
     else:
       for section in self._settings['panels']:
