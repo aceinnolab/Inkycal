@@ -180,9 +180,9 @@ def generate_image():
 
           elif event.begin > after_two_days:
             if event.all_day:
-              event_list.append('{}: {}'.format(event.begin.format('D MMM'), event.name))
+              event_list.append('{}: {}'.format(event.begin.format('D MMM', locale=language), event.name))
             else:
-              event_list.append('{0} {1} {2} : {3}'.format(event.begin.format('D MMM'),
+              event_list.append('{0} {1} {2} : {3}'.format(event.begin.format('D MMM', locale=language),
           at_in_your_language, event.begin.format('HH:mm' if hours == '24' else
           'hh:mm a'), event.name))
 
