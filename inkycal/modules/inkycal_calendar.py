@@ -4,81 +4,62 @@
 Calendar module for Inky-Calendar Project
 Copyright by aceisace
 """
-
+from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
+
 import calendar as cal
 import arrow
 
-size = (400, 520)
-config = {'week_starts_on': 'Monday', 'ical_urls': ['https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics']}
+filename = os.path.basename(__file__).split('.py')[0]
+logger = logging.getLogger(filename)
+logger.setLevel(level=logging.INFO)
 
-
-class calendar:
+class calendar(inkycal_module):
   """Calendar class
   Create monthly calendar and show events from given icalendars
   """
-  logger = logging.getLogger(__name__)
-  logging.basicConfig(level=logging.DEBUG)
 
   def __init__(self, section_size, section_config):
     """Initialize inkycal_calendar module"""
 
-    self.name = os.path.basename(__file__).split('.py')[0]
-    self.config = section_config
-    self.width, self.height = section_size
-    self.fontsize = 12
-    self.font = ImageFont.truetype(
-      fonts['NotoSans-SemiCondensed'], size = self.fontsize)
-    self.padding_x = 0.02
-    self.padding_y = 0.05
+    super().__init__(section_size, section_config)
+
+    # Module specific parameters
+    required = ['week_starts_on']
+    for param in required:
+      if not param in section_config:
+        raise Exception('config is missing {}'.format(param))
+
+    # module name
+    self.name = filename
+
+    # module specific parameters
+    self.shuffle_feeds = True
 
     self.num_font = ImageFont.truetype(
       fonts['NotoSans-SemiCondensed'], size = self.fontsize)
-    self.weekstart = 'Monday'
+    self.weekstart = self.config['week_starts_on']
     self.show_events = True
     self.date_format = 'D MMM' # used for dates 
     self.time_format = "HH:mm" # used for timings
     self.language = 'en' # Grab from settings file?
     
     self.timezone = get_system_tz()
-    self.ical_urls = config['ical_urls']
+    self.ical_urls = self.config['ical_urls']
     self.ical_files = []
+
+    # give an OK message
     print('{0} loaded'.format(self.name))
-
-  def set(self, **kwargs):
-    """Manually set some parameters of this module"""
-
-    for key, value in kwargs.items():
-      if key in self.__dict__:
-        setattr(self, key, value)
-      else:
-        print('{0} does not exist'.format(key))
-        pass
-
-  def get(self, **kwargs):
-    """Manually get some parameters of this module"""
-
-    for key, value in kwargs.items():
-      if key in self.__dict__:
-        getattr(self, key, value)
-      else:
-        print('{0} does not exist'.format(key))
-        pass
-
-  def get_options(self):
-    """Get all options which can be changed"""
-
-    return self.__dict__
 
   def generate_image(self):
     """Generate image for this module"""
 
     # Define new image size with respect to padding
-    im_width = int(self.width - (self.width * 2 * self.padding_x))
-    im_height = int(self.height - (self.height * 2 * self.padding_y))
+    im_width = int(self.width - (self.width * 2 * self.margin_x))
+    im_height = int(self.height - (self.height * 2 * self.margin_y))
     im_size = im_width, im_height
 
-    logging.info('Image size: {0}'.format(im_size))
+    logger.info('Image size: {0}'.format(im_size))
 
     # Create an image for black pixels and one for coloured pixels
     im_black = Image.new('RGB', size = im_size, color = 'white')
@@ -91,13 +72,13 @@ class calendar:
     if self.show_events == True:
       calendar_height = int(self.height*0.6)
       events_height = int(self.height*0.25)
-      logging.debug('calendar-section size: {0} x {1} px'.format(
+      logger.debug('calendar-section size: {0} x {1} px'.format(
         im_width, calendar_height))
-      logging.debug('events-section size: {0} x {1} px'.format(
+      logger.debug('events-section size: {0} x {1} px'.format(
         im_width, events_height))
     else:
       calendar_height = self.height - month_name_height - weekday_height
-      logging.debug('calendar-section size: {0} x {1} px'.format(
+      logger.debug('calendar-section size: {0} x {1} px'.format(
         im_width, calendar_height))
 
     # Create grid and calculate icon sizes
@@ -141,7 +122,7 @@ class calendar:
     # Set up weeknames in local language and add to main section
     weekday_names = [weekstart.shift(days=+_).format('ddd',locale=self.language)
       for _ in range(7)]
-    logging.debug('weekday names: {}'.format(weekday_names))
+    logger.debug('weekday names: {}'.format(weekday_names))
 
     for _ in range(len(weekday_pos)):
       write(
@@ -300,8 +281,10 @@ class calendar:
     im_colour.save(images+self.name+'_colour.png')
 
 if __name__ == '__main__':
-  print('running {0} in standalone mode'.format(
-    os.path.basename(__file__).split('.py')[0]))
+  print('running {0} in standalone mode'.format(filename))
 
+
+##size = (400, 520)
+##config = {'week_starts_on': 'Monday', 'ical_urls': ['https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics']}
 ##a = calendar(size, config)
 ##a.generate_image()

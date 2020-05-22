@@ -1,47 +1,40 @@
-from importlib import import_module
+from inkycal.config import settings
 
-from inkycal.config import settings, layout
 
-##modules = settings.which_modules()
-##for module in modules:
-##  if module == 'inkycal_rss':
-##    module = import_module('inkycal.modules.'+module)
-##    #import_module('modules.'+module)
-##print(module)
+f = '/home/pi/Desktop/settings.json'
 
-settings_file = "/home/pi/Desktop/Inkycal/inkycal/config/settings.json"
+settings = settings(f)
 
-class inkycal:
-  """Main class for inkycal
-  """
-
-  def __init__(self, settings_file_path):
-    """Load settings file from path"""
-
-    # Load settings file
-    self.settings = settings(settings_file_path)
-    self.model = self.settings.model
-
-  def create_canvas(self):
-    """Create a canvas with same size as the specified model"""
-
-    self.layout = layout(model=self.model)
-
-  def create_custom_canvas(self, width=None, height=None,
-                           supports_colour=False):
-    """Create a custom canvas by specifying height and width"""
-
-    self.layout = layout(model=model, width=width, height=height,
-               supports_colour=supports_colour)
-
-  def create_sections(self):
-    """Create sections with default sizes"""
-    self.layout.create_sections()
-
-  def create_custom_sections(self, top_section=0.10, middle_section=0.65,
-                      bottom_section=0.25):
-    """Create custom-sized sections in the canvas"""
-    self.layout.create_sections(top_section=top_section,
-        middle_section=middle_section,
-        bottom_section=bottom_section)
+specified_modules = settings.active_modules()
+for module in specified_modules:
+  try:
     
+    if module == 'inkycal_weather':
+      from inkycal import weather
+      conf = settings.get_config(module)
+      weather = weather(conf['size'], conf['config'])
+
+    if module == 'inkycal_rss':
+      from inkycal import rss
+      conf = settings.get_config(module)
+      rss = rss(conf['size'], conf['config'])
+
+    if module == 'inkycal_image':
+      from inkycal import image
+      conf = settings.get_config(module)
+      image = image(conf['size'], conf['config'])
+
+    if module == 'inkycal_calendar':
+      from inkycal import calendar
+      conf = settings.get_config(module)
+      calendar = calendar(conf['size'], conf['config'])
+
+    if module == 'inkycal_agenda':
+      from inkycal import agenda
+      conf = settings.get_config(module)
+      agenda = agenda(conf['size'], conf['config'])
+
+  except ImportError:
+    print(
+      'Could not find module: "{}". Please try to import manually.'.format(
+      module))

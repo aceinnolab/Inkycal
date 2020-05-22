@@ -1,81 +1,64 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
+
 """
 RSS module for Inky-Calendar Project
 Copyright by aceisace
 """
 
+from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
-from random import shuffle
 
+from random import shuffle
 try:
   import feedparser
 except ImportError:
   print('feedparser is not installed! Please install with:')
   print('pip3 install feedparser')
 
+filename = os.path.basename(__file__).split('.py')[0]
+logger = logging.getLogger(filename)
+logger.setLevel(level=logging.INFO)
 
-# Debug Data (not for production use!)
-size = (384, 160)
-config = {'rss_urls': ['http://feeds.bbci.co.uk/news/world/rss.xml#']}
-#config = {'rss_urls': ['http://www.tagesschau.de/xml/atom/']}
-#https://www.tagesschau.de/xml/rss2
-
-class rss:
+class rss(inkycal_module):
   """RSS class
   parses rss feeds from given urls
   """
 
-  logger = logging.getLogger(__name__)
-  logging.basicConfig(level=logging.DEBUG)
-
   def __init__(self, section_size, section_config):
     """Initialize inkycal_rss module"""
+    
+    super().__init__(section_size, section_config)
 
-    self.name = os.path.basename(__file__).split('.py')[0]
-    self.config = section_config
-    self.width, self.height = section_size
-    self.fontsize = 12
-    self.padding_x = 0.02
-    self.padding_y = 0.05
-    self.font = ImageFont.truetype(fonts['NotoSans-SemiCondensed'],
-                                   size = self.fontsize)
+    # Module specific parameters
+    required = ['rss_urls']
+    for param in required:
+      if not param in section_config:
+        raise Exception('config is missing {}'.format(param))
 
-    # module specifc config
+    # module name
+    self.name = filename
+
+    # module specific parameters
     self.shuffle_feeds = True
 
+    # give an OK message
     print('{0} loaded'.format(self.name))
 
-  def set(self, **kwargs):
-    """Manually set some parameters of this module"""
-    for key, value in kwargs.items():
-      if key in self.__dict__:
-        setattr(self, key, value)
-      else:
-        print('{0} does not exist'.format(key))
-        pass
+  def _validate(self):
+    """Validate module-specific parameters"""
+    if not isinstance(self.shuffle_feeds, bool):
+      print('shuffle_feeds has to be a boolean: True/False')
 
-  def get(self, **kwargs):
-    """Manually get some parameters of this module"""
-    for key, value in kwargs.items():
-      if key in self.__dict__:
-        getattr(self, key, value)
-      else:
-        print('{0} does not exist'.format(key))
-        pass
-
-  def get_options(self):
-    """Get all options which can be changed"""
-    return self.__dict__
 
   def generate_image(self):
     """Generate image for this module"""
 
     # Define new image size with respect to padding
-    im_width = int(self.width - (self.width * 2 * self.padding_x))
-    im_height = int(self.height - (self.height * 2 * self.padding_y))
+    im_width = int(self.width - (self.width * 2 * self.margin_x))
+    im_height = int(self.height - (self.height * 2 * self.margin_y))
     im_size = im_width, im_height
-    logging.info('image size: {} x {} px'.format(im_width, im_height))
+    logger.info('image size: {} x {} px'.format(im_width, im_height))
 
     # Create an image for black pixels and one for coloured pixels
     im_black = Image.new('RGB', size = im_size, color = 'white')
@@ -83,7 +66,7 @@ class rss:
 
     # Check if internet is available
     if internet_available() == True:
-      logging.info('Connection test passed')
+      logger.info('Connection test passed')
     else:
       raise Exception('Network could not be reached :/')
 
@@ -100,8 +83,6 @@ class rss:
     # Calculate line_positions
     line_positions = [
       (0, spacing_top + _ * line_height ) for _ in range(max_lines)]
-
-
 
     # Create list containing all rss-feeds from all rss-feed urls
     parsed_feeds = []
@@ -149,9 +130,20 @@ class rss:
     im_black.save(images+self.name+'.png', 'PNG')
     im_colour.save(images+self.name+'_colour.png', 'PNG')
 
-if __name__ == '__main__':
-  print('running {0} in standalone mode'.format(
-    os.path.basename(__file__).split('.py')[0]))
 
+##def main():
+##  print('Main got executed just now~~~~')
+
+
+if __name__ == '__main__':
+  print('running {0} in standalone/debug mode'.format(filename))
+##else:
+##  print(filename, 'imported')
+##  main()
+  
 ##a = rss(size, config)
 ##a.generate_image()
+##size = (384, 160)
+##config = {'rss_urls': ['http://feeds.bbci.co.uk/news/world/rss.xml#']}
+#config = {'rss_urls': ['http://www.tagesschau.de/xml/atom/']}
+#https://www.tagesschau.de/xml/rss2 -> problematic feed

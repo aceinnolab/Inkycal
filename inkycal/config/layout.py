@@ -6,21 +6,20 @@ Copyright by aceisace
 """
 
 import logging
+import os
+
+filename = os.path.basename(__file__).split('.py')[0]
+logger = logging.getLogger(filename)
+logger.setLevel(level=logging.INFO)
 
 class layout:
   """Page layout handling"""
-
-  logger = logging.getLogger(__name__)
-  logging.basicConfig(level=logging.DEBUG)
 
   def __init__(self, model=None, width=None, height=None,
                supports_colour=False):
     """Initialize parameters for specified epaper model
     Use model parameter to specify display OR
     Crate a custom display with given width and height"""
-
-    self.background_colour = 'white'
-    self.text_colour = 'black'
 
     if (model != None) and (width == None) and (height == None):
       display_dimensions = {
@@ -78,15 +77,15 @@ class layout:
       self.bottom_section_height = (self.display_height -
         self.top_section_height - self.middle_section_height)
 
-    logging.debug('top-section size: {} x {} px'.format(
+    logger.debug('top-section size: {} x {} px'.format(
       self.top_section_width, self.top_section_height))
-    logging.debug('middle-section size: {} x {} px'.format(
+    logger.debug('middle-section size: {} x {} px'.format(
       self.middle_section_width, self.middle_section_height))
-    logging.debug('bottom-section size: {} x {} px'.format(
+    logger.debug('bottom-section size: {} x {} px'.format(
       self.bottom_section_width, self.bottom_section_height))
 
 
-  def get_section_size(self, section):
+  def get_size(self, section):
     """Enter top/middle/bottom to get the size of the section as a tuple:
     (width, height)"""
 
