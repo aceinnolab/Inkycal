@@ -72,7 +72,7 @@ def write(image, xy, box_size, text, font=None, **kwargs):
   text = string (what to write)
   font = which font to use
   """
-  allowed_kwargs = ['alignment', 'autofit', 'colour', 'rotation'
+  allowed_kwargs = ['alignment', 'autofit', 'colour', 'rotation',
                     'fill_width', 'fill_height']
 
   # Validate kwargs
