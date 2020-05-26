@@ -4,12 +4,14 @@
 Weather module for Inky-Calendar software.
 Copyright by aceisace
 """
+
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
 
 import math, decimal
 import arrow
 from locale import getdefaultlocale as sys_locale
+
 try:
   import pyowm
 except ImportError:
@@ -18,16 +20,16 @@ except ImportError:
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.INFO)
+logger.setLevel(level=logging.ERROR)
 
-class weather(inkycal_module):
-  """weather class
+class Weather(inkycal_module):
+  """Weather class
   parses weather details from openweathermap
   """
 
   def __init__(self, section_size, section_config):
     """Initialize inkycal_weather module"""
-    
+
     super().__init__(section_size, section_config)
 
     # Module specific parameters
@@ -323,7 +325,7 @@ class weather(inkycal_module):
           }
 
     for key,val in fc_data.items():
-      logger.info((key,val))
+      logger.debug((key,val))
 
     # Get some current weather details
     temperature = '{}°'.format(weather.get_temperature(unit=temp_unit)['temp'])
@@ -426,10 +428,3 @@ class weather(inkycal_module):
 
 if __name__ == '__main__':
   print('running {0} in standalone mode'.format(filename))
-
-
-##config = {'api_key': 'secret', 'location': 'Stuttgart, DE'}
-##size = (384,80)
-##a = weather(size, config)
-##a.generate_image()
-# Debug Data (not for production use!)

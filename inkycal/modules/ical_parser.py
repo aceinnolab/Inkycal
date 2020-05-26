@@ -16,7 +16,7 @@ Copyright by aceisace
 import arrow
 from urllib.request import urlopen
 import logging
-import time # timezone, timing speed of execution
+import time
 import os
 
 try:
@@ -36,7 +36,7 @@ filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 logger.setLevel(level=logging.INFO)
 
-class icalendar:
+class iCalendar:
   """iCalendar parsing moudule for inkycal.
   Parses events from given iCalendar URLs / paths"""
 
@@ -108,7 +108,7 @@ class icalendar:
       t_start = timeline_start
       t_end = timeline_end
     else:
-      raise Exception ('Please input a valid arrow object!')
+      raise Exception('Please input a valid arrow (time) object!')
 
     # parse non-recurring events
     events = [{
@@ -135,13 +135,15 @@ class icalendar:
     # Parse recurring events
     recurring_events = [recurring_ical_events.of(ical).between(
       fmt(t_start),fmt(t_end)) for ical in self.icalendars]
-    
+
     re_events = [{
       'title':events.get('SUMMARY').lstrip(),
       'begin':arrow.get(events.get('DTSTART').dt).to(timezone
-        if arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00' else 'UTC'),
+        if arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00'
+                                                     else 'UTC'),
       'end':arrow.get(events.get("DTEND").dt).to(timezone
-        if arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00' else 'UTC')
+        if arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00'
+                                                 else 'UTC')
       } for ical in recurring_events for events in ical]
 
     # if any recurring events were found, add them to parsed_events
@@ -214,20 +216,3 @@ class icalendar:
 
 if __name__ == '__main__':
   print('running {0} in standalone mode'.format(filename))
-
-
-urls = [
-  # Default calendar
-  'https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics',
-  # inkycal debug calendar
-  'https://calendar.google.com/calendar/ical/6nqv871neid5l0t7hgk6jgr24c%40group.calendar.google.com/private-c9ab692c99fb55360cbbc28bf8dedb3a/basic.ics'
-  ]
-
-##a = icalendar()
-##a.load_url(urls)
-##a.get_events(arrow.now(), arrow.now().shift(weeks=4), timezone = a.get_system_tz())
-##a.show_events()
-
-
-
-
