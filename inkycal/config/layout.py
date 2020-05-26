@@ -12,7 +12,7 @@ filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 logger.setLevel(level=logging.INFO)
 
-class layout:
+class Layout:
   """Page layout handling"""
 
   def __init__(self, model=None, width=None, height=None,
@@ -77,12 +77,12 @@ class layout:
       self.bottom_section_height = (self.display_height -
         self.top_section_height - self.middle_section_height)
 
-    logger.debug('top-section size: {} x {} px'.format(
-      self.top_section_width, self.top_section_height))
-    logger.debug('middle-section size: {} x {} px'.format(
-      self.middle_section_width, self.middle_section_height))
-    logger.debug('bottom-section size: {} x {} px'.format(
-      self.bottom_section_width, self.bottom_section_height))
+    logger.debug(('top-section size: {} x {} px'.format(
+      self.top_section_width, self.top_section_height)))
+    logger.debug(('middle-section size: {} x {} px'.format(
+      self.middle_section_width, self.middle_section_height)))
+    logger.debug(('bottom-section size: {} x {} px'.format(
+      self.bottom_section_width, self.bottom_section_height)))
 
 
   def get_size(self, section):

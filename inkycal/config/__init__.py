@@ -1,2 +1,2 @@
-from .settings_parser import settings
-from .layout import layout
+from .settings_parser import Settings
+from .layout import Layout
