@@ -12,9 +12,9 @@ import arrow
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.INFO)
+logger.setLevel(level=logging.ERROR)
 
-class calendar(inkycal_module):
+class Calendar(inkycal_module):
   """Calendar class
   Create monthly calendar and show events from given icalendars
   """
@@ -40,10 +40,10 @@ class calendar(inkycal_module):
       fonts['NotoSans-SemiCondensed'], size = self.fontsize)
     self.weekstart = self.config['week_starts_on']
     self.show_events = True
-    self.date_format = 'D MMM' # used for dates 
+    self.date_format = 'D MMM' # used for dates
     self.time_format = "HH:mm" # used for timings
     self.language = 'en' # Grab from settings file?
-    
+
     self.timezone = get_system_tz()
     self.ical_urls = self.config['ical_urls']
     self.ical_files = []
@@ -160,13 +160,13 @@ class calendar(inkycal_module):
     write(icon, (0,0), (icon_width, icon_height), str(now.day),
           font=self.num_font, fill_height = 0.5, colour='white')
     im_colour.paste(icon, current_day_pos, icon)
-    
+
 
     # If events should be loaded and shown...
     if self.show_events == True:
 
       # import the ical-parser
-      from inkycal.modules.ical_parser import icalendar
+      from inkycal.modules.ical_parser import iCalendar
 
       # find out how many lines can fit at max in the event section
       line_spacing = 0
@@ -182,7 +182,9 @@ class calendar(inkycal_module):
       month_end = arrow.get(now.ceil('month'))
 
       # fetch events from given icalendars
-      parser = icalendar()
+      self.ical = iCalendar()
+      parser = self.ical
+
       if self.ical_urls:
         parser.load_url(self.ical_urls)
       if self.ical_files:
@@ -230,13 +232,13 @@ class calendar(inkycal_module):
         date_width = int(max([self.font.getsize(
           events['begin'].format(self.date_format,locale=lang))[0]
           for events in upcoming_events]) * 1.1)
-        
+
         time_width = int(max([self.font.getsize(
           events['begin'].format(self.time_format, locale=lang))[0]
           for events in upcoming_events]) * 1.1)
 
         line_height = self.font.getsize('hg')[1] + line_spacing
-        
+
         event_width_s = im_width - date_width - time_width
         event_width_l = im_width - date_width
 
@@ -282,9 +284,3 @@ class calendar(inkycal_module):
 
 if __name__ == '__main__':
   print('running {0} in standalone mode'.format(filename))
-
-
-##size = (400, 520)
-##config = {'week_starts_on': 'Monday', 'ical_urls': ['https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics']}
-##a = calendar(size, config)
-##a.generate_image()

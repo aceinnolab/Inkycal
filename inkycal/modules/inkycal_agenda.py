@@ -7,17 +7,17 @@ Copyright by aceisace
 
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
-from inkycal.modules.ical_parser import icalendar
+from inkycal.modules.ical_parser import iCalendar
 
 import calendar as cal
 import arrow
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.INFO)
+logger.setLevel(level=logging.ERROR)
 
 
-class agenda(inkycal_module):
+class Agenda(inkycal_module):
   """Agenda class
   Create agenda and show events from given icalendars
   """
@@ -94,7 +94,8 @@ class agenda(inkycal_module):
       for _ in range(max_lines)]
 
     # Load icalendar from config
-    parser = icalendar()
+    self.ical = iCalendar()
+    parser = self.parser
     if self.ical_urls:
       parser.load_url(self.ical_urls)
     if self.ical_files:
@@ -202,7 +203,3 @@ class agenda(inkycal_module):
 
 if __name__ == '__main__':
   print('running {0} in standalone mode'.format(filename))
-
-##size = (400, 520)
-##config = {'week_starts_on': 'Monday', 'ical_urls': ['https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics']}
-##a = agenda(size, config).generate_image()

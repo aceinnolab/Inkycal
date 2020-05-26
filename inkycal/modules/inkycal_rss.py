@@ -18,16 +18,16 @@ except ImportError:
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.INFO)
+logger.setLevel(level=logging.ERROR)
 
-class rss(inkycal_module):
+class RSS(inkycal_module):
   """RSS class
-  parses rss feeds from given urls
+  parses rss/atom feeds from given urls
   """
 
   def __init__(self, section_size, section_config):
     """Initialize inkycal_rss module"""
-    
+
     super().__init__(section_size, section_config)
 
     # Module specific parameters
@@ -130,20 +130,5 @@ class rss(inkycal_module):
     im_black.save(images+self.name+'.png', 'PNG')
     im_colour.save(images+self.name+'_colour.png', 'PNG')
 
-
-##def main():
-##  print('Main got executed just now~~~~')
-
-
 if __name__ == '__main__':
   print('running {0} in standalone/debug mode'.format(filename))
-##else:
-##  print(filename, 'imported')
-##  main()
-  
-##a = rss(size, config)
-##a.generate_image()
-##size = (384, 160)
-##config = {'rss_urls': ['http://feeds.bbci.co.uk/news/world/rss.xml#']}
-#config = {'rss_urls': ['http://www.tagesschau.de/xml/atom/']}
-#https://www.tagesschau.de/xml/rss2 -> problematic feed
