@@ -1,20 +1,25 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-Json settings parser. Currently in BETA.
+Json settings parser for inkycal project
 Copyright by aceisace
 """
+from inkycal.config.layout import Layout
 import json
 import os
-from inkycal.config.layout import layout
+import logging
 
-class settings:
+logger = logging.getLogger('settings')
+logger.setLevel(level=logging.DEBUG)
+
+class Settings:
   """Load and validate settings from the settings file"""
 
   _supported_languages = ['en', 'de', 'ru', 'it', 'es', 'fr', 'el', 'sv', 'nl',
                      'pl', 'ua', 'nb', 'vi', 'zh_tw', 'zh-cn', 'ja', 'ko']
   _supported_units = ['metric', 'imperial']
   _supported_hours = [12, 24]
+  _supported_update_interval = [10, 15, 20, 30, 60]
   _supported_display_orientation = ['normal', 'upside_down']
   _supported_models = [
   'epd_7_in_5_v2_colour', 'epd_7_in_5_v2',
@@ -43,12 +48,29 @@ class settings:
     self._validate()
 
     # Get the height-percentages of the modules
-    heights = [_['height']/100 for _ in self._settings['panels']]
+    self.Layout = Layout(model=self.model)
+    all_heights = [_['height'] for _ in self._settings['panels']]
+    
+    # If no height is provided, use default values
+    if len(set(all_heights)) == 1 and None in all_heights:
+      self.Layout.create_sections()
 
-    self.layout = layout(model=self.model)
-    self.layout.create_sections(top_section= heights[0],
-                           middle_section=heights[1],
-                           bottom_section=heights[2])
+    # if all heights are spcified, use given values
+    elif len(set(all_heights)) != 1 and not None in all_heights:
+      logger.info('Setting section height according to settings file')
+      heights = [_['height']/100 for _ in self._settings['panels']]
+
+      self.Layout.create_sections(top_section= heights[0],
+                                  middle_section=heights[1],
+                                  bottom_section=heights[2])
+
+    # If only some heights were defined, raise an error
+    else:
+      print("Section height is not defined for all sections.")
+      print("Please leave height empty for all modules")
+      print("OR specify the height for all sections")
+      raise Exception('Module height is not specified in all modules!')
+    
 
   def _validate(self):
     """Validate the basic config"""
@@ -68,6 +90,7 @@ class settings:
     self.units = settings['units']
     self.hours = settings['hours']
     self.model = settings['model']
+    self.update_interval = settings['update_interval']
     self.calibration_hours = settings['calibration_hours']
     #self.display_orientation = settings['display_orientation']
 
@@ -92,6 +115,11 @@ class settings:
       print('model not supported, switching to fallback, epd_7_in_5')
       self.model = 'epd_7_in_5'
 
+    if (not isinstance(self.update_interval, int) or self.update_interval
+        not in self._supported_update_interval):
+      print('update-interval not supported, switching to fallback, 60')
+      self.update_interval = 60
+
     if (not isinstance(self.calibration_hours, list)):
       print('calibration_hours not supported, switching to fallback, [0,12,18]')
       self.calibration_hours = [0,12,18]
@@ -115,7 +143,7 @@ class settings:
       for section in self._settings['panels']:
         if section['type'] == module_name:
           config = section['config']
-          size = self.layout.get_size(self.get_position(module_name))
+          size = self.Layout.get_size(self.get_position(module_name))
     return {'size':size, 'config':config}
 
   def get_position(self, module_name):
