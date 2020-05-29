@@ -1,85 +1,66 @@
-# Refactoring branch. Work in progress!
-Please do not use this branch as this is in pre-alpha stage. It it only intended for development purposes.
+# Welcome to inkycal v2.0.0 BETA!
 
+<p align="center">
+        <img src="https://github.com/aceisace/Inky-Calendar/blob/dev_ver2_0/Gallery/logo.png" width="800">
+</p>
 
-## Short Summary
-Aim of refactoring:
+<p align="center">
+    <a href="https://www.paypal.me/SaadNaseer" alt="Donate"><img src="https://img.shields.io/badge/Donate-PayPal-green.svg" /></a>
+    <a href="https://github.com/aceisace/Inky-Calendar/releases" alt="Version"><img src="https://img.shields.io/github/release/aceisace/Inky-Calendar.svg" /></a>
+   <a href="https://github.com/aceisace/Inky-Calendar/blob/Stable/LICENSE" alt="Licence"><img src="https://img.shields.io/github/license/aceisace/Inky-Calendar.svg" /></a>
+   <a href="https://github.com/aceisace/Inky-Calendar/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/aceisace/Inky-Calendar"></a>
+   <a href="https://github.com/aceisace/Inky-Calendar/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aceisace/Inky-Calendar?color=green"></a>
+   <a href="https://github.com/aceisace/Inky-Calendar/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/aceisace/Inky-Calendar?color=green"></a>
+   <a href="https://github.com/aceisace/Inky-Calendar"><img alt="python" src="https://img.shields.io/badge/python-%3E3.5-lightgrey"></a>
+</p>
+
+A python3 software for displaying events (from iCalendars), weather (from openweathermap) and RSS feeds on selected E-Paper displays (4.2", 5.83", 7.5"(v1), 7.5"(v2)) from Waveshare/GoodDisplay.
+
+Inkycal v2.0.0 BETA is a refactoring of the previous release. It aims to fix certain problems with the previous release, including but not limited to:
+
 * [x] Use settings.json file instead of .py file
 * [x] Fully dynamic images (changable section sizes)
 * [x] No preferred module positions or sizes
 * [x] Switch from scripts to classes
-* [ ] Allow using pip3 install .... to install inkycal
+* [x] Allow using `pip3 install inkycal` to install inkycal
 * [x] Update dependencies
 * [x] Switch from ics to icalendar library for better parsing of iCalendars
-* [ ] Allow using on windows (no-render mode)
+* [x] Allow using on windows (no-render mode)
 * [x] Implement features from dev branch
+* [x] Make it easier for developers (and beginners) to create their own custom module
 * [ ] Implement testing for each module
+* [ ] Add support for 9.7" ePaper
+* [ ] Add support for iCalendars requiring authentification
 
 
-## Testing
-While the main file is incomplete, you can still try out a few tests. To run these tests, please follow the steps below:
-* Clone this branch:
-`git clone -b dev_ver2_0 https://github.com/aceisace/Inky-Calendar inkycal`
-* Navigate to inkycal directory:
-`cd inkycal`
-* run tests:
-`python3 dev_tests.py`
+## How to test BETA
+Please note that while inkycal is in BETA, a lot of things will change in a short time. This means that problems are fixed on-the-go. If you encounter a problem, please mention it on Discord 
 
-## Info
-The main folder is now inkcal. 
-
-Folder structure:
-
+### Installation
 ```bash
-|   Inkycal.py               -main file (work in progress)
-|   __init__.py
-|
-+---config       
-|       layout.py            -handles layout of image (size, section-sizes)
-|       parser.py            -parse the settings.json file
-|       settings.json        -JSON file for all the user-config
-|       __init__.py
-|
-+---custom
-|       functions.py         -custom functions of inkycal-software (writing text, etc..)
-|       __init__.py
-|
-+---display
-|   |   __init__.py
-|   |
-|   \---drivers              - drivers....
-|           epdconfig.py
-|           epd_4_in_2.py
-|           epd_4_in_2_colour.py
-|           epd_5_in_83.py
-|           epd_5_in_83_colour.py
-|           epd_7_in_5.py
-|           epd_7_in_5_colour.py
-|           epd_7_in_5_v2.py
-|           epd_7_in_5_v2_colour.py
-|           __init__.py
-|
-\---modules                   - folder containing all modules
-        ical_parser.py        - parses icalendars
-        inkycal_rss.py        - parses rss feeds
-        inkycal_weather.py    - parses weather from openweathermap
-        __init__.py
+# clone this branch
+git clone -b dev_ver2_0 https://github.com/aceisace/Inky-Calendar Inkycal
+
+# go to Inkycal directory
+cd Inkycal
+
+# install Inkycal
+pip3 install -e ./
+```
+
+### Creating settings file
+...TODO
+
+### Running Inkycal
+```bash
+# Open Python3 and import package
+from inkycal import Inkycal
+ink = Inkycal()
 ```
 
 
-<p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/blob/dev_ver2_0/Gallery/logo.png" width="800">
-</p>
+# Please ignore anything after this, work in progress from here on----------------------------
 
-<p align="center">
-  
-  [![Version](https://img.shields.io/github/release/aceisace/Inky-Calendar.svg)](https://github.com/aceisace/Inky-Calendar/releases)
-  [![Python](https://img.shields.io/pypi/pyversions/pyowm.svg)](https://img.shields.io/pypi/pyversions/pyowm.svg)
-  [![Licence](https://img.shields.io/github/license/aceisace/Inky-Calendar.svg)](https://github.com/aceisace/Inky-Calendar/blob/Stable/LICENSE)
-  [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/SaadNaseer)
-</p>
-
-A python3 software for displaying events (from iCalendars), weather (from openweathermap) and RSS feeds on selected E-Paper displays (4.2", 5.83", 7.5"(v1), 7.5"(v2)) from Waveshare/GoodDisplay.
 
 ## Main features
 * Monthly Calendar that shows events from your Google (or other) iCalendar/s
