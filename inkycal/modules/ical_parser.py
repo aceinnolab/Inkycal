@@ -111,7 +111,8 @@ class iCalendar:
       raise Exception('Please input a valid arrow (time) object!')
 
     # parse non-recurring events
-    events = [{
+    events = [
+      {
       'title':events.get('summary').lstrip(),
       'begin':arrow.get(events.get('dtstart').dt).to(timezone
         if arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00' else 'UTC'),
@@ -121,7 +122,7 @@ class iCalendar:
       for ical in self.icalendars for events in ical.walk()
               if events.name == "VEVENT" and
       t_start <= arrow.get(events.get('dtstart').dt) <= t_end and
-      t_end <= arrow.get(events.get('dtend').dt) <= t_start
+      t_start <= arrow.get(events.get('dtend').dt) <= t_end
       ]
 
     # if any recurring events were found, add them to parsed_events
