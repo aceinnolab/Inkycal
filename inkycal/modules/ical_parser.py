@@ -34,7 +34,7 @@ except ModuleNotFoundError:
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.INFO)
+logger.setLevel(level=logging.ERROR)
 
 class iCalendar:
   """iCalendar parsing moudule for inkycal.

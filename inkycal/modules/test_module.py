@@ -64,7 +64,7 @@ class simple(inkycal_module):
     super().__init__(section_size, section_config)
 
     # module name (required)
-    self.name = filename
+    self.name = self.__class__.__name__
 
     # module specific parameters (optional)
     self.do_something = True
