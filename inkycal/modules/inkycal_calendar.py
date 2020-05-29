@@ -31,18 +31,16 @@ class Calendar(inkycal_module):
         raise Exception('config is missing {}'.format(param))
 
     # module name
-    self.name = filename
+    self.name = self.__class__.__name__
 
     # module specific parameters
-    self.shuffle_feeds = True
-
     self.num_font = ImageFont.truetype(
       fonts['NotoSans-SemiCondensed'], size = self.fontsize)
     self.weekstart = self.config['week_starts_on']
     self.show_events = True
-    self.date_format = 'D MMM' # used for dates
-    self.time_format = "HH:mm" # used for timings
-    self.language = 'en' # Grab from settings file?
+    self.date_format = 'D MMM'
+    self.time_format = "HH:mm"
+    self.language = 'en'
 
     self.timezone = get_system_tz()
     self.ical_urls = self.config['ical_urls']
@@ -220,7 +218,7 @@ class Calendar(inkycal_module):
       self._upcoming_events = upcoming_events
 
       # delete events which won't be able to fit (more events than lines)
-      upcoming_events[max_event_lines:]
+      upcoming_events[:max_event_lines]
 
 
       # Check if any events were found in the given timerange
@@ -262,6 +260,7 @@ class Calendar(inkycal_module):
                   (event_width_l, line_height), name, font=self.font,
                   alignment = 'left')
             else:
+              # change this event_width to event_width_s?
               write(im_black, (time_width, event_lines[cursor][1]),
                   (event_width, line_height), time, font=self.font,
                   alignment = 'left')

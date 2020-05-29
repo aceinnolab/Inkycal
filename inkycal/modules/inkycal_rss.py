@@ -37,7 +37,7 @@ class RSS(inkycal_module):
         raise Exception('config is missing {}'.format(param))
 
     # module name
-    self.name = filename
+    self.name = self.__class__.__name__
 
     # module specific parameters
     self.shuffle_feeds = True

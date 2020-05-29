@@ -32,8 +32,8 @@ class Agenda(inkycal_module):
       if not param in section_config:
         raise Exception('config is missing {}'.format(param))
 
-    # module name
-    self.name = filename
+    # class name
+    self.name = self.__class__.__name__
 
     # module specific parameters
     self.date_format = 'ddd D MMM'
