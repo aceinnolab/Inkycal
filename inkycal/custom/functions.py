@@ -12,11 +12,11 @@ import os
 import time
 
 
-# Get the path to the Inky-Calendar folder
+# Get the path to the Inkycal folder
 top_level = os.path.dirname(
   os.path.abspath(os.path.dirname(__file__))).split('/inkycal')[0]
 
-# Get path of 'fonts' and 'images' folders within Inky-Calendar folder
+# Get path of 'fonts' and 'images' folders within Inkycal folder
 fonts_location = top_level + '/fonts/'
 images = top_level + '/images/'
 
@@ -176,15 +176,15 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1,0.1)):
   thickness = border thickness
   shrinkage = shrink and center border by given percentage:(width_%, height_%)
   """
-  
+
   colour='black'
-  
+
   # size from function paramter
   width, height = int(size[0]*(1-shrinkage[0])), int(size[1]*(1-shrinkage[1]))
 
   # shift cursor to move rectangle to center
   offset_x, offset_y = int((size[0] - width)/2), int((size[1]- height)/2)
-  
+
   x, y, diameter = xy[0]+offset_x, xy[1]+offset_y, radius*2
   # lenght of rectangle size
   a,b = (width - diameter), (height-diameter)
@@ -213,99 +213,3 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1,0.1)):
     draw.arc(  (c3, c4) , 270, 360, fill=colour, width=thickness)
     draw.arc(  (c5, c6) , 0, 90, fill=colour, width=thickness)
     draw.arc(  (c7, c8) , 90, 180, fill=colour, width=thickness)
-
-
-"""Not required anymore?"""
-##def clear_image(section, colour = background_colour):
-##  """Clear the image"""
-##  width, height = eval(section+'_width'), eval(section+'_height')
-##  position = (0, eval(section+'_offset'))
-##  box = Image.new('RGB', (width, height), colour)
-##  image.paste(box, position)
-##
-##  if three_colour_support == True:
-##    image_col.paste(box, position)
-
-
-"""Not required anymore?"""
-##def crop_image(input_image, section):
-##  """Crop an input image to the desired section"""
-##  x1, y1 = 0, eval(section+'_offset')
-##  x2, y2 = eval(section+'_width'), y1 + eval(section+'_height')
-##  image = input_image.crop((x1,y1,x2,y2))
-##  return image
-
-
-
-"""Not required anymore?"""
-##def image_cleanup():
-##  """Delete all files in the image folder"""
-##  print('Cleanup of previous images...', end = '')
-##  for temp_files in glob(image_path+'*'):
-##      os.remove(temp_files)
-##  print('Done')
-
-
-##def optimise_colours(image, threshold=220):
-##  buffer = numpy.array(image.convert('RGB'))
-##  red, green = buffer[:, :, 0], buffer[:, :, 1]
-##  buffer[numpy.logical_and(red <= threshold, green <= threshold)] = [0,0,0] #grey->black
-##  image = Image.fromarray(buffer)
-##  return image
-##
-##def calibrate_display(no_of_cycles):
-##  """How many times should each colour be calibrated? Default is 3"""
-##  epaper = driver.EPD()
-##  epaper.init()
-##
-##  white = Image.new('1', (display_width, display_height), 'white')
-##  black = Image.new('1', (display_width, display_height), 'black')
-##
-##  print('----------Started calibration of E-Paper display----------')
-##  if 'colour' in model:
-##    for _ in range(no_of_cycles):
-##      print('Calibrating...', end= ' ')
-##      print('black...', end= ' ')
-##      epaper.display(epaper.getbuffer(black), epaper.getbuffer(white))
-##      print('colour...', end = ' ')
-##      epaper.display(epaper.getbuffer(white), epaper.getbuffer(black))
-##      print('white...')
-##      epaper.display(epaper.getbuffer(white), epaper.getbuffer(white))
-##      print('Cycle {0} of {1} complete'.format(_+1, no_of_cycles))
-##  else:
-##    for _ in range(no_of_cycles):
-##      print('Calibrating...', end= ' ')
-##      print('black...', end = ' ')
-##      epaper.display(epaper.getbuffer(black))
-##      print('white...')
-##      epaper.display(epaper.getbuffer(white)),
-##      print('Cycle {0} of {1} complete'.format(_+1, no_of_cycles))
-##
-##    print('-----------Calibration complete----------')
-##    epaper.sleep()
-
-
-"""Not required anymore?"""
-##def check_for_updates():
-##  with open(path+'release.txt','r') as file:
-##    lines = file.readlines()
-##    installed_release = lines[0].rstrip()
-
-##  temp = subp.check_output(['curl','-s','https://github.com/aceisace/Inky-Calendar/releases/latest'])
-##  latest_release_url = str(temp).split('"')[1]
-##  latest_release = latest_release_url.split('/tag/')[1]
-##
-##  def get_id(version):
-##    if not version.startswith('v'):
-##      print('incorrect release format!')
-##    v = ''.join(version.split('v')[1].split('.'))
-##    if len(v) == 2:
-##      v += '0'
-##    return int(v)
-##
-##  if get_id(installed_release) < get_id(latest_release):
-##    print('New update available!. Please update to the latest version')
-##    print('current release:', installed_release, 'new version:', latest_release)
-##  else:
-##    print('You are using the latest version of the Inky-Calendar software:', end = ' ')
-##    print(installed_release)
