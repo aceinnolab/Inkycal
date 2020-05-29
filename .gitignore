@@ -1,0 +1,12 @@
+*.pyc
+__pycache__/
+_build
+_static
+_templates
+
+# virtual environment files
+bin/
+lib/
+share/
+lib64
+pyvenv.cfg

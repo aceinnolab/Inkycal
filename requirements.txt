@@ -1,5 +1,7 @@
-pyowm==2.10.0
-Pillow==6.2.0
-ics==0.4
-feedparser==5.2.1
-pytz==2019.3
+pyowm>=2.10.0                   # weather
+Pillow>=7.1.1                   # imaging
+icalendar==4.0.6                # iCalendar parsing
+recurring-ical-events==0.1.16b0 # parse recurring events
+feedparser==5.2.1               # parse RSS-feeds
+numpy>=1.18.2                   # image pre-processing
+arrow>=0.15.6					# time operations

@@ -1,12 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-Experimental image module for Inky-Calendar software
-Displays an image on the E-Paper. Work in progress!
+Image module for inkycal Project
 Copyright by aceisace
+Development satge: Beta
 """
-from __future__ import print_function
-from configuration import *
+
 from os import path
 from PIL import ImageOps
 import requests
@@ -18,7 +17,7 @@ import numpy
 path      = inkycal_image_path
 path_body = inkycal_image_path_body
 mode = 'auto'         # 'horizontal' # 'vertical' # 'auto'
-upside_down = True    # Flip image by 180 deg (upside-down)
+upside_down = False    # Flip image by 180 deg (upside-down)
 alignment = 'center'  # top_center, top_left, center_left, bottom_right etc.
 colours = 'bwr'       # bwr # bwy # bw
 render = True         # show image on E-Paper?
@@ -29,11 +28,12 @@ if mode == 'horizontal':
   display_width, display_height == display_height, display_width
 
 if mode == 'vertical':
-  pass
+  raise NotImplementedError('Vertical mode is not currenctly supported')
 
 # .. Then substitute possibly parameterized path
 # TODO Get (assigned) panel dimensions instead of display dimensions
 path = path.replace('{model}', model).replace('{width}',str(display_width)).replace('{height}',str(display_height))
+print(path)
 
 """Try to open the image if it exists and is an image file"""
 try:
@@ -160,20 +160,20 @@ if colours != 'bw':
     """Create image for only black pixels"""
     buffer1[numpy.logical_and(g1 == 255, b1 == 0)] = [255,255,255]
     black = Image.fromarray(buffer1)
-
-if render == True:
-  epaper = driver.EPD()
-  print('Initialising E-Paper...', end = '')
-  epaper.init()
-  print('Done')
-
-  print('Sending image data and refreshing display...', end='')
-  if three_colour_support == True:
-    epaper.display(epaper.getbuffer(black), epaper.getbuffer(colour))
-  else:
-    epaper.display(epaper.getbuffer(black))
-  print('Done')
-
-  print('Sending E-Paper to deep sleep...', end = '')
-  epaper.sleep()
+##
+##if render == True:
+##  epaper = driver.EPD()
+##  print('Initialising E-Paper...', end = '')
+##  epaper.init()
+##  print('Done')
+##
+##  print('Sending image data and refreshing display...', end='')
+##  if three_colour_support == True:
+##    epaper.display(epaper.getbuffer(black), epaper.getbuffer(colour))
+##  else:
+##    epaper.display(epaper.getbuffer(black))
+##  print('Done')
+##
+##  print('Sending E-Paper to deep sleep...', end = '')
+##  epaper.sleep()
 print('Done')
