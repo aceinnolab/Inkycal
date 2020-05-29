@@ -34,7 +34,11 @@ Inkycal v2.0.0 BETA is a refactoring of the previous release. It aims to fix cer
 
 
 ## How to test BETA
-Please note that while inkycal is in BETA, a lot of things will change in a short time. This means that problems are fixed on-the-go. If you encounter a problem, please mention it on Discord 
+Please note that while inkycal is in BETA, a lot of things will change in a short time. This means that problems are fixed on-the-go. If you encounter a problem, please mention it on Discord.
+
+If you were using the previous release, please re-run the instaler:
+`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/master/Installer.sh)"`
+and choose `uninstall` to uninstall the previous version. The last release and this BETA are __not__ compatible!
 
 ### Installation
 ```bash
@@ -72,14 +76,11 @@ ink.test()
 ink.run()
 ```
 
-## Known issues (will be fixed before production)
+## Known issues (will be fixed before the production release)
 * [ ] Inkycal-image is not yet supported
 * [ ] Inkycal-server is not yet supported -> depends on inkycal-image
 * [ ] Calibration is not yet implemented automatically. For now, only manual calibration is supported: `ink.calibrate()`
 
-
-
-# Please ignore anything after this, work in progress from here on------------
 
 ## Main features
 * Monthly Calendar that shows events from your Google (or other) iCalendar/s
@@ -102,14 +103,11 @@ This software is in active development. To see the current development status, [
 </p>
 
 ## Hardware required
-* 7.5" 3-Colour E-Paper Display (Black, White, Red/Yellow) with driver hat from [waveshare](https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm)
-**or**
-* 7.5" 2-Colour E-Paper Display (Black, White) with driver hat from [waveshare](https://www.waveshare.com/product/7.5inch-e-paper-hat.htm)
-* Raspberry Pi Zero WH (with headers) (no soldering iron required)
-* Or: Raspberry Pi Zero W. In this case, you'll need to solder 2x20 pin GPIO headers yourself
-* MicroSD card (min. 4GB)
+* One of the supported ePaper displays from waveshare: 4.2", 5.83", 7.5" (640x384px), 7.5"-v2 (800x400px)
+* Any Raspberry Pi with 40 pins. (Even a Zero W / Zero WH is fine!)
+* MicroSD card (min. 4GB) for flashing Raspbian **with Desktop**. **Lite is not supported!**
 * MicroUSB cable (for power)
-* Something to be used as a case (e.g. a RIBBA photo-frame or a 3D-printed case)
+* If you like, a case
 
 # Setup
 ## Getting the Raspberry Pi Zero W ready
@@ -123,48 +121,18 @@ This software is in active development. To see the current development status, [
 7. Optional: If you want to disable the on-board leds of the Raspberry, follow these instructions: 
 **[Disable on-board-led](https://www.jeffgeerling.com/blogs/jeff-geerling/controlling-pwr-act-leds-raspberry-pi)**
 
-## Installing required packages for python 3.x
-Execute the following command in the Terminal to install all required packages. Please use Raspbian Buster with Desktop (preferably the latest version). Raspbian Buster **LITE** is __not__ supported.
 
-**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/master/Installer.sh)"`**
+**Upgrading from old versions:**
+If you were using an older version, please use the uninstall option from the installer. After uninstalling, please follow the instructions from above to get started.
 
-**Installing tagged versions**: 
-If you want to install a different version than the *master* branch, insert the tag name into the above URL, e. g.
-`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/v1.7.1/Installer.sh)"`
-
-**Upgrading from old versions:**:
-If you were using a previous version, please use the web-ui for generating a new settings file. Settings files from previous versions are not compatible.
-
-
-If you get some red lines, please run `pip3 install Pillow`.
-
-If the installer is broken, please follow the instructions here [manual installation](https://github.com/aceisace/Inky-Calendar/wiki/Manual-installation)
-
-If the Installer should fail for any reason, kindly open an issue and paste the error. Thanks.
-
-**Preview of Installer:**
-<p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/Installer-gif.gif" width="700">
-</p>
-
-## Adding details to the program
-When you run the installer, you can add details in the last step. For new-users, it is recommended to use the 'web-UI' option.
-
-~~You can also manually edit the settings file like this: `nano /home/$USER/Inky-Calendar/settings/settings.py`~~
-
-~~Once your details are added, run the software with: `python3 /home/$USER/Inky-Calendar/modules/inkycal.py`. If everything is working correctly, you'll see some lines being printed on the console (not red ones). Lastly, the E-Paper display will show a fresh image.~~
-
-If you encounter any issues, please leave a comment in the issues or via email. Thanks in advance.
 
 ## iCalendar
 Although Google Calendar is strongly recommended, iCalendars from other providors may work. Support for iCalendar requiring authentification (e.g. Owncloud) has been added, however this is still __experimental__.
 
-Event names will be truncated until they fit in their allocated space/line. Try avoiding too long event names.
+If you encounter any issues with iCalendar, please use this [validator](https://icalendar.org/validator.html) to check if your links and iCalendars are valid.
 
 If you encounter errors related to your iCalendar, please feel free to report the error either by opening an issue or by sending a mail.
 
-## Updating
-~~Before updating, re-name the current Inky-Calendar folder e.g. Inky-Calendar-old and then run the installer again (see above), choosing the **update** option.~~
 
 ## Contributing
 All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inky-Calendar/blob/master/CONTRIBUTING.md).
@@ -174,9 +142,7 @@ The average response time for issues, PRs and emails is usually 24 hours. In som
 ## Setting up VS Code Remote development in WSL
 In order to speed up development, most development tasks (apart from the actual rending to E-Ink display) can be developed on more powerful machines and in richer environments than running this on a Pi zero. In case of Windows PC the most convenient way is to use VS Code Remote development in Windows Subsystem for Linux (WSL), please follow [Tutorial](https://code.visualstudio.com/remote-tutorials/wsl/getting-started). 
 
-
 ~~To disable the eInk functionality set the flag to "image_only" (in /settings/settings.py):~~
-
 ~~`render_target = "image_only"`~~
 
 ### Don't forget to check out the Wiki. It contains all the information to understanding and customising the script.
