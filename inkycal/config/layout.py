@@ -34,8 +34,9 @@ class Layout:
       }
 
       self.display_height, self.display_width = display_dimensions[model]
+      self.display_size = display_dimensions[model]
       if 'colour' in model:
-        self.three_colour_support = True
+        self.supports_colour = True
 
     elif width and height:
       self.display_height = width
@@ -99,3 +100,8 @@ class Layout:
       elif section == 'bottom':
         size = (self.bottom_section_width, self.bottom_section_height)
       return size
+
+if __name__ == '__main__':
+  print('running {0} in standalone/debug mode'.format(
+    os.path.basename(__file__).split('.py')[0]))
+
