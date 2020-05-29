@@ -102,7 +102,8 @@ class Agenda(inkycal_module):
       parser.load_from_file(self.ical_files)
 
     # Load events from all icalendar in timerange
-    upcoming_events = parser.get_events(today, agenda_events[-1]['begin'])
+    upcoming_events = parser.get_events(today, agenda_events[-1]['begin'],
+                                        self.timezone)
 
     # Sort events by beginning time
     parser.sort()

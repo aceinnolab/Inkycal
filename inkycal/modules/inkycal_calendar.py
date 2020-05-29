@@ -189,7 +189,7 @@ class Calendar(inkycal_module):
         parser.load_from_file(self.ical_files)
 
       # Filter events for full month (even past ones) for drawing event icons
-      month_events = parser.get_events(month_start, month_end)
+      month_events = parser.get_events(month_start, month_end, self.timezone)
       parser.sort()
       self.month_events = month_events
 
@@ -214,7 +214,8 @@ class Calendar(inkycal_module):
 
       # Filter upcoming events until 4 weeks in the future
       parser.clear_events()
-      upcoming_events = parser.get_events(now, now.shift(weeks=4))
+      upcoming_events = parser.get_events(now, now.shift(weeks=4),
+                                          self.timezone)
       self._upcoming_events = upcoming_events
 
       # delete events which won't be able to fit (more events than lines)
