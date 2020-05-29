@@ -92,7 +92,7 @@ class Settings:
     self.model = settings['model']
     self.update_interval = settings['update_interval']
     self.calibration_hours = settings['calibration_hours']
-    #self.display_orientation = settings['display_orientation']
+    self.display_orientation = settings['display_orientation']
 
     # Validate the parameters
     if (not isinstance(self.language, str) or self.language not in
@@ -124,10 +124,10 @@ class Settings:
       print('calibration_hours not supported, switching to fallback, [0,12,18]')
       self.calibration_hours = [0,12,18]
 
-##    if (not isinstance(self.display_orientation, str) or self.display_orientation not in
-##        self._supported_display_orientation):
-##      print('display orientation not supported, switching to fallback, normal')
-##      self.display_orientation = 'normal'
+    if (not isinstance(self.display_orientation, str) or self.display_orientation not in
+        self._supported_display_orientation):
+      print('display orientation not supported, switching to fallback, normal')
+      self.display_orientation = 'normal'
 
     print('Settings file OK!')
 
