@@ -29,7 +29,7 @@
 
 
 import logging
-from . import epdconfig
+from inkycal.display.drivers import epdconfig
 
 # Display resolution
 EPD_WIDTH       = 800
