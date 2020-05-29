@@ -49,18 +49,37 @@ pip3 install -e ./
 ```
 
 ### Creating settings file
-...TODO
+Please visit the [Online WEB-UI](http://aceinnolab.com/web-ui-v2-0-0-beta.html) to create your settings.json file.
+You can alternatively also open `settings-UI.html` in your web-browser.
+
+* Fill in the details and click on `generate` to create your settings.json file
+* Copy the settings.json file to your raspberry pi
+* Copy the path (location) of this file
 
 ### Running Inkycal
-```bash
+```python3
 # Open Python3 and import package
 from inkycal import Inkycal
-ink = Inkycal()
+
+# tell the Inkycal class where your settings file is
+ink = Inkycal('/path/to/your/settings/file', render = True)
+# render means rendering (showing) on the ePaper. Setting render = False will not show anything on the ePaper
+
+# test if Inkycal can be run correctly, running this will show a bit of info for each module
+ink.test()
+
+# If there were no issues, you can run Inkycal nonstop:
+ink.run()
 ```
 
+## Known issues (will be fixed before production)
+* [ ] Inkycal-image is not yet supported
+* [ ] Inkycal-server is not yet supported -> depends on inkycal-image
+* [ ] Calibration is not yet implemented automatically. For now, only manual calibration is supported: `ink.calibrate()`
 
-# Please ignore anything after this, work in progress from here on----------------------------
 
+
+# Please ignore anything after this, work in progress from here on------------
 
 ## Main features
 * Monthly Calendar that shows events from your Google (or other) iCalendar/s
