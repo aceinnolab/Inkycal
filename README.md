@@ -1,3 +1,5 @@
+# Inkycal v2.0.0 BETA launched! If you want to test the BETA, please click [HERE](https://github.com/aceisace/Inky-Calendar/tree/dev_ver2_0)
+
 <p align="center">
 <img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/Inky-Calendar-logo.png" width="800">
 </p>
