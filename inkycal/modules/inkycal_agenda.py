@@ -95,7 +95,8 @@ class Agenda(inkycal_module):
 
     # Load icalendar from config
     self.ical = iCalendar()
-    parser = self.parser
+    parser = self.ical
+
     if self.ical_urls:
       parser.load_url(self.ical_urls)
     if self.ical_files:
