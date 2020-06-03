@@ -82,6 +82,13 @@ ink.run()
 * [ ] Calibration is not yet implemented automatically. For now, only manual calibration is supported: `ink.calibrate()`
 
 
+## Updating BETA to latest version
+To update to the latest beta, please do the following:
+1) `pip3 uninstall inkycal`
+2) Remove the `Inkycal` folder (or rename it at least)
+3) follow the steps from `Installation` (see above)
+
+
 ## Main features
 * Monthly Calendar that shows events from your Google (or other) iCalendar/s
 * Live weather info and forecasts for next 9 hours (openweathermap)
