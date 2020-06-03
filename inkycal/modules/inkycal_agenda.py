@@ -40,7 +40,7 @@ class Agenda(inkycal_module):
     self.time_format = "HH:mm"
     self.language = 'en'
     self.timezone = get_system_tz()
-    self.ical_urls = config['ical_urls']
+    self.ical_urls = self.config['ical_urls']
     self.ical_files = []
 
     # give an OK message
