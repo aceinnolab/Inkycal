@@ -8,6 +8,7 @@ from inkycal.config.layout import Layout
 import json
 import os
 import logging
+from jsmin import jsmin
 
 logger = logging.getLogger('settings')
 logger.setLevel(level=logging.DEBUG)
@@ -37,9 +38,19 @@ class Settings:
         folder = settings_file_path
 
       os.chdir(folder)
-      with open("settings.json") as file:
-        settings = json.load(file)
-        self._settings = settings
+      if os.path.exists('settings.jsonc'):
+        with open("settings.jsonc") as jsonc_file:
+          #minify in order to remove comments
+          minified = jsmin(jsonc_file.read())
+
+          #remove known invalid json (comma followed by closing accolades)
+          minified = minified.replace(",}","}")
+          settings = json.loads(minified)
+          self._settings = settings
+      else:
+        with open("settings.json") as file:
+          settings = json.load(file)
+          self._settings = settings
 
     except FileNotFoundError:
       print('No settings file found in specified location')
