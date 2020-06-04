@@ -171,7 +171,7 @@ def generate_image():
       forecast = owm.three_hours_forecast(location)
 
       """Round the hour to the nearest multiple of 3"""
-      now = arrow.utcnow()
+      now = arrow.utcnow().to(get_tz())
       if (now.hour % 3) != 0:
         hour_gap = 3 - (now.hour % 3)
       else:
@@ -184,10 +184,10 @@ def generate_image():
       fc4 = now.replace(hours = + hour_gap + 9).floor('hour')
 
       """Prepare forecast objects for the specified timings"""
-      forecast_fc1 = forecast.get_weather_at(fc1.datetime)
-      forecast_fc2 = forecast.get_weather_at(fc2.datetime)
-      forecast_fc3 = forecast.get_weather_at(fc3.datetime)
-      forecast_fc4 = forecast.get_weather_at(fc4.datetime)
+      forecast_fc1 = forecast.get_weather_at(fc1.datetime.astimezone(timezone('UTC')))
+      forecast_fc2 = forecast.get_weather_at(fc2.datetime.astimezone(timezone('UTC')))
+      forecast_fc3 = forecast.get_weather_at(fc3.datetime.astimezone(timezone('UTC')))
+      forecast_fc4 = forecast.get_weather_at(fc4.datetime.astimezone(timezone('UTC')))
 
       """Get the current temperature and forcasts temperatures"""
       temperature_now = to_units(weather.get_temperature()['temp'])
