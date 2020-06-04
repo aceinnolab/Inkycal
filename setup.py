@@ -15,6 +15,7 @@ __install_requires__ = ['pyowm==2.10.0',                  # weather
                         'feedparser==5.2.1',              # parse RSS-feeds
                         'numpy>=1.18.3',                  # image pre-processing
                         'arrow>=0.15.6'                   # time handling
+                        'jsmin>=2.2.2'                    # Parsing jsonc file
                         ]
 
 __classifiers__ = [
