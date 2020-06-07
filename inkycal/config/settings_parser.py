@@ -40,10 +40,10 @@ class Settings:
       os.chdir(folder)
       if os.path.exists('settings.jsonc'):
         with open("settings.jsonc") as jsonc_file:
-          #minify in order to remove comments
+          # minify in order to remove comments
           minified = jsmin(jsonc_file.read())
 
-          #remove known invalid json (comma followed by closing accolades)
+          # remove known invalid json (comma followed by closing accolades)
           minified = minified.replace(",}","}")
           settings = json.loads(minified)
           self._settings = settings
