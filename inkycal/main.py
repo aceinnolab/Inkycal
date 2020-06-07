@@ -203,7 +203,7 @@ class Inkycal:
       sleep_time = self.countdown()
       time.sleep(sleep_time)
 
-  def _merge_bands():
+  def _merge_bands(self):
     """Merges black and coloured bands for black-white ePapers
     returns the merged image
     """
@@ -215,8 +215,8 @@ class Inkycal:
     # If there is an image for black and colour, merge them
     if exists(im1_path) and exists(im2_path):
 
-      im1 = Image.open(im1_name).convert('RGBA')
-      im2 = Image.open(im2_name).convert('RGBA')
+      im1 = Image.open(im1_path).convert('RGBA')
+      im2 = Image.open(im2_path).convert('RGBA')
 
       def clear_white(img):
         """Replace all white pixels from image with transparent pixels
@@ -316,17 +316,20 @@ class Inkycal:
 
     buffer = numpy.array(image.convert('RGB'))
     red, green = buffer[:, :, 0], buffer[:, :, 1]
-    buffer[numpy.logical_and(red <= threshold, green <= threshold)] = [0,0,0] #grey->black
+    # grey->black 
+    buffer[numpy.logical_and(red <= threshold, green <= threshold)] = [0,0,0]
     image = Image.fromarray(buffer)
     return image
 
   def calibrate(self):
     """Calibrate the ePaper display to prevent burn-ins (ghosting)
     Currently has to be run manually"""
+
     self.Display.calibrate()
     
 
   def _check_for_updates(self):
     """Check if a new update is available for inkycal"""
+
     raise NotImplementedError('Tha developer were too lazy to implement this..')
 
