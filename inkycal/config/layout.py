@@ -37,6 +37,8 @@ class Layout:
       self.display_size = display_dimensions[model]
       if 'colour' in model:
         self.supports_colour = True
+      else:
+        self.supports_colour = False
 
     elif width and height:
       self.display_height = width
