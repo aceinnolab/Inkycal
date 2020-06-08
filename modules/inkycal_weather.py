@@ -283,7 +283,7 @@ def generate_image():
                  fill_width = 0.9)
 
       """Add weather details in column 4 (forecast 1)"""
-      write_text(coloumn_width, row_height, to_hours(fc1, simple=True),
+      write_text(coloumn_width, row_height, to_hours(fc1.to(get_tz()), simple=True),
         text_fc1_pos, font = font)
       write_text(coloumn_width, row_height, weathericons[weather_icon_fc1],
         icon_fc1_pos, font = w_font, fill_height = 1.0)
@@ -292,7 +292,7 @@ def generate_image():
           temperature_fc1))
 
       """Add weather details in column 5 (forecast 2)"""
-      write_text(coloumn_width, row_height, to_hours(fc2, simple=True),
+      write_text(coloumn_width, row_height, to_hours(fc2.to(get_tz()), simple=True),
         text_fc2_pos, font = font)
       write_text(coloumn_width, row_height, weathericons[weather_icon_fc2],
         icon_fc2_pos, font = w_font, fill_height = 1.0)
@@ -301,7 +301,7 @@ def generate_image():
           temperature_fc2))
 
       """Add weather details in column 6 (forecast 3)"""
-      write_text(coloumn_width, row_height, to_hours(fc3, simple=True),
+      write_text(coloumn_width, row_height, to_hours(fc3.to(get_tz()), simple=True),
         text_fc3_pos, font = font)
       write_text(coloumn_width, row_height, weathericons[weather_icon_fc3],
         icon_fc3_pos, font = w_font, fill_height = 1.0)
@@ -310,7 +310,7 @@ def generate_image():
           temperature_fc3))
 
       """Add weather details in coloumn 7 (forecast 4)"""
-      write_text(coloumn_width, row_height, to_hours(fc4, simple=True),
+      write_text(coloumn_width, row_height, to_hours(fc4.to(get_tz()), simple=True),
         text_fc4_pos, font = font)
       write_text(coloumn_width, row_height, weathericons[weather_icon_fc4],
         icon_fc4_pos, font = w_font, fill_height = 1.0)
