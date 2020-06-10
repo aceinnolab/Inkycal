@@ -1,7 +1,7 @@
 import unittest
-from inkycal.modules import Agenda
+from inkycal.modules import Calendar
 
-agenda = Agenda(
+calendar = Calendar(
   #size
   (400,400),
 
@@ -12,10 +12,10 @@ agenda = Agenda(
   }
   )
 
-class inkycal_agenda_test(unittest.TestCase):
+class inkycal_calendar_test(unittest.TestCase):
   def test_generate_image(self):
     print('testing image generation')
-    agenda.generate_image()
+    calendar.generate_image()
 
 
 if __name__ == '__main__':
