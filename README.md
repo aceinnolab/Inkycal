@@ -21,7 +21,7 @@ A python3 software for displaying events (from iCalendars), weather (from openwe
 ## News:
 * **Looking for a 3D-printable IKEA frame mount? [Check this out](https://www.thingiverse.com/thing:4159363) (Credit to Ribitsch)**
 * **Looking for a server-only solution? [This repo offers a server-only solution](https://github.com/Atrejoe/Inky-Calendar-Server) (Credit to Atrejoe)**
-* **Discord chat open now. [Click here to enter](https://discord.gg/sHYKeSM)**
+* **Discord chat open now. [Click here to enter](https://discord.gg/4YWdkVT)**
 * **Version 1.7.1 released with support for 4.2", 5.83", 7.5" (v1) and 7.5" (v2) E-Paper displays** (Mid January 2020)
 * **Added support for Debian Buster, Buster Lite is not supported!**
 * **Added a user-friendly Web-UI for adding details to the programm (Credit to TobyChui for the template)**
