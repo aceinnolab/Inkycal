@@ -44,7 +44,11 @@ class Inkycal:
     self.supports_colour = self.Settings.Layout.supports_colour
 
     # Option to flip image upside down
-    self.upside_down = False
+    if self.Settings.display_orientation == 'normal':
+      self.upside_down = False
+
+    elif self.Settings.display_orientation == 'upside_down':
+      self.upside_down = True
 
     # Option to use epaper image optimisation
     self.optimize = True
@@ -122,8 +126,11 @@ class Inkycal:
     print('You are running inkycal v{}'.format(self._release))
 
 
-    print('Running inkyal test-run for {} ePaper'.format(
+    print('Running inkycal test-run for {} ePaper'.format(
       self.Settings.model))
+
+    if self.upside_down == True:
+      print('upside-down mode active')
 
     for module in self.active_modules:
       generate_im = 'self.{0}.generate_image()'.format(module)
@@ -316,7 +323,7 @@ class Inkycal:
 
     buffer = numpy.array(image.convert('RGB'))
     red, green = buffer[:, :, 0], buffer[:, :, 1]
-    # grey->black 
+    # grey->black
     buffer[numpy.logical_and(red <= threshold, green <= threshold)] = [0,0,0]
     image = Image.fromarray(buffer)
     return image
@@ -326,7 +333,7 @@ class Inkycal:
     Currently has to be run manually"""
 
     self.Display.calibrate()
-    
+
 
   def _check_for_updates(self):
     """Check if a new update is available for inkycal"""
