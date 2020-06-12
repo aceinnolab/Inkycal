@@ -86,9 +86,9 @@ class iCalendar:
     returns a list of iCalendars as string (raw)
     """
     if type(url) == list:
-      ical = [Calendar.from_ical(open(path)) for path in filepath]
+      ical = (Calendar.from_ical(open(path)) for path in filepath)
     elif type(url) == str:
-      ical = [Calendar.from_ical(open(path))]
+      ical = (Calendar.from_ical(open(path)))
     else:
       raise Exception ("Input: '{}' is not a string or list!".format(url))
 
@@ -111,33 +111,22 @@ class iCalendar:
       raise Exception('Please input a valid arrow (time) object!')
 
     # parse non-recurring events
-    events = [
-      {
-      'title':events.get('summary').lstrip(),
-      'begin':arrow.get(events.get('dtstart').dt).to(timezone
-        if arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00' else 'UTC'),
-      'end':arrow.get(events.get('dtend').dt).to(timezone
-        if arrow.get(events.get('dtend').dt).format('HH:mm') != '00:00' else 'UTC')
-      }
-      for ical in self.icalendars for events in ical.walk()
-              if events.name == "VEVENT" and
-      t_start <= arrow.get(events.get('dtstart').dt) <= t_end and
-      t_start <= arrow.get(events.get('dtend').dt) <= t_end
-      ]
-
-    # if any recurring events were found, add them to parsed_events
-    if events: self.parsed_events += events
 
     # Recurring events time-span has to be in this format:
     # "%Y%m%dT%H%M%SZ" (python strftime)
-    fmt = lambda date: (date.year, date.month, date.day, date.hour, date.minute,
-                        date.second)
+    fmt = lambda date: (date.year, date.month, date.day, date.hour,
+                        date.minute, date.second)
 
-    # Parse recurring events
-    recurring_events = [recurring_ical_events.of(ical).between(
-      fmt(t_start),fmt(t_end)) for ical in self.icalendars]
+    t_start_recurring = fmt(t_start)
+    t_end_recurring = fmt(t_end)
 
-    re_events = [{
+    # Fetch recurring events
+    recurring_events = (recurring_ical_events.of(ical).between(
+                        t_start_recurring, t_end_recurring)
+                        for ical in self.icalendars)
+
+    re_events = (
+      {
       'title':events.get('SUMMARY').lstrip(),
       'begin':arrow.get(events.get('DTSTART').dt).to(timezone
         if arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00'
@@ -145,10 +134,11 @@ class iCalendar:
       'end':arrow.get(events.get("DTEND").dt).to(timezone
         if arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00'
                                                  else 'UTC')
-      } for ical in recurring_events for events in ical]
+      }
+      for ical in recurring_events for events in ical)
 
     # if any recurring events were found, add them to parsed_events
-    if re_events: self.parsed_events += re_events
+    if re_events: self.parsed_events += list(re_events)
 
     # Sort events by their beginning date
     self.sort()
@@ -160,8 +150,10 @@ class iCalendar:
     if not self.parsed_events:
       logger.debug('no events found to be sorted')
     else:
+      # Not working as expected....
       by_date = lambda event: event['begin']
       self.parsed_events.sort(key=by_date)
+
 
   def clear_events(self):
     """clear previously parsed events"""
