@@ -257,7 +257,7 @@ class Inkycal:
     im2_cursor = 0
 
     for module in self.active_modules:
-
+      
       im1_path = images+module+'.png'
       im2_path = images+module+'_colour.png'
 
@@ -270,21 +270,21 @@ class Inkycal:
 
         # Get the size of the section
         section_size = self.Settings.get_config(module)['size']
-
         # Calculate coordinates to center the image
-        x = int( (section_size[0]-im1_size[0]) /2)
+        x = int( (section_size[0] - im1_size[0]) /2)
 
         # If this is the first module, use the y-offset
         if im1_cursor == 0:
           y = int( (section_size[1]-im1_size[1]) /2)
         else:
-          y = im1_cursor
+          y = im1_cursor + int( (section_size[1]-im1_size[1]) /2)
+
 
         # center the image in the section space
         im_black.paste(im1, (x,y), im1)
 
         # Shift the y-axis cursor at the beginning of next section
-        im1_cursor += section_size[1] - y
+        im1_cursor += section_size[1]
 
       # Check if there is an image for the coloured band
       if exists(im2_path):
@@ -301,15 +301,15 @@ class Inkycal:
 
         # If this is the first module, use the y-offset
         if im2_cursor == 0:
-          y = int( (section_size[1]-im2_size[1]) /2)
+          y = int( (section_size[1] - im2_size[1] ) /2)
         else:
-          y = im2_cursor
+          y = im2_cursor + int( (section_size[1]-im2_size[1]) /2)
 
         # center the image in the section space
         im_colour.paste(im2, (x,y), im2)
 
         # Shift the y-axis cursor at the beginning of next section
-        im2_cursor += section_size[1] - y
+        im2_cursor += section_size[1]
 
     if self.optimize == True:
       self._optimize_im(im_black).save(images+'canvas.png', 'PNG')
