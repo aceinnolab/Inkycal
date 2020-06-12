@@ -23,8 +23,8 @@ class Layout:
 
     if (model != None) and (width == None) and (height == None):
       display_dimensions = {
-      'epd_7_in_5_v2_colour': (800, 400),
-      'epd_7_in_5_v2': (800, 400),
+      'epd_7_in_5_v2_colour': (800, 480),
+      'epd_7_in_5_v2': (800, 480),
       'epd_7_in_5_colour': (640, 384),
       'epd_7_in_5': (640, 384),
       'epd_5_in_83_colour': (600, 448),
