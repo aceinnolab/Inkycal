@@ -31,6 +31,7 @@ Inkycal v2.0.0 BETA is a refactoring of the previous release. It aims to fix cer
 * [ ] Implement testing for each module
 * [ ] Add support for 9.7" ePaper
 * [ ] Add support for iCalendars requiring authentification
+* [ ] Add module for TODOIST api
 
 ## How to test BETA
 Please note that while inkycal is in BETA, a lot of things will change in a short time. This means that problems are fixed on-the-go. If you encounter a problem, please mention it on Discord.
