@@ -184,8 +184,8 @@ class Inkycal:
 
           # Flip the image by 180° if required
           if self.upside_down == True:
-            upside_down(im_black)
-            upside_down(im_colour)
+            im_black = upside_down(im_black)
+            im_colour = upside_down(im_colour)
 
           # render the image on the display
           Display.render(im_black, im_colour)
@@ -197,7 +197,7 @@ class Inkycal:
 
           # Flip the image by 180° if required
           if self.upside_down == True:
-            upside_down(im_black)
+            im_black = upside_down(im_black)
 
           Display.render(im_black)
 
@@ -257,7 +257,7 @@ class Inkycal:
     im2_cursor = 0
 
     for module in self.active_modules:
-      
+
       im1_path = images+module+'.png'
       im2_path = images+module+'_colour.png'
 
@@ -278,7 +278,6 @@ class Inkycal:
           y = int( (section_size[1]-im1_size[1]) /2)
         else:
           y = im1_cursor + int( (section_size[1]-im1_size[1]) /2)
-
 
         # center the image in the section space
         im_black.paste(im1, (x,y), im1)
@@ -301,7 +300,7 @@ class Inkycal:
 
         # If this is the first module, use the y-offset
         if im2_cursor == 0:
-          y = int( (section_size[1] - im2_size[1] ) /2)
+          y = int( (section_size[1]-im2_size[1]) /2)
         else:
           y = im2_cursor + int( (section_size[1]-im2_size[1]) /2)
 
