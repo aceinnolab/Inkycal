@@ -35,8 +35,12 @@ class inkycal_module(metaclass=abc.ABCMeta):
 
     for key, value in kwargs.items():
       if key in options:
-        setattr(self, key, value)
-        print("set '{}' to '{}'".format(key,value))
+        if key == 'fontsize':
+          self.font  = ImageFont.truetype(self.font.path, value)
+          self.fontsize = value
+        else:
+          setattr(self, key, value)
+          print("set '{}' to '{}'".format(key,value))
       else:
         print('{0} does not exist'.format(key))
         pass
