@@ -51,7 +51,11 @@ logger.setLevel(level=logging.INFO)
 #                         Class setup
 #############################################################################
 
-class simple(inkycal_module):
+# info: you can change Simple to something else
+# Please remember to keep the first letter a capital
+# Avoid giving too long names to classes
+
+class Simple(inkycal_module):
   """ Simple Class
   Explain what this module does...
   """
@@ -135,3 +139,28 @@ class simple(inkycal_module):
 # Check if the module is being run by itself
 if __name__ == '__main__':
   print('running {0} in standalone mode'.format(filename))
+
+
+
+
+################################################################################
+# Last steps
+# Wow, you made your own module for the inkycal project! Amazing :D
+# To make sure this module can be used with inkycal, you need to edit 2 files:
+
+# 1) Inkycal/modules/__init__.py
+# Add this into the modules init file:
+# from .filename import Class
+# where filename is the name of your module
+# where Class is the name of your class e.g. Simple in this case
+
+
+# 2) Inkycal/__init__.py
+# Before the line # Main file, add this:
+# import inkycal.modules.filename
+# Where the filename is the name of your file inside the modules folder
+
+# How do I now import my module?
+# from inkycal.modules import Class
+# Where Class is the name of the class inside your module (e.g. Simple)
+  
