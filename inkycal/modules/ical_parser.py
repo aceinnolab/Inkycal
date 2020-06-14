@@ -127,15 +127,18 @@ class iCalendar:
 
     re_events = (
       {
-      'title':events.get('SUMMARY').lstrip(),
-      'begin':arrow.get(events.get('DTSTART').dt).to(timezone
-        if arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00'
-                                                     else 'UTC'),
-      'end':arrow.get(events.get("DTEND").dt).to(timezone
-        if arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00'
-                                                 else 'UTC')
-      }
-      for ical in recurring_events for events in ical)
+      'title': events.get('SUMMARY').lstrip(),
+      
+      'begin': arrow.get(events.get('DTSTART').dt).to(timezone) if (
+        arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00')
+        else arrow.get(events.get('DTSTART').dt).replace(tzinfo=timezone),
+      
+      'end':arrow.get(events.get("DTEND").dt).to(timezone) if (
+        arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00')
+        else arrow.get(events.get('DTEND').dt).replace(tzinfo=timezone)
+
+      } for ical in recurring_events for events in ical)
+
 
     # if any recurring events were found, add them to parsed_events
     if re_events: self.parsed_events += list(re_events)
@@ -150,7 +153,7 @@ class iCalendar:
     if not self.parsed_events:
       logger.debug('no events found to be sorted')
     else:
-      # Not working as expected....
+      # sort events by date
       by_date = lambda event: event['begin']
       self.parsed_events.sort(key=by_date)
 
