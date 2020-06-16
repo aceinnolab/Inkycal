@@ -16,16 +16,16 @@ jobs:
 
     - name: Clone repo
       run: |
-        git clone https://github.com/aceisace/Inky-Calendar
+        git clone -b dev_ver2_0 https://github.com/aceisace/Inky-Calendar Inkycal
     - name: Install dependencies and run
       run: |
         python -m pip install --upgrade pip
-        cd Inky-Calendar && pip3 install -r requirements.txt
-        ln -s settings/settings.py modules/
-        ln -s settings/configuration.py modules/
-        ls -al
-        cd modules && ls -al
-        python3 inkycal.py
+        cd Inkycal
+        pip3 install -e ./
+        cd inkycal/modules && ls -al
+        cd ..
+        cd tests
+        for f in *.py; do python3 "$f"; done
     - name: Test with pytest
       run: |
         pytest
