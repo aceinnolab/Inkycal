@@ -26,6 +26,3 @@ jobs:
         cd ..
         cd tests
         for f in *.py; do python3 "$f"; done
-    - name: Test with pytest
-      run: |
-        pytest
