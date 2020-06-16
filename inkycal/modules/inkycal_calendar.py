@@ -261,9 +261,8 @@ class Calendar(inkycal_module):
                   (event_width_l, line_height), name, font=self.font,
                   alignment = 'left')
             else:
-              # change this event_width to event_width_s?
               write(im_black, (time_width, event_lines[cursor][1]),
-                  (event_width, line_height), time, font=self.font,
+                  (event_width_s, line_height), time, font=self.font,
                   alignment = 'left')
 
               write(im_black, (date_width+time_width,event_lines[cursor][1]),
