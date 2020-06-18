@@ -1,0 +1,20 @@
+======================================
+   bcm2835 1.58: src/test-suite.log
+======================================
+
+# TOTAL: 1
+# PASS:  0
+# SKIP:  0
+# XFAIL: 0
+# FAIL:  1
+# XPASS: 0
+# ERROR: 0
+
+.. contents:: :depth: 2
+
+FAIL: test
+==========
+
+bcm2835_init: gpio mmap failed: Cannot allocate memory
+FAIL test (exit status: 1)
+

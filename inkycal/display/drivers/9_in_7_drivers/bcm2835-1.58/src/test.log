@@ -1,0 +1,2 @@
+bcm2835_init: gpio mmap failed: Cannot allocate memory
+FAIL test (exit status: 1)
