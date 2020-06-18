@@ -114,11 +114,10 @@ class iCalendar:
 
     # Recurring events time-span has to be in this format:
     # "%Y%m%dT%H%M%SZ" (python strftime)
-    fmt = lambda date: (date.year, date.month, date.day, date.hour,
-                        date.minute, date.second)
+    fmt = 'YYYYMMDD[T]HHmmss[Z]'
 
-    t_start_recurring = fmt(t_start)
-    t_end_recurring = fmt(t_end)
+    t_start_recurring = t_start.to('UTC').format(fmt)
+    t_end_recurring = t_end.to('UTC').format(fmt)
 
     # Fetch recurring events
     recurring_events = (recurring_ical_events.of(ical).between(
