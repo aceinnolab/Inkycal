@@ -20,3 +20,11 @@
 | --- | --- | --- |
 | **Atrejoe**| [Robert Sirre]https://github.com/Atrejoe| for various suggestions, help with refacotring, implementing gitflow and a lot more...|
 | **vitasam** | [vitasam](https://github.com/vitasam)| for help with refactoring, code improvements, modularity and a lot more... |
+
+
+## Financial Contributions
+| Name | Contribution details |
+| --- | --- |
+| **Kevin** | A special thank you for contribution! :bow: |
+| **Eric** | A special thank you for contribution! :bow: |
+| **Thomas** |  A special thank you for contribution! :bow: |
