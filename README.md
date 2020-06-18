@@ -6,6 +6,7 @@
 
 <p align="center">
     <a href="https://www.paypal.me/SaadNaseer" alt="Donate"><img src="https://img.shields.io/badge/Donate-PayPal-green.svg" /></a>
+    <a href="https://github.com/aceisace/Inky-Calendar/actions"><img alt='build status' src="https://github.com/aceisace/Inky-Calendar/workflows/Python%20tests/badge.svg?branch=dev_ver2_0&event=push"></a>
     <a href="https://github.com/aceisace/Inky-Calendar/releases" alt="Version"><img src="https://img.shields.io/github/release/aceisace/Inky-Calendar.svg" /></a>
    <a href="https://github.com/aceisace/Inky-Calendar/blob/Stable/LICENSE" alt="Licence"><img src="https://img.shields.io/github/license/aceisace/Inky-Calendar.svg" /></a>
    <a href="https://github.com/aceisace/Inky-Calendar/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/aceisace/Inky-Calendar"></a>
@@ -14,7 +15,7 @@
    <a href="https://github.com/aceisace/Inky-Calendar"><img alt="python" src="https://img.shields.io/badge/python-%3E3.5-lightgrey"></a>
 </p>
 
-A python3 software for displaying events (from iCalendars), weather (from openweathermap) and RSS feeds on selected E-Paper displays (4.2", 5.83", 7.5"(v1), 7.5"(v2)) from Waveshare/GoodDisplay.
+A python 3 software for displaying events (from iCalendars), weather (from openweathermap) and RSS feeds on selected E-Paper displays (4.2", 5.83", 7.5"(v1), 7.5"(v2)) from Waveshare/GoodDisplay.
 
 Inkycal v2.0.0 BETA is a refactoring of the previous release. It aims to fix certain problems with the previous release, including but not limited to:
 
@@ -28,10 +29,10 @@ Inkycal v2.0.0 BETA is a refactoring of the previous release. It aims to fix cer
 * [x] Allow using on windows (no-render mode)
 * [x] Implement features from dev branch
 * [x] Make it easier for developers (and beginners) to create their own custom module
-* [ ] Implement testing for each module
+* [x] Implement testing for each module
 * [ ] Add support for 9.7" ePaper
 * [ ] Add support for iCalendars requiring authentification
-
+* [ ] Add module for TODOIST api
 
 ## How to test BETA
 Please note that while inkycal is in BETA, a lot of things will change in a short time. This means that problems are fixed on-the-go. If you encounter a problem, please mention it on Discord.
@@ -66,21 +67,37 @@ You can alternatively also open `settings-UI.html` in your web-browser.
 from inkycal import Inkycal
 
 # tell the Inkycal class where your settings file is
-ink = Inkycal('/path/to/your/settings/file', render = True)
+inky = Inkycal('/path/to/your/settings/file', render = True)
 # render means rendering (showing) on the ePaper. Setting render = False will not show anything on the ePaper
 
 # test if Inkycal can be run correctly, running this will show a bit of info for each module
-ink.test()
+inky.test()
 
 # If there were no issues, you can run Inkycal nonstop:
-ink.run()
+inky.run()
 ```
 
+### Customizing
+With this release, it has become much easier to customize the modules to suit your preferences. First, check what options can be configured for a specific module:
+
+```python
+# Module refers to the name of a module's Class, e.g. Agenda, RSS, Calendar ...
+inky.Module.set(help=True) # shows configurable options
+
+# Set a single option
+inky.Module.set(fontsize=14)
+
+# Set multiple options at once
+inky.Module.set(fontsize=14, language='de')
+```
+
+
 ## Known issues (will be fixed before the production release)
-* [ ] Inkycal-image is not yet supported
+* [x] ~~Inkycal-image is not yet supported~~
 * [ ] Inkycal-server is not yet supported -> depends on inkycal-image
 * [ ] Calibration is not yet implemented automatically. For now, only manual calibration is supported: `ink.calibrate()`
-
+* [x] ~~Fix: `AttributeError` in `Layout` module for non-colour epaper displays~~
+* [ ] Improvement: Change the way the web-ui handles ical-urls
 
 ## Updating BETA to latest version
 To update to the latest beta, please do the following:
@@ -159,3 +176,11 @@ In order to speed up development, most development tasks (apart from the actual 
 ## Contact
 * Email: aceisace63@yahoo.com (average response time < 24 hours)
 * Discord: [Inky-Calendar chatroom](https://discord.gg/sHYKeSM)
+
+## Buy me a coffee
+Yes please :). I do drink and like my coffee, especially when developing the inkycal software :)
+You can donate a coffee with this QR-code (Paypal):
+
+<p align="center">
+        <img src="https://raw.githubusercontent.com/aceisace/Inky-Calendar/dev_ver2_0/Gallery/coffee.png" width=250>
+</p>

@@ -30,9 +30,6 @@ class Display:
     except FileNotFoundError:
       raise Exception('SPI could not be found. Please check if SPI is enabled')
 
-    self._epaper.init()
-    self._epaper.sleep()
-
   def render(self, im_black, im_colour = None):
     """Render an image on the epaper
     im_colour is required for three-colour epapers"""

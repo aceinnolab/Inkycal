@@ -44,7 +44,11 @@ class Inkycal:
     self.supports_colour = self.Settings.Layout.supports_colour
 
     # Option to flip image upside down
-    self.upside_down = False
+    if self.Settings.display_orientation == 'normal':
+      self.upside_down = False
+
+    elif self.Settings.display_orientation == 'upside_down':
+      self.upside_down = True
 
     # Option to use epaper image optimisation
     self.optimize = True
@@ -58,6 +62,12 @@ class Inkycal:
       # Init Display class
       from inkycal.display import Display
       self.Display = Display(model)
+
+      # get calibration hours
+      self._calibration_hours = self.Settings.calibration_hours
+
+      # set a check for calibration
+      self._calibration_state = False
 
     # load+validate settings file. Import and setup specified modules
     self.active_modules = self.Settings.active_modules()
@@ -122,8 +132,11 @@ class Inkycal:
     print('You are running inkycal v{}'.format(self._release))
 
 
-    print('Running inkyal test-run for {} ePaper'.format(
+    print('Running inkycal test-run for {} ePaper'.format(
       self.Settings.model))
+
+    if self.upside_down == True:
+      print('upside-down mode active')
 
     for module in self.active_modules:
       generate_im = 'self.{0}.generate_image()'.format(module)
@@ -171,14 +184,16 @@ class Inkycal:
       if self.render == True:
         Display = self.Display
 
+        self._calibration_check()
+
         if self.supports_colour == True:
           im_black = Image.open(images+'canvas.png')
           im_colour = Image.open(images+'canvas_colour.png')
 
           # Flip the image by 180° if required
           if self.upside_down == True:
-            upside_down(im_black)
-            upside_down(im_colour)
+            im_black = upside_down(im_black)
+            im_colour = upside_down(im_colour)
 
           # render the image on the display
           Display.render(im_black, im_colour)
@@ -190,7 +205,7 @@ class Inkycal:
 
           # Flip the image by 180° if required
           if self.upside_down == True:
-            upside_down(im_black)
+            im_black = upside_down(im_black)
 
           Display.render(im_black)
 
@@ -203,7 +218,7 @@ class Inkycal:
       sleep_time = self.countdown()
       time.sleep(sleep_time)
 
-  def _merge_bands():
+  def _merge_bands(self):
     """Merges black and coloured bands for black-white ePapers
     returns the merged image
     """
@@ -215,8 +230,8 @@ class Inkycal:
     # If there is an image for black and colour, merge them
     if exists(im1_path) and exists(im2_path):
 
-      im1 = Image.open(im1_name).convert('RGBA')
-      im2 = Image.open(im2_name).convert('RGBA')
+      im1 = Image.open(im1_path).convert('RGBA')
+      im2 = Image.open(im2_path).convert('RGBA')
 
       def clear_white(img):
         """Replace all white pixels from image with transparent pixels
@@ -263,21 +278,20 @@ class Inkycal:
 
         # Get the size of the section
         section_size = self.Settings.get_config(module)['size']
-
         # Calculate coordinates to center the image
-        x = int( (section_size[0]-im1_size[0]) /2)
+        x = int( (section_size[0] - im1_size[0]) /2)
 
         # If this is the first module, use the y-offset
         if im1_cursor == 0:
           y = int( (section_size[1]-im1_size[1]) /2)
         else:
-          y = im1_cursor
+          y = im1_cursor + int( (section_size[1]-im1_size[1]) /2)
 
         # center the image in the section space
         im_black.paste(im1, (x,y), im1)
 
         # Shift the y-axis cursor at the beginning of next section
-        im1_cursor += section_size[1] - y
+        im1_cursor += section_size[1]
 
       # Check if there is an image for the coloured band
       if exists(im2_path):
@@ -296,13 +310,13 @@ class Inkycal:
         if im2_cursor == 0:
           y = int( (section_size[1]-im2_size[1]) /2)
         else:
-          y = im2_cursor
+          y = im2_cursor + int( (section_size[1]-im2_size[1]) /2)
 
         # center the image in the section space
         im_colour.paste(im2, (x,y), im2)
 
         # Shift the y-axis cursor at the beginning of next section
-        im2_cursor += section_size[1] - y
+        im2_cursor += section_size[1]
 
     if self.optimize == True:
       self._optimize_im(im_black).save(images+'canvas.png', 'PNG')
@@ -316,17 +330,32 @@ class Inkycal:
 
     buffer = numpy.array(image.convert('RGB'))
     red, green = buffer[:, :, 0], buffer[:, :, 1]
-    buffer[numpy.logical_and(red <= threshold, green <= threshold)] = [0,0,0] #grey->black
+    # grey->black
+    buffer[numpy.logical_and(red <= threshold, green <= threshold)] = [0,0,0]
     image = Image.fromarray(buffer)
     return image
 
   def calibrate(self):
     """Calibrate the ePaper display to prevent burn-ins (ghosting)
-    Currently has to be run manually"""
+    use this command to manually calibrate the display"""
+
     self.Display.calibrate()
-    
+
+  def _calibration_check(self):
+    """Calibration sheduler
+    uses calibration hours from settings file to check if calibration is due"""
+    now = arrow.now()
+    print('hour:', now.hour, 'hours:', self._calibration_hours)
+    print('state:', self._calibration_state)
+    if now.hour in self._calibration_hours and self._calibration_state == False:
+      self.calibrate()
+      self._calibration_state = True
+    else:
+      self._calibration_state = False
+
 
   def _check_for_updates(self):
     """Check if a new update is available for inkycal"""
+
     raise NotImplementedError('Tha developer were too lazy to implement this..')
 

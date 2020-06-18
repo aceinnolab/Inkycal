@@ -11,10 +11,11 @@ __url__ = "https://github.com/aceisace/Inky-Calendar"
 __install_requires__ = ['pyowm==2.10.0',                  # weather
                         'Pillow>=7.0.0' ,                 # imaging
                         'icalendar==4.0.6',               # iCalendar parsing
-                        'recurring-ical-events==0.1.16b0',# parse recurring events
+                        'recurring-ical-events==0.1.17b0',# parse recurring events
                         'feedparser==5.2.1',              # parse RSS-feeds
                         'numpy>=1.18.3',                  # image pre-processing
-                        'arrow>=0.15.6'                   # time handling
+                        'arrow>=0.15.6',                  # time handling
+                        'jsmin>=2.2.2'                    # Parsing jsonc file
                         ]
 
 __classifiers__ = [

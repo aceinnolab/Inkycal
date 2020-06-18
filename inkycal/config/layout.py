@@ -23,20 +23,23 @@ class Layout:
 
     if (model != None) and (width == None) and (height == None):
       display_dimensions = {
-      'epd_7_in_5_v2_colour': (800, 400),
-      'epd_7_in_5_v2': (800, 400),
-      'epd_7_in_5_colour': (640, 384),
-      'epd_7_in_5': (640, 384),
-      'epd_5_in_83_colour': (600, 448),
-      'epd_5_in_83': (600, 448),
-      'epd_4_in_2_colour': (400, 300),
-      'epd_4_in_2': (400, 300),
-      }
+        '9_in_7': (1200, 825),
+        'epd_7_in_5_v2_colour': (800, 480),
+        'epd_7_in_5_v2': (800, 480),
+        'epd_7_in_5_colour': (640, 384),
+        'epd_7_in_5': (640, 384),
+        'epd_5_in_83_colour': (600, 448),
+        'epd_5_in_83': (600, 448),
+        'epd_4_in_2_colour': (400, 300),
+        'epd_4_in_2': (400, 300)
+        }
 
       self.display_height, self.display_width = display_dimensions[model]
       self.display_size = display_dimensions[model]
       if 'colour' in model:
         self.supports_colour = True
+      else:
+        self.supports_colour = False
 
     elif width and height:
       self.display_height = width

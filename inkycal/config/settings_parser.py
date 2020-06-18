@@ -8,6 +8,7 @@ from inkycal.config.layout import Layout
 import json
 import os
 import logging
+from jsmin import jsmin
 
 logger = logging.getLogger('settings')
 logger.setLevel(level=logging.DEBUG)
@@ -25,7 +26,8 @@ class Settings:
   'epd_7_in_5_v2_colour', 'epd_7_in_5_v2',
   'epd_7_in_5_colour', 'epd_7_in_5',
   'epd_5_in_83_colour','epd_5_in_83',
-  'epd_4_in_2_colour', 'epd_4_in_2'
+  'epd_4_in_2_colour', 'epd_4_in_2',
+  '9_in_7'
   ]
 
   def __init__(self, settings_file_path):
@@ -37,9 +39,19 @@ class Settings:
         folder = settings_file_path
 
       os.chdir(folder)
-      with open("settings.json") as file:
-        settings = json.load(file)
-        self._settings = settings
+      if os.path.exists('settings.jsonc'):
+        with open("settings.jsonc") as jsonc_file:
+          # minify in order to remove comments
+          minified = jsmin(jsonc_file.read())
+
+          # remove known invalid json (comma followed by closing accolades)
+          minified = minified.replace(",}","}")
+          settings = json.loads(minified)
+          self._settings = settings
+      else:
+        with open("settings.json") as file:
+          settings = json.load(file)
+          self._settings = settings
 
     except FileNotFoundError:
       print('No settings file found in specified location')
@@ -50,19 +62,35 @@ class Settings:
     # Get the height-percentages of the modules
     self.Layout = Layout(model=self.model)
     all_heights = [_['height'] for _ in self._settings['panels']]
-    
-    # If no height is provided, use default values
-    if len(set(all_heights)) == 1 and None in all_heights:
-      self.Layout.create_sections()
+    num_modules = len(self.active_modules())
 
-    # if all heights are spcified, use given values
-    elif len(set(all_heights)) != 1 and not None in all_heights:
-      logger.info('Setting section height according to settings file')
-      heights = [_['height']/100 for _ in self._settings['panels']]
 
-      self.Layout.create_sections(top_section= heights[0],
-                                  middle_section=heights[1],
-                                  bottom_section=heights[2])
+    # check if height have (or have not) been provided for all modules
+    if len(all_heights) == num_modules:
+
+      # If no height is provided, use default values
+      if list(set(all_heights)) == [None]:
+        self.Layout.create_sections()
+
+      # if all heights are specified, use given values
+      else:
+        logger.info('Setting section height according to settings file')
+
+        to_decimal = lambda percentage: percentage/100
+
+        top_height = [to_decimal(_['height']) for _ in
+                      self._settings['panels'] if _['location'] == 'top']
+
+        middle_height = [to_decimal(_['height']) for _ in
+                      self._settings['panels'] if _['location'] == 'middle']
+
+        bottom_height = [to_decimal(_['height']) for _ in
+                      self._settings['panels'] if _['location'] == 'bottom']
+
+        self.Layout.create_sections(
+          top_section = top_height[0] if top_height else 0,
+          middle_section = middle_height[0] if middle_height else 0,
+          bottom_section = bottom_height[0] if bottom_height else 0)
 
     # If only some heights were defined, raise an error
     else:
@@ -70,7 +98,7 @@ class Settings:
       print("Please leave height empty for all modules")
       print("OR specify the height for all sections")
       raise Exception('Module height is not specified in all modules!')
-    
+
 
   def _validate(self):
     """Validate the basic config"""
