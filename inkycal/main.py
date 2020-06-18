@@ -63,6 +63,12 @@ class Inkycal:
       from inkycal.display import Display
       self.Display = Display(model)
 
+      # get calibration hours
+      self._calibration_hours = self.Settings.calibration_hours
+
+      # set a check for calibration
+      self._calibration_state = False
+
     # load+validate settings file. Import and setup specified modules
     self.active_modules = self.Settings.active_modules()
     for module in self.active_modules:
@@ -177,6 +183,8 @@ class Inkycal:
       # Check if image should be rendered
       if self.render == True:
         Display = self.Display
+
+        self._calibration_check()
 
         if self.supports_colour == True:
           im_black = Image.open(images+'canvas.png')
@@ -329,9 +337,21 @@ class Inkycal:
 
   def calibrate(self):
     """Calibrate the ePaper display to prevent burn-ins (ghosting)
-    Currently has to be run manually"""
+    use this command to manually calibrate the display"""
 
     self.Display.calibrate()
+
+  def _calibration_check(self):
+    """Calibration sheduler
+    uses calibration hours from settings file to check if calibration is due"""
+    now = arrow.now()
+    print('hour:', now.hour, 'hours:', self._calibration_hours)
+    print('state:', self._calibration_state)
+    if now.hour in self._calibration_hours and self._calibration_state == False:
+      self.calibrate()
+      self._calibration_state = True
+    else:
+      self._calibration_state = False
 
 
   def _check_for_updates(self):
