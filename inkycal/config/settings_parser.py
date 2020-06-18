@@ -26,7 +26,8 @@ class Settings:
   'epd_7_in_5_v2_colour', 'epd_7_in_5_v2',
   'epd_7_in_5_colour', 'epd_7_in_5',
   'epd_5_in_83_colour','epd_5_in_83',
-  'epd_4_in_2_colour', 'epd_4_in_2'
+  'epd_4_in_2_colour', 'epd_4_in_2',
+  '9_in_7'
   ]
 
   def __init__(self, settings_file_path):
