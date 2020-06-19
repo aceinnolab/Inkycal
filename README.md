@@ -41,6 +41,12 @@ If you were using the previous release, please re-run the instaler:
 `bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/master/Installer.sh)"`
 and choose `uninstall` to uninstall the previous version. The last release and this BETA are __not__ compatible!
 
+## Updating BETA to latest version
+To update to the latest beta, please do the following:
+1) `pip3 uninstall inkycal`
+2) Remove the `Inkycal` folder (or rename it at least)
+3) follow the steps from `Installation` (see above)
+
 ### Installation
 ```bash
 # clone this branch
@@ -53,7 +59,7 @@ cd Inkycal
 pip3 install -e ./
 ```
 
-### Creating settings file
+### Creating a settings file
 Please visit the [Online WEB-UI](http://aceinnolab.com/web-ui-v2-0-0-beta.html) to create your settings.json file.
 You can alternatively also open `settings-UI.html` in your web-browser.
 
@@ -95,15 +101,9 @@ inky.Module.set(fontsize=14, language='de')
 ## Known issues (will be fixed before the production release)
 * [x] ~~Inkycal-image is not yet supported~~
 * [ ] Inkycal-server is not yet supported -> depends on inkycal-image
-* [ ] Calibration is not yet implemented automatically. For now, only manual calibration is supported: `ink.calibrate()`
+* [x] ~~Calibration is not yet implemented automatically. For now, only manual calibration is supported: `ink.calibrate()`~~
 * [x] ~~Fix: `AttributeError` in `Layout` module for non-colour epaper displays~~
 * [ ] Improvement: Change the way the web-ui handles ical-urls
-
-## Updating BETA to latest version
-To update to the latest beta, please do the following:
-1) `pip3 uninstall inkycal`
-2) Remove the `Inkycal` folder (or rename it at least)
-3) follow the steps from `Installation` (see above)
 
 
 ## Main features
@@ -113,10 +113,9 @@ To update to the latest beta, please do the following:
 * RSS feeds from various providers to keep up to date with news, quotes etc. 
 
 ## News:
-* **Looking for a server-only solution? [This repo offers a server-only solution](https://github.com/Atrejoe/Inky-Calendar-Server) (Credit to Atrejoe)**
+* **[Server-only solution](https://github.com/Atrejoe/Inky-Calendar-Server) (Credit to Atrejoe)**
 * **Discord chat open now. [Click here to enter](https://discord.gg/sHYKeSM)**
-* **Version 1.7.1 released with support for 4.2", 5.83", 7.5" (v1) and 7.5" (v2) E-Paper displays** (Mid January 2020)
-* **Added support for Debian Buster, Buster Lite is not supported!**
+* **Added support for 4.2", 5.83", 7.5" (v1), 7.5" (v2) and 9.7" E-Paper displays**
 
 ## Development status
 This software is in active development. To see the current development status, [[Click here]](https://github.com/aceisace/Inky-Calendar/projects/2).
