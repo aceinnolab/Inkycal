@@ -38,7 +38,7 @@ class Agenda(inkycal_module):
     # module specific parameters
     self.date_format = 'ddd D MMM'
     self.time_format = "HH:mm"
-    self.language = 'en'
+    self.language = self.config['language']
     self.timezone = get_system_tz()
     self.ical_urls = self.config['ical_urls']
     self.ical_files = []
@@ -48,16 +48,22 @@ class Agenda(inkycal_module):
 
   def _validate(self):
     """Validate module-specific parameters"""
+
     if not isinstance(self.date_format, str):
       print('date_format has to be an arrow-compatible token')
+
     if not isinstance(self.time_format, str):
       print('time_format has to be an arrow-compatible token')
+
     if not isinstance(self.language, str):
       print('language has to be a string: "en" ')
+
     if not isinstance(self.timezone, str):
       print('The timezone has bo be a string.')
+
     if not isinstance(self.ical_urls, list):
       print('ical_urls has to be a list ["url1", "url2"] ')
+
     if not isinstance(self.ical_files, list):
       print('ical_files has to be a list ["path1", "path2"] ')
 
