@@ -5,12 +5,17 @@ agenda = Agenda(
   #size
   (400,400),
 
-  # config
+  # common config
   {
+  'language': 'en',
+  'units': 'metric',
+  'hours': 24,
+  # module-specific config
   'week_starts_on': 'Monday',
   'ical_urls': ['https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics']
   }
   )
+
 
 class inkycal_agenda_test(unittest.TestCase):
   def test_generate_image(self):
