@@ -104,8 +104,8 @@ class Settings:
     """Validate the basic config"""
     settings = self._settings
 
-    required =  ['language', 'units', 'hours', 'model', 'calibration_hours']
-            #'display_orientation']
+    required =  ['language', 'units', 'hours', 'model', 'calibration_hours',
+                  'display_orientation']
 
     # Check if all required settings exist
     for param in required:
@@ -163,6 +163,13 @@ class Settings:
     modules = [section['type'] for section in self._settings['panels']]
     return modules
 
+  def common_config(self):
+    common_config = {
+      'language' : self.language, 'units' : self.units, 'hours' : self.hours
+      }
+    return common_config
+
+
   def get_config(self, module_name):
     """Ge the config of this module (size, config)"""
     if module_name not in self.active_modules():
@@ -172,7 +179,7 @@ class Settings:
         if section['type'] == module_name:
           config = section['config']
           size = self.Layout.get_size(self.get_position(module_name))
-    return {'size':size, 'config':config}
+    return {'size':size, 'config': {**config, **self.common_config()}}
 
   def get_position(self, module_name):
     """Get the position of this module's image on the display"""
