@@ -6,7 +6,7 @@
 
 <p align="center">
     <a href="https://www.paypal.me/SaadNaseer" alt="Donate"><img src="https://img.shields.io/badge/Donate-PayPal-green.svg" /></a>
-    <a href="https://github.com/aceisace/Inky-Calendar/actions"><img alt='build status' src="https://github.com/aceisace/Inky-Calendar/workflows/Python%20tests/badge.svg?branch=dev_ver2_0&event=push"></a>
+    <a href="https://github.com/aceisace/Inky-Calendar/actions"><img src="https://github.com/aceisace/Inky-Calendar/workflows/Python%20application/badge.svg?branch=dev_ver2_0&event=push"></a>
     <a href="https://github.com/aceisace/Inky-Calendar/releases" alt="Version"><img src="https://img.shields.io/github/release/aceisace/Inky-Calendar.svg" /></a>
    <a href="https://github.com/aceisace/Inky-Calendar/blob/Stable/LICENSE" alt="Licence"><img src="https://img.shields.io/github/license/aceisace/Inky-Calendar.svg" /></a>
    <a href="https://github.com/aceisace/Inky-Calendar/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/aceisace/Inky-Calendar"></a>
