@@ -143,7 +143,7 @@ def to_hours(datetime_object, simple = False):
       converted_time = datetime_object.format('HH:mm')
   else:
     if simple == True:
-      converted_time = datetime_object.format('H a')
+      converted_time = datetime_object.format('h a')
     else:
       converted_time = datetime_object.format('hh:mm')
   return str(converted_time)
