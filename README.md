@@ -72,6 +72,10 @@ You can alternatively also open `settings-UI.html` in your web-browser.
 # Open Python3 and import package
 from inkycal import Inkycal
 
+# If you see 'numpy is not installed, please install with pip3 install numpy', 
+# please run the following command in the Terminal, then restart python and try again:
+# pip3 uninstall numpy
+
 # tell the Inkycal class where your settings file is
 inky = Inkycal('/path/to/your/settings/file', render = True)
 # render means rendering (showing) on the ePaper. Setting render = False will not show anything on the ePaper
