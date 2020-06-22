@@ -1,7 +1,8 @@
 from inkycal import Settings, Layout
 from inkycal.custom import *
 
-from os.path import exists
+#from os.path import exists
+import os
 import traceback
 import logging
 import arrow
@@ -228,7 +229,7 @@ class Inkycal:
     im1_path, im2_path = images+'canvas.png', images+'canvas_colour.png'
 
     # If there is an image for black and colour, merge them
-    if exists(im1_path) and exists(im2_path):
+    if os.path.exists(im1_path) and os.path.exists(im2_path):
 
       im1 = Image.open(im1_path).convert('RGBA')
       im2 = Image.open(im2_path).convert('RGBA')
@@ -244,7 +245,7 @@ class Inkycal:
       im1.paste(im2, (0,0), im2)
 
     # If there is no image for the coloured-band, return the bw-image
-    elif exists(im1_path) and not exists(im2_path):
+    elif os.path.exists(im1_path) and not os.path.exists(im2_path):
       im1 = Image.open(im1_name).convert('RGBA')
 
     return im1
@@ -270,7 +271,7 @@ class Inkycal:
       im2_path = images+module+'_colour.png'
 
       # Check if there is an image for the black band
-      if exists(im1_path):
+      if os.path.exists(im1_path):
 
         # Get actual size of image
         im1 = Image.open(im1_path).convert('RGBA')
@@ -294,7 +295,7 @@ class Inkycal:
         im1_cursor += section_size[1]
 
       # Check if there is an image for the coloured band
-      if exists(im2_path):
+      if os.path.exists(im2_path):
 
         # Get actual size of image
         im2 = Image.open(im2_path).convert('RGBA')
@@ -358,4 +359,97 @@ class Inkycal:
     """Check if a new update is available for inkycal"""
 
     raise NotImplementedError('Tha developer were too lazy to implement this..')
+
+
+  @staticmethod
+  def _add_module(filepath_module, classname):
+    """Add a third party module to inkycal
+    filepath_module = the full path of your module. The file should be in /modules!
+    classname = the name of your class inside the module
+    """
+
+    # Path for modules
+    _module_path = 'inkycal/modules/'
+
+    # Check if the filepath is a string
+    if not isinstance(filepath_module, str):
+      raise ValueError('filepath has to be a string!')
+
+    # Check if the classname is a string
+    if not isinstance(classname, str):
+      raise ValueError('classname has to be a string!')
+
+    # TODO:
+    # Ensure only third-party modules are deleted as built-in modules
+    # should not be deleted
+
+    # Check if module is inside the modules folder
+    if not _module_path in filepath_module:
+      raise Exception('Your module should be in', _module_path)
+
+    # Get the name of the third-party module file without extension (.py)
+    filename = filepath_module.split('.py')[0].split('/')[-1]
+
+    # Check if filename or classname is in the current module init file
+    with open('modules/__init__.py', mode ='r') as module_init:
+      content = module_init.read().splitlines()
+
+    for line in content:
+      if (filename or clasname) in line:
+        raise Exception(
+          'A module with this filename or classname already exists')
+
+    # Check if filename or classname is in the current inkycal init file
+    with open('__init__.py', mode ='r') as inkycal_init:
+      content = inkycal_init.read().splitlines()
+
+    for line in content:
+      if (filename or clasname) in line:
+        raise Exception(
+          'A module with this filename or classname already exists')
+
+    # If all checks have passed, add the module in the module init file
+    with open('modules/__init__.py', mode='a') as module_init:
+      module_init.write('from .{} import {}'.format(filename, classname))
+
+    # If all checks have passed, add the module in the inkycal init file
+    with open('__init__.py', mode ='a') as inkycal_init:
+      inkycal_init.write('# Added by module adder \n')
+      inkycal_init.write('import inkycal.modules.{}'.format(filename))
+
+    print('Your module {} has been added successfully! Hooray!'.format(
+      classname))
+
+  @staticmethod
+  def _remove_module(classname, remove_file = True):
+    """Removes a third-party module from inkycal
+    Input the classname of the file you want to remove 
+    """
+
+    # Check if filename or classname is in the current module init file
+    with open('modules/__init__.py', mode ='r') as module_init:
+      content = module_init.read().splitlines()
+
+    with open('modules/__init__.py', mode ='w') as module_init:
+      for line in content:
+        if not classname in line:
+          module_init.write(line+'\n')
+        else:
+          filename = line.split(' ')[1].split('.')[1]
+
+    # Check if filename or classname is in the current inkycal init file
+    with open('__init__.py', mode ='r') as inkycal_init:
+      content = inkycal_init.read().splitlines()
+
+    with open('__init__.py', mode ='w') as inkycal_init:
+      for line in content:
+        if not filename in line:
+          inkycal_init.write(line+'\n')
+
+    # remove the file of the third party module if it exists and remove_file
+    # was set to True (default)
+    if os.path.exists('modules/{}.py'.format(filename)) and remove_file == True:
+      os.remove('modules/{}.py'.format(filename))
+
+    print('The module {} has been removed successfully'.format(classname))
 
