@@ -124,7 +124,7 @@ class iCalendar:
                         t_start_recurring, t_end_recurring)
                         for ical in self.icalendars)
 
-    re_events = (
+    events = (
       {
       'title': events.get('SUMMARY').lstrip(),
       
@@ -140,7 +140,7 @@ class iCalendar:
 
 
     # if any recurring events were found, add them to parsed_events
-    if re_events: self.parsed_events += list(re_events)
+    if events: self.parsed_events += list(events)
 
     # Sort events by their beginning date
     self.sort()

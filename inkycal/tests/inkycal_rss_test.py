@@ -5,9 +5,13 @@ rss = RSS(
   #size
   (400,400),
 
-  # config
+  # common onfig
   {
-    'rss_urls': ['http://feeds.bbci.co.uk/news/world/rss.xml#']
+  'language': 'en',
+  'units': 'metric',
+  'hours': 24,
+  # module-specific config
+  'rss_urls': ['http://feeds.bbci.co.uk/news/world/rss.xml#']
   }
 
   )

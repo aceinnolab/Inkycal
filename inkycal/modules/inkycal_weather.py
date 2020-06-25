@@ -43,8 +43,8 @@ class Weather(inkycal_module):
 
     # module specific parameters
     self.owm = pyowm.OWM(self.config['api_key'])
-    self.units = 'metric' # metric # imperial
-    self.hour_format = '24' # 12 #24
+    self.units = self.config['units']
+    self.hour_format = self.config['hours']
     self.timezone = get_system_tz()
     self.round_temperature = True
     self.round_windspeed = True
@@ -278,7 +278,7 @@ class Weather(inkycal_module):
           'temp':temp,
           'icon':icon,
           'stamp': forecast_timings[forecasts.index(forecast)].format('H.00'
-                                    if self.hour_format == '24' else 'h a')
+                                    if self.hour_format == 24 else 'h a')
           }
 
     elif self.forecast_interval == 'daily':
@@ -335,10 +335,10 @@ class Weather(inkycal_module):
     sunrise_raw = arrow.get(weather.get_sunrise_time()).to(self.timezone)
     sunset_raw = arrow.get(weather.get_sunset_time()).to(self.timezone)
 
-    if self.hour_format == '12':
+    if self.hour_format ==  12:
       sunrise = sunrise_raw.format('h:mm a')
       sunset = sunset_raw.format('h:mm a')
-    elif self.hour_format == '24':
+    elif self.hour_format == 24:
       sunrise = sunrise_raw.format('H:mm')
       sunset = sunset_raw.format('H:mm')
 

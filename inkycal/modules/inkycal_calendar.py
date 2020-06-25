@@ -40,7 +40,7 @@ class Calendar(inkycal_module):
     self.show_events = True
     self.date_format = 'D MMM'
     self.time_format = "HH:mm"
-    self.language = 'en'
+    self.language = self.config['language']
 
     self.timezone = get_system_tz()
     self.ical_urls = self.config['ical_urls']
@@ -261,8 +261,8 @@ class Calendar(inkycal_module):
                   (event_width_l, line_height), name, font=self.font,
                   alignment = 'left')
             else:
-              write(im_black, (time_width, event_lines[cursor][1]),
-                  (event_width_s, line_height), time, font=self.font,
+              write(im_black, (date_width, event_lines[cursor][1]),
+                  (time_width, line_height), time, font=self.font,
                   alignment = 'left')
 
               write(im_black, (date_width+time_width,event_lines[cursor][1]),
