@@ -129,18 +129,24 @@ class Agenda(inkycal_module):
       time_width = int(max([self.font.getsize(
           events['begin'].format(self.time_format, locale=self.language))[0]
           for events in upcoming_events]) * 1.2)
-      logger.debug(('time_width:', time_width))
+      all_day_width = int(max([self.font.getsize('All-day')[0]
+          for events in upcoming_events]) * 1.2)
+      if time_width > all_day_width:
+        larger_width = time_width
+      else:
+        larger_width = all_day_width
+      logger.debug(('time_width:', larger_width))
 
       # Calculate x-pos for time
       x_time = date_width
       logger.debug(('x-time:', x_time))
 
       # Find out how much space is left for event titles
-      event_width = im_width - time_width - date_width
+      event_width = im_width - larger_width - date_width
       logger.debug(('width for events:', event_width))
 
       # Calculate x-pos for event titles
-      x_event = date_width + time_width
+      x_event = date_width + larger_width
       logger.debug(('x-event:', x_event))
 
       # Calculate positions for each line
@@ -181,9 +187,12 @@ class Agenda(inkycal_module):
           # Check if event is all day, if not, add the time
           if parser.all_day(_) == False:
             write(im_black, (x_time, line_pos[cursor][1]),
-                (time_width, line_height), time,
-                font = self.font, alignment='left')
-
+                (larger_width, line_height), time,
+                font = self.font, alignment='center')
+          else:
+            write(im_black, (x_time, line_pos[cursor][1]),
+                (larger_width, line_height), 'All-day',
+                font = self.font, alignment='center')
           write(im_black, (x_event, line_pos[cursor][1]),
                 (event_width, line_height),
                 '• '+title, font = self.font, alignment='left')
