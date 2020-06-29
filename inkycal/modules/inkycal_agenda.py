@@ -37,7 +37,10 @@ class Agenda(inkycal_module):
 
     # module specific parameters
     self.date_format = 'ddd D MMM'
-    self.time_format = "HH:mm"
+    if self.config['hours'] == 24:
+        self.time_format = "HH:mm"
+    elif self.config['hours'] == 12:
+        self.time_format = "h:mm a"
     self.language = self.config['language']
     self.timezone = get_system_tz()
     self.ical_urls = self.config['ical_urls']
