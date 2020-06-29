@@ -123,21 +123,24 @@ class iCalendar:
     recurring_events = (recurring_ical_events.of(ical).between(
                         t_start_recurring, t_end_recurring)
                         for ical in self.icalendars)
-
-    events = (
-      {
-      'title': events.get('SUMMARY').lstrip(),
-      
-      'begin': arrow.get(events.get('DTSTART').dt).to(timezone) if (
-        arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00')
-        else arrow.get(events.get('DTSTART').dt).replace(tzinfo=timezone),
-      
-      'end':arrow.get(events.get("DTEND").dt).to(timezone) if (
-        arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00')
-        else arrow.get(events.get('DTEND').dt).replace(tzinfo=timezone)
-
-      } for ical in recurring_events for events in ical)
-
+    events = []
+    for ical in recurring_events:
+        for e in ical:
+            this_event = {}
+            this_event['title'] = e.get('SUMMARY').lstrip()
+            # the following checks to see if the event meets the criteria for an all-day event
+            all_day_bool = (
+                        arrow.get(e.get('dtstart').dt).format('HH:mm') == '00:00'
+                        and arrow.get(e.get('dtend').dt).format('HH:mm') == '00:00'
+                        and arrow.get(e.get('dtend').dt) >= arrow.get(e.get('dtstart').dt).shift(days=+1)
+                        )
+            if all_day_bool:
+                this_event['begin'] = arrow.get(e.get('DTSTART').dt).replace(tzinfo=timezone)
+                this_event['end'] = arrow.get(e.get('DTEND').dt).replace(tzinfo=timezone)
+            else:
+                this_event['begin'] = arrow.get(e.get('DTSTART').dt).to(timezone)
+                this_event['end'] = arrow.get(e.get('DTEND').dt).to(timezone)
+            events.append(this_event)
 
     # if any recurring events were found, add them to parsed_events
     if events: self.parsed_events += list(events)
@@ -211,3 +214,4 @@ class iCalendar:
 
 if __name__ == '__main__':
   print('running {0} in standalone mode'.format(filename))
+  
