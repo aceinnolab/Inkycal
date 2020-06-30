@@ -81,6 +81,11 @@
           <label>Which E-Paper model are you using?</label>
           <div class="ts checkboxes">
             <div class="ts radio checkbox">
+              <input id="9_in_7" type="radio" name="dp" checked>
+              <label for="9_in_7">9.7" ePaper</label>
+            </div>
+          <div class="ts checkboxes">
+            <div class="ts radio checkbox">
               <input id="epd_7_in_5_v2_colour" type="radio" name="dp" checked>
               <label for="epd_7_in_5_v2_colour">7.5" v2 (800x400px) colour</label>
             </div>
@@ -266,7 +271,7 @@
           <div class="content">
         <p>Section height is calculated relative to other sections. With this approach you can choose pixel-perfect, relative or percentage panel heights.</p></div>
         </details>
-        <input id="top_height" type="number" min="1" max="10000" placeholder="10">
+        <input id="top_height" type="number" min="1" max="100" placeholder="10">
       </div>
 
         <div class="field">
@@ -301,7 +306,7 @@
           <div class="content">
         <p>Section height is calculated relative to other sections. With this approach you can choose pixel-perfect, relative or percentage panel heights.</p></div>
         </details>
-        <input id="middle_height" type="number" min="1" max="10000" placeholder="65">
+        <input id="middle_height" type="number" min="1" max="100" placeholder="65">
       </div>
 
 
@@ -366,7 +371,7 @@
           <div class="content">
         <p>Section height is calculated relative to other sections. With this approach you can choose pixel-perfect, relative or percentage panel heights.</p></div>
         </details>
-        <input id="bottom_height" type="number" min="1" max="10000" placeholder="25">
+        <input id="bottom_height" type="number" min="1" max="100" placeholder="25">
       </div>
 
         <div class="field">
@@ -390,14 +395,14 @@
           Panel-specific settings
         </legend>
         <div class="field">
-          <label>iCalendar URLs in the following format: 'URL 1', 'URL 2', 'URL 3'</label>
+          <label>iCalendar URL/s, separated by comma: url1, url2, url3</label>
           <input id="ical_urls" type="text"
-            placeholder="'https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics'">
+            placeholder="https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics">
         </div>
 
         <div class="field">
-          <label>RSS-Feed URL/s in the following format: 'URL 1', 'URL 2', 'URL 3'</label>
-          <input id="rss_urls" type="text" placeholder="'http://feeds.bbci.co.uk/news/world/rss.xml#'">
+          <label>RSS-Feed URL/s, separated by comma: url1, url2, url3</label>
+          <input id="rss_urls" type="text" placeholder="http://feeds.bbci.co.uk/news/world/rss.xml#">
         </div>
 
         <div class="field">
@@ -525,6 +530,9 @@
       }
 
       var model = "epd_7_in_5_v2_colour";
+      if ($('#9_in_7').is(':checked')) {
+        model = "9_in_7";
+      }
       if ($('#epd_7_in_5_v2').is(':checked')) {
         model = "epd_7_in_5_v2";
       }
@@ -697,7 +705,7 @@
       image_path_body
     ) {
       var result = {
-        "language": language,               // "en", "de", "fr", "jp" etc.
+        "language": language,         // "en", "de", "fr", "jp" etc.
         "units": units,               // "metric", "imperial"
         "hours": Number(hours),       // 24, 12
         "model": model,
@@ -735,7 +743,7 @@
               "height"    : middle_section_height,
               "config": {
                 "week_starts_on": week_starts_on,    //"Sunday", "Monday"...
-                "ical_urls": ical_urls.split().map(function (x) { return TrimSingleQuotes(x); })
+                "ical_urls": ical_urls
               }
             }
           )
@@ -765,7 +773,7 @@
               "type": bottom_section,
               "height"    : bottom_section_height,
               "config": {
-                "rss_urls": rss_urls.split().map(function (x) { return TrimSingleQuotes(x); })
+                "rss_urls": rss_urls
               }
             }
           )
