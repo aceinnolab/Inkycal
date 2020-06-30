@@ -482,12 +482,12 @@
     });
 
     function generate() {
-      var ical_urls = $("#ical_urls").val().trim();
+      var ical_urls = $("#ical_urls").val().trim().split(' ').join('').split(',');
       if (ical_urls == "") {
         ical_urls = $("#ical_urls").attr("placeholder");
       }
 
-      var rss_urls = $("#rss_urls").val().trim();
+      var rss_urls = $("#rss_urls").val().trim().split(' ').join('').split(',');
       if (rss_urls == "") {
         rss_urls = $("#rss_urls").attr("placeholder");
       }
