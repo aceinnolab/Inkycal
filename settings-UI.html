@@ -249,6 +249,20 @@
         </div>
 
         <div class="field">
+          <label>Show an info section? The info section will be shown at the very bottom of the display and shows the time of last update.</label>
+          <div class="ts checkboxes">
+            <div class="ts radio checkbox">
+              <input id="info_yes" type="radio" name="info_section" checked>
+              <label for="info_yes">Yes, show an info section</label>
+            </div>
+            <div class="ts radio checkbox">
+              <input id="info_no" type="radio" name="info_section">
+              <label for="info_no">Do not show the info section</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
           <label>What should be displayed in the top section?</label>
           <div class="ts checkboxes" id="cb_top_section">
             <div class="ts radio checkbox">
@@ -610,9 +624,15 @@
         units = "imperial";
       }
 
-      var hours = "24";
+
+      var info_section = true;
+      if ($('#info_no').is(':checked')) {
+        info_section = False;
+      }
+
+      var hours = 24;
       if ($('#12_hours').is(':checked')) {
-        hours = "12";
+        hours = 12;
       }
 
       var top_section = "Weather";
@@ -666,7 +686,8 @@
         week_starts_on, 
         calibration_hours, 
         model, language, 
-        units, hours, 
+        units, hours,
+        info_section, 
         top_section,
         top_section_height,
         middle_section,
@@ -694,6 +715,7 @@
       language,
       units,
       hours,
+      info_section,
       top_section,
       top_section_height,
       middle_section,
@@ -712,6 +734,7 @@
         "update_interval": Number(update_interval),       // 10, 15, 20, 30, 60
         "calibration_hours": calibration_hours.split(",").map(function (x) { return Number(x); }),              // Do not change unless you know what you are doing
         "display_orientation": display_orientation,
+        "info_section":info_section,
         "panels": []
       };
 
