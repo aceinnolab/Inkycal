@@ -33,6 +33,9 @@ Inkycal v2.0.0 BETA is a refactoring of the previous release. It aims to fix cer
 * [ ] Add support for 9.7" ePaper
 * [ ] Add support for iCalendars requiring authentification
 * [ ] Add module for TODOIST api
+* [x] Add info-section option in web-ui
+* [ ] Allow easy adding/removing of third-party modules
+* [ ] Finish developer documentation for third-party modules
 
 ## How to test BETA
 Please note that while inkycal is in BETA, a lot of things will change in a short time. This means that problems are fixed on-the-go. If you encounter a problem, please mention it on Discord.
@@ -60,7 +63,7 @@ pip3 install -e ./
 ```
 
 ### Creating a settings file
-Please visit the [Online WEB-UI](http://aceinnolab.com/web-ui-v2-0-0-beta.html) to create your settings.json file.
+Please visit the [Online WEB-UI](https://raw.githack.com/aceisace/Inky-Calendar/dev_ver2_0/settings-UI.html) to create your settings.json file.
 You can alternatively also open `settings-UI.html` in your web-browser.
 
 * Fill in the details and click on `generate` to create your settings.json file
@@ -107,7 +110,7 @@ inky.Module.set(fontsize=14, language='de')
 * [ ] Inkycal-server is not yet supported -> depends on inkycal-image
 * [x] ~~Calibration is not yet implemented automatically. For now, only manual calibration is supported: `ink.calibrate()`~~
 * [x] ~~Fix: `AttributeError` in `Layout` module for non-colour epaper displays~~
-* [ ] Improvement: Change the way the web-ui handles ical-urls
+* [x] Improvement: Change the way the web-ui handles urls
 
 
 ## Main features
