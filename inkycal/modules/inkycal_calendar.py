@@ -151,7 +151,7 @@ class Calendar(inkycal_module):
     icon = Image.new('RGBA', (icon_width, icon_height))
     current_day_pos = grid[calendar_flat.index(now.day)]
     x_circle,y_circle = int(icon_width/2), int(icon_height/2)
-    radius = int(icon_width * 0.3)
+    radius = int(icon_width * 0.2)
     ImageDraw.Draw(icon).ellipse(
       (x_circle-radius, y_circle-radius, x_circle+radius, y_circle+radius),
       fill= 'black', outline=None)
@@ -209,7 +209,7 @@ class Calendar(inkycal_module):
           (icon_width, icon_height),
           radius = 6,
           thickness= 1,
-          shrinkage = (0.4, 0.4)
+          shrinkage = (0.4, 0.2)
           )
 
       # Filter upcoming events until 4 weeks in the future
