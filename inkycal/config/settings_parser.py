@@ -31,7 +31,8 @@ class Settings:
   ]
 
   def __init__(self, settings_file_path):
-    """Load settings from path (folder or settings.json file)"""
+    """Load settings from path (folder or settings.json file)
+    Set show_info_section to False to hide the info section"""
     try:
       if settings_file_path.endswith('settings.json'):
         folder = settings_file_path.split('/settings.json')[0]
@@ -60,7 +61,11 @@ class Settings:
     self._validate()
 
     # Get the height-percentages of the modules
-    self.Layout = Layout(model=self.model)
+    if self.info_section == True:
+      self.Layout = Layout(model=self.model, use_info_section = True)
+    else:
+      self.Layout = Layout(model=self.model, use_info_section = False)
+
     all_heights = [_['height'] for _ in self._settings['panels']]
     num_modules = len(self.active_modules())
 
@@ -105,7 +110,7 @@ class Settings:
     settings = self._settings
 
     required =  ['language', 'units', 'hours', 'model', 'calibration_hours',
-                  'display_orientation']
+                  'display_orientation', 'info_section']
 
     # Check if all required settings exist
     for param in required:
@@ -121,6 +126,7 @@ class Settings:
     self.update_interval = settings['update_interval']
     self.calibration_hours = settings['calibration_hours']
     self.display_orientation = settings['display_orientation']
+    self.info_section = settings['info_section']
 
     # Validate the parameters
     if (not isinstance(self.language, str) or self.language not in
@@ -156,6 +162,10 @@ class Settings:
         self._supported_display_orientation):
       print('display orientation not supported, switching to fallback, normal')
       self.display_orientation = 'normal'
+
+    if (not isinstance(self.info_section, bool)):
+      print('info_section must be True/False. Switching to fallback: False')
+      self.info_section = False
 
     print('Settings file OK!')
 

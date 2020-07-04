@@ -24,7 +24,7 @@ logger = logging.getLogger('inkycal')
 logger.setLevel(level=logging.ERROR)
 
 class Inkycal:
-  """Main class"""
+  """Inkycal main class"""
 
   def __init__(self, settings_path, render=True):
     """initialise class
@@ -91,8 +91,7 @@ class Inkycal:
     # Give an OK message
     print('loaded inkycal')
 
-
-  def countdown(self, interval_mins=None ):
+  def countdown(self, interval_mins=None):
     """Returns the remaining time in seconds until next display update"""
 
     # Validate update interval
@@ -129,7 +128,9 @@ class Inkycal:
     return remaining_time
 
   def test(self):
-    """Inkycal test run"""
+    """Inkycal test run.
+    Generates images for each module, one by one and prints OK if no
+    problems were found."""
     print('You are running inkycal v{}'.format(self._release))
 
 
@@ -164,6 +165,12 @@ class Inkycal:
 
     # Count the number of times without any errors
     counter = 1
+
+    # Calculate the max. fontsize for info-section
+    if self.Settings.info_section == True:
+      info_section_height = round(self.Settings.Layout.display_height* (1/95) )
+      self.font = auto_fontsize(ImageFont.truetype(
+        fonts['NotoSans-SemiCondensed']), info_section_height)
 
     while True:
       print('Generating images for all modules...')
@@ -212,7 +219,7 @@ class Inkycal:
 
       print('\ninkycal has been running without any errors for', end = ' ')
       print('{} display updates'.format(counter))
-      print('That was {}'.format(runtime.humanize()))
+      print('Programm started {}'.format(runtime.humanize()))
 
       counter += 1
 
@@ -256,7 +263,9 @@ class Inkycal:
 
     # Create an empty canvas with the size of the display
     width, height = self.Settings.Layout.display_size
-    height, width = width, height
+    
+    if self.Settings.info_section == True:
+      height = round(height * ((1/95)*100) )
 
     im_black = Image.new('RGB', (width, height), color = 'white')
     im_colour = Image.new('RGB', (width ,height), color = 'white')
@@ -319,6 +328,16 @@ class Inkycal:
         # Shift the y-axis cursor at the beginning of next section
         im2_cursor += section_size[1]
 
+    # Show an info section if specified by the settings file
+    now = arrow.now()
+    stamp = 'last update: {}'.format(now.format('D MMM @ HH:mm', locale =
+                                                self.Settings.language))
+    if self.Settings.info_section == True:
+      write(im_black, (0, im1_cursor), (width, height-im1_cursor),
+            stamp, font = self.font)
+
+
+    # optimize the image by mapping colours to pure black and white
     if self.optimize == True:
       self._optimize_im(im_black).save(images+'canvas.png', 'PNG')
       self._optimize_im(im_colour).save(images+'canvas_colour.png', 'PNG')

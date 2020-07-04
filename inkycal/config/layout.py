@@ -16,7 +16,7 @@ class Layout:
   """Page layout handling"""
 
   def __init__(self, model=None, width=None, height=None,
-               supports_colour=False):
+               supports_colour=False, use_info_section=True):
     """Initialize parameters for specified epaper model
     Use model parameter to specify display OR
     Crate a custom display with given width and height"""
@@ -35,20 +35,30 @@ class Layout:
         }
 
       self.display_height, self.display_width = display_dimensions[model]
-      self.display_size = display_dimensions[model]
+
+      # if 'colour' was found in the display name, set supports_colour to True
       if 'colour' in model:
         self.supports_colour = True
       else:
         self.supports_colour = False
 
+    # If a custom width and height was specified, use those values instead
     elif width and height:
       self.display_height = width
       self.display_width = height
       self.supports_colour = supports_colour
 
     else:
-      print("Can't create a layout without given sizes")
-      raise
+      raise Exception("Can't create a layout without given sizes")
+
+    # If the info section should be used, reduce the canvas size to 95%
+    if not isinstance(use_info_section, bool):
+      raise ValueError('use_info_section should be a boolean (True/False)')
+
+    if use_info_section == True:
+      self.display_height = int(self.display_height*0.95)
+
+    self.display_size = self.display_width, self.display_height
 
     self.top_section_width = self.display_width
     self.middle_section_width = self.display_width
