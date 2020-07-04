@@ -458,13 +458,13 @@
     <br>
     <button class="ts primary button" onClick="generate()">Generate</button>
     <br><br>
-    <kbd>Developed by Toby Chui for Inky-Calendar Project, modified by aceisace. Licensed under MIT</kbd>
+    <kbd>Developed by Toby Chui for Inkycal Project, modified by aceisace. Licensed under MIT</kbd>
     <details class="ts accordion">
       <summary>
         <i class="dropdown icon"></i> MIT License
       </summary>
       <div class="content">
-        <p>Copyright 2019 Toby Chui <br>
+        <p>Copyright 2019-2020 Toby Chui <br>
 
           Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
           documentation files (the "Software"), to deal in the Software without restriction, including without
@@ -498,12 +498,12 @@
     function generate() {
       var ical_urls = $("#ical_urls").val().trim().split(' ').join('').split(',');
       if (ical_urls == "") {
-        ical_urls = $("#ical_urls").attr("placeholder");
+        ical_urls = $("#ical_urls").attr("placeholder").split(' ').join('').split(',');
       }
 
       var rss_urls = $("#rss_urls").val().trim().split(' ').join('').split(',');
       if (rss_urls == "") {
-        rss_urls = $("#rss_urls").attr("placeholder");
+        rss_urls = $("#rss_urls").attr("placeholder").split(' ').join('').split(',');
       }
 
       var update_interval = "60";
@@ -627,7 +627,7 @@
 
       var info_section = true;
       if ($('#info_no').is(':checked')) {
-        info_section = False;
+        info_section = false;
       }
 
       var hours = 24;
