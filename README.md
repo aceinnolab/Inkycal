@@ -179,9 +179,11 @@ In order to speed up development, most development tasks (apart from the actual 
 
 **P.S:** Don't forget to star and/or watch the repo. For those who have done so already, thank you very much!
 
-## Contact
+## Contact and Support
+* <a href="https://discord.gg/sHYKeSM">
+        <img src="https://discord.com/assets/fc0b01fe10a0b8c602fb0106d8189d9b.png" alt="Inkycal chatroom Discord" width=200>
+  </a>
 * Email: aceisace63@yahoo.com (average response time < 24 hours)
-* Discord: [Inky-Calendar chatroom](https://discord.gg/sHYKeSM)
 
 ## Buy me a coffee
 Yes please :). I do drink and like my coffee, especially when developing the inkycal software :)
