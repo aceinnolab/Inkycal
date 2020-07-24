@@ -28,16 +28,20 @@ logger.setLevel(level=logging.ERROR)
 
 
 class Inkycal:
-    """Inkycal main class"""
-
+    """
+    Inkycal main class
+    """
     def __init__(self, settings_path: str, render: bool = True) -> None:
-        """initialise class
+        """
+        initialise class
         settings_path = str -> location/folder of settings file
         render = bool -> show something on the ePaper?
         """
         self._release = '2.0.0beta'
 
         self.render = render
+
+        self.font = None
 
         # Init settings class
         self.Settings = Settings(settings_path)
@@ -84,31 +88,26 @@ class Inkycal:
 
             # If a module was not found, print an error message
             except ImportError:
-                print(
-                    'Could not find module: "{}". Please try to import manually.'.format(
-                        module))
+                print('Could not find module: "{}". Please try to import manually.'.format(module))
 
         # Give an OK message
         print('loaded inkycal')
 
-    def countdown(self, interval_mins=None):
-        """Returns the remaining time in seconds until next display update"""
-
+    def countdown(self, interval_mins: int = None) -> int:
+        """
+        Returns the remaining time in seconds until next display update
+        """
         # Validate update interval
         allowed_intervals = [10, 15, 20, 30, 60]
 
         # Check if empty, if empty, use value from settings file
-        if interval_mins == None:
+        if interval_mins is None:
             interval_mins = self.Settings.update_interval
-
-        # Check if integer
-        if not isinstance(interval_mins, int):
-            raise Exception('Update interval must be an integer -> 60')
 
         # Check if value is supported
         if interval_mins not in allowed_intervals:
-            raise Exception('Update interval is {}, but should be one of: {}'.format(
-                interval_mins, allowed_intervals))
+            raise Exception('Update interval is {}, but should be one of: {}'
+                            .format(interval_mins, allowed_intervals))
 
         # Find out at which minutes the update should happen
         now = arrow.now()
@@ -127,16 +126,18 @@ class Inkycal:
         # Return seconds until next update
         return remaining_time
 
-    def test(self):
-        """Inkycal test run.
-    Generates images for each module, one by one and prints OK if no
-    problems were found."""
+    def test(self) -> None:
+        """
+        Inkycal test run.
+        Generates images for each module, one by one and prints OK if no
+        problems were found.
+        """
         print('You are running inkycal v{}'.format(self._release))
 
         print('Running inkycal test-run for {} ePaper'.format(
             self.Settings.model))
 
-        if self.upside_down == True:
+        if self.upside_down:
             print('upside-down mode active')
 
         for module in self.active_modules:
@@ -145,13 +146,16 @@ class Inkycal:
             try:
                 exec(generate_im)
                 print('OK!')
+            # TODO: Following exception clause is too broad, specify which exception can accur
             except Exception as Error:
                 print('Error!')
                 print(traceback.format_exc())
 
-    def run(self):
-        """Runs the main inykcal program nonstop (cannot be stopped anymore!)
-    Will show something on the display if render was set to True"""
+    def run(self) -> None:
+        """
+        Runs the main inykcal program nonstop (cannot be stopped anymore!)
+        Will show something on the display if render was set to True
+        """
 
         # TODO: printing traceback on display (or at least a smaller message?)
         # Calibration
@@ -159,14 +163,11 @@ class Inkycal:
         # Get the time of initial run
         runtime = arrow.now()
 
-        # Function to flip images upside down
-        upside_down = lambda image: image.rotate(180, expand=True)
-
         # Count the number of times without any errors
         counter = 1
 
         # Calculate the max. fontsize for info-section
-        if self.Settings.info_section == True:
+        if self.Settings.info_section:
             info_section_height = round(self.Settings.Layout.display_height * (1 / 95))
             self.font = auto_fontsize(ImageFont.truetype(
                 fonts['NotoSans-SemiCondensed']), info_section_height)
@@ -177,6 +178,7 @@ class Inkycal:
                 generate_im = 'self.{0}.generate_image()'.format(module)
                 try:
                     exec(generate_im)
+                # TODO: Following exception clause is too broad, specify which exception can accur
                 except Exception as Error:
                     print('Error!')
                     message = traceback.format_exc()
@@ -185,36 +187,36 @@ class Inkycal:
             print('OK')
 
             # Assemble image from each module
-            self._assemble()
+            self.__assemble()
 
             # Check if image should be rendered
-            if self.render == True:
-                Display = self.Display
+            if self.render:
+                display = self.Display
 
                 self._calibration_check()
 
-                if self.supports_colour == True:
+                if self.supports_colour:
                     im_black = Image.open(images + 'canvas.png')
                     im_colour = Image.open(images + 'canvas_colour.png')
 
                     # Flip the image by 180° if required
-                    if self.upside_down == True:
-                        im_black = upside_down(im_black)
-                        im_colour = upside_down(im_colour)
+                    if self.upside_down:
+                        im_black = self.__upside_down(im_black)
+                        im_colour = self.__upside_down(im_colour)
 
                     # render the image on the display
-                    Display.render(im_black, im_colour)
+                    display.render(im_black, im_colour)
 
                 # Part for black-white ePapers
-                elif self.supports_colour == False:
+                elif not self.supports_colour:
 
-                    im_black = self._merge_bands()
+                    im_black = self.__merge_bands()
 
                     # Flip the image by 180° if required
-                    if self.upside_down == True:
-                        im_black = upside_down(im_black)
+                    if self.upside_down:
+                        im_black = self.__upside_down(im_black)
 
-                    Display.render(im_black)
+                    display.render(im_black)
 
             print('\ninkycal has been running without any errors for', end=' ')
             print('{} display updates'.format(counter))
@@ -225,44 +227,53 @@ class Inkycal:
             sleep_time = self.countdown()
             time.sleep(sleep_time)
 
-    def _merge_bands(self):
-        """Merges black and coloured bands for black-white ePapers
-    returns the merged image
-    """
+    @staticmethod
+    def __upside_down(image: Image.Image) -> Image.Image:
+        """
+        Function to flip images upside down
+        """
+        return image.rotate(180, expand=True)
 
-        im_path = images
+    @staticmethod
+    def __clear_white(img) -> Image.Image:
+        """
+        Replace all white pixels from image with transparent pixels
+        """
+        x = numpy.asarray(img.convert('RGBA')).copy()
+        x[:, :, 3] = (255 * (x[:, :, :3] != 255).any(axis=2)).astype(numpy.uint8)
+        return Image.fromarray(x)
 
+    def __merge_bands(self) -> Image.Image:
+        """
+        Merges black and coloured bands for black-white ePapers
+        returns the merged image
+        """
         im1_path, im2_path = images + 'canvas.png', images + 'canvas_colour.png'
 
         # If there is an image for black and colour, merge them
         if os.path.exists(im1_path) and os.path.exists(im2_path):
-
             im1 = Image.open(im1_path).convert('RGBA')
             im2 = Image.open(im2_path).convert('RGBA')
 
-            def clear_white(img):
-                """Replace all white pixels from image with transparent pixels
-        """
-                x = numpy.asarray(img.convert('RGBA')).copy()
-                x[:, :, 3] = (255 * (x[:, :, :3] != 255).any(axis=2)).astype(numpy.uint8)
-                return Image.fromarray(x)
-
-            im2 = clear_white(im2)
+            im2 = self.__clear_white(im2)
             im1.paste(im2, (0, 0), im2)
 
         # If there is no image for the coloured-band, return the bw-image
         elif os.path.exists(im1_path) and not os.path.exists(im2_path):
+            # TODO: Fix im1_name variable not being known?
             im1 = Image.open(im1_name).convert('RGBA')
 
+        # TODO: im1 can be referenced before assignment
         return im1
 
-    def _assemble(self):
-        """Assmebles all sub-images to a single image"""
-
+    def __assemble(self) -> None:
+        """
+        Assembles all sub-images to a single image
+        """
         # Create an empty canvas with the size of the display
         width, height = self.Settings.Layout.display_size
 
-        if self.Settings.info_section == True:
+        if self.Settings.info_section:
             height = round(height * ((1 / 95) * 100))
 
         im_black = Image.new('RGB', (width, height), color='white')
@@ -276,7 +287,7 @@ class Inkycal:
 
             im1_path = images + module + '.png'
             im2_path = images + module + '_colour.png'
-
+            # TODO: Fix duplicate code
             # Check if there is an image for the black band
             if os.path.exists(im1_path):
 
@@ -328,23 +339,24 @@ class Inkycal:
 
         # Show an info section if specified by the settings file
         now = arrow.now()
-        stamp = 'last update: {}'.format(now.format('D MMM @ HH:mm', locale=
-        self.Settings.language))
-        if self.Settings.info_section == True:
+        stamp = 'last update: {}'.format(now.format('D MMM @ HH:mm', locale=self.Settings.language))
+        if self.Settings.info_section:
             write(im_black, (0, im1_cursor), (width, height - im1_cursor),
                   stamp, font=self.font)
 
         # optimize the image by mapping colours to pure black and white
-        if self.optimize == True:
-            self._optimize_im(im_black).save(images + 'canvas.png', 'PNG')
-            self._optimize_im(im_colour).save(images + 'canvas_colour.png', 'PNG')
+        if self.optimize:
+            self.__optimize_im(im_black).save(images + 'canvas.png', 'PNG')
+            self.__optimize_im(im_colour).save(images + 'canvas_colour.png', 'PNG')
         else:
             im_black.save(images + 'canvas.png', 'PNG')
             im_colour.save(images + 'canvas_colour.png', 'PNG')
 
-    def _optimize_im(self, image, threshold=220):
-        """Optimize the image for rendering on ePaper displays"""
-
+    @staticmethod
+    def __optimize_im(image, threshold: int = 220) -> Image.Image:
+        """
+        Optimize the image for rendering on ePaper displays
+        """
         buffer = numpy.array(image.convert('RGB'))
         red, green = buffer[:, :, 0], buffer[:, :, 1]
         # grey->black
@@ -352,15 +364,18 @@ class Inkycal:
         image = Image.fromarray(buffer)
         return image
 
-    def calibrate(self):
-        """Calibrate the ePaper display to prevent burn-ins (ghosting)
-    use this command to manually calibrate the display"""
-
+    def calibrate(self) -> None:
+        """
+        Calibrate the ePaper display to prevent burn-ins (ghosting)
+        use this command to manually calibrate the display
+        """
         self.Display.calibrate()
 
-    def _calibration_check(self):
-        """Calibration sheduler
-    uses calibration hours from settings file to check if calibration is due"""
+    def _calibration_check(self) -> None:
+        """
+        Calibration sheduler
+        uses calibration hours from settings file to check if calibration is due
+        """
         now = arrow.now()
         print('hour:', now.hour, 'hours:', self._calibration_hours)
         print('state:', self._calibration_state)
@@ -370,46 +385,39 @@ class Inkycal:
         else:
             self._calibration_state = False
 
-    def _check_for_updates(self):
-        """Check if a new update is available for inkycal"""
-
+    def __check_for_updates(self) -> None:
+        """
+        Check if a new update is available for inkycal
+        """
         raise NotImplementedError('Tha developer were too lazy to implement this..')
 
     @staticmethod
-    def _add_module(filepath_module, classname):
-        """Add a third party module to inkycal
-    filepath_module = the full path of your module. The file should be in /modules!
-    classname = the name of your class inside the module
-    """
-
+    def __add_module(filepath_module: str, classname: str) -> None:
+        """
+        Add a third party module to inkycal
+        filepath_module = the full path of your module. The file should be in /modules!
+        classname = the name of your class inside the module
+        """
         # Path for modules
         _module_path = 'inkycal/modules/'
-
-        # Check if the filepath is a string
-        if not isinstance(filepath_module, str):
-            raise ValueError('filepath has to be a string!')
-
-        # Check if the classname is a string
-        if not isinstance(classname, str):
-            raise ValueError('classname has to be a string!')
 
         # TODO:
         # Ensure only third-party modules are deleted as built-in modules
         # should not be deleted
 
         # Check if module is inside the modules folder
-        if not _module_path in filepath_module:
+        if _module_path not in filepath_module:
             raise Exception('Your module should be in', _module_path)
 
         # Get the name of the third-party module file without extension (.py)
-        filename = filepath_module.split('.py')[0].split('/')[-1]
+        _filename = filepath_module.split('.py')[0].split('/')[-1]
 
         # Check if filename or classname is in the current module init file
         with open('modules/__init__.py', mode='r') as module_init:
             content = module_init.read().splitlines()
 
         for line in content:
-            if (filename or clasname) in line:
+            if _filename or classname in line:
                 raise Exception(
                     'A module with this filename or classname already exists')
 
@@ -418,7 +426,7 @@ class Inkycal:
             content = inkycal_init.read().splitlines()
 
         for line in content:
-            if (filename or clasname) in line:
+            if _filename or classname in line:
                 raise Exception(
                     'A module with this filename or classname already exists')
 
@@ -431,25 +439,24 @@ class Inkycal:
             inkycal_init.write('# Added by module adder \n')
             inkycal_init.write('import inkycal.modules.{}'.format(filename))
 
-        print('Your module {} has been added successfully! Hooray!'.format(
-            classname))
+        print('Your module {} has been added successfully! Hooray!'.format(classname))
 
     @staticmethod
-    def _remove_module(classname, remove_file=True):
-        """Removes a third-party module from inkycal
-    Input the classname of the file you want to remove 
-    """
-
+    def __remove_module(classname: str, remove_file: bool = True) -> None:
+        """
+        Removes a third-party module from inkycal
+        Input the classname of the file you want to remove
+        """
         # Check if filename or classname is in the current module init file
         with open('modules/__init__.py', mode='r') as module_init:
             content = module_init.read().splitlines()
 
         with open('modules/__init__.py', mode='w') as module_init:
             for line in content:
-                if not classname in line:
+                if classname not in line:
                     module_init.write(line + '\n')
                 else:
-                    filename = line.split(' ')[1].split('.')[1]
+                    _filename = line.split(' ')[1].split('.')[1]
 
         # Check if filename or classname is in the current inkycal init file
         with open('__init__.py', mode='r') as inkycal_init:
@@ -457,7 +464,7 @@ class Inkycal:
 
         with open('__init__.py', mode='w') as inkycal_init:
             for line in content:
-                if not filename in line:
+                if _filename not in line:
                     inkycal_init.write(line + '\n')
 
         # remove the file of the third party module if it exists and remove_file
