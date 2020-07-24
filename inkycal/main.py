@@ -37,9 +37,6 @@ class Inkycal:
         """
         self._release = '2.0.0beta'
 
-        # Check if render is boolean
-        if not isinstance(render, bool):
-            raise Exception('render must be True or False, not "{}"'.format(render))
         self.render = render
 
         # Init settings class
