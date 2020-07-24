@@ -56,7 +56,7 @@ class Inkycal:
         self.optimize = True
 
         # Load drivers if image should be rendered
-        if self.render == True:
+        if self.render:
             # Get model and check if colour can be rendered
             model = self.Settings.model
 
