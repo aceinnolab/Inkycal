@@ -379,7 +379,7 @@ class Inkycal:
         now = arrow.now()
         print('hour:', now.hour, 'hours:', self._calibration_hours)
         print('state:', self._calibration_state)
-        if now.hour in self._calibration_hours and self._calibration_state == False:
+        if now.hour in self._calibration_hours and self._calibration_state is False:
             self.calibrate()
             self._calibration_state = True
         else:
@@ -469,7 +469,7 @@ class Inkycal:
 
         # remove the file of the third party module if it exists and remove_file
         # was set to True (default)
-        if os.path.exists('modules/{}.py'.format(filename)) and remove_file == True:
+        if os.path.exists('modules/{}.py'.format(filename)) and remove_file is True:
             os.remove('modules/{}.py'.format(filename))
 
         print('The module {} has been removed successfully'.format(classname))
