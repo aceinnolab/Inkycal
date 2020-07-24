@@ -3,6 +3,8 @@ __pycache__/
 _build
 _static
 _templates
+.idea/
+.DS_Store
 
 # virtual environment files
 bin/
