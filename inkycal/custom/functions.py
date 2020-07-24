@@ -7,7 +7,7 @@ Copyright by aceisace
 """
 import logging
 
-from PIL import Image, ImageDraw, ImageFont, ImageColor
+from PIL import Image, ImageDraw, ImageFont
 from urllib.request import urlopen
 from urllib.error import URLError
 import os
