@@ -4,6 +4,7 @@ icalendar==4.0.6                # iCalendar parsing
 recurring-ical-events==0.1.17b0 # parse recurring events
 feedparser==5.2.1               # parse RSS-feeds
 numpy>=1.18.2                   # image pre-processing
-arrow>=0.15.6					          # time operations
+arrow>=0.15.6					# time operations
 jsmin>=2.2.2                    # parsing settings.jsonc file
 requests>=2.23.0                # inkycal_image module
+todoist-python==8.1.1           # inkycal_todoist module
