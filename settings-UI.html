@@ -86,6 +86,10 @@
             </div>
           <div class="ts checkboxes">
             <div class="ts radio checkbox">
+              <input id="epd_7_in_5_hd_colour" type="radio" name="dp" checked>
+              <label for="epd_7_in_5_hd_colour">7.5" HD (880x528px) colour</label>
+            </div>
+            <div class="ts radio checkbox">
               <input id="epd_7_in_5_v2_colour" type="radio" name="dp" checked>
               <label for="epd_7_in_5_v2_colour">7.5" v2 (800x400px) colour</label>
             </div>
@@ -546,6 +550,9 @@
       var model = "epd_7_in_5_v2_colour";
       if ($('#9_in_7').is(':checked')) {
         model = "9_in_7";
+      }
+      if ($('#epd_7_in_5_hd_colour').is(':checked')) {
+        model = "epd_7_in_5_hd_colour";
       }
       if ($('#epd_7_in_5_v2').is(':checked')) {
         model = "epd_7_in_5_v2";
