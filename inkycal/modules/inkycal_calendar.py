@@ -82,8 +82,9 @@ class Calendar(inkycal_module):
     # Create grid and calculate icon sizes
     now = arrow.now(tz = self.timezone)
     monthstart = now.span('month')[0].weekday()
+    monthdays = now.ceil('month').day
 
-    if (monthstart > 4):
+    if monthstart > 4 and monthdays == 31:
         calendar_rows, calendar_cols = 7, 7
     else:
         calendar_rows, calendar_cols = 6, 7
