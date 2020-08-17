@@ -80,7 +80,14 @@ class Calendar(inkycal_module):
         im_width, calendar_height))
 
     # Create grid and calculate icon sizes
-    calendar_rows, calendar_cols = 6, 7
+    now = arrow.now(tz = self.timezone)
+    monthstart = now.span('month')[0].weekday()
+
+    if (monthstart > 4):
+        calendar_rows, calendar_cols = 7, 7
+    else:
+        calendar_rows, calendar_cols = 6, 7
+
     icon_width = im_width // calendar_cols
     icon_height = calendar_height // calendar_rows
 
@@ -97,8 +104,6 @@ class Calendar(inkycal_module):
 
     weekday_pos = [(grid_start_x + icon_width*_, month_name_height) for _ in
                    range(calendar_cols)]
-
-    now = arrow.now(tz = self.timezone)
 
     # Set weekstart of calendar to specified weekstart
     if self.weekstart == "Monday":
