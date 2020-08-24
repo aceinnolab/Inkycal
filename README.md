@@ -36,6 +36,7 @@ Inkycal v2.0.0 BETA is a refactoring of the previous release. It aims to fix cer
 * [x] Add info-section option in web-ui
 * [ ] Allow easy adding/removing of third-party modules
 * [ ] Finish developer documentation for third-party modules
+* [ ] Add official support for 7.5" v3 ePaper model (black-white + black-white-red/yellow)
 
 ## How to test BETA
 Please note that while inkycal is in BETA, a lot of things will change in a short time. This means that problems are fixed on-the-go. If you encounter a problem, please mention it on Discord.
@@ -71,6 +72,7 @@ You can alternatively also open `settings-UI.html` in your web-browser.
 * Copy the path (location) of this file
 
 ### Running Inkycal
+Open `Python3` and run the commands below or paste the below content in an empty file and save it as a `.py` file:
 ```python3
 # Open Python3 and import package
 from inkycal import Inkycal
