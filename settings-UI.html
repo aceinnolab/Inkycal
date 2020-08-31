@@ -86,6 +86,15 @@
             </div>
           <div class="ts checkboxes">
             <div class="ts radio checkbox">
+              <input id="epd_7_in_5_v3_colour" type="radio" name="dp" checked>
+              <label for="epd_7_in_5_v3_colour">7.5" v3 (880x528px) colour (latest)</label>
+            </div>
+            <div class="ts radio checkbox">
+              <input id="epd_7_in_5_v3" type="radio" name="dp">
+              <label for="epd_7_in_5_v3">7.5" v3 (880x528px) black-white (latest)</label>
+            </div>
+          <div class="ts checkboxes">
+            <div class="ts radio checkbox">
               <input id="epd_7_in_5_v2_colour" type="radio" name="dp" checked>
               <label for="epd_7_in_5_v2_colour">7.5" v2 (800x400px) colour</label>
             </div>
@@ -543,12 +552,18 @@
         calibration_hours = $("#calibration_hours").attr("placeholder");
       }
 
-      var model = "epd_7_in_5_v2_colour";
+      var model = "epd_7_in_5_v2";
       if ($('#9_in_7').is(':checked')) {
         model = "9_in_7";
       }
-      if ($('#epd_7_in_5_v2').is(':checked')) {
-        model = "epd_7_in_5_v2";
+      if ($('#epd_7_in_5_v3_colour').is(':checked')) {
+        model = "epd_7_in_5_v3_colour";
+      }
+      if ($('#epd_7_in_5_v3').is(':checked')) {
+        model = "epd_7_in_5_v3";
+      }
+      if ($('#epd_7_in_5_v2_colour').is(':checked')) {
+        model = "epd_7_in_5_v2_colour";
       }
       if ($('#epd_7_in_5_colour').is(':checked')) {
         model = "epd_7_in_5_colour";

@@ -23,6 +23,7 @@ class Settings:
   _supported_update_interval = [10, 15, 20, 30, 60]
   _supported_display_orientation = ['normal', 'upside_down']
   _supported_models = [
+  'epd_7_in_5_v3_colour', 'epd_7_in_5_v3',
   'epd_7_in_5_v2_colour', 'epd_7_in_5_v2',
   'epd_7_in_5_colour', 'epd_7_in_5',
   'epd_5_in_83_colour','epd_5_in_83',
