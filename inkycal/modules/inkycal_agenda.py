@@ -191,6 +191,7 @@ class Agenda(inkycal_module):
 
     # If no events were found, write only dates and lines
     else:
+      line_pos = [(0, int(line * line_height)) for line in range(max_lines)]
       cursor = 0
       for _ in agenda_events:
         title = _['title']
