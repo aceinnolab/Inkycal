@@ -117,7 +117,7 @@ class Settings:
     for param in required:
       if not param in settings:
         raise Exception (
-          'required parameter: {} not found in settings file!'.format(param))
+          'required parameter: `{0}` not found in settings file!'.format(param))
 
     # Attempt to parse the parameters
     self.language = settings['language']
