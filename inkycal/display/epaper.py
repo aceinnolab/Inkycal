@@ -23,6 +23,7 @@ class Display:
       driver_path = 'inkycal.display.drivers.{}'.format(epaper_model)
       driver = import_module(driver_path)
       self._epaper = driver.EPD()
+      self.model_name = epaper_model
 
     except ImportError:
       raise Exception('This module is not supported. Check your spellings?')
@@ -39,6 +40,10 @@ class Display:
     if self.supports_colour == False:
       print('Initialising..', end = '')
       epaper.init()
+      # For the 9.7" ePaper, the image needs to be flipped by 90 deg first
+      # The other displays flip the image automatically
+      if self.model_name == "9_in_7":
+        im_black.rotate(90, expand=True)
       print('Updating display......', end = '')
       epaper.display(epaper.getbuffer(im_black))
       print('Done')
