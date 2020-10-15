@@ -47,7 +47,7 @@ class Image(inkycal_module):
 
     self.rotation = 0 #0 #90 # 180 # 270 # auto
     self.layout = 'fill' # centre # fit # auto
-    self.colours = 'bw' #grab from general section of settings file
+    self.colours = 'bwr' #grab from general section of settings file
 
     # give an OK message
     print('{0} loaded'.format(self.name))
