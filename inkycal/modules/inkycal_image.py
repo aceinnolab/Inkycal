@@ -17,7 +17,10 @@ filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 logger.setLevel(level=logging.DEBUG)
 
-class Inkyimage(inkycal_module):
+#Alias PIL.Image
+PILImage = Image
+
+class Image(inkycal_module):
   """Image class
   display an image from a given path or URL
   """
@@ -44,7 +47,7 @@ class Inkyimage(inkycal_module):
 
     self.rotation = 0 #0 #90 # 180 # 270 # auto
     self.layout = 'fill' # centre # fit # auto
-    self.colours = 'bw' #grab from settings file?
+    self.colours = 'bw' #grab from general section of settings file
 
     # give an OK message
     print('{0} loaded'.format(self.name))
@@ -84,10 +87,10 @@ class Inkyimage(inkycal_module):
     try:
       if self.image_path.startswith('http'):
         logger.debug('identified url')
-        self.image = Image.open(requests.get(self.image_path, stream=True).raw)
+        self.image = PILImage.open(requests.get(self.image_path, stream=True).raw)
       else:
         logger.info('identified local path')
-        self.image = Image.open(self.image_path)
+        self.image = PILImage.open(self.image_path)
     except FileNotFoundError:
       raise ('Your file could not be found. Please check the filepath')
     except OSError:
@@ -97,8 +100,8 @@ class Inkyimage(inkycal_module):
     logger.debug(('image-height:', self.image.height))
 
     # Create an image for black pixels and one for coloured pixels
-    im_black = Image.new('RGB', size = im_size, color = 'white')
-    im_colour = Image.new('RGB', size = im_size, color = 'white')
+    im_black = PILImage.new('RGB', size = im_size, color = 'white')
+    im_colour = PILImage.new('RGB', size = im_size, color = 'white')
 
     # do the required operations
     self._remove_alpha()
@@ -149,7 +152,7 @@ class Inkyimage(inkycal_module):
     logger.debug(('resizing width from', im.width, 'to'))
     wpercent = (width/float(im.width))
     hsize = int((float(im.height)*float(wpercent)))
-    image = im.resize((width, hsize), Image.ANTIALIAS)
+    image = im.resize((width, hsize), PILImage.ANTIALIAS)
     logger.debug(image.width)
     self.image = image
 
@@ -161,7 +164,7 @@ class Inkyimage(inkycal_module):
     logger.debug(('resizing height from', im.height, 'to'))
     hpercent = (height / float(im.height))
     wsize = int(float(im.width) * float(hpercent))
-    image = im.resize((wsize, height), Image.ANTIALIAS)
+    image = im.resize((wsize, height), PILImage.ANTIALIAS)
     logger.debug(image.height)
     self.image = image
 
@@ -218,8 +221,8 @@ class Inkyimage(inkycal_module):
 
     if len(im.getbands()) == 4:
       logger.debug('removing transparency')
-      bg = Image.new('RGBA', (im.width, im.height), 'white')
-      im = Image.alpha_composite(bg, im)
+      bg = PILImage.new('RGBA', (im.width, im.height), 'white')
+      im = PILImage.alpha_composite(bg, im)
     self.image.paste(im, (0,0))
 
   def _map_colours(self, colours = None):
@@ -233,6 +236,7 @@ class Inkyimage(inkycal_module):
       print('setting to fallback: bw')
       colours = 'bw'
 
+    print('Printing t0 {}'.format(colours))
     if colours == 'bw':
 
       # For black-white images, use monochrome dithering
@@ -249,7 +253,7 @@ class Inkyimage(inkycal_module):
 
     # Map each pixel of the opened image to the Palette
     if colours == 'bwr' or colours == 'bwy':
-      palette_im = Image.new('P', (3,1))
+      palette_im = PILImage.new('P', (3,1))
       palette_im.putpalette(pal * 64)
       quantized_im = im.quantize(palette=palette_im)
       quantized_im.convert('RGB')
@@ -266,21 +270,21 @@ class Inkyimage(inkycal_module):
         # Create image for only red pixels
         buffer2[numpy.logical_and(r2 ==  0, b2 == 0)] = [255,255,255] # black->white
         buffer2[numpy.logical_and(r2 ==  255, b2 == 0)] = [0,0,0] #red->black
-        im_colour = Image.fromarray(buffer2)
+        im_colour = PILImage.fromarray(buffer2)
 
         # Create image for only black pixels
         buffer1[numpy.logical_and(r1 ==  255, b1 == 0)] = [255,255,255]
-        im_black = Image.fromarray(buffer1)
+        im_black = PILImage.fromarray(buffer1)
 
       if colours == 'bwy':
         # Create image for only yellow pixels
         buffer2[numpy.logical_and(r2 ==  0, b2 == 0)] = [255,255,255] # black->white
         buffer2[numpy.logical_and(g2 == 255, b2 == 0)] = [0,0,0] #yellow -> black
-        im_colour = Image.fromarray(buffer2)
+        im_colour = PILImage.fromarray(buffer2)
 
         # Create image for only black pixels
         buffer1[numpy.logical_and(g1 == 255, b1 == 0)] = [255,255,255]
-        im_black = Image.fromarray(buffer1)
+        im_black = PILImage.fromarray(buffer1)
 
     return im_black, im_colour
 
