@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-Image module for inkycal Project
+Image Server module for Inkycal project
+For use with Robert Sierre's inkycal web-service
+
 Copyright by aceisace
-Development satge: Beta
 """
 
 from os import path
@@ -23,10 +24,18 @@ colours = 'bwr'       # bwr # bwy # bw
 render = True         # show image on E-Paper?
 """----------------------------------------------------------------"""
 
-# First determine dimensions
-if mode == 'horizontal':
-  display_width, display_height == display_height, display_width
+
+path = path.replace('{model}', model).replace('{width}',str(display_width)).replace('{height}',str(display_height))
+print(path)
+
+try:
+  # POST request, passing path_body in the body
+  im = Image.open(requests.post(path, json=path_body, stream=True).raw)
+  
+except FileNotFoundError:
+  raise Exception('Your file could not be found. Please check the path to your file.')
+
+except OSError:
+  raise Exception('Please check if the path points to an image file.')
 
 
-    
-print('Done')

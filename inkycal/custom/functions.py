@@ -67,7 +67,7 @@ def auto_fontsize(font, max_height):
 def write(image, xy, box_size, text, font=None, **kwargs):
   """Write text on specified image
   image = on which image should the text be added?
-  xy = xy-coordinates as tuple -> (x,y)
+  xy = (x,y) coordinates as tuple -> (x,y)
   box_size = size of text-box -> (width,height)
   text = string (what to write)
   font = which font to use
