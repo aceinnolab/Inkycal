@@ -16,60 +16,35 @@ filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 logger.setLevel(level=logging.ERROR)
 
+
 class Agenda(inkycal_module):
   """Agenda class
   Create agenda and show events from given icalendars
   """
 
-  name = "Inkycal Agenda"
-
-  requires = {
-    "ical_urls" : {
-      "label":"iCalendar URL/s, separate multiple ones with a comma",
-      },
-
-    }
-
-  optional = {
-    "ical_files" : {
-      "label":"iCalendar filepaths, separated with a comma",
-      "default":[]
-      },
-
-    "date_format":{
-      "label":"Use an arrow-supported token for custom date formatting "+
-      "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. ddd D MMM",
-      "default": "ddd D MMM",
-      },
-
-    "time_format":{
-      "label":"Use an arrow-supported token for custom time formatting "+
-      "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm",
-      },
-
-
-    }
-
   def __init__(self, section_size, section_config):
     """Initialize inkycal_agenda module"""
 
     super().__init__(section_size, section_config)
-
-    for param in self.equires:
+    # Module specific parameters
+    required = ['week_starts_on', 'ical_urls']
+    for param in required:
       if not param in section_config:
         raise Exception('config is missing {}'.format(param))
 
-    # module specific parameters
-    self.date_format = self.config['date_format']
-    self.time_format = self.config['time_format']
-    self.language = self.config['language']
-    self.ical_urls = self.config['ical_urls']
-    self.ical_files = self.config['ical_files']
+    # class name
+    self.name = self.__class__.__name__
 
+    # module specific parameters
+    self.date_format = 'ddd D MMM'
+    self.time_format = "HH:mm"
+    self.language = self.config['language']
     self.timezone = get_system_tz()
+    self.ical_urls = self.config['ical_urls']
+    self.ical_files = []
 
     # give an OK message
-    print('{0} loaded'.format(filename))
+    print('{0} loaded'.format(self.name))
 
   def _validate(self):
     """Validate module-specific parameters"""
@@ -216,6 +191,7 @@ class Agenda(inkycal_module):
 
     # If no events were found, write only dates and lines
     else:
+      line_pos = [(0, int(line * line_height)) for line in range(max_lines)]
       cursor = 0
       for _ in agenda_events:
         title = _['title']
@@ -230,8 +206,9 @@ class Agenda(inkycal_module):
 
       logger.info('no events found')
 
-    # return the images ready for the display
-    return im_black, im_colour
+    # Save image of black and colour channel in image-folder
+    im_black.save(images+self.name+'.png')
+    im_colour.save(images+self.name+'_colour.png')
 
 if __name__ == '__main__':
   print('running {0} in standalone mode'.format(filename))

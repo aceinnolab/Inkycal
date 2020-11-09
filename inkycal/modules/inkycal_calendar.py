@@ -19,74 +19,42 @@ class Calendar(inkycal_module):
   Create monthly calendar and show events from given icalendars
   """
 
-  name = "Inkycal Calendar"
-
-  optional = {
-    
-    "week_starts_on" : {
-      "label":"When does your week start? (default=Monday)",
-      "options": ["Monday", "Sunday"],
-      "default": "Monday"
-      },
-
-    "show_events" : {
-      "label":"Show parsed events? (default = True)",
-      "options": [True, False],
-      "default": True
-      },
-
-    "ical_urls" : {
-      "label":"iCalendar URL/s, separate multiple ones with a comma",
-      "default":[]
-      },
-
-    "ical_files" : {
-      "label":"iCalendar filepaths, separated with a comma",
-      "default":[]
-      },
-    
-    "date_format":{
-      "label":"Use an arrow-supported token for custom date formatting "+
-      "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. D MMM",
-      "default": "D MMM",
-      },
-
-    "time_format":{
-      "label":"Use an arrow-supported token for custom time formatting "+
-      "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm",
-      "default": "HH:mm"
-      },
-    
-    }
-
   def __init__(self, section_size, section_config):
     """Initialize inkycal_calendar module"""
 
     super().__init__(section_size, section_config)
 
+    # Module specific parameters
+    required = ['week_starts_on']
+    for param in required:
+      if not param in section_config:
+        raise Exception('config is missing {}'.format(param))
+
+    # module name
+    self.name = self.__class__.__name__
 
     # module specific parameters
     self.num_font = ImageFont.truetype(
       fonts['NotoSans-SemiCondensed'], size = self.fontsize)
     self.weekstart = self.config['week_starts_on']
-    self.show_events = self.config['show_events']
-    self.date_format = self.config["date_format"]
-    self.time_format = self.config['time_format']
+    self.show_events = True
+    self.date_format = 'D MMM'
+    self.time_format = "HH:mm"
     self.language = self.config['language']
 
     self.timezone = get_system_tz()
     self.ical_urls = self.config['ical_urls']
-    self.ical_files = self.config['ical_files']
+    self.ical_files = []
 
     # give an OK message
-    print('{0} loaded'.format(filename))
+    print('{0} loaded'.format(self.name))
 
   def generate_image(self):
     """Generate image for this module"""
 
     # Define new image size with respect to padding
-    im_width = int(self.width - (2 * self.padding_x))
-    im_height = int(self.height - (2 * self.padding_y))
+    im_width = int(self.width - (self.width * 2 * self.margin_x))
+    im_height = int(self.height - (self.height * 2 * self.margin_y))
     im_size = im_width, im_height
 
     logger.info('Image size: {0}'.format(im_size))
@@ -112,7 +80,15 @@ class Calendar(inkycal_module):
         im_width, calendar_height))
 
     # Create grid and calculate icon sizes
-    calendar_rows, calendar_cols = 6, 7
+    now = arrow.now(tz = self.timezone)
+    monthstart = now.span('month')[0].weekday()
+    monthdays = now.ceil('month').day
+
+    if monthstart > 4 and monthdays == 31:
+        calendar_rows, calendar_cols = 7, 7
+    else:
+        calendar_rows, calendar_cols = 6, 7
+
     icon_width = im_width // calendar_cols
     icon_height = calendar_height // calendar_rows
 
@@ -129,8 +105,6 @@ class Calendar(inkycal_module):
 
     weekday_pos = [(grid_start_x + icon_width*_, month_name_height) for _ in
                    range(calendar_cols)]
-
-    now = arrow.now(tz = self.timezone)
 
     # Set weekstart of calendar to specified weekstart
     if self.weekstart == "Monday":
@@ -309,8 +283,9 @@ class Calendar(inkycal_module):
               (im_width, self.font.getsize(symbol)[1]), symbol,
               font = self.font)
 
-    # return the images ready for the display
-    return im_black, im_colour
+    # Save image of black and colour channel in image-folder
+    im_black.save(images+self.name+'.png')
+    im_colour.save(images+self.name+'_colour.png')
 
 if __name__ == '__main__':
   print('running {0} in standalone mode'.format(filename))
