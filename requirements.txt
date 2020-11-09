@@ -6,3 +6,4 @@ feedparser==5.2.1               # parse RSS-feeds
 numpy>=1.18.2                   # image pre-processing #pre-installed on Raspbian, omitting
 arrow>=0.15.6 	                # time operations
 jsmin>=2.2.2                    # parsing settings.jsonc file
+# flask, flask-wtf

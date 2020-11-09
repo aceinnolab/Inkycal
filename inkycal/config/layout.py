@@ -24,8 +24,6 @@ class Layout:
     if (model != None) and (width == None) and (height == None):
       display_dimensions = {
         '9_in_7': (1200, 825),
-        'epd_7_in_5_v3_colour': (880, 528),
-        'epd_7_in_5_v3': (880, 528),
         'epd_7_in_5_v2_colour': (800, 480),
         'epd_7_in_5_v2': (800, 480),
         'epd_7_in_5_colour': (640, 384),
@@ -115,6 +113,14 @@ class Layout:
       elif section == 'bottom':
         size = (self.bottom_section_width, self.bottom_section_height)
       return size
+
+##  def set_info_section(self, value):
+##    """Should a small info section be showed """
+##    if not isinstance(value, bool):
+##      raise ValueError('value has to bee a boolean: True/False')
+##    self.info_section = value
+##    logger.info(('show info section: {}').format(value))
+
 
 if __name__ == '__main__':
   print('running {0} in standalone/debug mode'.format(
