@@ -60,21 +60,9 @@ class Simple(inkycal_module):
   Explain what this module does...
   """
 
-  # name is the name that will be shown on the web-ui
-  # may be same or different to the class name (Do not remove this)
-  name = "My own module"
-
-  # create a dictionary that specifies what your module absolutely needs
-  # to run correctly
-  # Use the following format -> "key" : "info about this key for web-ui"
-  # You can add as many required entries as you like
-  requires = {
-    "module_parameter" : "Short info about this parameter, shown on the web-ui",
-    }
-
   # Initialise the class (do not remove)
   def __init__(self, section_size, section_config):
-    """Initialize your module module"""
+    """Initialize inkycal_rss module"""
 
     # Initialise this module via the inkycal_module template (required)
     super().__init__(section_size, section_config)

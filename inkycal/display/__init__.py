@@ -1,1 +1,1 @@
-from .display import Display
+from .epaper import Display

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-RSS module for inkyCal Project
+RSS module for Inky-Calendar Project
 Copyright by aceisace
 """
 
@@ -25,48 +25,28 @@ class RSS(inkycal_module):
   parses rss/atom feeds from given urls
   """
 
-  name = "Inkycal RSS / Atom"
-
-  requires = {
-    "rss_urls" : {
-      "label":"Please enter ATOM or RSS feed URL/s, separated by a comma",
-      },
-
-    }
-
-  optional = {
-    
-    "shuffle_feeds": {
-      "label": "Should the parsed RSS feeds be shuffled? (default=True)",
-      "options": [True, False],
-      "default": True
-      },
-
-    }
-
   def __init__(self, section_size, section_config):
     """Initialize inkycal_rss module"""
 
     super().__init__(section_size, section_config)
 
-    # Check if required parameters are available in config
-    for param in self.requires:
+    # Module specific parameters
+    required = ['rss_urls']
+    for param in required:
       if not param in section_config:
         raise Exception('config is missing {}'.format(param))
 
-    # parse required config
-    self.rss_urls = self.config["rss_urls"].split(",")
+    # module name
+    self.name = self.__class__.__name__
 
-    # parse optional config
-    self.shuffle_feeds = self.config["shuffle_feeds"]
-                   
+    # module specific parameters
+    self.shuffle_feeds = True
 
     # give an OK message
-    print('{0} loaded'.format(filename))
+    print('{0} loaded'.format(self.name))
 
   def _validate(self):
     """Validate module-specific parameters"""
-
     if not isinstance(self.shuffle_feeds, bool):
       print('shuffle_feeds has to be a boolean: True/False')
 
@@ -75,8 +55,8 @@ class RSS(inkycal_module):
     """Generate image for this module"""
 
     # Define new image size with respect to padding
-    im_width = int(self.width - ( 2 * self.padding_x))
-    im_height = int(self.height - (2 * self.padding_y))
+    im_width = int(self.width - (self.width * 2 * self.margin_x))
+    im_height = int(self.height - (self.height * 2 * self.margin_y))
     im_size = im_width, im_height
     logger.info('image size: {} x {} px'.format(im_width, im_height))
 
@@ -89,6 +69,7 @@ class RSS(inkycal_module):
       logger.info('Connection test passed')
     else:
       raise Exception('Network could not be reached :/')
+
 
     # Set some parameters for formatting rss feeds
     line_spacing = 1
@@ -105,7 +86,7 @@ class RSS(inkycal_module):
 
     # Create list containing all rss-feeds from all rss-feed urls
     parsed_feeds = []
-    for feeds in self.rss_urls:
+    for feeds in self.config['rss_urls']:
       text = feedparser.parse(feeds)
       for posts in text.entries:
         parsed_feeds.append('•{0}: {1}'.format(posts.title, posts.summary))
@@ -146,8 +127,8 @@ class RSS(inkycal_module):
     del filtered_feeds, parsed_feeds, wrapped, counter, text
 
     # Save image of black and colour channel in image-folder
-    return im_black, im_colour
+    im_black.save(images+self.name+'.png', 'PNG')
+    im_colour.save(images+self.name+'_colour.png', 'PNG')
 
 if __name__ == '__main__':
   print('running {0} in standalone/debug mode'.format(filename))
-  print(RSS.get_config())
