@@ -26,6 +26,60 @@ class Weather(inkycal_module):
   """Weather class
   parses weather details from openweathermap
   """
+  #TODO: automatic setup of pyowm by location id if location is numeric
+
+  name = "Inkycal Weather (openweathermap)"
+
+  requires = {
+
+    "api_key" : {
+      "label":"Please enter openweathermap api-key. You can create one for free on openweathermap",
+    },
+    
+    "location": {
+      "label":"Please enter your location in the following format: City, Country-Code"
+      }
+    }
+
+  optional = {
+    
+    "round_temperature": {
+      "label":"Round temperature to the nearest degree?",
+      "options": [True, False],
+      "default" : True
+      },
+
+    "round_windspeed": {
+      "label":"Round windspeed?",
+      "options": [True, False],
+      "default": True
+      },
+
+    "forecast_interval": {
+      "label":"Please select the forecast interval",
+      "options": ["daily", "hourly"],
+      "default": "daily"
+      },
+
+    "units": {
+      "label": "Which units should be used?",
+      "options": ["metric", "imperial"],
+      "default": "metric"
+      },
+
+    "hour_format": {
+      "label": "Which hour format do you prefer?",
+      "options": [12, 24],
+      "default": 24
+      },
+
+    "use_beaufort": {
+      "label": "Use beaufort scale for windspeed?",
+      "options": [True, False],
+      "default": True
+      },
+    
+    }
 
   def __init__(self, section_size, section_config):
     """Initialize inkycal_weather module"""
@@ -33,35 +87,36 @@ class Weather(inkycal_module):
     super().__init__(section_size, section_config)
 
     # Module specific parameters
-    required = ['api_key','location']
-    for param in required:
+    for param in self.requires:
       if not param in section_config:
         raise Exception('config is missing {}'.format(param))
 
-    # module name
-    self.name = self.__class__.__name__
+    # required parameters
+    self.location = self.config['location']
+    self.api_key = self.config['api_key']
 
-    # module specific parameters
-    self.owm = pyowm.OWM(self.config['api_key'])
+    # optional parameters
+    self.round_temperature = self.config['round_temperature']
+    self.round_windspeed = self.config['round_windspeed']
+    self.forecast_interval = self.config['forecast_interval']
     self.units = self.config['units']
-    self.hour_format = self.config['hours']
+    self.hour_format = self.config['hour_format']
+    self.use_beaufort = self.config['use_beaufort']
     self.timezone = get_system_tz()
-    self.round_temperature = True
-    self.round_windspeed = True
-    self.use_beaufort = True
-    self.forecast_interval = 'daily' # daily # hourly
     self.locale = sys_locale()[0]
     self.weatherfont = ImageFont.truetype(fonts['weathericons-regular-webfont'],
                                           size = self.fontsize)
+
+    #self.owm = pyowm.OWM(self.config['api_key'])
     # give an OK message
-    print('{0} loaded'.format(self.name))
+    print('{0} loaded'.format(filename))
 
   def generate_image(self):
     """Generate image for this module"""
 
     # Define new image size with respect to padding
-    im_width = int(self.width - (self.width * 2 * self.margin_x))
-    im_height = int(self.height - (self.height * 2 * self.margin_y))
+    im_width = int(self.width - (2 * self.padding_x))
+    im_height = int(self.height - (2 * self.padding_y))
     im_size = im_width, im_height
     logger.info('image size: {} x {} px'.format(im_width, im_height))
 
@@ -422,9 +477,8 @@ class Weather(inkycal_module):
     draw_border(im_black, (col6, row1), (col_width, im_height))
     draw_border(im_black, (col7, row1), (col_width, im_height))
 
-  # Save image of black and colour channel in image-folder
-    im_black.save(images+self.name+'.png', "PNG")
-    im_colour.save(images+self.name+'_colour.png', "PNG")
+    # return the images ready for the display
+    return im_black, im_colour
 
 if __name__ == '__main__':
   print('running {0} in standalone mode'.format(filename))
