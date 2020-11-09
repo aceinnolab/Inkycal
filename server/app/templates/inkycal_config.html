@@ -1,0 +1,445 @@
+{% extends "base.html" %}
+
+<!-- Main container -->
+{% block content %}
+
+<!-- Wrap everything in a container-->
+<div class="container">
+
+<!-- heading -->
+<h3>Inkycal-Setup v.2.0.0 BETA</h3>
+
+<!-- project link-->
+<div class="alert alert-light" role="alert">
+  <a href="https://github.com/aceisace/Inky-Calendar">For Inkycal Project of ace innovation laboratory - aceinnolab.com - by aceisace</a><br>
+</div>
+
+<!-- Inkycal logo -->
+<img class="img-fluid" src="https://github.com/aceisace/Inky-Calendar/blob/dev_ver2_0/Gallery/logo.png?raw=true" alt="Inkycal Logo">
+
+<br><br>
+
+<!-- Instructions -->
+<div class="alert alert-primary" role="alert">
+    <h4 class="alert-heading">Instructions</h4>
+    Insert your personal details and preferences and click on 'Generate'.<br>
+    Copy the downloaded file to the Raspberry Pi.<br>
+    The location does not matter, however, you need to know the path to this file.<br>
+    <hr>
+    <p class="mb-0">If no value is filled in for any of the row, the default value will be used.</p>
+</div>
+
+<!-- Main form -->
+<form class="needs-validation" method="post" novalidate>
+    {{ form.hidden_tag() }}
+
+    <h4> General settings </h4>
+
+    <!-- group E-Paper settings in a single row-->
+    <div class="form-row">
+
+    <!-- model selection start-->
+    <div class="col">
+        <label for="model">Model</label>
+        <select class="form-control" id="model" name="model">
+
+            <option value="9_in_7">                     9.7" ePaper                         </option>
+
+            <option value="epd_7_in_5_v3_colour">       7.5" v3 (880x528px) colour          </option>
+            <option value="epd_7_in_5_v3" selected>     7.5" v3 (880x528px) black-white     </option>
+
+            <option value="epd_7_in_5_v2_colour">       7.5" v2 (800x400px) colour          </option>
+            <option value="epd_7_in_5_v2">              7.5" v2 (800x400px) black-white     </option>
+
+            <option value="epd_7_in_5_colour">          7.5" v1 (600x384px) colour          </option>
+            <option value="epd_7_in_5">                 7.5" v1 (600x384px) black-white     </option>
+
+            <option value="epd_5_in_83_colour">         5.83" colour                        </option>
+            <option value="epd_5_in_83">                5.83" black-white                   </option>
+
+            <option value="epd_4_in_2_colour">          4.2" colour                         </option>
+            <option value="epd_4_in_2">                 4.2" black-white                    </option>
+        </select>
+    </div>
+
+
+    <!-- Update interval start-->
+    <div class="col">
+        <label>Update interval</label><br>
+        <select class="form-control" id="update_interval" name="update_interval">
+            <option value=60 checked>           every 60 minutes                        </option>
+            <option value=30>                   every 30 minutes                        </option>
+            <option value=20>                   every 20 minutes                        </option>
+            <option value=15>                   every 15 minutes                        </option>
+            <option value=10>                   every 10 minutes                        </option>
+        </select>
+    </div>
+
+    <!-- Update interval end-->
+
+
+    <!-- Orientation start -->
+    <div class="col">
+        <label>Orientation</label><br>
+
+        <select class="form-control" id="orientation" name="orientation">
+            <option value=0 checked>            Flex cable left                         </option>
+            <option value=180>                  Flex cable right                        </option>
+        </select>
+
+    </div>
+
+    </div><br> <!-- row end -->
+
+    <!-- Calibration start -->
+    <div class="form-group">
+        <label>When should the display be calibrated? (Leave blank if you're unsure)</label>
+
+        <!-- Info about calibration (collapsible info)-->
+        <details>
+
+            <summary>Info about calibration</summary>
+            <blockquote class="blockquote">
+                Calibration is a way to retain nice colours on ePaper displays. It works by flushing colours a few times on the entire display.
+                Please choose 3 hours in 24-hour format (0-24) to specify at which hours calibration should be executed.
+                Please also note that it takes around 10-20 minutes to calibrate, so best to choose hours when you won't be looking at Inkycal.
+            </blockquote>
+
+        </details>
+
+
+        <!-- Calibration hours input fields-->
+        <div class="form-row">
+            <div class="col">
+                <input type="number" class="form-control" name="calibration_hour_1" value=0 min=0 max=24>
+            </div>
+
+            <div class="col">
+                <input type="number" class="form-control" name="calibration_hour_2" value=12 min=0 max=24>
+                </div>
+
+            <div class="col">
+                <input type="number" class="form-control" name="calibration_hour_3" value=18 min=0 max=24>
+            </div>
+        </div>
+        <!-- Calibration hours input end-->
+    </div>
+    <!-- Calibration end-->
+
+    <!-- Info section -->
+    <div class="form-group">
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="info_section" name="info_section">
+            <label class="form-check-label" for="info_section">Show info section? (shows time of last display-update)</label>
+        </div>
+    </div>
+
+    <h4> Common module settings </h4>
+    <div class="form-row">
+        <!-- language selection- shared by all modules -->
+        <div class="col">
+            <label for="language">Language</label>
+            <select class="form-control" id="language" name="language">
+
+                <option value="en" selected>    English                     </option>
+                <option value="de">             German                      </option>
+                <option value="ru">             Russian                     </option>
+                <option value="it">             Italian                     </option>
+                <option value="es">             Spanish                     </option>
+                <option value="fr">             French                      </option>
+                <option value="el">             Greek                       </option>
+                <option value="sv">             Swedish                     </option>
+                <option value="nl">             Dutch                       </option>
+                <option value="pl">             Polish                      </option>
+                <option value="ua">             Ukrainian                   </option>
+                <option value="nb">             Norwegian                   </option>
+                <option value="vi">             Vietnamese                  </option>
+                <option value="zh-tw">          Chinese-Taiwanese           </option>
+                <option value="zh">             Chinese                     </option>
+                <option value="ja">             Japanese                    </option>
+                <option value="ko">             Korean                      </option>
+
+            </select>
+        </div>
+
+
+        <!--fontsize selection - shared by all modules-->
+        <div class="col">
+            <label for="fontsize">Fontsize</label>
+            <input type="number" class="form-control" name="fontsize" placeholder=12 value=12 min=0 max=30>
+        </div>
+
+        <!--padding-top-bottom - shared by all modules-->
+        <div class="col">
+            <label for="padding_y">Padding top/bottom (in pixels) </label>
+            <input type="number" class="form-control" name="padding_y" placeholder=10 value=10 min=0 max=30>
+        </div>
+
+        <!--padding-left-right - shared by all modules-->
+        <div class="col">
+            <label for="padding_x">Padding right/left (in pixels) </label>
+            <input type="number" class="form-control" name="padding_x" placeholder=10 value=10 min=0 max=30>
+        </div>
+
+    </div><br>
+
+
+    <!--Create templates for modules with their respective config for later use-->
+    {% for module in conf %}
+    <template id={{ module["name"] }} >
+        <div class="card"><div class="card-header">{{ module["name_str"] }} config</div>
+            <div class="card-body">
+
+                {% if module['requires'] != {} %}
+                    <h5 class="card-title">Required config</h5>
+                {% endif %}
+
+                {% for key in module["requires"] %}
+                    {% if 'options' in module["requires"][key] %}
+                        <label for={{key}}>{{module["requires"][key]["label"]}} *</label>
+
+                        <select class="form-control" id={{key}} name={{ module["name"] }}_{{key}} required>
+                        {% for option in module["requires"][key]['options'] %}
+                            <option value={{option}}> {{option}} </option>
+                        {% endfor %}
+                        </select>
+
+                        <div class="invalid-feedback">Sorry, but this field should not be empty</div>
+                        <div class="valid-feedback"> Looks good! </div>
+                    {% endif %}
+
+                    {% if not 'options' in module["requires"][key] %}
+                        <label for={{key}}>{{module["requires"][key]["label"]}} *</label>
+                        <input type="text" class="form-control" id={{key}} name={{ module["name"] }}_{{key}} required>
+                        <div class="invalid-feedback">Sorry, but this field should not be empty</div>
+                        <div class="valid-feedback"> Looks good! </div>
+                    {% endif %}
+                    <br>
+                {% endfor %}
+
+
+                {% if module['optional'] != {} %}
+                    <h5 class="card-title">Optional config</h5>
+                {% endif %}
+
+                {% for key in module["optional"] %}
+
+                    {% if 'options' in module["optional"][key] %}
+                        <label for={{key}}>{{module["optional"][key]["label"]}}</label>
+
+                        <select class="form-control" id={{key}} name={{ module["name"] }}_{{key}}>
+                        {% for option in module["optional"][key]['options'] %}
+                            <option value={{option}}> {{option}} </option>
+                        {% endfor %}
+                        </select>
+
+                        <div class="invalid-feedback">Sorry, but this field should not be empty</div>
+                        <div class="valid-feedback"> Looks good! </div>
+                    {% endif %}
+
+                    {% if not 'options' in module["optional"][key] %}
+                        <label for={{key}}>{{module["optional"][key]["label"]}}</label>
+                        <input type="text" class="form-control" id={{key}} name={{ module["name"] }}_{{key}}>
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+        </div>
+    </template>
+    {% endfor %}
+
+    <h4> Modules config </h4>
+
+    <div class="alert alert-primary" role="alert">Fields marked with an asterisk(*) are required</div>
+
+    <!-- module 1 selection -->
+    <div class="form-row">
+        <div class="col-md-10">
+        <label for="module1">Top section module</label>
+            <select class="form-control" id="module1" name="module1">
+                <option value="None" checked>Empty</option>
+                {% for module in conf%}
+                    <option value={{ module['name'] }} > {{module['name_str'] }} </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label for="module1_height">Height in percent</label>
+            <input type="number" class="form-control" name="module1_height" value=10 placeholder=10 min=0 max=100>
+        </div>
+
+    </div><br>
+
+    <!-- placeholder div -->
+    <div id="module1_conf"></div>
+
+
+    <!-- module 2 selection -->
+    <div class="form-row">
+        <div class="col-md-10">
+        <label for="module2">Middle section module</label>
+            <select class="form-control" id="module2" name="module2">
+                <option value="None" checked>Empty</option>
+                {% for module in conf%}
+                    <option value={{ module['name'] }} > {{module['name_str'] }} </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="module2_height">Height in percent</label>
+            <input type="number" class="form-control" name="module2_height" value=65 placeholder=65 min=0 max=100>
+        </div>
+    </div><br>
+
+    <!-- placeholder div -->
+    <div id="module2_conf"></div>
+
+
+    <!-- module 3 selection -->
+    <div class="form-row">
+        <div class="col-md-10">
+        <label for="module3">Bottom section module</label>
+            <select class="form-control" id="module3" name="module3">
+                <option value="None" checked>Empty</option>
+                {% for module in conf%}
+                    <option value={{ module['name'] }} > {{module['name_str'] }} </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="module3_height">Height in percent</label>
+            <input type="number" class="form-control" name="module3_height" value=25 placeholder=25 min=0 max=100>
+        </div>
+    </div><br>
+
+    <!-- placeholder div -->
+    <div id="module3_conf"></div>
+
+
+    <!--Show config of selected modules-->
+    <script>
+        $(document).ready(function(){
+
+            $("#module1").change(function(){
+                $(this).find("option:selected").each(function(){
+                    var module1_selection = $(this).attr("value");
+                    console.log("Module 1 selected to: "+ module1_selection);
+                    if(module1_selection != "None"){
+
+                        // reset module 1 config (avoid showing duplicates)
+                        $("#module1_conf").replaceWith('<div id="module1_conf"></div>');
+
+                        // add and render the config for the selected module
+                        var module1_template = document.querySelector("#"+module1_selection);
+                        var clone = document.importNode(module1_template.content, true);
+                        $("#module1_conf").append(clone);
+
+                        // With the selected module name known, we can replace the name tag of that module's config for unique id's
+                        // This allows having multiple modules running with different configs for each instance
+                        $("#module1_conf input").each(function(i) {
+                            //console.log($(this).attr('name', $(this).attr('name').replace(module1_selection, "module1")));
+                            $(this).attr('name', $(this).attr('name').replace(module1_selection, "module1"));
+                        });
+                        $("#module1_conf select").each(function(i) {
+                            //console.log($(this).attr('name', $(this).attr('name').replace(module1_selection, "module1")));
+                            $(this).attr('name', $(this).attr('name').replace(module1_selection, "module1"));
+                        });
+                    } else {
+                        // revert to empty section
+                        $("#module1_conf").replaceWith('<div id="module1_conf"></div>');
+                    }
+                });
+            }).change();
+
+            $("#module2").change(function(){
+                $(this).find("option:selected").each(function(){
+                    var module2_selection = $(this).attr("value");
+                    console.log("Module 2 selected to: "+ module2_selection);
+                    if(module2_selection != "None"){
+
+                        // reset module 2 config (avoid showing duplicates)
+                        $("#module2_conf").replaceWith('<div id="module2_conf"></div>');
+
+                        // add and render the config for the selected module
+                        var module2_template = document.querySelector("#"+module2_selection);
+                        var clone = document.importNode(module2_template.content, true);
+                        $("#module2_conf").append(clone);
+
+                        // With the selected module name known, we can replace the name tag of that module's config for unique id's
+                        // This allows having multiple modules running with different configs for each instance
+                        $("#module2_conf input").each(function(i) {
+                            //console.log( $(this).attr('name').replace(module2_selection, "module2"));
+                            $(this).attr('name', $(this).attr('name').replace(module2_selection, "module2"));
+                        });
+                        $("#module2_conf select").each(function(i) {
+                            //console.log($(this).attr('name', $(this).attr('name').replace(module2_selection, "module2")));
+                            $(this).attr('name', $(this).attr('name').replace(module2_selection, "module2"));
+                        });
+                    } else {
+                        // revert to empty section
+                        $("#module2_conf").replaceWith('<div id="module2_conf"></div>');
+                    }
+                });
+            }).change();
+
+            $("#module3").change(function(){
+                $(this).find("option:selected").each(function(){
+                    var module3_selection = $(this).attr("value");
+                    console.log("Module 3 selected to: "+ module3_selection);
+                    if(module3_selection != "None"){
+
+                        // reset module 3 config (avoid showing duplicates)
+                        $("#module3_conf").replaceWith('<div id="module3_conf"></div>');
+
+                        // add and render the config for the selected module
+                        var module3_template = document.querySelector("#"+module3_selection);
+                        var clone = document.importNode(module3_template.content, true);
+                        $("#module3_conf").append(clone);
+
+                        // With the selected module name known, we can replace the name tag of that module's config for unique id's
+                        // This allows having multiple modules running with different configs for each instance
+                        $("#module3_conf input").each(function(i) {
+                            //console.log( $(this).attr('name').replace(module3_selection, "module3"));
+                            $(this).attr('name', $(this).attr('name').replace(module3_selection, "module3"));
+                        });
+                        $("#module3_conf select").each(function(i) {
+                            //console.log($(this).attr('name', $(this).attr('name').replace(module3_selection, "module3")));
+                            $(this).attr('name', $(this).attr('name').replace(module3_selection, "module3"));
+                        });
+                    } else {
+                        // revert to empty section
+                        $("#module3_conf").replaceWith('<div id="module3_conf"></div>');
+                    }
+                });
+            }).change();
+        });
+    </script>
+
+    <script>
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+    </script>
+
+    <br>
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit">Generate settings file</button>
+    </div>
+
+</form>
+
+</div>
+{% endblock %}

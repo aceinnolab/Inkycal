@@ -212,3 +212,10 @@ class iCalendar:
 
 if __name__ == '__main__':
   print('running {0} in standalone mode'.format(filename))
+
+  a = iCalendar()
+  now = arrow.now()
+  a.load_url('https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics')
+  a.load_url('https://calendar.yahoo.com/saadnaseer63/37435f792ecb221cdd169d06a518b30f/ycal.ics?id=1670')
+  a.get_events(now, now.shift(weeks=2), a.get_system_tz())
+  a.show_events()
