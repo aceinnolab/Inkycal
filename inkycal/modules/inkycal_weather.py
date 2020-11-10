@@ -81,42 +81,74 @@ class Weather(inkycal_module):
     
     }
 
-  def __init__(self, section_size, section_config):
+  def __init__(self, config):
     """Initialize inkycal_weather module"""
 
-    super().__init__(section_size, section_config)
+    super().__init__(config)
 
-    # Module specific parameters
+    config = config['config']
+
+    # Check if all required parameters are present
     for param in self.requires:
-      if not param in section_config:
+      if not param in config:
         raise Exception('config is missing {}'.format(param))
 
     # required parameters
-    self.location = self.config['location']
-    self.api_key = self.config['api_key']
+    self.location = config['location']
+    self.api_key = config['api_key']
 
     # optional parameters
-    self.round_temperature = self.config['round_temperature']
-    self.round_windspeed = self.config['round_windspeed']
-    self.forecast_interval = self.config['forecast_interval']
-    self.units = self.config['units']
-    self.hour_format = self.config['hour_format']
-    self.use_beaufort = self.config['use_beaufort']
+    self.round_temperature = bool(config['round_temperature'])
+    self.round_windspeed = bool(config['round_windspeed'])
+    self.forecast_interval = config['forecast_interval']
+    self.units = config['units']
+    self.hour_format = int(config['hour_format'])
+    self.use_beaufort = bool(config['use_beaufort'])
+
+    # additional configuration
+    self.owm = pyowm.OWM(self.api_key)
     self.timezone = get_system_tz()
     self.locale = sys_locale()[0]
-    self.weatherfont = ImageFont.truetype(fonts['weathericons-regular-webfont'],
-                                          size = self.fontsize)
+    self.weatherfont = ImageFont.truetype(
+      fonts['weathericons-regular-webfont'], size = self.fontsize)
 
-    #self.owm = pyowm.OWM(self.config['api_key'])
     # give an OK message
     print('{0} loaded'.format(filename))
+
+
+  def _validate(self):
+
+    if not isinstance(self.location, str):
+      print(f'location should be -> Manchester, USA, not {self.location}')
+
+    if not isinstance(self.api_key, str):
+      print(f'api_key should be a string, not {self.api_key}')
+
+    if not isinstance(self.round_temperature, bool):
+      print(f'round_temperature should be a boolean, not {self.round_temperature}')
+
+    if not isinstance(self.round_windspeed, bool):
+      print(f'round_windspeed should be a boolean, not {self.round_windspeed}')
+
+    if not isinstance(self.forecast_interval, int):
+      print(f'forecast_interval should be a boolean, not {self.forecast_interval}')
+
+    if not isinstance(self.units, str):
+      print(f'units should be a boolean, not {self.units}')
+
+    if not isinstance(self.hour_format, int):
+      print(f'hour_format should be a int, not {self.hour_format}')
+ 
+    if not isinstance(self.use_beaufort, bool):
+      print(f'use_beaufort should be a int, not {self.use_beaufort}')
+
 
   def generate_image(self):
     """Generate image for this module"""
 
     # Define new image size with respect to padding
-    im_width = int(self.width - (2 * self.padding_x))
-    im_height = int(self.height - (2 * self.padding_y))
+    im_width = int(self.width - (2 * self.padding_left))
+    im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
     logger.info('image size: {} x {} px'.format(im_width, im_height))
 
@@ -338,6 +370,10 @@ class Weather(inkycal_module):
 
     elif self.forecast_interval == 'daily':
 
+      ###
+      logger.debug("daily")
+
+    
       def calculate_forecast(days_from_today):
         """Get temperature range and most frequent icon code for forecast
         days_from_today should be int from 1-4: e.g. 2 -> 2 days from today
@@ -351,7 +387,6 @@ class Weather(inkycal_module):
 
         # Get forecasts for each time-object
         forecasts = [forecast.get_weather_at(_.datetime) for _ in time_range]
-
 
         # Get all temperatures for this day
         daily_temp = [round(_.get_temperature(unit=temp_unit)['temp'],
@@ -418,7 +453,6 @@ class Weather(inkycal_module):
     moonphase = get_moon_phase()
 
     # Fill weather details in col 1 (current weather icon)
-    # write(im_black, (col_width, row_height), now_str, text_now_pos, font = font)
     draw_icon(im_colour, weather_icon_pos, (icon_large, icon_large),
               weathericons[weather_icon])
 

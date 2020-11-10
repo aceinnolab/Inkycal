@@ -12,7 +12,7 @@ import arrow
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.ERROR)
+logger.setLevel(level=logging.DEBUG)
 
 class Calendar(inkycal_module):
   """Calendar class
@@ -37,12 +37,10 @@ class Calendar(inkycal_module):
 
     "ical_urls" : {
       "label":"iCalendar URL/s, separate multiple ones with a comma",
-      "default":[]
       },
 
     "ical_files" : {
       "label":"iCalendar filepaths, separated with a comma",
-      "default":[]
       },
     
     "date_format":{
@@ -59,24 +57,33 @@ class Calendar(inkycal_module):
     
     }
 
-  def __init__(self, section_size, section_config):
+  def __init__(self, config):
     """Initialize inkycal_calendar module"""
 
-    super().__init__(section_size, section_config)
+    super().__init__(config)
+    config = config['config']
 
+    # optional parameters
+    self.weekstart = config['week_starts_on']
+    self.show_events = bool(config['show_events'])
+    self.date_format = config["date_format"]
+    self.time_format = config['time_format']
+    self.language = config['language']
 
-    # module specific parameters
+    if config['ical_urls'] != "":
+      self.ical_urls = config['ical_urls'].split(',')
+    else:
+      self.ical_urls = []
+      
+    if config['ical_files'] != "":
+      self.ical_files = config['ical_files'].split(',')
+    else:
+      self.ical_files = []
+    
+    # additional configuration
+    self.timezone = get_system_tz()
     self.num_font = ImageFont.truetype(
       fonts['NotoSans-SemiCondensed'], size = self.fontsize)
-    self.weekstart = self.config['week_starts_on']
-    self.show_events = self.config['show_events']
-    self.date_format = self.config["date_format"]
-    self.time_format = self.config['time_format']
-    self.language = self.config['language']
-
-    self.timezone = get_system_tz()
-    self.ical_urls = self.config['ical_urls']
-    self.ical_files = self.config['ical_files']
 
     # give an OK message
     print('{0} loaded'.format(filename))
@@ -85,8 +92,8 @@ class Calendar(inkycal_module):
     """Generate image for this module"""
 
     # Define new image size with respect to padding
-    im_width = int(self.width - (2 * self.padding_x))
-    im_height = int(self.height - (2 * self.padding_y))
+    im_width = int(self.width - (2 * self.padding_left))
+    im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
 
     logger.info('Image size: {0}'.format(im_size))

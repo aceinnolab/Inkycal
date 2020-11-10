@@ -1,6 +1,10 @@
 import abc
 from inkycal.custom import *
 
+# Set the root logger to level DEBUG to allow any inkycal module to use the
+# logger for any level
+logging.basicConfig(level = logging.DEBUG)
+
 class inkycal_module(metaclass=abc.ABCMeta):
   """Generic base class for inykcal modules"""
 
@@ -10,16 +14,18 @@ class inkycal_module(metaclass=abc.ABCMeta):
       callable(subclass.generate_image) or
       NotImplemented)
 
-  def __init__(self, section_config):
+  def __init__(self, config):
+    """Initialize module with given config"""
+
     # Initializes base module
     # sets properties shared amongst all sections
-    self.config = section_config
-    self.width, self.height = section_config['size']
+    self.config = conf = config['config']
+    self.width, self.height = conf['size']
 
-    self.padding_left = self.padding_right = self.config["padding_x"]
-    self.padding_top = self.padding_bottom = self.config["padding_y"]
+    self.padding_left = self.padding_right = conf["padding_x"]
+    self.padding_top = self.padding_bottom = conf['padding_y']
 
-    self.fontsize = self.config["fontsize"]
+    self.fontsize = conf["fontsize"]
     self.font = ImageFont.truetype(
       fonts['NotoSans-SemiCondensed'], size = self.fontsize)
 
