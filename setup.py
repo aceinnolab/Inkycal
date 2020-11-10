@@ -1,7 +1,7 @@
 from setuptools import setup
 
 __project__ = "inkycal"
-__version__ = "2.0.0beta"
+__version__ = "2.0.0"
 __description__ = "Python3 software for syncing icalendar events, weather and news on selected E-Paper displays"
 __packages__ = ["inkycal"]
 __author__ = "aceisace"
@@ -15,7 +15,8 @@ __install_requires__ = ['pyowm==2.10.0',                  # weather
                         'feedparser==5.2.1',              # parse RSS-feeds
                         'numpy>=1.18.2',                  # image pre-processing
                         'arrow>=0.15.6',                  # time handling
-                        'jsmin>=2.2.2'                    # Parsing jsonc file
+                        'Flask==1.1.2'                    # webserver
+                        'Flask-WTF==0.14.3'               # webforms
                         ]
 
 __classifiers__ = [

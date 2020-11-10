@@ -8,18 +8,6 @@ Inkycal
     :members:
 
 ..
-  inkycal settings
-  ===================
-  .. module:: inkycal.config.settings_parser
-  .. autoclass:: Settings
-      :members:
-
-  inkycal layout
-  ===================
-  .. module:: inkycal.config.layout
-  .. autoclass:: Layout
-      :members:
-
   inkycal calendar
   ===================
   .. module:: inkycal.modules.inkycal_calendar
@@ -32,10 +20,10 @@ Inkycal
   .. autoclass:: Agenda
       :members:
 
-  inkycal rss
+  inkycal feeds
   ===================
-  .. module:: inkycal.modules.inkycal_rss
-  .. autoclass:: RSS
+  .. module:: inkycal.modules.inkycal_feeds
+  .. autoclass:: Feeds
       :members:
 
   inkycal weather

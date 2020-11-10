@@ -58,7 +58,7 @@ def inkycal_config():
 
         # display size
         display_size = Display.get_display_size(model)
-        width, height = display_size[0], display_size[1]
+        width, height = int(display_size[0]), int(display_size[1])
         
 
         # loop over the modules, add their config data based on user selection, merge the common_settings into each module's config
@@ -66,11 +66,13 @@ def inkycal_config():
             conf = {}
             module = 'module'+str(i)
             if request.form.get(module) != "None":
-                #conf = {"position":i , "name": request.form.get(module), "height": int(request.form.get(module+'_height')), "config":{}}
-                conf = {"position":i , "name": request.form.get(module), "size": (width, int(height*int(request.form.get(module+'_height')) /100)), "config":{}}
+
+                conf = {"position":i , "name": request.form.get(module), "config":{}}
 
                 for modules in settings:
                     if modules['name'] == request.form.get(module):
+
+                        conf['config']['size'] = (width, int(height*int(request.form.get(module+'_height')) /100))
 
                         # Add required fields to the config of the module in question
                         if 'requires' in modules:
@@ -90,12 +92,12 @@ def inkycal_config():
                                         conf['config'][key] = None
 
                 # update the config dictionary
-                conf.update(common_settings)
+                conf["config"].update(common_settings)
                 template['modules'].append(conf)
 
         # Send the data back to the server side in json dumps and convert the response to a downloadable settings.json file
         try:
-            user_settings = json.dumps(template, indent=4).encode('utf-8')
+            user_settings = json.dumps(template, indent=4).replace('null', '""').encode('utf-8')
             response = Response(user_settings, mimetype="application/json", direct_passthrough=True)
             response.headers['Content-Disposition'] = 'attachment; filename=settings.json'
 

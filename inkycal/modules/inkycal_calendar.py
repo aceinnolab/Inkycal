@@ -12,7 +12,7 @@ import arrow
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.DEBUG)
+logger.setLevel(level=logging.ERROR)
 
 class Calendar(inkycal_module):
   """Calendar class
@@ -22,7 +22,7 @@ class Calendar(inkycal_module):
   name = "Inkycal Calendar"
 
   optional = {
-    
+
     "week_starts_on" : {
       "label":"When does your week start? (default=Monday)",
       "options": ["Monday", "Sunday"],
@@ -42,7 +42,7 @@ class Calendar(inkycal_module):
     "ical_files" : {
       "label":"iCalendar filepaths, separated with a comma",
       },
-    
+
     "date_format":{
       "label":"Use an arrow-supported token for custom date formatting "+
       "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. D MMM",
@@ -54,7 +54,7 @@ class Calendar(inkycal_module):
       "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm",
       "default": "HH:mm"
       },
-    
+
     }
 
   def __init__(self, config):
@@ -74,12 +74,12 @@ class Calendar(inkycal_module):
       self.ical_urls = config['ical_urls'].split(',')
     else:
       self.ical_urls = []
-      
+
     if config['ical_files'] != "":
       self.ical_files = config['ical_files'].split(',')
     else:
       self.ical_files = []
-    
+
     # additional configuration
     self.timezone = get_system_tz()
     self.num_font = ImageFont.truetype(

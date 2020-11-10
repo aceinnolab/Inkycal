@@ -27,8 +27,6 @@ class Display:
       driver = import_module(driver_path)
       self._epaper = driver.EPD()
       self.model_name = epaper_model
-      #self.height = driver.EPD_HEIGHT
-      #self.width = driver.EPD_WIDTH
 
     except ImportError:
       raise Exception('This module is not supported. Check your spellings?')
