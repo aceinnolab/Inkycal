@@ -11,6 +11,8 @@ from urllib.request import urlopen
 import os
 import time
 
+logger = logging.getLogger('inkycal_custom')
+logger.setLevel(level=logging.INFO)
 
 # Get the path to the Inkycal folder
 top_level = os.path.dirname(
@@ -107,11 +109,11 @@ def write(image, xy, box_size, text, font=None, **kwargs):
 
   # Truncate text if text is too long so it can fit inside the box
   if (text_width, text_height) > (box_width, box_height):
-    logging.debug(('truncating {}'.format(text)))
+    logger.debug(('truncating {}'.format(text)))
     while (text_width, text_height) > (box_width, box_height):
       text=text[0:-1]
       text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
-    logging.debug((text))
+    logger.debug((text))
 
   # Align text to desired position
   if alignment == "center" or None:

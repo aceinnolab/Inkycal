@@ -125,4 +125,3 @@ class Layout:
 if __name__ == '__main__':
   print('running {0} in standalone/debug mode'.format(
     os.path.basename(__file__).split('.py')[0]))
-

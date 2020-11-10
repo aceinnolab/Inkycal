@@ -170,7 +170,3 @@ class Todoist(inkycal_module):
 
 if __name__ == '__main__':
   print('running {0} in standalone/debug mode'.format(filename))
-  config = {'api_key':'4e166367dcafdd60e6a9f4cbed598d578bf2c359'}
-  size = (480, 100)
-  a = Todoist(size, config)
-  b,c = a.generate_image()

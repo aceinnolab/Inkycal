@@ -14,7 +14,7 @@ import arrow
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.ERROR)
+logger.setLevel(level=logging.INFO)
 
 class Agenda(inkycal_module):
   """Agenda class
@@ -33,7 +33,6 @@ class Agenda(inkycal_module):
   optional = {
     "ical_files" : {
       "label":"iCalendar filepaths, separated with a comma",
-      "default":[]
       },
 
     "date_format":{
@@ -45,27 +44,37 @@ class Agenda(inkycal_module):
     "time_format":{
       "label":"Use an arrow-supported token for custom time formatting "+
       "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm",
+      "default":"HH:mm",
       },
 
 
     }
 
-  def __init__(self, section_size, section_config):
+  def __init__(self, config):
     """Initialize inkycal_agenda module"""
 
-    super().__init__(section_size, section_config)
+    super().__init__(config)
 
-    for param in self.equires:
-      if not param in section_config:
+    config = config['config']
+
+    # Check if all required parameters are present
+    for param in self.requires:
+      if not param in config:
         raise Exception('config is missing {}'.format(param))
 
     # module specific parameters
-    self.date_format = self.config['date_format']
-    self.time_format = self.config['time_format']
-    self.language = self.config['language']
-    self.ical_urls = self.config['ical_urls']
-    self.ical_files = self.config['ical_files']
+    self.date_format = config['date_format']
+    self.time_format = config['time_format']
+    self.language = config['language']
+    self.ical_urls = config['ical_urls'].split(',')
 
+    # Check if ical_files is an empty string
+    if config['ical_files'] != "":
+      self.ical_files = config['ical_files'].split(',')
+    else:
+      self.ical_files = []
+
+    # Additional config
     self.timezone = get_system_tz()
 
     # give an OK message
@@ -83,9 +92,6 @@ class Agenda(inkycal_module):
     if not isinstance(self.language, str):
       print('language has to be a string: "en" ')
 
-    if not isinstance(self.timezone, str):
-      print('The timezone has bo be a string.')
-
     if not isinstance(self.ical_urls, list):
       print('ical_urls has to be a list ["url1", "url2"] ')
 
@@ -96,8 +102,8 @@ class Agenda(inkycal_module):
     """Generate image for this module"""
 
     # Define new image size with respect to padding
-    im_width = int(self.width - (self.width * 2 * self.margin_x))
-    im_height = int(self.height - (self.height * 2 * self.margin_y))
+    im_width = int(self.width - (2 * self.padding_left))
+    im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
 
     logger.info('Image size: {0}'.format(im_size))
@@ -130,6 +136,7 @@ class Agenda(inkycal_module):
 
     if self.ical_urls:
       parser.load_url(self.ical_urls)
+
     if self.ical_files:
       parser.load_from_file(self.ical_files)
 
@@ -139,7 +146,7 @@ class Agenda(inkycal_module):
 
     # Sort events by beginning time
     parser.sort()
-    # parser.show_events()
+    #parser.show_events()
 
     # Set the width for date, time and event titles
     date_width = int(max([self.font.getsize(
@@ -147,8 +154,13 @@ class Agenda(inkycal_module):
           for dates in agenda_events]) * 1.2)
     logger.debug(('date_width:', date_width))
 
+    # Calculate positions for each line
+    line_pos = [(0, int(line * line_height)) for line in range(max_lines)]
+    logger.debug(('line_pos:', line_pos))
+
     # Check if any events were filtered
     if upcoming_events:
+      logger.info('Managed to parse events from urls')
 
       # Find out how much space the event times take
       time_width = int(max([self.font.getsize(
@@ -167,10 +179,6 @@ class Agenda(inkycal_module):
       # Calculate x-pos for event titles
       x_event = date_width + time_width
       logger.debug(('x-event:', x_event))
-
-      # Calculate positions for each line
-      line_pos = [(0, int(line * line_height)) for line in range(max_lines)]
-      logger.debug(('line_pos:', line_pos))
 
       # Merge list of dates and list of events
       agenda_events += upcoming_events
@@ -216,6 +224,8 @@ class Agenda(inkycal_module):
 
     # If no events were found, write only dates and lines
     else:
+      logger.info('no events found')
+
       cursor = 0
       for _ in agenda_events:
         title = _['title']
@@ -228,7 +238,6 @@ class Agenda(inkycal_module):
 
         cursor += 1
 
-      logger.info('no events found')
 
     # return the images ready for the display
     return im_black, im_colour
