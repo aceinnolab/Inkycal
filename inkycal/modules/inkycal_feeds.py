@@ -18,9 +18,9 @@ except ImportError:
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.INFO)
+logger.setLevel(level=logging.ERROR)
 
-class RSS(inkycal_module):
+class Feeds(inkycal_module):
   """RSS class
   parses rss/atom feeds from given urls
   """
@@ -35,7 +35,7 @@ class RSS(inkycal_module):
     }
 
   optional = {
-    
+
     "shuffle_feeds": {
       "label": "Should the parsed RSS feeds be shuffled? (default=True)",
       "options": [True, False],
@@ -61,7 +61,7 @@ class RSS(inkycal_module):
 
     # optional parameters
     self.shuffle_feeds = bool(self.config["shuffle_feeds"])
-                   
+
     # give an OK message
     print('{0} loaded'.format(filename))
 

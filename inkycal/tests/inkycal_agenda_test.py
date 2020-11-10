@@ -1,27 +1,32 @@
 import unittest
-from inkycal.modules import Agenda
+from inkycal.modules import Agenda as Module
 
-agenda = Agenda(
-  #size
-  (400,400),
-
-  # common config
-  {
-  'language': 'en',
-  'units': 'metric',
-  'hours': 24,
-  # module-specific config
-  'week_starts_on': 'Monday',
-  'ical_urls': ['https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics']
+test = {
+  "position": 1,
+  "name": "Agenda",
+  "config": {
+    "size": [880,100],
+      "ical_urls": "https://www.officeholidays.com/ics-fed/usa",                "ical_files": "",
+      "date_format": "ddd D MMM",
+      "time_format": "HH:mm",
+      "padding_x": 10,
+      "padding_y": 10,
+      "fontsize": 12,
+      "language": "en"
   }
-  )
+}
 
 
-class inkycal_agenda_test(unittest.TestCase):
+module = Module(test)
+  
+class module_test(unittest.TestCase):
+  def test_get_config(self):
+    print('getting data for web-ui')
+    module.get_config()
+    
   def test_generate_image(self):
     print('testing image generation')
-    agenda.generate_image()
-
+    module.generate_image()
 
 if __name__ == '__main__':
   unittest.main()

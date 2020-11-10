@@ -35,14 +35,14 @@ class Weather(inkycal_module):
     "api_key" : {
       "label":"Please enter openweathermap api-key. You can create one for free on openweathermap",
     },
-    
+
     "location": {
       "label":"Please enter your location in the following format: City, Country-Code"
       }
     }
 
   optional = {
-    
+
     "round_temperature": {
       "label":"Round temperature to the nearest degree?",
       "options": [True, False],
@@ -78,7 +78,7 @@ class Weather(inkycal_module):
       "options": [True, False],
       "default": True
       },
-    
+
     }
 
   def __init__(self, config):
@@ -138,7 +138,7 @@ class Weather(inkycal_module):
 
     if not isinstance(self.hour_format, int):
       print(f'hour_format should be a int, not {self.hour_format}')
- 
+
     if not isinstance(self.use_beaufort, bool):
       print(f'use_beaufort should be a int, not {self.use_beaufort}')
 
@@ -373,7 +373,7 @@ class Weather(inkycal_module):
       ###
       logger.debug("daily")
 
-    
+
       def calculate_forecast(days_from_today):
         """Get temperature range and most frequent icon code for forecast
         days_from_today should be int from 1-4: e.g. 2 -> 2 days from today

@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-Developer module template for Inkycal Project
+Module template for Inky-Calendar Project
+
+Create your own module with this template
 
 Copyright by aceisace
 """
@@ -76,6 +78,9 @@ class Simple(inkycal_module):
 
     # Initialise this module via the inkycal_module template (required)
     super().__init__(section_size, section_config)
+
+    # module name (required)
+    self.name = self.__class__.__name__
 
     # module specific parameters (optional)
     self.do_something = True

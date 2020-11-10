@@ -52,7 +52,6 @@ class Inkycal:
       with open(settings_path) as file:
         settings = json.load(file)
         self.settings = settings
-        #print(self.settings)
 
     except FileNotFoundError:
       print('No settings file found in specified location')

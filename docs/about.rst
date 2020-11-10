@@ -13,6 +13,5 @@ Inkycal is free to use for anyone (non-commercially) and open-source.
 It is mainly developed by `aceisace <https://github.com/aceisace>`_ and a few other developers
 in their free time.
 
-Developing Inkycal requires a fairly large amount of coffee and the ePaper displays aren't free
-either. Please consider a `DONATION <https://www.paypal.me/SaadNaseer>`_ to help keep this project
+Developing Inkycal requires a fairly large amount of coffee and free time. We work in our free time for offer you the best software we can write. Please consider a `DONATION <https://www.paypal.me/SaadNaseer>`_ to help keep this project
 well-maintained |:person_bowing:| .
