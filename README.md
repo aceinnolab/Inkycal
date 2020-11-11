@@ -106,15 +106,6 @@ inky.Module.set(fontsize=14)
 inky.Module.set(fontsize=14, language='de')
 ```
 
-
-## Known issues (will be fixed before the production release)
-* [x] ~~Inkycal-image is not yet supported~~
-* [ ] Inkycal-server is not yet supported -> depends on inkycal-image
-* [x] ~~Calibration is not yet implemented automatically. For now, only manual calibration is supported: `ink.calibrate()`~~
-* [x] ~~Fix: `AttributeError` in `Layout` module for non-colour epaper displays~~
-* [x] Improvement: Change the way the web-ui handles urls
-
-
 ## Main features
 * Monthly Calendar that shows events from your Google (or other) iCalendar/s
 * Live weather info and forecasts for next 9 hours (openweathermap)
