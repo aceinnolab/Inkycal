@@ -103,35 +103,41 @@ class Calendar(inkycal_module):
     im_colour = Image.new('RGB', size = im_size, color = 'white')
 
     # Allocate space for month-names, weekdays etc.
-    month_name_height = int(self.height*0.1)
-    weekdays_height = int(self.height*0.05)
+    month_name_height = int(im_height * 0.1)
+    weekdays_height = int(im_height * 0.05)
+    logger.debug((f"month_name_height: {month_name_height}"))
+    logger.debug((f"weekdays_height: {weekdays_height}"))
+
 
     if self.show_events == True:
-      calendar_height = int(self.height*0.6)
-      events_height = int(self.height*0.25)
-      logger.debug('calendar-section size: {0} x {1} px'.format(
-        im_width, calendar_height))
-      logger.debug('events-section size: {0} x {1} px'.format(
-        im_width, events_height))
+      logger.debug("Allocating space for events")
+      calendar_height = int(im_height * 0.6)
+      events_height = int(im_height * 0.25)
+      logger.debug(f'calendar-section size: {im_width} x {calendar_height} px')
+      logger.debug(f'events-section size: {im_width} x {events_height} px')
     else:
-      calendar_height = self.height - month_name_height - weekday_height
-      logger.debug('calendar-section size: {0} x {1} px'.format(
-        im_width, calendar_height))
+      logger.debug("Not allocating space for events")
+      calendar_height = im_height - month_name_height - weekday_height
+      logger.debug(f'calendar-section size: {im_width} x {calendar_height} px')
 
-    # Create grid and calculate icon sizes
+    # Create a 7x6 grid and calculate icon sizes
     calendar_rows, calendar_cols = 6, 7
     icon_width = im_width // calendar_cols
     icon_height = calendar_height // calendar_rows
+    logger.debug(f"icon_size: {icon_width}x{icon_height}px")
 
     # Calculate spacings for calendar area
     x_spacing_calendar = int((im_width % calendar_cols) / 2)
     y_spacing_calendar = int((im_height % calendar_rows) / 2)
 
+    logger.debug((f"x_spacing_calendar: {x_spacing_calendar}"))
+    logger.debug((f"y_spacing_calendar :{y_spacing_calendar}"))
+
     # Calculate positions for days of month
     grid_start_y = (month_name_height + weekdays_height + y_spacing_calendar)
     grid_start_x = x_spacing_calendar
 
-    grid = [(grid_start_x + icon_width*x, grid_start_y + icon_height*y)
+    grid_coordinates = [(grid_start_x + icon_width*x, grid_start_y + icon_height*y)
             for y in range(calendar_rows) for x in range(calendar_cols)]
 
     weekday_pos = [(grid_start_x + icon_width*_, month_name_height) for _ in
@@ -148,12 +154,8 @@ class Calendar(inkycal_module):
       weekstart = now.shift(days = - now.isoweekday())
 
     # Write the name of current month
-    write(
-      im_black,
-      (x_spacing_calendar,0),
-      (self.width, month_name_height),
-      str(now.format('MMMM',locale=self.language)),
-      font = self.font,
+    write(im_black, (0,0),(im_width, month_name_height),
+      str(now.format('MMMM',locale=self.language)), font = self.font,
       autofit = True)
 
     # Set up weeknames in local language and add to main section
@@ -174,21 +176,27 @@ class Calendar(inkycal_module):
     # Create a calendar template and flatten (remove nestings)
     flatten = lambda z: [x for y in z for x in y]
     calendar_flat = flatten(cal.monthcalendar(now.year, now.month))
+    #logger.debug(f" calendar_flat: {calendar_flat}")
+
+    # Map days of month to co-ordinates of grid -> 3: (row2_x,col3_y)
+    grid = {}
+    for i in calendar_flat:
+      if i != 0:
+        grid[i] = grid_coordinates[calendar_flat.index(i)]
+    #logger.debug(f"grid:{grid}")
+
+    # remove zeros from calendar since they are not required
+    calendar_flat = [num for num in calendar_flat if num != 0]
 
     # Add the numbers on the correct positions
-    for i in range(len(calendar_flat)):
-      if calendar_flat[i] not in (0, int(now.day)):
-        write(
-          im_black,
-          grid[i],
-          (icon_width,icon_height),
-          str(calendar_flat[i]),
-          font = self.num_font, fill_height = 0.5
-          )
+    for number in calendar_flat:
+      if number != int(now.day):
+        write(im_black, grid[number], (icon_width, icon_height),
+          str(number), font = self.num_font, fill_height = 0.5)
 
     # Draw a red/black circle with the current day of month in white
     icon = Image.new('RGBA', (icon_width, icon_height))
-    current_day_pos = grid[calendar_flat.index(now.day)]
+    current_day_pos = grid[int(now.day)]
     x_circle,y_circle = int(icon_width/2), int(icon_height/2)
     radius = int(icon_width * 0.2)
     ImageDraw.Draw(icon).ellipse(
@@ -211,8 +219,12 @@ class Calendar(inkycal_module):
                                           line_spacing)
 
       # generate list of coordinates for each line
-      event_lines = [(0, grid[-1][1] + int(events_height/max_event_lines*_))
+      events_offset = im_height - events_height
+      event_lines = [(0, events_offset + int(events_height/max_event_lines*_))
                      for _ in range(max_event_lines)]
+
+      #logger.debug(f"event_lines {event_lines}")
+
 
       # timeline for filtering events within this month
       month_start = arrow.get(now.floor('month'))
@@ -244,7 +256,7 @@ class Calendar(inkycal_module):
       for days in days_with_events:
         draw_border(
           im_colour,
-          grid[calendar_flat.index(days)],
+          grid[days],
           (icon_width, icon_height),
           radius = 6,
           thickness= 1,
