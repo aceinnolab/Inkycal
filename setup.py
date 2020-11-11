@@ -15,8 +15,8 @@ __install_requires__ = ['pyowm==2.10.0',                  # weather
                         'feedparser==5.2.1',              # parse RSS-feeds
                         'numpy>=1.18.2',                  # image pre-processing
                         'arrow>=0.15.6',                  # time handling
-                        'Flask==1.1.2'                    # webserver
-                        'Flask-WTF==0.14.3'               # webforms
+                        'Flask==1.1.2',                   # webserver
+                        'Flask-WTF==0.14.3',              # webforms
                         ]
 
 __classifiers__ = [
