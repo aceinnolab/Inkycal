@@ -13,7 +13,7 @@ import arrow
 from locale import getdefaultlocale as sys_locale
 
 try:
-  import pyowm
+  from pyowm.owm import OWM
 except ImportError:
   print('pyowm is not installed! Please install with:')
   print('pip3 install pyowm')
@@ -37,7 +37,9 @@ class Weather(inkycal_module):
     },
 
     "location": {
-      "label":"Please enter your location in the following format: City, Country-Code"
+      "label":"Please enter your location in the following format: City, Country-Code. "+
+              "You can also enter the location ID found in the url "+
+              "e.g. https://openweathermap.org/city/4893171 -> ID is 4893171" 
       }
     }
 
@@ -94,19 +96,19 @@ class Weather(inkycal_module):
         raise Exception('config is missing {}'.format(param))
 
     # required parameters
-    self.location = config['location']
     self.api_key = config['api_key']
+    self.location = config['location']
 
     # optional parameters
-    self.round_temperature = bool(config['round_temperature'])
-    self.round_windspeed = bool(config['round_windspeed'])
+    self.round_temperature = config['round_temperature']
+    self.round_windspeed = config['round_windspeed']
     self.forecast_interval = config['forecast_interval']
     self.units = config['units']
     self.hour_format = int(config['hour_format'])
-    self.use_beaufort = bool(config['use_beaufort'])
+    self.use_beaufort = config['use_beaufort']
 
     # additional configuration
-    self.owm = pyowm.OWM(self.api_key)
+    self.owm = OWM(self.api_key).weather_manager()
     self.timezone = get_system_tz()
     self.locale = sys_locale()[0]
     self.weatherfont = ImageFont.truetype(
@@ -320,8 +322,13 @@ class Weather(inkycal_module):
     temp_fc4 = (col7, row3)
 
     # Create current-weather and weather-forecast objects
-    weather = self.owm.weather_at_place(self.config['location']).get_weather()
-    forecast = self.owm.three_hours_forecast(self.config['location'])
+    if self.location.isdigit():
+      self.location = int(self.location)
+      weather = self.owm.weather_at_id(self.location).weather
+      forecast = self.owm.forecast_at_id(self.location, '3h')
+    else:
+      weather = self.owm.weather_at_place(self.location).weather
+      forecast = self.owm.forecast_at_place(self.location, '3h')
 
     # Set decimals
     dec_temp = None if self.round_temperature == True else 1
@@ -358,9 +365,9 @@ class Weather(inkycal_module):
       fc_data = {}
       for forecast in forecasts:
         temp =  '{}°'.format(round(
-          forecast.get_temperature(unit=temp_unit)['temp'], ndigits=dec_temp))
+          forecast.temperature(unit=temp_unit)['temp'], ndigits=dec_temp))
 
-        icon = forecast.get_weather_icon_name()
+        icon = forecast.weather_icon_name
         fc_data['fc'+str(forecasts.index(forecast)+1)] = {
           'temp':temp,
           'icon':icon,
@@ -370,8 +377,7 @@ class Weather(inkycal_module):
 
     elif self.forecast_interval == 'daily':
 
-      ###
-      logger.debug("daily")
+      logger.debug("getting daily forecasts")
 
 
       def calculate_forecast(days_from_today):
@@ -389,14 +395,14 @@ class Weather(inkycal_module):
         forecasts = [forecast.get_weather_at(_.datetime) for _ in time_range]
 
         # Get all temperatures for this day
-        daily_temp = [round(_.get_temperature(unit=temp_unit)['temp'],
+        daily_temp = [round(_.temperature(unit=temp_unit)['temp'],
                             ndigits=dec_temp) for _ in forecasts]
         # Calculate min. and max. temp for this day
         temp_range = '{}°/{}°'.format(max(daily_temp), min(daily_temp))
 
 
         # Get all weather icon codes for this day
-        daily_icons = [_.get_weather_icon_name() for _ in forecasts]
+        daily_icons = [_.weather_icon_name for _ in forecasts]
         # Find most common element from all weather icon codes
         status = max(set(daily_icons), key=daily_icons.count)
 
@@ -418,36 +424,32 @@ class Weather(inkycal_module):
       logger.debug((key,val))
 
     # Get some current weather details
-    temperature = '{}°'.format(weather.get_temperature(unit=temp_unit)['temp'])
-    weather_icon = weather.get_weather_icon_name()
-    humidity = str(weather.get_humidity())
-    windspeed = weather.get_wind(unit='meters_sec')['speed']
-    sunrise_raw = arrow.get(weather.get_sunrise_time()).to(self.timezone)
-    sunset_raw = arrow.get(weather.get_sunset_time()).to(self.timezone)
+    temperature = '{}°'.format(weather.temperature(unit=temp_unit)['temp'])
+    weather_icon = weather.weather_icon_name
+    humidity = str(weather.humidity)
+    sunrise_raw = arrow.get(weather.sunrise_time()).to(self.timezone)
+    sunset_raw = arrow.get(weather.sunset_time()).to(self.timezone)
 
     if self.hour_format ==  12:
       sunrise = sunrise_raw.format('h:mm a')
       sunset = sunset_raw.format('h:mm a')
+
     elif self.hour_format == 24:
       sunrise = sunrise_raw.format('H:mm')
       sunset = sunset_raw.format('H:mm')
 
     # Format the windspeed to user preference
     if self.use_beaufort == True:
-      windspeed_to_beaufort = [0.02, 1.5, 3.3, 5.4, 7.9, 10.7, 13.8, 17.1,
-                               20.7, 24.4, 28.4, 32.6, 100]
-      wind = str([windspeed_to_beaufort.index(_) for _ in windspeed_to_beaufort
-                  if windspeed < _][0])
+      logging.debug("using beaufort for wind")
+      wind = str(weather.wind(unit='beaufort')['speed'])
 
     elif self.use_beaufort == False:
-      meters_sec = round(windspeed, ndigits = dec_wind)
-      miles_per_hour = round(windspeed * 2.23694, ndigits = dec_wind)
 
       if self.units == 'metric':
-        wind = str(meters_sec) + 'm/s'
+        wind = str(weather.wind(unit='meters_sec')['speed']) + 'm/s'
 
       elif self.units == 'imperial':
-        wind = str(miles_per_hour) + 'mph'
+        wind = str(weather.wind(unit='miles_hour')['speed']) + 'miles/h'
 
     dec = decimal.Decimal
     moonphase = get_moon_phase()
