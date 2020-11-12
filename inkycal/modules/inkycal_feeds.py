@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-RSS module for inkyCal Project
+RSS module for InkyCal Project
 Copyright by aceisace
 """
 
@@ -57,10 +57,10 @@ class Feeds(inkycal_module):
         raise Exception('config is missing {}'.format(param))
 
     # required parameters
-    self.feed_urls = self.config["feed_urls"].split(",")
+    self.feed_urls = config["feed_urls"].split(",")
 
     # optional parameters
-    self.shuffle_feeds = self.config["shuffle_feeds"]
+    self.shuffle_feeds = config["shuffle_feeds"]
 
     # give an OK message
     print('{0} loaded'.format(filename))
