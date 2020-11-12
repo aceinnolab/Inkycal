@@ -19,7 +19,6 @@ filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 logger.setLevel(level=logging.ERROR)
 
-
 class Todoist(inkycal_module):
   """Todoist api class
   parses todo's from api-key
@@ -37,26 +36,31 @@ class Todoist(inkycal_module):
     'project_filter': {
       "label":"Show Todos only from following project (separated by a comma). Leave empty to show "+
       "todos from all projects",
-      "default": []
     }
   }
 
-  def __init__(self, section_size, section_config):
+  def __init__(self, config):
     """Initialize inkycal_rss module"""
 
-    super().__init__(section_size, section_config)
+    super().__init__(config)
 
-    # Module specific parameters
+    config = config['config']
+
+    # Check if all required parameters are present
     for param in self.requires:
-      if not param in section_config:
+      if not param in config:
         raise Exception('config is missing {}'.format(param))
 
-
     # module specific parameters
-    self.api_key = self.config['api_key']
-    self.project_filter = self.config['project_filter']# only show todos from these projects
+    self.api_key = config['api_key']
 
-    self._api = todoist.TodoistAPI(self.config['api_key'])
+    # only show todos from these projects
+    if config['project_filter']:
+      self.project_filter = config['project_filter'].split(',')
+    else:
+      self.project_filter = config['project_filter']      
+
+    self._api = todoist.TodoistAPI(config['api_key'])
     self._api.sync()
 
     # give an OK message
@@ -71,8 +75,8 @@ class Todoist(inkycal_module):
     """Generate image for this module"""
 
     # Define new image size with respect to padding
-    im_width = int(self.width - (2 * self.padding_x))
-    im_height = int(self.height - (2 * self.padding_y))
+    im_width = int(self.width - (2 * self.padding_left))
+    im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
     logger.info('image size: {} x {} px'.format(im_width, im_height))
 
@@ -99,9 +103,8 @@ class Todoist(inkycal_module):
     line_positions = [
       (0, spacing_top + _ * line_height ) for _ in range(max_lines)]
 
-#------------------------------------------------------------------------##
     # Get all projects by name and id
-    all_projects = {project['name']: project['id']
+    all_projects = {project['id']: project['name']
                     for project in self._api.projects.all()}
 
     # Check if project from filter could be found
@@ -127,28 +130,35 @@ class Todoist(inkycal_module):
                (task['checked'] == 0))
 
     # Simplify the tasks for faster processing
-    simplified = [{'name':task['content'],
-                   'due':task['due'],
-                   'priority':task['priority'],
-                   'project_id':task['project_id']}
-                  for task in tasks]
+    simplified = [
+      {
+        'name':task['content'],
+        'due':task['due'],
+        'priority':task['priority'],
+        'project':all_projects[ task['project_id'] ]
+      }
+      for task in tasks]
+
+    print('simplified',simplified)
 
     # Group tasks by project name
-    grouped = {}
+    grouped = []
 
     if self.project_filter:
       for project in self.project_filter:
-        project_id = all_projects[project]
-        grouped[ project ] = [
-          task for task in simplified if task['project_id'] == project_id]
+        project_name = all_projects[project]
+        grouped[ project_name ] = [
+          task for task in simplified if task['project'] == project_name]
     else:
       for project in all_projects:
-        project_id = all_projects[project]
-        grouped[ project ] = [
-          task for task in simplified if task['project_id'] == project_id]
+        project_name, project_todo = all_projects[project], {}
+        project_todo[ project_name ] = [
+          task for task in simplified if task['project'] == project_name]
+        grouped.append(project_todo)
 
+    print(f"grouped: {grouped}")
     # Print tasks sorted by groups
-    for project, tasks in grouped.items():
+    for project in grouped:
       print('*', project)
       for task in tasks:
         print('• {} {}'.format(
@@ -159,11 +169,6 @@ class Todoist(inkycal_module):
 ##    for _ in range(len(filtered_feeds)):
 ##      write(im_black, line_positions[_], (line_width, line_height),
 ##            filtered_feeds[_], font = self.font, alignment= 'left')
-
-
-
-    # Cleanup ---------------------------
-    # del grouped, parsed_feeds, wrapped, counter, text
 
     # return the images ready for the display
     return im_black, im_colour
