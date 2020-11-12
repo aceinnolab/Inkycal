@@ -1,6 +1,7 @@
 import abc
 from inkycal.custom import *
 
+
 # Set the root logger to level DEBUG to allow any inkycal module to use the
 # logger for any level
 logging.basicConfig(level = logging.DEBUG)
@@ -67,8 +68,8 @@ class inkycal_module(metaclass=abc.ABCMeta):
 
   @classmethod
   def get_config(cls):
-    # Get the config of this module for the web-ui
     # Do not change
+    # Get the config of this module for the web-ui
     try:
 
       if hasattr(cls, 'requires'):
@@ -93,4 +94,4 @@ class inkycal_module(metaclass=abc.ABCMeta):
         'Ohoh, something went wrong while trying to get the config of this module')
 
 
-  
+
