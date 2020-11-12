@@ -54,7 +54,7 @@ def inkycal_config():
         fontsize = int(request.form.get('fontsize'))
         language = request.form.get('language')
 
-        common_settings = {'padding_x':padding_x, 'padding_y':padding_y, 'fontsize':fontsize, 'language':language}
+        common_settings = {"padding_x":padding_x, "padding_y":padding_y, "fontsize":fontsize, "language":language}
 
         # display size
         display_size = Display.get_display_size(model)
@@ -75,16 +75,34 @@ def inkycal_config():
                         conf['config']['size'] = (width, int(height*int(request.form.get(module+'_height')) /100))
 
                         # Add required fields to the config of the module in question
+                        # True/False choices are converted to string for some reason, leading to incorrect values
+                        # Convert "True" to True, "False" to False and empty input to None
                         if 'requires' in modules:
                             for key in modules['requires']:
-                                conf['config'][key] = request.form.get(module+'_'+key).replace(" ", "")
+                                val = request.form.get(module+'_'+key).replace(" ", "")
+                                if val == "True":
+                                    val = True
+                                elif val == "False":
+                                    val = False
+                                elif val == "":
+                                        val = None
+                                conf['config'][key] = val
 
                         # For optional fields, check if user entered/selected something. If not, and a default value was given,
                         # use the default value, else set the value of that optional key as None
+                        # True/False choices are converted to string for some reason, leading to incorrect values
+                        # Convert "True" to True, "False" to False and empty input to None
                         if 'optional' in modules:
                             for key in modules['optional']:
                                 if request.form.get(module+'_'+key):
-                                    conf['config'][key] = request.form.get(module+'_'+key).replace(" ", "")
+                                    val = request.form.get(module+'_'+key).replace(" ", "")
+                                    if val == "True":
+                                        val = True
+                                    elif val == "False":
+                                        val = False
+                                    elif val == "":
+                                        val = None
+                                    conf['config'][key] = val
                                 else:
                                     if "default" in modules["optional"][key]:
                                         conf['config'][key] = modules["optional"][key]["default"]
@@ -97,12 +115,11 @@ def inkycal_config():
 
         # Send the data back to the server side in json dumps and convert the response to a downloadable settings.json file
         try:
-            user_settings = json.dumps(template, indent=4).replace('null', '""').encode('utf-8')
+            user_settings = json.dumps(template, indent=4).encode('utf-8')
             response = Response(user_settings, mimetype="application/json", direct_passthrough=True)
             response.headers['Content-Disposition'] = 'attachment; filename=settings.json'
 
             return response
-            # redirect('/index')
 
         except Exception as e:
             flash(str(e))
