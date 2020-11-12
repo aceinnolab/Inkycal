@@ -1,12 +1,14 @@
 import unittest
 from inkycal.modules import Agenda as Module
 
-test = {
+tests = [
+{
   "position": 1,
   "name": "Agenda",
   "config": {
     "size": [880,100],
-      "ical_urls": "https://www.officeholidays.com/ics-fed/usa",                "ical_files": "",
+      "ical_urls": "https://www.officeholidays.com/ics-fed/usa",
+      "ical_files": None,
       "date_format": "ddd D MMM",
       "time_format": "HH:mm",
       "padding_x": 10,
@@ -14,19 +16,22 @@ test = {
       "fontsize": 12,
       "language": "en"
   }
-}
+},
+]
 
 
-module = Module(test)
-  
 class module_test(unittest.TestCase):
   def test_get_config(self):
-    print('getting data for web-ui')
-    module.get_config()
-    
+    print('getting data for web-ui...', end = "")
+    Module.get_config()
+    print('OK')
+
   def test_generate_image(self):
-    print('testing image generation')
-    module.generate_image()
+    for test in tests:
+      print(f'test {tests.index(test)+1} generating image..')
+      module = Module(test)
+      module.generate_image()
+      print('OK')
 
 if __name__ == '__main__':
   unittest.main()
