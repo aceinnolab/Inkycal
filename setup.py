@@ -8,7 +8,7 @@ __author__ = "aceisace"
 __author_email__ = "aceisace63@yahoo.com"
 __url__ = "https://github.com/aceisace/Inky-Calendar"
 
-__install_requires__ = ['pyowm==2.10.0',                  # weather
+__install_requires__ = ['pyowm==3.1.1',                   # weather
                         'Pillow>=7.1.1' ,                 # imaging
                         'icalendar==4.0.6',               # iCalendar parsing
                         'recurring-ical-events==0.1.17b0',# parse recurring events
