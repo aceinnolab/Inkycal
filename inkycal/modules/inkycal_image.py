@@ -300,10 +300,3 @@ class Inkyimage(inkycal_module):
 
 if __name__ == '__main__':
   print('running {0} in standalone/debug mode'.format(filename))
-
-  #a = Inkyimage((480,800), {'path': "https://raw.githubusercontent.com/aceisace/Inky-Calendar/dev_ver2_0/Gallery/logo.png"})
-  #a = Inkyimage((480,800), {'path': "https://raw.githubusercontent.com/aceisace/Inky-Calendar/dev_ver2_0/Gallery/logo.png"})
-  a = Inkyimage((480, 800), {'path': "/home/pi/Desktop/im/IMG_0475.JPG"})
-  a.generate_image()
-
-

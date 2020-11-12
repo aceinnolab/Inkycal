@@ -128,11 +128,11 @@ class iCalendar:
     events = (
       {
       'title': events.get('SUMMARY').lstrip(),
-      
+
       'begin': arrow.get(events.get('DTSTART').dt).to(timezone) if (
         arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00')
         else arrow.get(events.get('DTSTART').dt).replace(tzinfo=timezone),
-      
+
       'end':arrow.get(events.get("DTEND").dt).to(timezone) if (
         arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00')
         else arrow.get(events.get('DTEND').dt).replace(tzinfo=timezone)
