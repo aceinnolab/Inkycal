@@ -66,18 +66,13 @@ class Agenda(inkycal_module):
     self.date_format = config['date_format']
     self.time_format = config['time_format']
     self.language = config['language']
+    self.ical_urls = config['ical_urls'].split(',')
 
     # Check if ical_files is an empty string
-    if config['ical_urls']:
-      self.ical_urls = config['ical_urls'].split(',')
-    else:
-      self.ical_urls = config['ical_urls']
-
-    # Check if ical_files is an empty string
-    if config['ical_files']:
+    if config['ical_files'] != "":
       self.ical_files = config['ical_files'].split(',')
     else:
-      self.ical_files = config['ical_files']
+      self.ical_files = []
 
     # Additional config
     self.timezone = get_system_tz()
