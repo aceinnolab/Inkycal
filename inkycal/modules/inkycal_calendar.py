@@ -65,20 +65,20 @@ class Calendar(inkycal_module):
 
     # optional parameters
     self.weekstart = config['week_starts_on']
-    self.show_events = config['show_events']
+    self.show_events = bool(config['show_events'])
     self.date_format = config["date_format"]
     self.time_format = config['time_format']
     self.language = config['language']
 
-    if config['ical_urls']:
+    if config['ical_urls'] != "":
       self.ical_urls = config['ical_urls'].split(',')
     else:
-      self.ical_urls = config['ical_urls']
+      self.ical_urls = []
 
-    if config['ical_files']:
+    if config['ical_files'] != "":
       self.ical_files = config['ical_files'].split(',')
     else:
-      self.ical_files = config['ical_files']
+      self.ical_files = []
 
     # additional configuration
     self.timezone = get_system_tz()
@@ -117,7 +117,7 @@ class Calendar(inkycal_module):
       logger.debug(f'events-section size: {im_width} x {events_height} px')
     else:
       logger.debug("Not allocating space for events")
-      calendar_height = im_height - month_name_height - weekdays_height
+      calendar_height = im_height - month_name_height - weekday_height
       logger.debug(f'calendar-section size: {im_width} x {calendar_height} px')
 
     # Create a 7x6 grid and calculate icon sizes

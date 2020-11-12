@@ -60,7 +60,7 @@ class Feeds(inkycal_module):
     self.feed_urls = self.config["feed_urls"].split(",")
 
     # optional parameters
-    self.shuffle_feeds = self.config["shuffle_feeds"]
+    self.shuffle_feeds = bool(self.config["shuffle_feeds"])
 
     # give an OK message
     print('{0} loaded'.format(filename))
