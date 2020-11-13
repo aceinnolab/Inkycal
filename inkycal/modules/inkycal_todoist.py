@@ -54,11 +54,11 @@ class Todoist(inkycal_module):
     # module specific parameters
     self.api_key = config['api_key']
 
-    # only show todos from these projects
-    if config['project_filter']:
+    # if project filter is set, initialize it
+    if config['project_filter'] and isinstance(config['project_filter'], str):
       self.project_filter = config['project_filter'].split(',')
     else:
-      self.project_filter = config['project_filter']      
+      self.project_filter = config['project_filter']
 
     self._api = todoist.TodoistAPI(config['api_key'])
     self._api.sync()
@@ -107,68 +107,91 @@ class Todoist(inkycal_module):
     all_projects = {project['id']: project['name']
                     for project in self._api.projects.all()}
 
-    # Check if project from filter could be found
+    logger.debug(f"all_projects: {all_projects}")
+
+    # Filter entries in all_projects if filter was given
     if self.project_filter:
-      for project in self.project_filter:
-        if project not in all_projects:
-          print('Could not find a project named {}'.format(project))
-          self.project_filter.remove(project)
+      for project_id in list(all_projects):
+        if all_projects[project_id] not in self.project_filter:
+          del all_projects[project_id]
 
-    # function for extracting project names from tasks
-    get_project_name = lambda task: (self._api.projects.get_data(
-                                     task['project_id'])['project']['name'])
+      logger.debug(f"all_project: {all_projects}")
 
-    # If the filter is empty, parse all tasks which are not yet done
-    if self.project_filter:
-      tasks = (task.data for task in self._api.state['items']
-               if (task['checked'] == 0) and
-               (get_project_name(task) in self.project_filter))
+      # If filter was activated and no roject was found with that name,
+      # raise an exception to avoid showing a blank image
+      if all_projects == {}:
+        logger.error('No project found from project filter!')
+        logger.error('Please double check spellings in project_filter')
+        raise Exception('No matching project found in filter. Please '
+                        'double check spellings in project_filter or leave'
+                        'empty')
 
-    # If filter is not empty, parse undone tasks in only those projects
-    else:
-      tasks = (task.data for task in self._api.state['items'] if
-               (task['checked'] == 0))
+    # Create single-use generator to filter undone and non-deleted tasks
+    tasks = (task.data for task in self._api.state['items'] if
+               task['checked'] == 0 and task['is_deleted']==0)
 
     # Simplify the tasks for faster processing
     simplified = [
       {
         'name':task['content'],
-        'due':task['due'],
+        'due':task['due']['string'] if task['due'] != None else "",
         'priority':task['priority'],
         'project':all_projects[ task['project_id'] ]
       }
       for task in tasks]
 
-    print('simplified',simplified)
+    # logger.debug(f'simplified: {simplified}')
+
+    # Get maximum width of project names for selected font
+    project_width = int(max([
+      self.font.getsize(task['project'])[0] for task in simplified ]) * 1.1)
+
+    # Get maximum width of project dues for selected font
+    due_width = int(max([
+      self.font.getsize(task['due'])[0] for task in simplified ]) * 1.1)
 
     # Group tasks by project name
-    grouped = []
+    grouped = {name: [] for  id_, name in all_projects.items()}
 
-    if self.project_filter:
-      for project in self.project_filter:
-        project_name = all_projects[project]
-        grouped[ project_name ] = [
-          task for task in simplified if task['project'] == project_name]
-    else:
-      for project in all_projects:
-        project_name, project_todo = all_projects[project], {}
-        project_todo[ project_name ] = [
-          task for task in simplified if task['project'] == project_name]
-        grouped.append(project_todo)
+    for task in simplified:
+      if task['project'] in grouped:
+        grouped[task['project']].append(task)
 
-    print(f"grouped: {grouped}")
-    # Print tasks sorted by groups
-    for project in grouped:
-      print('*', project)
-      for task in tasks:
-        print('• {} {}'.format(
-          task['due']['string'] if task['due'] != None else '', task['name']))
+    logger.debug(f"grouped: {grouped}")
 
 
-##    # Write rss-feeds on image
-##    for _ in range(len(filtered_feeds)):
-##      write(im_black, line_positions[_], (line_width, line_height),
-##            filtered_feeds[_], font = self.font, alignment= 'left')
+    # Add the parsed todos on the image
+    cursor = 0
+    for name, todos in grouped.items():
+      if todos != []:
+        for todo in todos:
+          line_x, line_y = line_positions[cursor]
+
+          # Add todo project name
+          write(
+            im_colour, line_positions[cursor],
+            (project_width, line_height),
+            todo['project'], font=self.font, alignment='left')
+
+          # Add todo due if not empty
+          if todo['due'] != "":
+            write(
+              im_black,
+              (line_x + project_width, line_y),
+              (due_width, line_height),
+              todo['due'], font=self.font, alignment='left')
+
+          # Add todo name
+          write(
+            im_black,
+            (line_x+project_width+due_width, line_y),
+            (im_width-project_width-due_width, line_height),
+            todo['name'], font=self.font, alignment='left')
+
+          cursor += 1
+          if cursor > max_lines:
+            logger.error('More todos than available lines')
+            break
 
     # return the images ready for the display
     return im_black, im_colour
