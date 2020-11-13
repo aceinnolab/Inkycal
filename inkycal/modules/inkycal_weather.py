@@ -440,7 +440,7 @@ class Weather(inkycal_module):
 
     # Format the windspeed to user preference
     if self.use_beaufort == True:
-      logging.debug("using beaufort for wind")
+      logger.debug("using beaufort for wind")
       wind = str(weather.wind(unit='beaufort')['speed'])
 
     elif self.use_beaufort == False:
