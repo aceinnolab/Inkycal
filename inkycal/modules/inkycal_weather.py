@@ -39,7 +39,7 @@ class Weather(inkycal_module):
     "location": {
       "label":"Please enter your location in the following format: City, Country-Code. "+
               "You can also enter the location ID found in the url "+
-              "e.g. https://openweathermap.org/city/4893171 -> ID is 4893171" 
+              "e.g. https://openweathermap.org/city/4893171 -> ID is 4893171"
       }
     }
 

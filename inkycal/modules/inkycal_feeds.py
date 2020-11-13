@@ -145,7 +145,7 @@ class Feeds(inkycal_module):
         write(im_black, line_positions[_], (line_width, line_height),
               filtered_feeds[_], font = self.font, alignment= 'left')
 
-    # Save image of black and colour channel in image-folder
+    # return images
     return im_black, im_colour
 
 if __name__ == '__main__':
