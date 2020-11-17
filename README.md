@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/Inky-Calendar-logo.png" width="800">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/main/Gallery/Inky-Calendar-logo.png" width="800">
 </p>
 
 <p align="center">
@@ -31,7 +31,7 @@ This software is in active development. To see the current development status, [
 
 ## Preview
 <p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/inkycal-modes.gif" width="900"><img 
+<img src="https://github.com/aceisace/Inky-Calendar/blob/main/Gallery/inkycal-modes.gif" width="900"><img 
 </p>
 
 ## Hardware required
@@ -59,7 +59,7 @@ This software is in active development. To see the current development status, [
 ## Installing required packages for python 3.x
 Execute the following command in the Terminal to install all required packages. Please use Raspbian Buster with Desktop (preferably the latest version). Raspbian Buster **LITE** is not supported.
 
-**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/master/Installer.sh)"`**
+**`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/main/Installer.sh)"`**
 
 **Note**: If you were using a previous version, please use the web-ui for generating a new settings file. Settings files from previous versions are not compatible.
 
@@ -72,7 +72,7 @@ If the Installer should fail for any reason, kindly open an issue and paste the 
 
 **Preview of Installer:**
 <p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/Installer-gif.gif" width="700">
+<img src="https://github.com/aceisace/Inky-Calendar/blob/main/Gallery/Installer-gif.gif" width="700">
 </p>
 
 ## Adding details to the program
@@ -95,7 +95,7 @@ If you encounter errors related to your iCalendar, please feel free to report th
 Before updating, re-name the current Inky-Calendar folder e.g. Inky-Calendar-old and then run the installer again (see above), choosing the **update** option.
 
 ## Contributing
-All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inky-Calendar/blob/master/.github/CONTRIBUTING.md).
+All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inky-Calendar/blob/main/.github/CONTRIBUTING.md).
 
 The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer.
 
