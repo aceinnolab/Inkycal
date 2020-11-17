@@ -1,7 +1,7 @@
-# Welcome to inkycal v2.0.0 BETA!
+# Welcome to inkycal v2.0.0!
 
 <p align="center">
-        <img src="https://github.com/aceisace/Inky-Calendar/blob/dev_ver2_0/Gallery/logo.png" width="800">
+        <img src="https://github.com/aceisace/Inky-Calendar/blob/development/Gallery/logo.png" width="800">
 </p>
 
 <p align="center">
@@ -17,32 +17,19 @@
 
 A python 3 software for displaying events (from iCalendars), weather (from openweathermap) and RSS feeds on selected E-Paper displays (4.2", 5.83", 7.5"(v1), 7.5"(v2)) from Waveshare/GoodDisplay.
 
-Inkycal v2.0.0 BETA is a refactoring of the previous release. It aims to fix certain problems with the previous release, including but not limited to:
+**This branch contains the latest working release of Inkycal. It's mainly intended for those who wish to test new features and give feedback. If you encounter any bugs, please report them via the [Issues] button.**
 
-* [x] Use settings.json file instead of .py file
-* [x] Fully dynamic images (changable section sizes)
-* [x] No preferred module positions or sizes
-* [x] Switch from scripts to classes
-* [x] Allow using `pip3 install inkycal` to install inkycal
-* [x] Update dependencies
-* [x] Switch from ics to icalendar library for better parsing of iCalendars
-* [x] Allow using on windows (no-render mode)
-* [x] Implement features from dev branch
-* [x] Make it easier for developers (and beginners) to create their own custom module
-* [x] Implement testing for each module
 * [ ] Add support for 9.7" ePaper
 * [ ] Add support for iCalendars requiring authentification
-* [ ] Add module for TODOIST api
 * [x] Add info-section option in web-ui
 * [ ] Allow easy adding/removing of third-party modules
 * [ ] Finish developer documentation for third-party modules
-* [x] Add official support for 7.5" v3 ePaper model (black-white + black-white-red/yellow)
 
 ## How to test BETA
 Please note that while inkycal is in BETA, a lot of things will change in a short time. This means that problems are fixed on-the-go. If you encounter a problem, please mention it on Discord.
 
 If you were using the previous release, please re-run the instaler:
-`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/master/Installer.sh)"`
+`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/main/Installer.sh)"`
 and choose `uninstall` to uninstall the previous version. The last release and this BETA are __not__ compatible!
 
 ## Updating BETA to latest version
@@ -54,7 +41,7 @@ To update to the latest beta, please do the following:
 ### Installation
 ```bash
 # clone this branch
-git clone -b dev_ver2_0 https://github.com/aceisace/Inky-Calendar Inkycal
+git clone -b  release/2.0.0 https://github.com/aceisace/Inky-Calendar Inkycal
 
 # go to Inkycal directory
 cd Inkycal
@@ -64,11 +51,10 @@ pip3 install -e ./
 ```
 
 ### Creating a settings file
-Please visit the [Online WEB-UI](https://raw.githack.com/aceisace/Inky-Calendar/dev_ver2_0/settings-UI.html) to create your settings.json file.
-You can alternatively also open `settings-UI.html` in your web-browser.
+Please visit the [Online WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal_config) to create your settings.json file.
 
-* Fill in the details and click on `generate` to create your settings.json file
-* Copy the settings.json file to your raspberry pi
+* Fill in the details and click on `generate` to create your **settings.json** file
+* Copy the **settings.json** file to your raspberry pi (e.g. copy directly from computer to the SD Card,  WinSCP, VNC etc.)
 * Copy the path (location) of this file
 
 ### Running Inkycal
@@ -122,19 +108,19 @@ This software is in active development. To see the current development status, [
 
 ## Preview
 <p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/blob/master/Gallery/inkycal-modes.gif" width="900"><img 
+<img src="https://github.com/aceisace/Inky-Calendar/blob/main/Gallery/inkycal-modes.gif" width="900"><img 
 </p>
 
 ## Hardware required
 * One of the supported ePaper displays from waveshare: 4.2", 5.83", 7.5" (640x384px), 7.5"-v2 (800x400px)
-* Any Raspberry Pi with 40 pins. (Even a Zero W / Zero WH is fine!)
+* Any Raspberry Pi with 40 pins and WiFi. (Raspberry Pi 3/3B/3B+/3A/4/0W/0WH - Inkycal runs just fine on the Zero W/Zweo WH model!)
 * MicroSD card (min. 4GB) for flashing Raspbian **with Desktop**. **Lite is not supported!**
 * MicroUSB cable (for power)
-* If you like, a case
+* Optional, a [3D-printable case](https://github.com/aceisace/Inky-Calendar/wiki/3D-printable-files)
 
 # Setup
 ## Getting the Raspberry Pi Zero W ready
-1. After [flashing Raspbian Buster (with Desktop)](https://www.raspberrypi.org/downloads/raspbian/), set up Wifi on the Raspberry Pi Zero W by copying the file [**wpa_supplicant.conf**](https://github.com/aceisace/Inky-Calendar/blob/installer/wpa_supplicant.conf) (from above) to the /boot directory and adding your Wifi details in that file.
+1. Flash Raspberry Pi OS ([instructions](https://www.raspberrypi.org/software/))
 2. Create a simple text document named **ssh** in the boot directory to enable ssh. 
 3. Install the SD card and boot your Raspberry Pi. Connect to it over the network with ssh and login. 
 3. Expand the filesystem in the Terminal with **`sudo raspi-config --expand-rootfs`**
@@ -158,17 +144,13 @@ If you encounter errors related to your iCalendar, please feel free to report th
 
 
 ## Contributing
-All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inky-Calendar/blob/master/CONTRIBUTING.md).
+All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inky-Calendar/blob/main/CONTRIBUTING.md).
 
 The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer.
 
 ## Setting up VS Code Remote development in WSL
 In order to speed up development, most development tasks (apart from the actual rending to E-Ink display) can be developed on more powerful machines and in richer environments than running this on a Pi zero. In case of Windows PC the most convenient way is to use VS Code Remote development in Windows Subsystem for Linux (WSL), please follow [Tutorial](https://code.visualstudio.com/remote-tutorials/wsl/getting-started). 
 
-~~To disable the eInk functionality set the flag to "image_only" (in /settings/settings.py):~~
-~~`render_target = "image_only"`~~
-
-### Don't forget to check out the Wiki. It contains all the information to understanding and customising the script.
 
 **P.S:** Don't forget to star and/or watch the repo. For those who have done so already, thank you very much!
 
