@@ -14,14 +14,13 @@ import arrow
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.ERROR)
 
 class Agenda(inkycal_module):
   """Agenda class
   Create agenda and show events from given icalendars
   """
 
-  name = "Inkycal Agenda"
+  name = "Agenda - Display upcoming events from given iCalendars"
 
   requires = {
     "ical_urls" : {
@@ -68,13 +67,13 @@ class Agenda(inkycal_module):
     self.language = config['language']
 
     # Check if ical_files is an empty string
-    if config['ical_urls']:
+    if config['ical_urls'] and isinstance(config['ical_urls'], str):
       self.ical_urls = config['ical_urls'].split(',')
     else:
       self.ical_urls = config['ical_urls']
 
     # Check if ical_files is an empty string
-    if config['ical_files']:
+    if config['ical_files'] and isinstance(config['ical_files'], str):
       self.ical_files = config['ical_files'].split(',')
     else:
       self.ical_files = config['ical_files']

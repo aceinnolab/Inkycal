@@ -20,15 +20,12 @@ except ImportError:
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.ERROR)
 
 class Weather(inkycal_module):
   """Weather class
   parses weather details from openweathermap
   """
-  #TODO: automatic setup of pyowm by location id if location is numeric
-
-  name = "Inkycal Weather (openweathermap)"
+  name = "Weather (openweathermap) - Get weather forecasts from openweathermap"
 
   requires = {
 

@@ -1,11 +1,6 @@
 import abc
 from inkycal.custom import *
 
-
-# Set the root logger to level DEBUG to allow any inkycal module to use the
-# logger for any level
-logging.basicConfig(level = logging.DEBUG)
-
 class inkycal_module(metaclass=abc.ABCMeta):
   """Generic base class for inykcal modules"""
 
@@ -28,7 +23,7 @@ class inkycal_module(metaclass=abc.ABCMeta):
 
     self.fontsize = conf["fontsize"]
     self.font = ImageFont.truetype(
-      fonts['NotoSans-SemiCondensed'], size = self.fontsize)
+      fonts['NotoSansUI-Regular'], size = self.fontsize)
 
   def set(self, help=False, **kwargs):
     """Set attributes of class, e.g. class.set(key=value)
