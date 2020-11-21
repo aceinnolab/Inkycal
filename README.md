@@ -51,7 +51,7 @@ pip3 install -e ./
 ```
 
 ### Creating a settings file
-Please visit the [Online WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal_config) to create your settings.json file.
+Please visit the [Online WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal-config-v2-0-0) to create your settings.json file.
 
 * Fill in the details and click on `generate` to create your **settings.json** file
 * Copy the **settings.json** file to your raspberry pi (e.g. copy directly from computer to the SD Card,  WinSCP, VNC etc.)
