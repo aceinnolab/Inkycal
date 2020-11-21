@@ -87,6 +87,10 @@ class Inkycal:
       # check if colours can be rendered
       self.supports_colour = True if 'colour' in settings['model'] else False
 
+      
+      # get calibration hours
+      self._calibration_hours = self.settings['calibration_hours']
+
       # init calibration state
       self._calibration_state = False
 
@@ -242,7 +246,7 @@ class Inkycal:
           im_colour = Image.open(f"{self.image_folder}/canvas_colour.png")
 
           # Flip the image by 180° if required
-          if self.settings['orientaton'] == 180:
+          if self.settings['orientation'] == 180:
             im_black = upside_down(im_black)
             im_colour = upside_down(im_colour)
 
@@ -255,7 +259,7 @@ class Inkycal:
           im_black = self._merge_bands()
 
           # Flip the image by 180° if required
-          if self.settings['orientaton'] == 180:
+          if self.settings['orientation'] == 180:
             im_black = upside_down(im_black)
 
           Display.render(im_black)
