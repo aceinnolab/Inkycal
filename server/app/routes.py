@@ -22,7 +22,7 @@ def wifi_setup():
 
 
 # Inkycal-setup
-@app.route('/inkycal_config', methods=['GET', 'POST'])
+@app.route('/inkycal-config-v2-0-0', methods=['GET', 'POST'])
 
 def inkycal_config():
     form = LoginForm()
@@ -38,15 +38,19 @@ def inkycal_config():
         language = request.form.get('language')
         info_section = True if (request.form.get('info_section') == "on") else False
 
+        info_height = int(request.form.get('info_section_height')) if info_section == True else None
+
         # template for basic settings
         template = {
             "model": model,
             "update_interval": update_interval,
             "orientation": int(request.form.get('orientation')),
             "info_section": info_section,
+            "info_section_height": info_height,
             "calibration_hours": [calibration_hour_1, calibration_hour_2, calibration_hour_3],
             "modules": [],
             }
+
 
         # common module config (shared by all modules)
         padding_x = int(request.form.get('padding_x'))
@@ -56,30 +60,42 @@ def inkycal_config():
 
         common_settings = {"padding_x":padding_x, "padding_y":padding_y, "fontsize":fontsize, "language":language}
 
-        # display size
-        display_size = Display.get_display_size(model)
-        width, height = int(display_size[0]), int(display_size[1])
-        
-
         # loop over the modules, add their config data based on user selection, merge the common_settings into each module's config
-        for i in range(1,4):
-            conf = {}
-            module = 'module'+str(i)
-            if request.form.get(module) != "None":
+        no_of_modules = int(request.form.get("module_counter"))
 
+        # display size ---- Since Inkycal works in vertical mode (only), the width and height have to be flipped here
+        display_size = Display.get_display_size(model) # returns width,height but flipping these for vertical mode
+        height, width = int(display_size[0]), int(display_size[1])
+
+        # If info section was active, substract the height of the info section from the display height
+        if info_section == True:
+            height = height-info_height
+
+        # get all module heights, calculate single part
+        module_sizes = [int(request.form.get("module"+str(i)+"_height")) for i in range(1, no_of_modules+1)]
+
+        if sum(module_sizes) != 0:
+            single_part = height / sum(module_sizes)
+
+        for i in range(1, no_of_modules+1):
+            conf = {}
+            module = 'selected_module'+str(i)
+
+            if request.form.get(module) != "None":
                 conf = {"position":i , "name": request.form.get(module), "config":{}}
 
                 for modules in settings:
                     if modules['name'] == request.form.get(module):
 
-                        conf['config']['size'] = (width, int(height*int(request.form.get(module+'_height')) /100))
+                        module_height = int( request.form.get("module"+str(i)+"_height") )
+                        conf['config']['size'] = (width, int(single_part*module_height) )
 
                         # Add required fields to the config of the module in question
                         # True/False choices are converted to string for some reason, leading to incorrect values
                         # Convert "True" to True, "False" to False and empty input to None
                         if 'requires' in modules:
                             for key in modules['requires']:
-                                val = request.form.get(module+'_'+key).replace(" ", "")
+                                val = request.form.get('module'+str(i)+'_'+key).replace(" ", "")
                                 if val == "True":
                                     val = True
                                 elif val == "False":
@@ -95,7 +111,7 @@ def inkycal_config():
                         if 'optional' in modules:
                             for key in modules['optional']:
                                 if request.form.get(module+'_'+key):
-                                    val = request.form.get(module+'_'+key).replace(" ", "")
+                                    val = request.form.get('module'+str(i)+'_'+key).replace(" ", "")
                                     if val == "True":
                                         val = True
                                     elif val == "False":
@@ -124,4 +140,6 @@ def inkycal_config():
         except Exception as e:
             flash(str(e))
 
-    return render_template('inkycal_config.html', title='Inkycal-Setup', conf=settings, form=form)
+
+    return render_template('inkycal-config-v2-0-0.html', title='Inkycal-Setup', conf=settings, form=form)
+
