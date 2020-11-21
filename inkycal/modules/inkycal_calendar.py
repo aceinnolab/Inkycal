@@ -12,14 +12,13 @@ import arrow
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.ERROR)
 
 class Calendar(inkycal_module):
   """Calendar class
   Create monthly calendar and show events from given icalendars
   """
 
-  name = "Inkycal Calendar"
+  name = "Calendar - Show monthly calendar with events from iCalendars"
 
   optional = {
 
@@ -70,12 +69,12 @@ class Calendar(inkycal_module):
     self.time_format = config['time_format']
     self.language = config['language']
 
-    if config['ical_urls']:
+    if config['ical_urls'] and isinstance(config['ical_urls'], str):
       self.ical_urls = config['ical_urls'].split(',')
     else:
       self.ical_urls = config['ical_urls']
 
-    if config['ical_files']:
+    if config['ical_files'] and isinstance(config['ical_files'], str):
       self.ical_files = config['ical_files'].split(',')
     else:
       self.ical_files = config['ical_files']

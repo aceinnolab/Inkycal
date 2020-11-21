@@ -14,13 +14,12 @@ import requests
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.ERROR)
 
 
 class Inkyserver(inkycal_module):
   """Inkyserver class"""
 
-  name = "Inkycal Server"
+  name = "Inkycal Server - get image from Inkycal server"
 
   requires = {
     "panel_id" : {

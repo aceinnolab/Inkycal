@@ -15,7 +15,6 @@ import numpy
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.ERROR)
 
 class Inkyimage(inkycal_module):
   """Image class
@@ -26,7 +25,7 @@ class Inkyimage(inkycal_module):
 
   requires = {
   'path': {
-    "label":"Please enter the path of the image file (local or URL)",
+    "label":"Please enter the full path of the image file (local or URL)",
     }
 
   }

@@ -17,14 +17,13 @@ except ImportError:
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.ERROR)
 
 class Todoist(inkycal_module):
   """Todoist api class
   parses todo's from api-key
   """
 
-  name = "Inkycal Todoist"
+  name = "Todoist API - show your todos from todoist"
 
   requires = {
     'api_key': {

@@ -18,14 +18,13 @@ except ImportError:
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.ERROR)
 
 class Feeds(inkycal_module):
   """RSS class
   parses rss/atom feeds from given urls
   """
 
-  name = "Inkycal RSS / Atom"
+  name = "RSS / Atom - Display feeds from given RSS/ATOM feeds"
 
   requires = {
     "feed_urls" : {
@@ -57,7 +56,10 @@ class Feeds(inkycal_module):
         raise Exception('config is missing {}'.format(param))
 
     # required parameters
-    self.feed_urls = config["feed_urls"].split(",")
+    if config["feed_urls"] and isinstance(config['feed_urls'], str):
+      self.feed_urls = config["feed_urls"].split(",")
+    else:
+      self.feed_urls = config["feed_urls"]
 
     # optional parameters
     self.shuffle_feeds = config["shuffle_feeds"]
