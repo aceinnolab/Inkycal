@@ -11,8 +11,8 @@ from urllib.request import urlopen
 import os
 import time
 
-logger = logging.getLogger('inkycal_custom')
-logger.setLevel(level=logging.INFO)
+logs = logging.getLogger('inkycal_custom')
+logs.setLevel(level=logging.INFO)
 
 # Get the path to the Inkycal folder
 top_level = os.path.dirname(
@@ -109,11 +109,11 @@ def write(image, xy, box_size, text, font=None, **kwargs):
 
   # Truncate text if text is too long so it can fit inside the box
   if (text_width, text_height) > (box_width, box_height):
-    logger.debug(('truncating {}'.format(text)))
+    logs.debug(('truncating {}'.format(text)))
     while (text_width, text_height) > (box_width, box_height):
       text=text[0:-1]
       text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
-    logger.debug((text))
+    logs.debug((text))
 
   # Align text to desired position
   if alignment == "center" or None:
@@ -131,8 +131,8 @@ def write(image, xy, box_size, text, font=None, **kwargs):
   ImageDraw.Draw(space).text((x, y), text, fill=colour, font=font)
   # Uncomment following two lines, comment out above two lines to show
   # red text-box with white text (debugging purposes)
-##  space = Image.new('RGBA', (box_width, box_height), color= 'red')
-##  ImageDraw.Draw(space).text((x, y), text, fill='white', font=font)
+  #space = Image.new('RGBA', (box_width, box_height), color= 'red')
+  #ImageDraw.Draw(space).text((x, y), text, fill='white', font=font)
 
   if rotation != None:
     space.rotate(rotation, expand = True)
