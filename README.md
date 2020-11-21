@@ -165,5 +165,5 @@ Yes please :). I do drink and like my coffee, especially when developing the ink
 You can donate a coffee with this QR-code (Paypal):
 
 <p align="center">
-        <img src="https://raw.githubusercontent.com/aceisace/Inky-Calendar/dev_ver2_0/Gallery/coffee.png" width=250>
+        <img src="https://raw.githubusercontent.com/aceisace/Inky-Calendar/development/Gallery/coffee.png" width=250>
 </p>
