@@ -46,7 +46,7 @@ This software is in active development. To see the current development status, [
 
 # Setup
 ## Getting the Raspberry Pi Zero W ready
-1. After [flashing Raspbian Buster (with Desktop)](https://www.raspberrypi.org/downloads/raspbian/), set up Wifi on the Raspberry Pi Zero W by copying the file [**wpa_supplicant.conf**](https://github.com/aceisace/Inky-Calendar/blob/installer/wpa_supplicant.conf) (from above) to the /boot directory and adding your Wifi details in that file.
+1. After [flashing Raspberry Pi OS (with Desktop)](https://www.raspberrypi.org/software/), set up Wifi on the Raspberry Pi Zero W by copying the file [**wpa_supplicant.conf**](https://github.com/aceisace/Inky-Calendar/blob/installer/wpa_supplicant.conf) (from above) to the /boot directory and adding your Wifi details in that file.
 2. Create a simple text document named **ssh** in the boot directory to enable ssh. 
 3. Install the SD card and boot your Raspberry Pi. Connect to it over the network with ssh and login. 
 3. Expand the filesystem in the Terminal with **`sudo raspi-config --expand-rootfs`**
