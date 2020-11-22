@@ -297,28 +297,30 @@ class Calendar(inkycal_module):
 
         cursor = 0
         for event in upcoming_events:
-          name = event['title']
-          date = event['begin'].format(self.date_format, locale=lang)
-          time = event['begin'].format(self.time_format, locale=lang)
+          if cursor < len(event_lines):
+            name = event['title']
+            date = event['begin'].format(self.date_format, locale=lang)
+            time = event['begin'].format(self.time_format, locale=lang)
+            #logger.debug(f"name:{name}   date:{date} time:{time}")
 
-          if now < event['end']:
-            write(im_colour, event_lines[cursor], (date_width, line_height),
-                  date, font=self.font, alignment = 'left')
+            if now < event['end']:
+              write(im_colour, event_lines[cursor], (date_width, line_height),
+                    date, font=self.font, alignment = 'left')
 
-            # Check if event is all day
-            if parser.all_day(event) == True:
-              write(im_black, (date_width, event_lines[cursor][1]),
-                  (event_width_l, line_height), name, font=self.font,
-                  alignment = 'left')
-            else:
-              write(im_black, (date_width, event_lines[cursor][1]),
-                  (time_width, line_height), time, font=self.font,
-                  alignment = 'left')
+              # Check if event is all day
+              if parser.all_day(event) == True:
+                write(im_black, (date_width, event_lines[cursor][1]),
+                    (event_width_l, line_height), name, font=self.font,
+                    alignment = 'left')
+              else:
+                write(im_black, (date_width, event_lines[cursor][1]),
+                    (time_width, line_height), time, font=self.font,
+                    alignment = 'left')
 
-              write(im_black, (date_width+time_width,event_lines[cursor][1]),
-                  (event_width_s, line_height), name, font=self.font,
-                  alignment = 'left')
-            cursor += 1
+                write(im_black, (date_width+time_width,event_lines[cursor][1]),
+                    (event_width_s, line_height), name, font=self.font,
+                    alignment = 'left')
+              cursor += 1
       else:
         symbol = '- '
         while self.font.getsize(symbol)[0] < im_width*0.9:
