@@ -12,13 +12,14 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('.'))
+#sys.path.insert(0, os.path.abspath('../..'))
 
 master_doc = 'index'
 # -- Project information -----------------------------------------------------
 
 project = 'inkycal'
-copyright = '2020, Ace Isace'
+copyright = '2018-2020, Ace Isace'
 author = 'Ace Isace'
 
 # The full version, including alpha/beta/rc tags

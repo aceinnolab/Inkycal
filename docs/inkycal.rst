@@ -1,34 +1,18 @@
-Inkycal docs
-==================
+.. image:: ../Gallery/logo.png
+   :align: center
 
 Inkycal
-===================
-.. module:: inkycal.main
-.. autoclass:: Inkycal
-    :members:
+===========================
+.. automodule:: inkycal.main
+  :members:
 
-..
-  inkycal calendar
-  ===================
-  .. module:: inkycal.modules.inkycal_calendar
-  .. autoclass:: Calendar
-      :members:
+Display
+===========================
+.. automodule:: inkycal.display.display
+  :members:
 
-  inkycal agenda
-  ===================
-  .. module:: inkycal.modules.inkycal_agenda
-  .. autoclass:: Agenda
-      :members:
+Custom functions
+===========================
+.. automodule:: inkycal.custom.functions
+  :members:
 
-  inkycal feeds
-  ===================
-  .. module:: inkycal.modules.inkycal_feeds
-  .. autoclass:: Feeds
-      :members:
-
-  inkycal weather
-  ===================
-  .. module:: inkycal.modules.inkycal_weather
-  .. autoclass:: Weather
-      :members:
-..

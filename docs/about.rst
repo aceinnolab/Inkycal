@@ -1,5 +1,8 @@
 About this project
 ==================
+.. image:: ../Gallery/logo.png
+   :align: center
+
 Inkycal is a software to render the following on selected ePaper displays:
   * Events (from your iCalendar)
   * Weather (using the openweathermap API)
