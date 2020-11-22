@@ -3,9 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Inkycal documentation
-===================================
+.. image:: ../Gallery/logo.png
+   :align: center
 
+Inkycal documentation
+======================
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
