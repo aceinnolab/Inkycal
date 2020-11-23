@@ -9,4 +9,4 @@ Flask==1.1.2                    # webserver
 Flask-WTF==0.14.3               # webforms
 todoist-python==8.1.2           # todoist api
 sphinxemoji==0.1.8		          # for emoji support on documentation
-sphinx-rtd-theme 0.5.0          # better theme for documentation
+sphinx-rtd-theme==0.5.0         # better theme for documentation
