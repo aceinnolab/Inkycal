@@ -7,7 +7,7 @@ python:
        - method: pip3
          path: .
          extra_requirements:
-        - -e ./
+        - ./
 
 sphinx:
   builder: html
