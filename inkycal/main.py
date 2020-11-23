@@ -232,14 +232,17 @@ class Inkycal:
       self.info = f"{runtime.format('D MMM @ HH:mm')}  "
 
       for number in range(1, self._module_number):
+        
+        print(f'Generating image {number}')
+
         name = eval(f"self.module_{number}.name")
-        generate_im = f'black,colour=self.module_{number}.generate_image()'
-        save_black = f'black.save("{self.image_folder}/module{number}_black.png", "PNG")'
-        save_colour = f'colour.save("{self.image_folder}/module{number}_colour.png", "PNG")'
-        full_command = generate_im+'\n'+save_black+'\n'+save_colour
+        module = eval(f'self.module_{number}')
 
         try:
-          exec(full_command)
+          black,colour=module.generate_image()
+          black.save(f"{self.image_folder}/module{number}_black.png", "PNG")
+          colour.save(f"{self.image_folder}/module{number}_colour.png", "PNG")
+
           print('OK!')
           self.info += f"module {number}: OK  "
         except Exception as Error:
