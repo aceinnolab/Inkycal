@@ -6,9 +6,6 @@ python:
        - requirements: requirements.txt
        - method: pip3
          path: .
-         extra_requirements:
-        - ./
-
 sphinx:
   builder: html
   configuration: docs/conf.py
