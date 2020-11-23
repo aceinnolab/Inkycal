@@ -17,6 +17,7 @@ __install_requires__ = ['pyowm==3.1.1',                   # weather
                         'arrow>=0.15.6',                  # time handling
                         'Flask==1.1.2',                   # webserver
                         'Flask-WTF==0.14.3',              # webforms
+                        'sphinxemoji==0.1.8',         		# for emoji support on documentation
                         'todoist-python==8.1.2',          # todoist api
                         ]
 
