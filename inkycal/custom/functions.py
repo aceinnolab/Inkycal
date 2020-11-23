@@ -35,7 +35,7 @@ for path,dirs,files in os.walk(fonts_location):
       name = filename.split('.ttf')[0]
       fonts[name] = os.path.join(path, filename)
 
-del name, filename, files
+# del name, filename, files
 
 available_fonts = [key for key,values in fonts.items()]
 
