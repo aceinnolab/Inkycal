@@ -24,8 +24,9 @@ except ImportError:
 try:
   import numpy
 except ImportError:
-  print('numpy is not installed! Please install with:')
-  print('pip3 install numpy')
+  print('numpy is not installed!. \nIf you are on Windows '
+        'run: pip3 install numpy \nIf you are on Raspberry Pi '
+        'remove numpy: pip3 uninstall numpy \nThen try again.')
 
 logging.basicConfig(
   level = logging.INFO, #DEBUG > #INFO > #ERROR > #WARNING > #CRITICAL
@@ -34,16 +35,31 @@ logging.basicConfig(
 
 logger = logging.getLogger('inykcal main')
 
+# TODO: fix issue with non-render mode requiring SPI
+# TODO: fix info section not updating after a calibration
+# TODO: add function to add/remove third party modules
+# TODO: autostart -> supervisor?
+# TODO: logging to files
+
 class Inkycal:
-  """Inkycal main class"""
+  """Inkycal main class
+
+  Main class of Inkycal, test and run the main Inkycal program.
+
+  Args:
+    - settings_path = str -> the full path to your settings.json file
+      if no path is given, tries looking for settings file in /boot folder.
+    - render = bool (True/False) -> show the image on the epaper display?
+
+  Attributes:
+    - optimize = True/False. Reduce number of colours on the generated image
+      to improve rendering on E-Papers. Set this to False for 9.7" E-Paper.
+  """
+  
 
   def __init__(self, settings_path=None, render=True):
-    """Initialise Inkycal
-    settings_path = str -> the full path to your settings.json file
-    if no path is given, try looking for settings file in /boot folder
+    """Initialise Inkycal"""
 
-    render = bool (True/False) -> show the image on the epaper display?
-    """
     self._release = '2.0.0'
 
     # Check if render was set correctly
@@ -87,7 +103,6 @@ class Inkycal:
       # check if colours can be rendered
       self.supports_colour = True if 'colour' in settings['model'] else False
 
-      
       # get calibration hours
       self._calibration_hours = self.settings['calibration_hours']
 
@@ -152,9 +167,14 @@ class Inkycal:
 
 
   def test(self):
-    """Inkycal test run
-    Generates images for each module, one by one and prints OK if no
-    problems were found."""
+    """Tests if Inkycal can run without issues.
+
+    Attempts to import module names from settings file. Loads the config
+    for each module and initializes the module. Tries to run the module and
+    checks if the images could be generated correctly.
+
+    Generated images can be found in the /images folder of Inkycal.
+    """
 
     print(f'Inkycal version: v{self._release}')
     print(f'Selected E-paper display: {self.settings["model"]}')
@@ -183,8 +203,12 @@ class Inkycal:
     del errors
 
   def run(self):
-    """Runs the main inykcal program nonstop (cannot be stopped anymore!)
-    Will show something on the display if render was set to True"""
+    """Runs main programm in nonstop mode.
+
+    Uses a infinity loop to run Inkycal nonstop. Inkycal generates the image
+    from all modules, assembles them in one image, refreshed the E-Paper and
+    then sleeps until the next sheduled update.
+    """
 
     # Get the time of initial run
     runtime = arrow.now()
@@ -411,8 +435,11 @@ class Inkycal:
     return image
 
   def calibrate(self):
-    """Calibrate the ePaper display to prevent burn-ins (ghosting)
-    use this command to manually calibrate the display"""
+    """Calibrate the E-Paper display
+
+    Uses the Display class to calibrate the display with the default of 3
+    cycles. After a refresh cycle, a new image is generated and shown.
+    """
 
     self.Display.calibrate()
 
