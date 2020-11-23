@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-Module template for Inky-Calendar Project
-
-Create your own module with this template
+Third party module template (inkycal-compatible module)
 
 Copyright by aceisace
 """
@@ -17,7 +15,7 @@ from inkycal.custom import *
 
 
 #############################################################################
-#                           Built-in library imports
+#                           Built-in library imports (change as desired)
 #############################################################################
 
 # Built-in libraries go here
@@ -25,7 +23,7 @@ from random import shuffle
 
 
 #############################################################################
-#                         External library imports
+#                         External library imports (always use try-except)
 #############################################################################
 
 # For external libraries, which require installing,
@@ -45,61 +43,137 @@ except ImportError:
 # Get the name of this file, set up logging for this filename
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.INFO)
 
 #############################################################################
 #                         Class setup
 #############################################################################
 
-# info: you can change Simple to something else
-# Please remember to keep the first letter a capital
-# Avoid giving too long names to classes
+# Change 'Simple' to a different name, the first letter must be a Capital!
+# Avoid naming the class with too long names
 
 class Simple(inkycal_module):
   """ Simple Class
-  Explain what this module does...
+  Once sentence describing what this module does,
+  e.g. Display hello world with your name!
   """
 
   # name is the name that will be shown on the web-ui
   # may be same or different to the class name (Do not remove this)
-  name = "My own module"
+  name = "Simple - say hello world"
 
-  # create a dictionary that specifies what your module absolutely needs
-  # to run correctly
-  # Use the following format -> "key" : "info about this key for web-ui"
-  # You can add as many required entries as you like
+  # create a dictionary containing variables which your module must have
+  # to run correctly, e.g. if your module needs an 'api-key' and a 'name':
   requires = {
-    "module_parameter" : "Short info about this parameter, shown on the web-ui",
-    }
+    # A simple text input; users can choose what to enter by keyboard
+    'api_key': {"label" : "Please enter your api-key from some-website"},
+
+    # A simple text input; users can choose what to enter by keyboard
+    'username': {"label": "Please enter a username"},
+  }
+  # The format for the above is: |"key_name": {"Desription what this means"},|
+
+  # create a dictionary containing variables which your module optionally
+  # can have to run correctly, e.g. if your module needs has optional
+  # parameters like: 'api-key' and a 'name':
+
+  #########################################################################
+  optional = {
+
+    # A simple text input with multiple values separated by a comma
+    'hobbies': {"label": "What is/are your hobbies? Separate multiple ones "
+                "with a comma"},
+
+    # A simple text input which should be a number
+    'age': {"label": "What is your age? Please enter a number"},
+    
+    # A dropdown list variable. This will allow users to select something
+    # from the list in options. Instead of True/False, you can have
+    # strings, numbers and other datatypes. Add as many options as you need
+    'likes_inkycal': {
+                        "label": "Do you like Inkycal?",
+                        "options": [True, False],
+                     },
+
+    # A dropdown list with a fallback value in case the user didn't select
+    # anything
+    'show_smiley': {
+                        "label": "Show a smiley next to your name?",
+                        "options": [True, False],
+                        "default": True,
+                     },
+  }
+  ########################################################################
 
   # Initialise the class (do not remove)
-  def __init__(self, section_size, section_config):
+  def __init__(self, config):
     """Initialize your module module"""
 
     # Initialise this module via the inkycal_module template (required)
-    super().__init__(section_size, section_config)
+    super().__init__(config)
 
-    # module name (required)
-    self.name = self.__class__.__name__
+    config = config['config']
 
-    # module specific parameters (optional)
-    self.do_something = True
+    # Check if all required parameters are present
+    # remove this if your module has no required parameters
+    for param in self.requires:
+      if not param in config:
+        raise Exception('config is missing {}'.format(param))
 
-    # give an OK message (optional)
-    print('{0} loaded'.format(self.name))
+    # the web-UI removes any blank space from the input
+    # It can only output strings or booleans, integers and lists need to be
+    # converted manually, e.g.
+
+    # if you need a boolean (True/False), no conversion is needed:
+    self.show_smiley = config['show_smiley']
+
+    # if you need a single word input, like the api-ley, no conversion is needed
+    self.api_key = config['api_key']
+
+    # if you need a integer (number) input, you have to convert this to a int
+    #-----------------------------------------------------------------------#
+    # bad example :/
+    self.age = int( config["age"] )
+    # Remember age was a optional parameter? What if no age was entered
+    # and there is no fallback value? Then the age would be None.
+    # This would cause crashing right here
+    
+    # good example :)
+    if config["age"] and isinstance(config["age"], str):
+      self.age = int( config["age"] )
+    else:
+      self.age = 10 # just a joke, no offense
+    # -> Check if age was entered and if it's a string (entered via web-UI)
+    # If something was entered for age, convert it to a number
+    # The else statement is executed when nothing was entered for age
+    # You could assign a custom value now or print something.
+    #-----------------------------------------------------------------------#
+
+    # if you need a list of words, you have to convert the string to a list
+    #-----------------------------------------------------------------------#
+    # good example :)
+    if config["hobbies"] and isinstance(config["hobbies"], str):
+      self.hobbies = config["age"].split(",")
+      # split splits the string on each comma -> gives a list
+      # even if a single value was entered, it will be converted to a list
+    else:
+      self.hobbies = [] # empty list if nothing was entered by user
+    #-----------------------------------------------------------------------#
+
+    # give an OK message
+    print(f'{filename} loaded')
 
 #############################################################################
-#                 Validation of module specific parameters                  #
+#                 Validation of module specific parameters   (optional)     #
 #############################################################################
 
   def _validate(self):
     """Validate module-specific parameters"""
     # Check the type of module-specific parameters
-    # This function is optional, but very useful for debugging.
+    # This function is optional, but useful for debugging.
 
     # Here, we are checking if do_something (from init) is True/False
-    if not isinstance(self.do_something, bool):
-      print('do_something has to be a boolean: True/False')
+    if not isinstance(self.age, int):
+      print(f"age has to be a number, but given value is {self.age}")
 
 
 #############################################################################
@@ -109,10 +183,11 @@ class Simple(inkycal_module):
   def generate_image(self):
     """Generate image for this module"""
 
-    # Define new image size with respect to padding (required)
-    im_width = int(self.width - (self.width * 2 * self.margin_x))
-    im_height = int(self.height - (self.height * 2 * self.margin_y))
+    # Define new image size with respect to padding
+    im_width = int(self.width - (2 * self.padding_left))
+    im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
+    logger.info('image size: {} x {} px'.format(im_width, im_height))
 
     # Use logger.info(), logger.debug(), logger.warning() to display
     # useful information for the developer
@@ -143,12 +218,10 @@ class Simple(inkycal_module):
     
     #################################################################
 
-    # Save image of black and colour channel in image-folder
-    im_black.save(images+self.name+'.png', 'PNG')
-    im_colour.save(images+self.name+'_colour.png', 'PNG')
+    # return the images ready for the display
+    return im_black, im_colour
 
 
-# Check if the module is being run by itself
 if __name__ == '__main__':
   print('running {0} in standalone mode'.format(filename))
 
