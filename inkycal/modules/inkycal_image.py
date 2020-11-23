@@ -47,6 +47,9 @@ class Inkyimage(inkycal_module):
   }
 
 
+  # TODO: thorough testing and code cleanup
+  # TODO: presentation mode (cycle through images in folder)
+
   def __init__(self, config):
     """Initialize inkycal_rss module"""
 
