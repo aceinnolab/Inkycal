@@ -7,5 +7,6 @@ numpy>=1.18.2                   # image pre-processing #pre-installed on Raspbia
 arrow>=0.15.6 	                # time operations
 Flask==1.1.2                    # webserver
 Flask-WTF==0.14.3               # webforms
-sphinxemoji==0.1.8		# for emoji support on documentation
 todoist-python==8.1.2           # todoist api
+sphinxemoji==0.1.8		          # for emoji support on documentation
+sphinx_hand_theme==1.0.0        # non-default documentation theme
