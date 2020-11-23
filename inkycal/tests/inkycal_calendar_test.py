@@ -6,7 +6,7 @@ tests = [
   "position": 2,
   "name": "Calendar",
   "config": {
-    "size": [800, 400],
+    "size": [400, 800],
     "week_starts_on": "Monday",
     "show_events": True,
     "ical_urls": "https://www.officeholidays.com/ics-fed/usa",
@@ -23,7 +23,7 @@ tests = [
   "position": 2,
   "name": "Calendar",
   "config": {
-    "size": [800, 400],
+    "size": [400, 800],
     "week_starts_on": "Sunday",
     "show_events": True,
     "ical_urls": "https://www.officeholidays.com/ics-fed/usa",
@@ -40,7 +40,7 @@ tests = [
   "position": 2,
   "name": "Calendar",
   "config": {
-    "size": [800, 400],
+    "size": [400, 800],
     "week_starts_on": "Monday",
     "show_events": False,
     "ical_urls": "https://www.officeholidays.com/ics-fed/usa",
@@ -57,7 +57,7 @@ tests = [
   "position": 2,
   "name": "Calendar",
   "config": {
-    "size": [800, 400],
+    "size": [400, 800],
     "week_starts_on": "Monday",
     "show_events": True,
     "ical_urls": None,
