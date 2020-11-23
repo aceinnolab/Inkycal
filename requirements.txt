@@ -9,4 +9,3 @@ Flask==1.1.2                    # webserver
 Flask-WTF==0.14.3               # webforms
 sphinxemoji==0.1.8		# for emoji support on documentation
 todoist-python==8.1.2           # todoist api
--e ./                           # install inkycal
