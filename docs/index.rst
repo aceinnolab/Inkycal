@@ -16,8 +16,6 @@ Inkycal documentation
    about
    quickstart
 
-
-
 Indices and tables
 ==================
 
