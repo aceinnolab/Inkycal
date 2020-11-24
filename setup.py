@@ -1,12 +1,17 @@
 from setuptools import setup
+from os import path
+
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 __project__ = "inkycal"
 __version__ = "2.0.0"
-__description__ = "Python3 software for syncing icalendar events, weather and news on selected E-Paper displays"
+__description__ = "Inykcal is a python3 software for syncing icalendar events, weather and news on selected E-Paper displays"
 __packages__ = ["inkycal"]
 __author__ = "aceisace"
 __author_email__ = "aceisace63@yahoo.com"
-__url__ = "https://github.com/aceisace/Inky-Calendar"
+__url__ = "https://github.com/aceisace/Inkycal"
 
 __install_requires__ = ['pyowm==3.1.1',                   # weather
                         'Pillow>=7.1.1' ,                 # imaging
@@ -21,9 +26,10 @@ __install_requires__ = ['pyowm==3.1.1',                   # weather
                         ]
 
 __classifiers__ = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Intended Audience :: Education",
+    "Natural Language :: English",
     "Programming Language :: Python :: 3 :: Only",
 ]
 
@@ -38,4 +44,6 @@ setup(
     url = __url__,
     install_requires = __install_requires__,
     classifiers = __classifiers__,
+    long_description=long_description,
+    long_description_content_type='text/markdown',
 )
