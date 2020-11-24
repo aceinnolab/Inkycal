@@ -455,7 +455,189 @@ class Inkycal:
     else:
       self._calibration_state = False
 
-  # Work in progress : Adding and removing modules - Please stand by
+
+  @classmethod
+  def add_module(cls, filepath):
+    """registers a third party module for inkycal.
+
+    Uses the full filepath of the third party module to check if it is inside
+    the correct folder, then checks if it's an inkycal module. Lastly, the
+    init files in /inkycal and /inkycal/modules are updated to allow using
+    the new module.
+
+    Args:
+      - filepath: The full filepath of the third party module. Modules should be
+        in Inkycal/inkycal/modules.
+
+    Usage:
+      - download a third-party module. The exact link is provided by the
+        developer of that module and starts with
+        `https://raw.githubusercontent.com/...`
+
+        enter the following in bash to download a module::
+
+          $ cd Inkycal/inkycal/modules #navigate to modules folder in inkycal
+          $ wget https://raw.githubusercontent.com/...     #download the module
+
+        then register it with this function::
+
+          >>> import Inkycal
+          >>> Inkycal.add_module('/full/path/to/the/module/in/inkycal/modules.py')
+    """
+
+    module_folder = top_level+'/inkycal/modules'
+
+    # Check if module is inside the modules folder
+    if not module_folder in filepath:
+      raise Exception(f"Your module should be in {module_folder} "
+                      f"but is currently in {filepath}")
+
+    filename = filepath.split('.py')[0].split('/')[-1]
+
+    # Extract name of class from given module and validate if it's a inkycal
+    # module
+    with open(filepath, mode='r') as module:
+      module_content = module.read().splitlines()
+
+    for line in module_content:
+      if '(inkycal_module):' in line:
+        classname = line.split(' ')[-1].split('(')[0]
+        break
+
+    if not classname:
+      raise TypeError("your module doesn't seem to be a correct inkycal module.."
+                       "Please check your module again.")
+
+
+    # Check if filename or classname exists in init of module folder
+    with open(module_folder+'/__init__.py', mode ='r') as file:
+      module_init = file.read().splitlines()
+
+    print('checking module init file..')
+    for line in module_init:
+      if filename in line:
+        raise Exception(
+          "A module with this filename already exists! \n"
+          "Please consider renaming your module and try again."
+          )
+      if classname in line:
+        raise Exception(
+          "A module with this classname already exists! \n"
+          "Please consider renaming your class and try again."
+          )
+    print('OK!')
+
+    # Check if filename or classname exists in init of inkycal folder
+    with open(top_level+'/inkycal/__init__.py', mode ='r') as file:
+      inkycal_init = file.read().splitlines()
+
+    print('checking inkycal init file..')
+    for line in inkycal_init:
+      if filename in line:
+        raise Exception(
+          "A module with this filename already exists! \n"
+          "Please consider renaming your module and try again."
+          )
+      if classname in line:
+        raise Exception(
+          "A module with this classname already exists! \n"
+          "Please consider renaming your class and try again."
+          )
+    print('OK')
+
+    # If all checks have passed, add the module in the module init file
+    with open(module_folder+'/__init__.py', mode='a') as file:
+      file.write(f'from .{filename} import {classname} # Added by module adder')
+
+    # If all checks have passed, add the module in the inkycal init file
+    with open(top_level+'/inkycal/__init__.py', mode ='a') as file:
+      file.write(f'import inkycal.modules.{filename} # Added by module adder')
+
+    print(f"Your module '{filename}' with class '{classname}' has been added "
+          "successfully! Hooray!")
+
+
+  @classmethod
+  def remove_module(cls, filename, remove_file=True):
+    """unregisters a inkycal module.
+
+    Looks for given filename.py in /modules folder, removes entries of that
+    module in init files inside /inkycal and /inkycal/modules
+
+    Args:
+      - filename: The filename (with .py ending) of the module which should be
+        unregistered. e.g. `'mymodule.py'`
+      - remove_file: ->bool (True/False). If set to True, the module is deleted
+        after unregistering it, else it remains in the /modules folder
+        
+
+    Usage:
+      - Look for the module in Inkycal/inkycal/modules which should be removed.
+        Only the filename (with .py) is required, not the full path.
+
+        Use this function to unregister the module from inkycal::
+
+          >>> import Inkycal
+          >>> Inkycal.remove_module('mymodule.py')
+    """
+
+    module_folder = top_level+'/inkycal/modules'
+
+    # Check if module is inside the modules folder and extract classname
+    try:
+      with open(f"{module_folder}/{filename}", mode='r') as file:
+        module_content = file.read().splitlines()
+
+        for line in module_content:
+          if '(inkycal_module):' in line:
+            classname = line.split(' ')[-1].split('(')[0]
+            break
+
+        if not classname:
+          print('The module you are trying to remove is not an inkycal module.. '
+                'Not removing it.')
+          return
+          
+
+    except FileNotFoundError:
+      print(f"No module named {filename} found in {module_folder}")
+      return
+
+    filename = filename.split('.py')[0]
+
+    # Create a memory backup of /modules init file
+    with open(module_folder+'/__init__.py', mode ='r') as file:
+      module_init = file.read().splitlines()
+
+    print('removing line from module_init')
+    # Remove lines that contain classname
+    with open(module_folder+'/__init__.py', mode ='w') as file:
+      for line in module_init:
+        if not classname in line:
+          file.write(line+'\n')
+        else:
+          print('found, removing')
+
+    # Create a memory backup of inykcal init file
+    with open(f"{top_level}/inkycal/__init__.py", mode ='r') as file:
+      inkycal_init = file.read().splitlines()
+
+    print('removing line from inkycal init')
+    # Remove lines that contain classname
+    with open(f"{top_level}/inkycal/__init__.py", mode ='w') as file:
+      for line in inkycal_init:
+        if not filename in line:
+          file.write(line+'\n')
+        else:
+          print('found, removing')
+
+    # remove the file of the third party module if it exists and remove_file
+    # was set to True (default)
+    if os.path.exists(f"{module_folder}/{filename}.py") and remove_file == True:
+      print('deleting module file')
+      os.remove(f"{module_folder}/{filename}.py")
+
+    print(f"Your module '{filename}' with class '{classname}' was removed.")
 
 if __name__ == '__main__':
   print('running {0} in standalone/debug mode'.format('inkycal main'))
