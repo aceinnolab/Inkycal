@@ -42,6 +42,12 @@ class Inkyimage(inkycal_module):
     "label":"How should the image be displayed on the display? Default is auto",
     "options": ['fill', 'center', 'fit', 'auto'],
     "default": "auto"
+    },
+
+  'colours':{
+    "label":"Specify the colours of your panel. Choose between bw (black and white), bwr (black, white and red) or bwy (black, white and yellow)",
+    "options": ['bw', 'bwr', 'bwy'],
+    "default": "bw"
     }
 
   }
@@ -67,6 +73,7 @@ class Inkyimage(inkycal_module):
 
     self.rotation = self.config['rotation']
     self.layout = self.config['layout']
+    self.colours = self.config['colours']
 
     # give an OK message
     print('{0} loaded'.format(self.name))
@@ -91,6 +98,8 @@ class Inkyimage(inkycal_module):
     im_height = self.height
     im_size = im_width, im_height
     logger.info('image size: {} x {} px'.format(im_width, im_height))
+    logger.info('image path: {}'.format(self.image_path))
+    logger.info('colors: {}'.format(self.colours))
 
     # Try to open the image if it exists and is an image file
     try:
@@ -109,13 +118,14 @@ class Inkyimage(inkycal_module):
     logger.debug(('image-height:', self.image.height))
 
     # Create an image for black pixels and one for coloured pixels
+    
     im_black = Image.new('RGB', size = im_size, color = 'white')
     im_colour = Image.new('RGB', size = im_size, color = 'white')
 
     # do the required operations
     self._remove_alpha()
     self._to_layout()
-    black, colour = self._map_colours()
+    black, colour = self._map_colours(self.colours)
 
     # paste the images on the canvas
     im_black.paste(black, (self.x, self.y))
@@ -124,6 +134,9 @@ class Inkyimage(inkycal_module):
     # Save images of black and colour channel in image-folder
     im_black.save(images+self.name+'.png', 'PNG')
     im_colour.save(images+self.name+'_colour.png', 'PNG')
+
+    # return images
+    return black, colour
 
   def _rotate(self, angle=None):
     """Rotate the image to a given angle
@@ -134,9 +147,9 @@ class Inkyimage(inkycal_module):
       angle = self.rotation
 
     # Check if angle is supported
-    if angle not in self._allowed_rotation:
-      print('invalid angle provided, setting to fallback: 0 deg')
-      angle = 0
+    # if angle not in self._allowed_rotation:
+    #   print('invalid angle provided, setting to fallback: 0 deg')
+    #   angle = 0
 
     # Autoflip the image if angle == 'auto'
     if angle == 'auto':
@@ -182,11 +195,11 @@ class Inkyimage(inkycal_module):
     im = self.image
     if mode == None: mode = self.layout
 
-    if mode not in self._allowed_layout:
-      print('{} is not supported. Should be one of {}'.format(
-        mode, self._allowed_layout))
-      print('setting layout to fallback: centre')
-      mode = 'center'
+    # if mode not in self._allowed_layout:
+    #   print('{} is not supported. Should be one of {}'.format(
+    #     mode, self._allowed_layout))
+    #   print('setting layout to fallback: centre')
+    #   mode = 'center'
 
     # If mode is center, just center the image
     if mode == 'center':
@@ -249,6 +262,11 @@ class Inkyimage(inkycal_module):
     elif colours == 'bwy':
       # For black-white-yellow images, create corresponding palette"""
       pal = [255,255,255, 0,0,0, 255,255,0, 255,255,255]
+    else:
+      logger.info('Unrecognized colors: {}, falling back to black and white'.format(colours))
+      # Fallback to black-white images, use monochrome dithering
+      im_black = im.convert('1', dither=True)
+      im_colour = None
 
     # Map each pixel of the opened image to the Palette
     if colours == 'bwr' or colours == 'bwy':
