@@ -42,6 +42,12 @@ class Inkyimage(inkycal_module):
     "label":"How should the image be displayed on the display? Default is auto",
     "options": ['fill', 'center', 'fit', 'auto'],
     "default": "auto"
+    },
+
+  'colours':{
+    "label":"Specify the colours of your panel. Choose between bw (black and white), bwr (black, white and red) or bwy (black, white and yellow)",
+    "options": ['bw', 'bwr', 'bwy'],
+    "default": "bw"
     }
 
   }
@@ -256,6 +262,11 @@ class Inkyimage(inkycal_module):
     elif colours == 'bwy':
       # For black-white-yellow images, create corresponding palette"""
       pal = [255,255,255, 0,0,0, 255,255,0, 255,255,255]
+    else:
+      logger.info('Unrecognized colors: {}, falling back to black and white'.format(colours))
+      # Fallback to black-white images, use monochrome dithering
+      im_black = im.convert('1', dither=True)
+      im_colour = None
 
     # Map each pixel of the opened image to the Palette
     if colours == 'bwr' or colours == 'bwy':
