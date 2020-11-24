@@ -112,13 +112,10 @@ class Weather(inkycal_module):
       fonts['weathericons-regular-webfont'], size = self.fontsize)
 
     # give an OK message
-    print('{0} loaded'.format(filename))
+    print(f"{filename} loaded")
 
 
   def _validate(self):
-
-    if not isinstance(self.location, str):
-      print(f'location should be -> Manchester, USA, not {self.location}')
 
     if not isinstance(self.api_key, str):
       print(f'api_key should be a string, not {self.api_key}')
@@ -320,9 +317,8 @@ class Weather(inkycal_module):
 
     # Create current-weather and weather-forecast objects
     if self.location.isdigit():
-      self.location = int(self.location)
-      weather = self.owm.weather_at_id(self.location).weather
-      forecast = self.owm.forecast_at_id(self.location, '3h')
+      weather = self.owm.weather_at_id(int(self.location)).weather
+      forecast = self.owm.forecast_at_id(int(self.location), '3h')
     else:
       weather = self.owm.weather_at_place(self.location).weather
       forecast = self.owm.forecast_at_place(self.location, '3h')
