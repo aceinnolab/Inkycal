@@ -18,7 +18,7 @@ __install_requires__ = ['pyowm==3.1.1',                   # weather
                         'icalendar==4.0.6',               # iCalendar parsing
                         'recurring-ical-events==0.1.17b0',# parse recurring events
                         'feedparser==5.2.1',              # RSS-feeds
-                        'numpy>=1.18.2',                  # image pre-processing
+                        # 'numpy>=1.18.2',                  # image pre-processing -> removed for issues with rpi os
                         'arrow>=0.15.6',                  # time handling
                         'Flask==1.1.2',                   # webserver
                         'Flask-WTF==0.14.3',              # webforms
