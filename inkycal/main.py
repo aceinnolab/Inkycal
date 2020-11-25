@@ -64,7 +64,7 @@ class Inkycal:
 
     # Check if render was set correctly
     if render not in [True, False]:
-      raise Exception('render must be True or False, not "{}"'.format(render))
+      raise Exception(f'render must be True or False, not "{render}"')
     self.render = render
 
     # load settings file - throw an error if file could not be found
@@ -182,6 +182,9 @@ class Inkycal:
     # store module numbers in here
     errors = []
 
+    # short info for info-section
+    self.info = f"{arrow.now().format('D MMM @ HH:mm')}  "
+
     for number in range(1, self._module_number):
       name = eval(f"self.module_{number}.name")
       generate_im = f'black,colour=self.module_{number}.generate_image()'
@@ -193,14 +196,18 @@ class Inkycal:
       print(f'generating image(s) for {name}...')
       try:
         exec(full_command)
+        self.info += f"module {number}: OK  "
       except Exception as Error:
         errors.append(number)
+        self.info += f"module {number}: Error!  "
         print('Error!')
         print(traceback.format_exc())
 
     if errors:
       print('Error/s in modules:',*errors)
     del errors
+
+    self._assemble()
 
   def run(self):
     """Runs main programm in nonstop mode.
@@ -423,6 +430,13 @@ class Inkycal:
       im_black = self._optimize_im(im_black)
       im_colour = self._optimize_im(im_colour)
 
+    # For the 9.7" ePaper, the image needs to be flipped by 90 deg first
+    # The other displays flip the image automatically
+    if self.settings["model"] == "9_in_7":
+      print('flipping images for 9.7" epaper')
+      im_black = im_black.rotate(90, expand=True)
+      im_colour = im_colour.rotate(90, expand=True)
+    
     im_black.save(self.image_folder+'/canvas.png', 'PNG')
     im_colour.save(self.image_folder+'/canvas_colour.png', 'PNG')
 
