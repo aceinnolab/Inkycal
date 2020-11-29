@@ -123,8 +123,10 @@ class Display:
     epaper = self._epaper
     epaper.init()
 
-    white = Image.new('1', (epaper.width, epaper.height), 'white')
-    black = Image.new('1', (epaper.width, epaper.height), 'black')
+    display_size = self.get_display_size(self.model_name)
+
+    white = Image.new('1', display_size, 'white')
+    black = Image.new('1', display_size, 'black')
 
     print('----------Started calibration of ePaper display----------')
     if self.supports_colour == True:
@@ -136,7 +138,7 @@ class Display:
         epaper.display(epaper.getbuffer(white), epaper.getbuffer(black))
         print('white...')
         epaper.display(epaper.getbuffer(white), epaper.getbuffer(white))
-        print('Cycle {0} of {1} complete'.format(_+1, cycles))
+        print(f'Cycle {_+1} of {cycles} complete')
 
     if self.supports_colour == False:
       for _ in range(cycles):
@@ -145,7 +147,7 @@ class Display:
         epaper.display(epaper.getbuffer(black))
         print('white...')
         epaper.display(epaper.getbuffer(white)),
-        print('Cycle {0} of {1} complete'.format(_+1, cycles))
+        print(f'Cycle {_+1} of {cycles} complete')
 
       print('-----------Calibration complete----------')
       epaper.sleep()
