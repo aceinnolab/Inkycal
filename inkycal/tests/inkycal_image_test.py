@@ -10,11 +10,8 @@ tests = [
       "path": "https://cdn.britannica.com/s:700x500/84/73184-004-E5A450B5/Sunflower-field-Fargo-North-Dakota.jpg",
       "rotation": "0",
       "layout": "fill",
-      "padding_x": 0,
-      "padding_y": 0,
-      "fontsize": 12,
-      "language": "en",
-      "colours": "bwr"
+      "colours": "bwr",
+      "padding_x": 0, "padding_y": 0, "fontsize": 12, "language": "en",
   }
 },
 ]

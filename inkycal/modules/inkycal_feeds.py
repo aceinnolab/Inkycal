@@ -53,7 +53,7 @@ class Feeds(inkycal_module):
     # Check if all required parameters are present
     for param in self.requires:
       if not param in config:
-        raise Exception('config is missing {}'.format(param))
+        raise Exception(f'config is missing {param}')
 
     # required parameters
     if config["feed_urls"] and isinstance(config['feed_urls'], str):
@@ -65,7 +65,7 @@ class Feeds(inkycal_module):
     self.shuffle_feeds = config["shuffle_feeds"]
 
     # give an OK message
-    print('{0} loaded'.format(filename))
+    print(f'{filename} loaded')
 
   def _validate(self):
     """Validate module-specific parameters"""
@@ -81,7 +81,7 @@ class Feeds(inkycal_module):
     im_width = int(self.width - (2 * self.padding_left))
     im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
-    logger.info('image size: {} x {} px'.format(im_width, im_height))
+    logger.info(f'Image size: {im_size}')
 
     # Create an image for black pixels and one for coloured pixels
     im_black = Image.new('RGB', size = im_size, color = 'white')
@@ -111,7 +111,7 @@ class Feeds(inkycal_module):
     for feeds in self.feed_urls:
       text = feedparser.parse(feeds)
       for posts in text.entries:
-        parsed_feeds.append('•{0}: {1}'.format(posts.title, posts.summary))
+        parsed_feeds.append(f'•{posts.title}: {posts.summary}')
 
     self._parsed_feeds = parsed_feeds
 
@@ -151,4 +151,4 @@ class Feeds(inkycal_module):
     return im_black, im_colour
 
 if __name__ == '__main__':
-  print('running {0} in standalone/debug mode'.format(filename))
+  print(f'running {filename} in standalone/debug mode')

@@ -82,25 +82,7 @@ class Agenda(inkycal_module):
     self.timezone = get_system_tz()
 
     # give an OK message
-    print('{0} loaded'.format(filename))
-
-  def _validate(self):
-    """Validate module-specific parameters"""
-
-    if not isinstance(self.date_format, str):
-      print('date_format has to be an arrow-compatible token')
-
-    if not isinstance(self.time_format, str):
-      print('time_format has to be an arrow-compatible token')
-
-    if not isinstance(self.language, str):
-      print('language has to be a string: "en" ')
-
-    if not isinstance(self.ical_urls, list):
-      print('ical_urls has to be a list ["url1", "url2"] ')
-
-    if not isinstance(self.ical_files, list):
-      print('ical_files has to be a list ["path1", "path2"] ')
+    print(f'{filename} loaded')
 
   def generate_image(self):
     """Generate image for this module"""
@@ -110,7 +92,7 @@ class Agenda(inkycal_module):
     im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
 
-    logger.info('Image size: {0}'.format(im_size))
+    logger.info(f'Image size: {im_size}')
 
     # Create an image for black pixels and one for coloured pixels
     im_black = Image.new('RGB', size = im_size, color = 'white')
@@ -121,7 +103,7 @@ class Agenda(inkycal_module):
     line_height = int(self.font.getsize('hg')[1]) + line_spacing
     line_width = im_width
     max_lines = im_height // line_height
-    logger.debug(('max lines:',max_lines))
+    logger.debug(f'max lines: {max_lines}')
 
     # Create timeline for agenda
     now = arrow.now()
@@ -156,11 +138,11 @@ class Agenda(inkycal_module):
     date_width = int(max([self.font.getsize(
           dates['begin'].format(self.date_format, locale=self.language))[0]
           for dates in agenda_events]) * 1.2)
-    logger.debug(('date_width:', date_width))
+    logger.debug(f'date_width: {date_width}')
 
     # Calculate positions for each line
     line_pos = [(0, int(line * line_height)) for line in range(max_lines)]
-    logger.debug(('line_pos:', line_pos))
+    logger.debug(f'line_pos: {line_pos}')
 
     # Check if any events were filtered
     if upcoming_events:
@@ -170,19 +152,19 @@ class Agenda(inkycal_module):
       time_width = int(max([self.font.getsize(
           events['begin'].format(self.time_format, locale=self.language))[0]
           for events in upcoming_events]) * 1.2)
-      logger.debug(('time_width:', time_width))
+      logger.debug(f'time_width: {time_width}')
 
       # Calculate x-pos for time
       x_time = date_width
-      logger.debug(('x-time:', x_time))
+      logger.debug(f'x-time: {x_time}')
 
       # Find out how much space is left for event titles
       event_width = im_width - time_width - date_width
-      logger.debug(('width for events:', event_width))
+      logger.debug(f'width for events: {event_width}')
 
       # Calculate x-pos for event titles
       x_event = date_width + time_width
-      logger.debug(('x-event:', x_event))
+      logger.debug(f'x-event: {x_event}')
 
       # Merge list of dates and list of events
       agenda_events += upcoming_events
@@ -247,4 +229,4 @@ class Agenda(inkycal_module):
     return im_black, im_colour
 
 if __name__ == '__main__':
-  print('running {0} in standalone mode'.format(filename))
+  print(f'running {filename} in standalone mode')

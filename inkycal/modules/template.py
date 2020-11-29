@@ -44,9 +44,9 @@ class inkycal_module(metaclass=abc.ABCMeta):
           self.fontsize = value
         else:
           setattr(self, key, value)
-          print("set '{}' to '{}'".format(key,value))
+          print(f"set '{key}' to '{value}'")
       else:
-        print('{0} does not exist'.format(key))
+        print(f'{key} does not exist')
         pass
 
     # Check if validation has been implemented
@@ -70,12 +70,12 @@ class inkycal_module(metaclass=abc.ABCMeta):
       if hasattr(cls, 'requires'):
         for each in cls.requires:
           if not "label" in cls.requires[each]:
-            raise Exception("no label found for {}".format(each))
+            raise Exception(f"no label found for {each}")
 
       if hasattr(cls, 'optional'):
         for each in cls.optional:
           if not "label" in cls.optional[each]:
-            raise Exception("no label found for {}".format(each))
+            raise Exception(f"no label found for {each}")
 
       conf = {
         "name": cls.__name__,
