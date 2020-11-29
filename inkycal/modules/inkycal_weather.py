@@ -107,7 +107,7 @@ class Weather(inkycal_module):
     # additional configuration
     self.owm = OWM(self.api_key).weather_manager()
     self.timezone = get_system_tz()
-    self.locale = sys_locale()[0]
+    self.locale = config['language']
     self.weatherfont = ImageFont.truetype(
       fonts['weathericons-regular-webfont'], size = self.fontsize)
 
@@ -417,7 +417,9 @@ class Weather(inkycal_module):
       logger.debug((key,val))
 
     # Get some current weather details
-    temperature = '{}°'.format(weather.temperature(unit=temp_unit)['temp'])
+    temperature = '{}°'.format(round(
+      weather.temperature(unit=temp_unit)['temp'], ndigits=dec_temp))
+
     weather_icon = weather.weather_icon_name
     humidity = str(weather.humidity)
     sunrise_raw = arrow.get(weather.sunrise_time()).to(self.timezone)
