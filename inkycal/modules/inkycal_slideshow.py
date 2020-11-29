@@ -40,7 +40,12 @@ class Slideshow(inkycal_module):
     "autoflip":{
         "label":"Should the image be flipped automatically?",
         "options": [True, False]
-        }
+        },
+
+    "orientation":{
+      "label": "Please select the desired orientation",
+      "options": ["vertical", "horizontal"]
+      }
     }
 
   def __init__(self, config):
@@ -59,6 +64,7 @@ class Slideshow(inkycal_module):
     self.path = config['path']
     self.use_colour = config['use_colour']
     self.autoflip = config['autoflip']
+    self.orientation = config['orientation']
 
     # Get the full path of all png/jpg/jpeg images in the given folder
     all_files = glob.glob(f'{self.path}/*')
@@ -107,7 +113,7 @@ class Slideshow(inkycal_module):
 
     # if autoflip was enabled, flip the image
     if self.autoflip == True:
-      im.autoflip('vertical')
+      im.autoflip(self.orientation)
 
     # resize the image so it can fit on the epaper
     im.resize( width=im_width, height=im_height )
