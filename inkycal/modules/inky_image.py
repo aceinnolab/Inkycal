@@ -241,6 +241,3 @@ class Inkyimage:
 
 if __name__ == '__main__':
   print(f'running {filename} in standalone/debug mode')
-
-a = Inkyimage()
-a.load('https://pngimg.com/uploads/pokemon/pokemon_PNG148.png')
