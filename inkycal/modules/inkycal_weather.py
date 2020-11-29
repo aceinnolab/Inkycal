@@ -90,7 +90,7 @@ class Weather(inkycal_module):
     # Check if all required parameters are present
     for param in self.requires:
       if not param in config:
-        raise Exception('config is missing {}'.format(param))
+        raise Exception(f'config is missing {param}')
 
     # required parameters
     self.api_key = config['api_key']
@@ -107,7 +107,7 @@ class Weather(inkycal_module):
     # additional configuration
     self.owm = OWM(self.api_key).weather_manager()
     self.timezone = get_system_tz()
-    self.locale = sys_locale()[0]
+    self.locale = config['language']
     self.weatherfont = ImageFont.truetype(
       fonts['weathericons-regular-webfont'], size = self.fontsize)
 
@@ -146,7 +146,7 @@ class Weather(inkycal_module):
     im_width = int(self.width - (2 * self.padding_left))
     im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
-    logger.info('image size: {} x {} px'.format(im_width, im_height))
+    logger.info(f'Image size: {im_size}')
 
     # Create an image for black pixels and one for coloured pixels
     im_black = Image.new('RGB', size = im_size, color = 'white')
@@ -391,7 +391,7 @@ class Weather(inkycal_module):
         daily_temp = [round(_.temperature(unit=temp_unit)['temp'],
                             ndigits=dec_temp) for _ in forecasts]
         # Calculate min. and max. temp for this day
-        temp_range = '{}°/{}°'.format(max(daily_temp), min(daily_temp))
+        temp_range = f'{max(daily_temp)}°/{min(daily_temp)}°'
 
 
         # Get all weather icon codes for this day
@@ -417,7 +417,9 @@ class Weather(inkycal_module):
       logger.debug((key,val))
 
     # Get some current weather details
-    temperature = '{}°'.format(weather.temperature(unit=temp_unit)['temp'])
+    temperature = '{}°'.format(round(
+      weather.temperature(unit=temp_unit)['temp'], ndigits=dec_temp))
+
     weather_icon = weather.weather_icon_name
     humidity = str(weather.humidity)
     sunrise_raw = arrow.get(weather.sunrise_time()).to(self.timezone)
@@ -510,4 +512,4 @@ class Weather(inkycal_module):
     return im_black, im_colour
 
 if __name__ == '__main__':
-  print('running {0} in standalone mode'.format(filename))
+  print(f'running {filename} in standalone mode')
