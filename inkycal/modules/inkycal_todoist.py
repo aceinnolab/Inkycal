@@ -34,7 +34,7 @@ class Todoist(inkycal_module):
   optional = {
     'project_filter': {
       "label":"Show Todos only from following project (separated by a comma). Leave empty to show "+
-      "todos from all projects",
+              "todos from all projects",
     }
   }
 
@@ -48,7 +48,7 @@ class Todoist(inkycal_module):
     # Check if all required parameters are present
     for param in self.requires:
       if not param in config:
-        raise Exception('config is missing {}'.format(param))
+        raise Exception(f'config is missing {param}')
 
     # module specific parameters
     self.api_key = config['api_key']
@@ -63,7 +63,7 @@ class Todoist(inkycal_module):
     self._api.sync()
 
     # give an OK message
-    print('{0} loaded'.format(self.name))
+    print(f'{filename} loaded')
 
   def _validate(self):
     """Validate module-specific parameters"""
@@ -77,7 +77,7 @@ class Todoist(inkycal_module):
     im_width = int(self.width - (2 * self.padding_left))
     im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
-    logger.info('image size: {} x {} px'.format(im_width, im_height))
+    logger.info(f'Image size: {im_size}')
 
     # Create an image for black pixels and one for coloured pixels
     im_black = Image.new('RGB', size = im_size, color = 'white')
@@ -196,4 +196,4 @@ class Todoist(inkycal_module):
     return im_black, im_colour
 
 if __name__ == '__main__':
-  print('running {0} in standalone/debug mode'.format(filename))
+  print(f'running {filename} in standalone/debug mode')

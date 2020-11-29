@@ -9,10 +9,7 @@ tests = [
     "size": [400,100],
     "feed_urls": "http://feeds.bbci.co.uk/news/world/rss.xml#",
     "shuffle_feeds": True,
-    "padding_x": 10,
-    "padding_y": 10,
-    "fontsize": 12,
-    "language": "en"
+    "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
     }
 },
 {
@@ -22,10 +19,7 @@ tests = [
     "size": [400,100],
     "feed_urls": "http://feeds.bbci.co.uk/news/world/rss.xml#",
     "shuffle_feeds": False,
-    "padding_x": 10,
-    "padding_y": 10,
-    "fontsize": 12,
-    "language": "en"
+    "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
     }
 },
 ]

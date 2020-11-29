@@ -85,7 +85,7 @@ class Calendar(inkycal_module):
       fonts['NotoSans-SemiCondensed'], size = self.fontsize)
 
     # give an OK message
-    print('{0} loaded'.format(filename))
+    print(f'{filename} loaded')
 
   def generate_image(self):
     """Generate image for this module"""
@@ -95,7 +95,7 @@ class Calendar(inkycal_module):
     im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
 
-    logger.info('Image size: {0}'.format(im_size))
+    logger.info(f'Image size: {im_size}')
 
     # Create an image for black pixels and one for coloured pixels
     im_black = Image.new('RGB', size = im_size, color = 'white')
@@ -104,8 +104,8 @@ class Calendar(inkycal_module):
     # Allocate space for month-names, weekdays etc.
     month_name_height = int(im_height * 0.1)
     weekdays_height = int(im_height * 0.05)
-    logger.debug((f"month_name_height: {month_name_height}"))
-    logger.debug((f"weekdays_height: {weekdays_height}"))
+    logger.debug(f"month_name_height: {month_name_height}")
+    logger.debug(f"weekdays_height: {weekdays_height}")
 
 
     if self.show_events == True:
@@ -129,8 +129,8 @@ class Calendar(inkycal_module):
     x_spacing_calendar = int((im_width % calendar_cols) / 2)
     y_spacing_calendar = int((im_height % calendar_rows) / 2)
 
-    logger.debug((f"x_spacing_calendar: {x_spacing_calendar}"))
-    logger.debug((f"y_spacing_calendar :{y_spacing_calendar}"))
+    logger.debug(f"x_spacing_calendar: {x_spacing_calendar}")
+    logger.debug(f"y_spacing_calendar :{y_spacing_calendar}")
 
     # Calculate positions for days of month
     grid_start_y = (month_name_height + weekdays_height + y_spacing_calendar)
@@ -160,7 +160,7 @@ class Calendar(inkycal_module):
     # Set up weeknames in local language and add to main section
     weekday_names = [weekstart.shift(days=+_).format('ddd',locale=self.language)
       for _ in range(7)]
-    logger.debug('weekday names: {}'.format(weekday_names))
+    logger.debug(f'weekday names: {weekday_names}')
 
     for _ in range(len(weekday_pos)):
       write(
@@ -333,4 +333,4 @@ class Calendar(inkycal_module):
     return im_black, im_colour
 
 if __name__ == '__main__':
-  print('running {0} in standalone mode'.format(filename))
+  print(f'running {filename} in standalone mode')

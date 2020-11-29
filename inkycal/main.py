@@ -11,6 +11,7 @@ from inkycal.custom import *
 import os
 import traceback
 import logging
+from logging.handlers import RotatingFileHandler
 import arrow
 import time
 import json
@@ -28,18 +29,36 @@ except ImportError:
         'run: pip3 install numpy \nIf you are on Raspberry Pi '
         'remove numpy: pip3 uninstall numpy \nThen try again.')
 
-logging.basicConfig(
-  level = logging.INFO, #DEBUG > #INFO > #ERROR > #WARNING > #CRITICAL
-  format='%(name)s -> %(levelname)s -> %(asctime)s -> %(message)s',
-  datefmt='%d-%m-%Y %H:%M')
+# (i): Logging shows logs above a threshold level.
+# e.g. logging.DEBUG will show all from DEBUG until CRITICAL
+# e.g. logging.ERROR will show from ERROR until CRITICAL
+# #DEBUG > #INFO > #ERROR > #WARNING > #CRITICAL
 
-logger = logging.getLogger('inykcal main')
+# On the console, set a logger to show only important logs
+# (level ERROR or higher)
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel(logging.ERROR)
+
+# Save all logs to a file, which contains much more detailed output
+logging.basicConfig(
+  level = logging.DEBUG,
+  format='%(asctime)s | %(name)s |  %(levelname)s: %(message)s',
+  datefmt='%d.%m.%Y %H:%M',
+  handlers=[
+
+        stream_handler,                     # add stream handler from above
+
+        RotatingFileHandler(                # log to a file too
+          f'{top_level}/logs/inkycal.log',  # file to log
+          maxBytes=2097152,                 # 2MB max filesize
+          backupCount=5                     # create max 5 log files
+          )
+        ]
+  )
+
 
 # TODO: fix issue with non-render mode requiring SPI
-# TODO: fix info section not updating after a calibration
-# TODO: add function to add/remove third party modules
 # TODO: autostart -> supervisor?
-# TODO: logging to files
 
 class Inkycal:
   """Inkycal main class
@@ -129,7 +148,7 @@ class Inkycal:
 
       # If a module was not found, print an error message
       except ImportError:
-        print('Could not find module: "{module}". Please try to import manually')
+        print(f'Could not find module: "{module}". Please try to import manually')
 
       # If something unexpected happened, show the error message
       except Exception as e:
@@ -236,7 +255,7 @@ class Inkycal:
       errors = [] # store module numbers in here
 
       # short info for info-section
-      self.info = f"{runtime.format('D MMM @ HH:mm')}  "
+      self.info = f"{arrow.now(tz=get_system_tz()).format('D MMM @ HH:mm')}  "
 
       for number in range(1, self._module_number):
         
@@ -257,6 +276,7 @@ class Inkycal:
           print('Error!')
           print(traceback.format_exc())
           self.info += f"module {number}: Error!  "
+          logging.error(f'Exception in module {number}:', exc_info=True)
 
       if errors:
         print('Error/s in modules:',*errors)
@@ -657,4 +677,4 @@ class Inkycal:
     print(f"Your module '{filename}' with class '{classname}' was removed.")
 
 if __name__ == '__main__':
-  print('running {0} in standalone/debug mode'.format('inkycal main'))
+  print(f'running inkycal main in standalone/debug mode')

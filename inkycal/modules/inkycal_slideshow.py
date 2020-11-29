@@ -5,20 +5,21 @@
 Image module for Inkycal Project
 Copyright by aceisace
 """
+import glob
 
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
 
+# PIL has a class named Image, use alias for Inkyimage -> Images
 from inkycal.modules.inky_image import Inkyimage as Images
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 
-class Inkyimage(inkycal_module):
-  """Displays an image from URL or local path
+class Slideshow(inkycal_module):
+  """Cycles through images in a local image folder
   """
-
-  name = "Inykcal Image - show an image from a URL or local path"
+  name = "Slideshow - cycle through images from a local folder"
 
   requires = {
     
@@ -65,9 +66,21 @@ class Inkyimage(inkycal_module):
     self.autoflip = config['autoflip']
     self.orientation = config['orientation']
 
+    # Get the full path of all png/jpg/jpeg images in the given folder
+    all_files = glob.glob(f'{self.path}/*')
+    self.images = [i for i in all_files
+                  if i.split('.')[-1].lower() in ('jpg', 'jpeg', 'png')]
+
+    if not self.images:
+      logger.error('No images found in the given folder, please '
+                   'double check your path!')
+      raise Exception('No images found in the given folder path :/')
+
+    # set a 'first run' signal
+    self._first_run = True
+
     # give an OK message
     print(f'{filename} loaded')
-
 
   def generate_image(self):
     """Generate image for this module"""
@@ -79,11 +92,21 @@ class Inkyimage(inkycal_module):
 
     logger.info(f'Image size: {im_size}')
 
+    # rotates list items by 1 index
+    def rotate(somelist):
+      return somelist[1:] + somelist[:1]
+
+    # Switch to the next image if this is not the first run
+    if self._first_run == True:
+      self._first_run = False
+    else:
+      self.images = rotate(self.images)
+
     # initialize custom image class
     im = Images()
 
     # use the image at the first index
-    im.load(self.path)
+    im.load(self.images[0])
 
     # Remove background if present
     im.remove_alpha()

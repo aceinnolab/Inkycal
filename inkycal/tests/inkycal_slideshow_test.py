@@ -1,13 +1,13 @@
 import unittest
-from inkycal.modules import Inkyimage as Module
+from inkycal.modules import Slideshow as Module
 from inkycal.custom import top_level
 
-test_path = f'{top_level}/Gallery/coffee.png'
+test_path = f'{top_level}/Gallery'
 
 tests = [
 {
   "position": 1,
-  "name": "Inkyimage",
+  "name": "Slideshow",
   "config": {
     "size": [400,200],
     "path": test_path,
@@ -19,7 +19,7 @@ tests = [
 },
 {
   "position": 1,
-  "name": "Inkyimage",
+  "name": "Slideshow",
   "config": {
     "size": [800,500],
     "path": test_path,
@@ -31,7 +31,7 @@ tests = [
 },
 {
   "position": 1,
-  "name": "Inkyimage",
+  "name": "Slideshow",
   "config": {
     "size": [400,100],
     "path": test_path,
@@ -43,7 +43,7 @@ tests = [
 },
 {
   "position": 1,
-  "name": "Inkyimage",
+  "name": "Slideshow",
   "config": {
     "size": [400,100],
     "path": test_path,
@@ -55,7 +55,7 @@ tests = [
 },
 {
   "position": 1,
-  "name": "Inkyimage",
+  "name": "Slideshow",
   "config": {
     "size": [400,100],
     "path": test_path,
@@ -67,7 +67,7 @@ tests = [
 },
 {
   "position": 1,
-  "name": "Inkyimage",
+  "name": "Slideshow",
   "config": {
     "size": [500, 800],
     "path": test_path,
@@ -79,7 +79,7 @@ tests = [
 },
 {
   "position": 1,
-  "name": "Inkyimage",
+  "name": "Slideshow",
   "config": {
     "size": [500, 800],
     "path": test_path,
