@@ -7,10 +7,23 @@ tests = [
   "name": "Jokes",
   "config": {
       "size": [300, 60],
-      "padding_x": 10,
-      "padding_y": 10,
-      "fontsize": 12,
-      "language": "en"
+      "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
+      }
+},
+{
+  "position": 1,
+  "name": "Jokes",
+  "config": {
+      "size": [300, 30],
+      "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
+      }
+},
+{
+  "position": 1,
+  "name": "Jokes",
+  "config": {
+      "size": [100, 800],
+      "padding_x": 10, "padding_y": 10, "fontsize": 18, "language": "en"
       }
 },
 ]

@@ -60,7 +60,7 @@ class Stocks(inkycal_module):
     im_width = int(self.width - (2 * self.padding_left))
     im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
-    logger.info('image size: {} x {} px'.format(im_width, im_height))
+    logger.info(f'Image size: {im_size}')
 
     # Create an image for black pixels and one for coloured pixels (required)
     im_black = Image.new('RGB', size = im_size, color = 'white')

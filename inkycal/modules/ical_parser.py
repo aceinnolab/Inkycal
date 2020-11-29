@@ -61,7 +61,7 @@ class iCalendar:
       else:
         ical = [auth_ical(url, username, password)]
     else:
-      raise Exception ("Input: '{}' is not a string or list!".format(url))
+      raise Exception (f"Input: '{url}' is not a string or list!")
 
 
     def auth_ical(url, uname, passwd):
@@ -89,7 +89,7 @@ class iCalendar:
     elif type(url) == str:
       ical = (Calendar.from_ical(open(path)))
     else:
-      raise Exception ("Input: '{}' is not a string or list!".format(url))
+      raise Exception (f"Input: '{url}' is not a string or list!")
 
     self.icalendars += icals
     logger.info('loaded iCalendars from filepaths')
@@ -210,4 +210,4 @@ class iCalendar:
 
 
 if __name__ == '__main__':
-  print('running {0} in standalone mode'.format(filename))
+  print(f'running {filename} in standalone mode')

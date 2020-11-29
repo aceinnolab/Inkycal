@@ -33,7 +33,7 @@ class Jokes(inkycal_module):
     config = config['config']
 
     # give an OK message
-    print('{0} loaded'.format(filename))
+    print(f'{filename} loaded')
 
   def generate_image(self):
     """Generate image for this module"""
@@ -42,7 +42,7 @@ class Jokes(inkycal_module):
     im_width = int(self.width - (2 * self.padding_left))
     im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
-    logger.info('image size: {} x {} px'.format(im_width, im_height))
+    logger.info(f'image size: {im_width} x {im_height} px')
 
     # Create an image for black pixels and one for coloured pixels
     im_black = Image.new('RGB', size = im_size, color = 'white')
@@ -76,7 +76,7 @@ class Jokes(inkycal_module):
     header = {"accept": "text/plain"}
     response = requests.get(url, headers=header)
     response.encoding = 'utf-8' # Change encoding to UTF-8
-    joke = response.text
+    joke = response.text.rstrip() # use to remove newlines
     logger.debug(f"joke: {joke}")
 
     # wrap text in case joke is too large
@@ -87,13 +87,18 @@ class Jokes(inkycal_module):
     if len(wrapped) > max_lines:
       logger.error("Ohoh, Joke is too large for given space, please consider "
             "increasing the size for this module")
-      logger.error("Removing lines in reverse order")
-      wrapped = wrapped[:max_lines]
 
-    # Write feeds on image
+    # Write the joke on the image
     for _ in range(len(wrapped)):
+      if _+1 > max_lines:
+        logger.error('Ran out of lines for this joke :/')
+        break
       write(im_black, line_positions[_], (line_width, line_height),
             wrapped[_], font = self.font, alignment= 'left')
 
     # Save image of black and colour channel in image-folder
     return im_black, im_colour
+
+
+if __name__ == '__main__':
+  print(f'running {filename} in standalone/debug mode')
