@@ -13,10 +13,7 @@ tests = [
     "ical_files": None,
     "date_format": "D MMM",
     "time_format": "HH:mm",
-    "padding_x": 10,
-    "padding_y": 10,
-    "fontsize": 12,
-    "language": "en"
+    "padding_x": 10,"padding_y": 10,"fontsize": 12,"language": "en"
     }
 },
 {
@@ -30,10 +27,7 @@ tests = [
     "ical_files": None,
     "date_format": "D MMM",
     "time_format": "HH:mm",
-    "padding_x": 10,
-    "padding_y": 10,
-    "fontsize": 12,
-    "language": "en"
+    "padding_x": 10,"padding_y": 10,"fontsize": 12,"language": "en"
     }
 },
 {
@@ -47,10 +41,7 @@ tests = [
     "ical_files": None,
     "date_format": "D MMM",
     "time_format": "HH:mm",
-    "padding_x": 10,
-    "padding_y": 10,
-    "fontsize": 12,
-    "language": "en"
+    "padding_x": 10,"padding_y": 10,"fontsize": 12,"language": "en"
     }
 },
 {
@@ -64,10 +55,7 @@ tests = [
     "ical_files": None,
     "date_format": "D MMM",
     "time_format": "HH:mm",
-    "padding_x": 10,
-    "padding_y": 10,
-    "fontsize": 12,
-    "language": "en"
+    "padding_x": 10,"padding_y": 10,"fontsize": 12,"language": "en"
     }
 },
 ]
