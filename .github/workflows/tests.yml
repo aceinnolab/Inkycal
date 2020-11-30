@@ -16,7 +16,8 @@ jobs:
 
     - name: Clone repo
       run: |
-        git clone -b release/2.0.0 https://github.com/aceisace/Inky-Calendar Inkycal
+        git clone -b development https://github.com/aceisace/Inky-Calendar Inkycal
+
     - name: Install dependencies and run
       run: |
         python -m pip install --upgrade pip
