@@ -14,68 +14,85 @@ import arrow
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.ERROR)
-
 
 class Agenda(inkycal_module):
   """Agenda class
   Create agenda and show events from given icalendars
   """
 
-  def __init__(self, section_size, section_config):
+  name = "Agenda - Display upcoming events from given iCalendars"
+
+  requires = {
+    "ical_urls" : {
+      "label":"iCalendar URL/s, separate multiple ones with a comma",
+      },
+
+    }
+
+  optional = {
+    "ical_files" : {
+      "label":"iCalendar filepaths, separated with a comma",
+      },
+
+    "date_format":{
+      "label":"Use an arrow-supported token for custom date formatting "+
+      "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. ddd D MMM",
+      "default": "ddd D MMM",
+      },
+
+    "time_format":{
+      "label":"Use an arrow-supported token for custom time formatting "+
+      "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm",
+      "default":"HH:mm",
+      },
+
+
+    }
+
+  def __init__(self, config):
     """Initialize inkycal_agenda module"""
 
-    super().__init__(section_size, section_config)
-    # Module specific parameters
-    required = ['week_starts_on', 'ical_urls']
-    for param in required:
-      if not param in section_config:
+    super().__init__(config)
+
+    config = config['config']
+
+    # Check if all required parameters are present
+    for param in self.requires:
+      if not param in config:
         raise Exception('config is missing {}'.format(param))
 
-    # class name
-    self.name = self.__class__.__name__
-
     # module specific parameters
-    self.date_format = 'ddd D MMM'
-    self.time_format = "HH:mm"
-    self.language = self.config['language']
+    self.date_format = config['date_format']
+    self.time_format = config['time_format']
+    self.language = config['language']
+
+    # Check if ical_files is an empty string
+    if config['ical_urls'] and isinstance(config['ical_urls'], str):
+      self.ical_urls = config['ical_urls'].split(',')
+    else:
+      self.ical_urls = config['ical_urls']
+
+    # Check if ical_files is an empty string
+    if config['ical_files'] and isinstance(config['ical_files'], str):
+      self.ical_files = config['ical_files'].split(',')
+    else:
+      self.ical_files = config['ical_files']
+
+    # Additional config
     self.timezone = get_system_tz()
-    self.ical_urls = self.config['ical_urls']
-    self.ical_files = []
 
     # give an OK message
-    print('{0} loaded'.format(self.name))
-
-  def _validate(self):
-    """Validate module-specific parameters"""
-
-    if not isinstance(self.date_format, str):
-      print('date_format has to be an arrow-compatible token')
-
-    if not isinstance(self.time_format, str):
-      print('time_format has to be an arrow-compatible token')
-
-    if not isinstance(self.language, str):
-      print('language has to be a string: "en" ')
-
-    if not isinstance(self.timezone, str):
-      print('The timezone has bo be a string.')
-
-    if not isinstance(self.ical_urls, list):
-      print('ical_urls has to be a list ["url1", "url2"] ')
-
-    if not isinstance(self.ical_files, list):
-      print('ical_files has to be a list ["path1", "path2"] ')
+    print(f'{filename} loaded')
 
   def generate_image(self):
     """Generate image for this module"""
 
     # Define new image size with respect to padding
-    im_width = int(self.width - (self.width * 2 * self.margin_x))
-    im_height = int(self.height - (self.height * 2 * self.margin_y))
+    im_width = int(self.width - (2 * self.padding_left))
+    im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
 
-    logger.info('Image size: {0}'.format(im_size))
+    logger.info(f'Image size: {im_size}')
 
     # Create an image for black pixels and one for coloured pixels
     im_black = Image.new('RGB', size = im_size, color = 'white')
@@ -86,7 +103,7 @@ class Agenda(inkycal_module):
     line_height = int(self.font.getsize('hg')[1]) + line_spacing
     line_width = im_width
     max_lines = im_height // line_height
-    logger.debug(('max lines:',max_lines))
+    logger.debug(f'max lines: {max_lines}')
 
     # Create timeline for agenda
     now = arrow.now()
@@ -105,6 +122,7 @@ class Agenda(inkycal_module):
 
     if self.ical_urls:
       parser.load_url(self.ical_urls)
+
     if self.ical_files:
       parser.load_from_file(self.ical_files)
 
@@ -114,38 +132,39 @@ class Agenda(inkycal_module):
 
     # Sort events by beginning time
     parser.sort()
-    # parser.show_events()
+    #parser.show_events()
 
     # Set the width for date, time and event titles
     date_width = int(max([self.font.getsize(
           dates['begin'].format(self.date_format, locale=self.language))[0]
           for dates in agenda_events]) * 1.2)
-    logger.debug(('date_width:', date_width))
+    logger.debug(f'date_width: {date_width}')
+
+    # Calculate positions for each line
+    line_pos = [(0, int(line * line_height)) for line in range(max_lines)]
+    logger.debug(f'line_pos: {line_pos}')
 
     # Check if any events were filtered
     if upcoming_events:
+      logger.info('Managed to parse events from urls')
 
       # Find out how much space the event times take
       time_width = int(max([self.font.getsize(
           events['begin'].format(self.time_format, locale=self.language))[0]
           for events in upcoming_events]) * 1.2)
-      logger.debug(('time_width:', time_width))
+      logger.debug(f'time_width: {time_width}')
 
       # Calculate x-pos for time
       x_time = date_width
-      logger.debug(('x-time:', x_time))
+      logger.debug(f'x-time: {x_time}')
 
       # Find out how much space is left for event titles
       event_width = im_width - time_width - date_width
-      logger.debug(('width for events:', event_width))
+      logger.debug(f'width for events: {event_width}')
 
       # Calculate x-pos for event titles
       x_event = date_width + time_width
-      logger.debug(('x-event:', x_event))
-
-      # Calculate positions for each line
-      line_pos = [(0, int(line * line_height)) for line in range(max_lines)]
-      logger.debug(('line_pos:', line_pos))
+      logger.debug(f'x-event: {x_event}')
 
       # Merge list of dates and list of events
       agenda_events += upcoming_events
@@ -191,7 +210,8 @@ class Agenda(inkycal_module):
 
     # If no events were found, write only dates and lines
     else:
-      line_pos = [(0, int(line * line_height)) for line in range(max_lines)]
+      logger.info('no events found')
+
       cursor = 0
       for _ in agenda_events:
         title = _['title']
@@ -204,11 +224,9 @@ class Agenda(inkycal_module):
 
         cursor += 1
 
-      logger.info('no events found')
 
-    # Save image of black and colour channel in image-folder
-    im_black.save(images+self.name+'.png')
-    im_colour.save(images+self.name+'_colour.png')
+    # return the images ready for the display
+    return im_black, im_colour
 
 if __name__ == '__main__':
-  print('running {0} in standalone mode'.format(filename))
+  print(f'running {filename} in standalone mode')

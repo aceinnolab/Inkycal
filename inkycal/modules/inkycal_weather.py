@@ -13,57 +13,140 @@ import arrow
 from locale import getdefaultlocale as sys_locale
 
 try:
-  import pyowm
+  from pyowm.owm import OWM
 except ImportError:
   print('pyowm is not installed! Please install with:')
   print('pip3 install pyowm')
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.ERROR)
 
 class Weather(inkycal_module):
   """Weather class
   parses weather details from openweathermap
   """
+  name = "Weather (openweathermap) - Get weather forecasts from openweathermap"
 
-  def __init__(self, section_size, section_config):
+  requires = {
+
+    "api_key" : {
+      "label":"Please enter openweathermap api-key. You can create one for free on openweathermap",
+    },
+
+    "location": {
+      "label":"Please enter your location in the following format: City, Country-Code. "+
+              "You can also enter the location ID found in the url "+
+              "e.g. https://openweathermap.org/city/4893171 -> ID is 4893171"
+      }
+    }
+
+  optional = {
+
+    "round_temperature": {
+      "label":"Round temperature to the nearest degree?",
+      "options": [True, False],
+      "default" : True
+      },
+
+    "round_windspeed": {
+      "label":"Round windspeed?",
+      "options": [True, False],
+      "default": True
+      },
+
+    "forecast_interval": {
+      "label":"Please select the forecast interval",
+      "options": ["daily", "hourly"],
+      "default": "daily"
+      },
+
+    "units": {
+      "label": "Which units should be used?",
+      "options": ["metric", "imperial"],
+      "default": "metric"
+      },
+
+    "hour_format": {
+      "label": "Which hour format do you prefer?",
+      "options": [12, 24],
+      "default": 24
+      },
+
+    "use_beaufort": {
+      "label": "Use beaufort scale for windspeed?",
+      "options": [True, False],
+      "default": True
+      },
+
+    }
+
+  def __init__(self, config):
     """Initialize inkycal_weather module"""
 
-    super().__init__(section_size, section_config)
+    super().__init__(config)
 
-    # Module specific parameters
-    required = ['api_key','location']
-    for param in required:
-      if not param in section_config:
-        raise Exception('config is missing {}'.format(param))
+    config = config['config']
 
-    # module name
-    self.name = self.__class__.__name__
+    # Check if all required parameters are present
+    for param in self.requires:
+      if not param in config:
+        raise Exception(f'config is missing {param}')
 
-    # module specific parameters
-    self.owm = pyowm.OWM(self.config['api_key'])
-    self.units = self.config['units']
-    self.hour_format = self.config['hours']
+    # required parameters
+    self.api_key = config['api_key']
+    self.location = config['location']
+
+    # optional parameters
+    self.round_temperature = config['round_temperature']
+    self.round_windspeed = config['round_windspeed']
+    self.forecast_interval = config['forecast_interval']
+    self.units = config['units']
+    self.hour_format = int(config['hour_format'])
+    self.use_beaufort = config['use_beaufort']
+
+    # additional configuration
+    self.owm = OWM(self.api_key).weather_manager()
     self.timezone = get_system_tz()
-    self.round_temperature = True
-    self.round_windspeed = True
-    self.use_beaufort = True
-    self.forecast_interval = 'daily' # daily # hourly
-    self.locale = sys_locale()[0]
-    self.weatherfont = ImageFont.truetype(fonts['weathericons-regular-webfont'],
-                                          size = self.fontsize)
+    self.locale = config['language']
+    self.weatherfont = ImageFont.truetype(
+      fonts['weathericons-regular-webfont'], size = self.fontsize)
+
     # give an OK message
-    print('{0} loaded'.format(self.name))
+    print(f"{filename} loaded")
+
+
+  def _validate(self):
+
+    if not isinstance(self.api_key, str):
+      print(f'api_key should be a string, not {self.api_key}')
+
+    if not isinstance(self.round_temperature, bool):
+      print(f'round_temperature should be a boolean, not {self.round_temperature}')
+
+    if not isinstance(self.round_windspeed, bool):
+      print(f'round_windspeed should be a boolean, not {self.round_windspeed}')
+
+    if not isinstance(self.forecast_interval, int):
+      print(f'forecast_interval should be a boolean, not {self.forecast_interval}')
+
+    if not isinstance(self.units, str):
+      print(f'units should be a boolean, not {self.units}')
+
+    if not isinstance(self.hour_format, int):
+      print(f'hour_format should be a int, not {self.hour_format}')
+
+    if not isinstance(self.use_beaufort, bool):
+      print(f'use_beaufort should be a int, not {self.use_beaufort}')
+
 
   def generate_image(self):
     """Generate image for this module"""
 
     # Define new image size with respect to padding
-    im_width = int(self.width - (self.width * 2 * self.margin_x))
-    im_height = int(self.height - (self.height * 2 * self.margin_y))
+    im_width = int(self.width - (2 * self.padding_left))
+    im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
-    logger.info('image size: {} x {} px'.format(im_width, im_height))
+    logger.info(f'Image size: {im_size}')
 
     # Create an image for black pixels and one for coloured pixels
     im_black = Image.new('RGB', size = im_size, color = 'white')
@@ -233,8 +316,12 @@ class Weather(inkycal_module):
     temp_fc4 = (col7, row3)
 
     # Create current-weather and weather-forecast objects
-    weather = self.owm.weather_at_place(self.config['location']).get_weather()
-    forecast = self.owm.three_hours_forecast(self.config['location'])
+    if self.location.isdigit():
+      weather = self.owm.weather_at_id(int(self.location)).weather
+      forecast = self.owm.forecast_at_id(int(self.location), '3h')
+    else:
+      weather = self.owm.weather_at_place(self.location).weather
+      forecast = self.owm.forecast_at_place(self.location, '3h')
 
     # Set decimals
     dec_temp = None if self.round_temperature == True else 1
@@ -271,9 +358,9 @@ class Weather(inkycal_module):
       fc_data = {}
       for forecast in forecasts:
         temp =  '{}°'.format(round(
-          forecast.get_temperature(unit=temp_unit)['temp'], ndigits=dec_temp))
+          forecast.temperature(unit=temp_unit)['temp'], ndigits=dec_temp))
 
-        icon = forecast.get_weather_icon_name()
+        icon = forecast.weather_icon_name
         fc_data['fc'+str(forecasts.index(forecast)+1)] = {
           'temp':temp,
           'icon':icon,
@@ -282,6 +369,9 @@ class Weather(inkycal_module):
           }
 
     elif self.forecast_interval == 'daily':
+
+      logger.debug("getting daily forecasts")
+
 
       def calculate_forecast(days_from_today):
         """Get temperature range and most frequent icon code for forecast
@@ -297,16 +387,15 @@ class Weather(inkycal_module):
         # Get forecasts for each time-object
         forecasts = [forecast.get_weather_at(_.datetime) for _ in time_range]
 
-
         # Get all temperatures for this day
-        daily_temp = [round(_.get_temperature(unit=temp_unit)['temp'],
+        daily_temp = [round(_.temperature(unit=temp_unit)['temp'],
                             ndigits=dec_temp) for _ in forecasts]
         # Calculate min. and max. temp for this day
-        temp_range = '{}°/{}°'.format(max(daily_temp), min(daily_temp))
+        temp_range = f'{max(daily_temp)}°/{min(daily_temp)}°'
 
 
         # Get all weather icon codes for this day
-        daily_icons = [_.get_weather_icon_name() for _ in forecasts]
+        daily_icons = [_.weather_icon_name for _ in forecasts]
         # Find most common element from all weather icon codes
         status = max(set(daily_icons), key=daily_icons.count)
 
@@ -328,42 +417,39 @@ class Weather(inkycal_module):
       logger.debug((key,val))
 
     # Get some current weather details
-    temperature = '{}°'.format(weather.get_temperature(unit=temp_unit)['temp'])
-    weather_icon = weather.get_weather_icon_name()
-    humidity = str(weather.get_humidity())
-    windspeed = weather.get_wind(unit='meters_sec')['speed']
-    sunrise_raw = arrow.get(weather.get_sunrise_time()).to(self.timezone)
-    sunset_raw = arrow.get(weather.get_sunset_time()).to(self.timezone)
+    temperature = '{}°'.format(round(
+      weather.temperature(unit=temp_unit)['temp'], ndigits=dec_temp))
+
+    weather_icon = weather.weather_icon_name
+    humidity = str(weather.humidity)
+    sunrise_raw = arrow.get(weather.sunrise_time()).to(self.timezone)
+    sunset_raw = arrow.get(weather.sunset_time()).to(self.timezone)
 
     if self.hour_format ==  12:
       sunrise = sunrise_raw.format('h:mm a')
       sunset = sunset_raw.format('h:mm a')
+
     elif self.hour_format == 24:
       sunrise = sunrise_raw.format('H:mm')
       sunset = sunset_raw.format('H:mm')
 
     # Format the windspeed to user preference
     if self.use_beaufort == True:
-      windspeed_to_beaufort = [0.02, 1.5, 3.3, 5.4, 7.9, 10.7, 13.8, 17.1,
-                               20.7, 24.4, 28.4, 32.6, 100]
-      wind = str([windspeed_to_beaufort.index(_) for _ in windspeed_to_beaufort
-                  if windspeed < _][0])
+      logger.debug("using beaufort for wind")
+      wind = str(weather.wind(unit='beaufort')['speed'])
 
     elif self.use_beaufort == False:
-      meters_sec = round(windspeed, ndigits = dec_wind)
-      miles_per_hour = round(windspeed * 2.23694, ndigits = dec_wind)
 
       if self.units == 'metric':
-        wind = str(meters_sec) + 'm/s'
+        wind = str(weather.wind(unit='meters_sec')['speed']) + 'm/s'
 
       elif self.units == 'imperial':
-        wind = str(miles_per_hour) + 'mph'
+        wind = str(weather.wind(unit='miles_hour')['speed']) + 'miles/h'
 
     dec = decimal.Decimal
     moonphase = get_moon_phase()
 
     # Fill weather details in col 1 (current weather icon)
-    # write(im_black, (col_width, row_height), now_str, text_now_pos, font = font)
     draw_icon(im_colour, weather_icon_pos, (icon_large, icon_large),
               weathericons[weather_icon])
 
@@ -422,9 +508,8 @@ class Weather(inkycal_module):
     draw_border(im_black, (col6, row1), (col_width, im_height))
     draw_border(im_black, (col7, row1), (col_width, im_height))
 
-  # Save image of black and colour channel in image-folder
-    im_black.save(images+self.name+'.png', "PNG")
-    im_colour.save(images+self.name+'_colour.png', "PNG")
+    # return the images ready for the display
+    return im_black, im_colour
 
 if __name__ == '__main__':
-  print('running {0} in standalone mode'.format(filename))
+  print(f'running {filename} in standalone mode')

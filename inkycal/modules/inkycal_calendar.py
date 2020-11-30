@@ -12,99 +12,137 @@ import arrow
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
-logger.setLevel(level=logging.ERROR)
 
 class Calendar(inkycal_module):
   """Calendar class
   Create monthly calendar and show events from given icalendars
   """
 
-  def __init__(self, section_size, section_config):
+  name = "Calendar - Show monthly calendar with events from iCalendars"
+
+  optional = {
+
+    "week_starts_on" : {
+      "label":"When does your week start? (default=Monday)",
+      "options": ["Monday", "Sunday"],
+      "default": "Monday"
+      },
+
+    "show_events" : {
+      "label":"Show parsed events? (default = True)",
+      "options": [True, False],
+      "default": True
+      },
+
+    "ical_urls" : {
+      "label":"iCalendar URL/s, separate multiple ones with a comma",
+      },
+
+    "ical_files" : {
+      "label":"iCalendar filepaths, separated with a comma",
+      },
+
+    "date_format":{
+      "label":"Use an arrow-supported token for custom date formatting "+
+      "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. D MMM",
+      "default": "D MMM",
+      },
+
+    "time_format":{
+      "label":"Use an arrow-supported token for custom time formatting "+
+      "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm",
+      "default": "HH:mm"
+      },
+
+    }
+
+  def __init__(self, config):
     """Initialize inkycal_calendar module"""
 
-    super().__init__(section_size, section_config)
+    super().__init__(config)
+    config = config['config']
 
-    # Module specific parameters
-    required = ['week_starts_on']
-    for param in required:
-      if not param in section_config:
-        raise Exception('config is missing {}'.format(param))
+    # optional parameters
+    self.weekstart = config['week_starts_on']
+    self.show_events = config['show_events']
+    self.date_format = config["date_format"]
+    self.time_format = config['time_format']
+    self.language = config['language']
 
-    # module name
-    self.name = self.__class__.__name__
+    if config['ical_urls'] and isinstance(config['ical_urls'], str):
+      self.ical_urls = config['ical_urls'].split(',')
+    else:
+      self.ical_urls = config['ical_urls']
 
-    # module specific parameters
+    if config['ical_files'] and isinstance(config['ical_files'], str):
+      self.ical_files = config['ical_files'].split(',')
+    else:
+      self.ical_files = config['ical_files']
+
+    # additional configuration
+    self.timezone = get_system_tz()
     self.num_font = ImageFont.truetype(
       fonts['NotoSans-SemiCondensed'], size = self.fontsize)
-    self.weekstart = self.config['week_starts_on']
-    self.show_events = True
-    self.date_format = 'D MMM'
-    self.time_format = "HH:mm"
-    self.language = self.config['language']
-
-    self.timezone = get_system_tz()
-    self.ical_urls = self.config['ical_urls']
-    self.ical_files = []
 
     # give an OK message
-    print('{0} loaded'.format(self.name))
+    print(f'{filename} loaded')
 
   def generate_image(self):
     """Generate image for this module"""
 
     # Define new image size with respect to padding
-    im_width = int(self.width - (self.width * 2 * self.margin_x))
-    im_height = int(self.height - (self.height * 2 * self.margin_y))
+    im_width = int(self.width - (2 * self.padding_left))
+    im_height = int(self.height - (2 * self.padding_top))
     im_size = im_width, im_height
 
-    logger.info('Image size: {0}'.format(im_size))
+    logger.info(f'Image size: {im_size}')
 
     # Create an image for black pixels and one for coloured pixels
     im_black = Image.new('RGB', size = im_size, color = 'white')
     im_colour = Image.new('RGB', size = im_size, color = 'white')
 
     # Allocate space for month-names, weekdays etc.
-    month_name_height = int(self.height*0.1)
-    weekdays_height = int(self.height*0.05)
+    month_name_height = int(im_height * 0.1)
+    weekdays_height = int(im_height * 0.05)
+    logger.debug(f"month_name_height: {month_name_height}")
+    logger.debug(f"weekdays_height: {weekdays_height}")
+
 
     if self.show_events == True:
-      calendar_height = int(self.height*0.6)
-      events_height = int(self.height*0.25)
-      logger.debug('calendar-section size: {0} x {1} px'.format(
-        im_width, calendar_height))
-      logger.debug('events-section size: {0} x {1} px'.format(
-        im_width, events_height))
+      logger.debug("Allocating space for events")
+      calendar_height = int(im_height * 0.6)
+      events_height = int(im_height * 0.25)
+      logger.debug(f'calendar-section size: {im_width} x {calendar_height} px')
+      logger.debug(f'events-section size: {im_width} x {events_height} px')
     else:
-      calendar_height = self.height - month_name_height - weekday_height
-      logger.debug('calendar-section size: {0} x {1} px'.format(
-        im_width, calendar_height))
+      logger.debug("Not allocating space for events")
+      calendar_height = im_height - month_name_height - weekdays_height
+      logger.debug(f'calendar-section size: {im_width} x {calendar_height} px')
 
-    # Create grid and calculate icon sizes
-    now = arrow.now(tz = self.timezone)
-    monthstart = now.span('month')[0].weekday()
-    monthdays = now.ceil('month').day
-
-    if monthstart > 4 and monthdays == 31:
-        calendar_rows, calendar_cols = 7, 7
-    else:
-        calendar_rows, calendar_cols = 6, 7
-
+    # Create a 7x6 grid and calculate icon sizes
+    calendar_rows, calendar_cols = 6, 7
     icon_width = im_width // calendar_cols
     icon_height = calendar_height // calendar_rows
+    logger.debug(f"icon_size: {icon_width}x{icon_height}px")
 
     # Calculate spacings for calendar area
     x_spacing_calendar = int((im_width % calendar_cols) / 2)
     y_spacing_calendar = int((im_height % calendar_rows) / 2)
 
+    logger.debug(f"x_spacing_calendar: {x_spacing_calendar}")
+    logger.debug(f"y_spacing_calendar :{y_spacing_calendar}")
+
     # Calculate positions for days of month
     grid_start_y = (month_name_height + weekdays_height + y_spacing_calendar)
     grid_start_x = x_spacing_calendar
 
-    grid = [(grid_start_x + icon_width*x, grid_start_y + icon_height*y)
+    grid_coordinates = [(grid_start_x + icon_width*x, grid_start_y + icon_height*y)
             for y in range(calendar_rows) for x in range(calendar_cols)]
 
     weekday_pos = [(grid_start_x + icon_width*_, month_name_height) for _ in
                    range(calendar_cols)]
+
+    now = arrow.now(tz = self.timezone)
 
     # Set weekstart of calendar to specified weekstart
     if self.weekstart == "Monday":
@@ -115,18 +153,14 @@ class Calendar(inkycal_module):
       weekstart = now.shift(days = - now.isoweekday())
 
     # Write the name of current month
-    write(
-      im_black,
-      (x_spacing_calendar,0),
-      (self.width, month_name_height),
-      str(now.format('MMMM',locale=self.language)),
-      font = self.font,
+    write(im_black, (0,0),(im_width, month_name_height),
+      str(now.format('MMMM',locale=self.language)), font = self.font,
       autofit = True)
 
     # Set up weeknames in local language and add to main section
     weekday_names = [weekstart.shift(days=+_).format('ddd',locale=self.language)
       for _ in range(7)]
-    logger.debug('weekday names: {}'.format(weekday_names))
+    logger.debug(f'weekday names: {weekday_names}')
 
     for _ in range(len(weekday_pos)):
       write(
@@ -141,21 +175,27 @@ class Calendar(inkycal_module):
     # Create a calendar template and flatten (remove nestings)
     flatten = lambda z: [x for y in z for x in y]
     calendar_flat = flatten(cal.monthcalendar(now.year, now.month))
+    #logger.debug(f" calendar_flat: {calendar_flat}")
+
+    # Map days of month to co-ordinates of grid -> 3: (row2_x,col3_y)
+    grid = {}
+    for i in calendar_flat:
+      if i != 0:
+        grid[i] = grid_coordinates[calendar_flat.index(i)]
+    #logger.debug(f"grid:{grid}")
+
+    # remove zeros from calendar since they are not required
+    calendar_flat = [num for num in calendar_flat if num != 0]
 
     # Add the numbers on the correct positions
-    for i in range(len(calendar_flat)):
-      if calendar_flat[i] not in (0, int(now.day)):
-        write(
-          im_black,
-          grid[i],
-          (icon_width,icon_height),
-          str(calendar_flat[i]),
-          font = self.num_font, fill_height = 0.5
-          )
+    for number in calendar_flat:
+      if number != int(now.day):
+        write(im_black, grid[number], (icon_width, icon_height),
+          str(number), font = self.num_font, fill_height = 0.5)
 
     # Draw a red/black circle with the current day of month in white
     icon = Image.new('RGBA', (icon_width, icon_height))
-    current_day_pos = grid[calendar_flat.index(now.day)]
+    current_day_pos = grid[int(now.day)]
     x_circle,y_circle = int(icon_width/2), int(icon_height/2)
     radius = int(icon_width * 0.2)
     ImageDraw.Draw(icon).ellipse(
@@ -178,8 +218,12 @@ class Calendar(inkycal_module):
                                           line_spacing)
 
       # generate list of coordinates for each line
-      event_lines = [(0, grid[-1][1] + int(events_height/max_event_lines*_))
+      events_offset = im_height - events_height
+      event_lines = [(0, events_offset + int(events_height/max_event_lines*_))
                      for _ in range(max_event_lines)]
+
+      #logger.debug(f"event_lines {event_lines}")
+
 
       # timeline for filtering events within this month
       month_start = arrow.get(now.floor('month'))
@@ -211,7 +255,7 @@ class Calendar(inkycal_module):
       for days in days_with_events:
         draw_border(
           im_colour,
-          grid[calendar_flat.index(days)],
+          grid[days],
           (icon_width, icon_height),
           radius = 6,
           thickness= 1,
@@ -253,28 +297,30 @@ class Calendar(inkycal_module):
 
         cursor = 0
         for event in upcoming_events:
-          name = event['title']
-          date = event['begin'].format(self.date_format, locale=lang)
-          time = event['begin'].format(self.time_format, locale=lang)
+          if cursor < len(event_lines):
+            name = event['title']
+            date = event['begin'].format(self.date_format, locale=lang)
+            time = event['begin'].format(self.time_format, locale=lang)
+            #logger.debug(f"name:{name}   date:{date} time:{time}")
 
-          if now < event['end']:
-            write(im_colour, event_lines[cursor], (date_width, line_height),
-                  date, font=self.font, alignment = 'left')
+            if now < event['end']:
+              write(im_colour, event_lines[cursor], (date_width, line_height),
+                    date, font=self.font, alignment = 'left')
 
-            # Check if event is all day
-            if parser.all_day(event) == True:
-              write(im_black, (date_width, event_lines[cursor][1]),
-                  (event_width_l, line_height), name, font=self.font,
-                  alignment = 'left')
-            else:
-              write(im_black, (date_width, event_lines[cursor][1]),
-                  (time_width, line_height), time, font=self.font,
-                  alignment = 'left')
+              # Check if event is all day
+              if parser.all_day(event) == True:
+                write(im_black, (date_width, event_lines[cursor][1]),
+                    (event_width_l, line_height), name, font=self.font,
+                    alignment = 'left')
+              else:
+                write(im_black, (date_width, event_lines[cursor][1]),
+                    (time_width, line_height), time, font=self.font,
+                    alignment = 'left')
 
-              write(im_black, (date_width+time_width,event_lines[cursor][1]),
-                  (event_width_s, line_height), name, font=self.font,
-                  alignment = 'left')
-            cursor += 1
+                write(im_black, (date_width+time_width,event_lines[cursor][1]),
+                    (event_width_s, line_height), name, font=self.font,
+                    alignment = 'left')
+              cursor += 1
       else:
         symbol = '- '
         while self.font.getsize(symbol)[0] < im_width*0.9:
@@ -283,9 +329,8 @@ class Calendar(inkycal_module):
               (im_width, self.font.getsize(symbol)[1]), symbol,
               font = self.font)
 
-    # Save image of black and colour channel in image-folder
-    im_black.save(images+self.name+'.png')
-    im_colour.save(images+self.name+'_colour.png')
+    # return the images ready for the display
+    return im_black, im_colour
 
 if __name__ == '__main__':
-  print('running {0} in standalone mode'.format(filename))
+  print(f'running {filename} in standalone mode')

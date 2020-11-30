@@ -11,6 +11,8 @@ from urllib.request import urlopen
 import os
 import time
 
+logs = logging.getLogger('inkycal_custom')
+logs.setLevel(level=logging.INFO)
 
 # Get the path to the Inkycal folder
 top_level = os.path.dirname(
@@ -33,18 +35,44 @@ for path,dirs,files in os.walk(fonts_location):
       name = filename.split('.ttf')[0]
       fonts[name] = os.path.join(path, filename)
 
-del name, filename, files
-
 available_fonts = [key for key,values in fonts.items()]
 
 def get_fonts():
-  """Print all available fonts by name"""
+  """Print all available fonts by name.
+
+  Searches the /font folder in Inykcal and displays all fonts found in
+  there.
+
+  Returns:
+    printed output of all available fonts. To access a fontfile, use the
+    fonts dictionary to access it.
+    
+    >>> fonts['fontname']
+
+  To use a font, use the following sytax, where fontname is one of the
+  printed fonts of this function:
+  
+  >>> ImageFont.truetype(fonts['fontname'], size = 10)
+  """
   for fonts in available_fonts:
     print(fonts)
 
 
 def get_system_tz():
-  """Get the timezone set by the system"""
+  """Gets the system-timezone
+
+  Gets the timezone set by the system. 
+
+  Returns:
+    - A timezone if a system timezone was found.
+    - None if no timezone was found.
+
+  The extracted timezone can be used to show the local time instead of UTC. e.g.
+
+    >>> import arrow
+    >>> print(arrow.now()) # returns non-timezone-aware time
+    >>> print(arrow.now(tz=get_system_tz()) # prints timezone aware time.
+  """
   try:
     local_tz = time.tzname[1]
   except:
@@ -55,8 +83,21 @@ def get_system_tz():
 
 
 def auto_fontsize(font, max_height):
-  """Adjust the fontsize to fit 80% of max_height
-  returns the font object with modified size"""
+  """Scales a given font to 80% of max_height.
+
+    Gets the height of a font and scales it until 80% of the max_height
+    is filled.
+
+
+    Args:
+        - font: A PIL Font object.
+        - max_height: An integer representing the height to adjust the font to
+          which the given font should be scaled to.
+
+    Returns:
+        A PIL font object with modified height.
+    """
+
   fontsize = font.getsize('hg')[1]
   while font.getsize('hg')[1] <= (max_height * 0.80):
     fontsize += 1
@@ -65,12 +106,29 @@ def auto_fontsize(font, max_height):
 
 
 def write(image, xy, box_size, text, font=None, **kwargs):
-  """Write text on specified image
-  image = on which image should the text be added?
-  xy = xy-coordinates as tuple -> (x,y)
-  box_size = size of text-box -> (width,height)
-  text = string (what to write)
-  font = which font to use
+  """Writes text on a image. 
+
+  Writes given text at given position on the specified image.
+
+  Args:
+    - image: The image to draw this text on, usually im_black or im_colour.
+    - xy: tuple-> (x,y) representing the x and y co-ordinate.
+    - box_size: tuple -> (width, height) representing the size of the text box.
+    - text: string, the actual text to add on the image.
+    - font: A PIL Font object e.g.
+      ImageFont.truetype(fonts['fontname'], size = 10).
+
+  Args: (optional)
+    - alignment: alignment of the text, use 'center', 'left', 'right'.
+    - autofit: bool (True/False). Automatically increases fontsize to fill in
+      as much of the box-height as possible.
+    - colour: black by default, do not change as it causes issues with rendering
+      on e-Paper.
+    - rotation: Rotate the text with the text-box by a given angle anti-clockwise.
+    - fill_width: Decimal representing a percentage e.g. 0.9 # 90%. Fill a
+      maximum of 90% of the size of the full width of text-box.
+    - fill_height: Decimal representing a percentage e.g. 0.9 # 90%. Fill a
+      maximum of 90% of the size of the full height of the text-box.
   """
   allowed_kwargs = ['alignment', 'autofit', 'colour', 'rotation',
                     'fill_width', 'fill_height']
@@ -107,11 +165,11 @@ def write(image, xy, box_size, text, font=None, **kwargs):
 
   # Truncate text if text is too long so it can fit inside the box
   if (text_width, text_height) > (box_width, box_height):
-    logging.debug(('truncating {}'.format(text)))
+    logs.debug(('truncating {}'.format(text)))
     while (text_width, text_height) > (box_width, box_height):
       text=text[0:-1]
       text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
-    logging.debug((text))
+    logs.debug((text))
 
   # Align text to desired position
   if alignment == "center" or None:
@@ -129,8 +187,8 @@ def write(image, xy, box_size, text, font=None, **kwargs):
   ImageDraw.Draw(space).text((x, y), text, fill=colour, font=font)
   # Uncomment following two lines, comment out above two lines to show
   # red text-box with white text (debugging purposes)
-##  space = Image.new('RGBA', (box_width, box_height), color= 'red')
-##  ImageDraw.Draw(space).text((x, y), text, fill='white', font=font)
+  #space = Image.new('RGBA', (box_width, box_height), color= 'red')
+  #ImageDraw.Draw(space).text((x, y), text, fill='white', font=font)
 
   if rotation != None:
     space.rotate(rotation, expand = True)
@@ -140,7 +198,19 @@ def write(image, xy, box_size, text, font=None, **kwargs):
 
 
 def text_wrap(text, font=None, max_width = None):
-  """Split long text (text-wrapping). Returns a list"""
+  """Splits a very long text into smaller parts
+
+  Splits a long text to smaller lines which can fit in a line with max_width.
+  Uses a Font object for more accurate calculations.
+
+  Args:
+    - font: A PIL font object which is used to calculate the size.
+    - max_width: int-> a width in pixels defining the maximum width before
+      splitting the text into the next chunk.
+
+  Returns:
+    A list containing chunked strings of the full text.
+  """
   lines = []
   if font.getsize(text)[0] < max_width:
     lines.append(text)
@@ -160,7 +230,20 @@ def text_wrap(text, font=None, max_width = None):
 
 
 def internet_available():
-  """check if the internet is available"""
+  """checks if the internet is available.
+
+  Attempts to connect to google.com with a timeout of 5 seconds to check
+  if the network can be reached.
+
+  Returns:
+    - True if connection could be established.
+    - False if the internet could not be reached.
+
+  Returned output can be used to add a check for internet availability:
+
+  >>> if internet_available() == True:
+  >>> #...do something that requires internet connectivity
+  """
 
   try:
     urlopen('https://google.com',timeout=5)
@@ -170,11 +253,25 @@ def internet_available():
 
 
 def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1,0.1)):
-  """Draws a border with round corners at (x,y)
-  xy = position e.g: (5,10)
-  size = size of border (width, height), radius: corner radius
-  thickness = border thickness
-  shrinkage = shrink and center border by given percentage:(width_%, height_%)
+  """Draws a border at given coordinates.
+
+  Args:
+    - image: The image on which the border should be drawn (usually im_black or
+      im_colour.
+  
+    - xy: Tuple representing the top-left corner of the border e.g. (32, 100)
+      where 32 is the x co-ordinate and 100 is the y-coordinate.
+
+    - size: Size of the border as a tuple -> (width, height).
+
+    - radius: Radius of the corners, where 0 = plain rectangle, 5 = round corners.
+
+    - thickness: Thickness of the border in pixels.
+
+    - shrinkage: A tuple containing decimals presenting a percentage of shrinking
+      -> (width_shrink_percentage, height_shrink_percentage).
+      e.g. (0.1, 0.2) ~ shrinks the width of border by 10%, shrinks height of
+      border by 20%
   """
 
   colour='black'

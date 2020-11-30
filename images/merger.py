@@ -1,16 +1,17 @@
 from PIL import Image
 import numpy
 
-module_name = 'inkycal_agenda'
+image1_path = "/home/pi/Desktop/cal.png"
+image2_path = "/home/pi/Desktop/cal2.png"
+output_file = "/home/pi/Desktop/merged.png"
 
-
-def merge(module_name, out_filename):
+def merge(image1, image2, out_filename):
   """Merge black pixels from image2 into image 1
   module_name = name of the module generating the image
   out_filename = what name to give to the finished file
   """
   
-  im1_name, im2_name = module_name+'.png', module_name+'_colour.png'
+  im1_name, im2_name = image1_path, image2_path
   im1 = Image.open(im1_name).convert('RGBA')
   im2 = Image.open(im2_name).convert('RGBA')
 
@@ -25,7 +26,7 @@ def merge(module_name, out_filename):
   im1.paste(im2, (0,0), im2)
   im1.save(out_filename+'.png', 'PNG')
 
-merge(module_name, module_name+'2')
+merge(image1_path, image2_path, output_file)
 
 
 print('Done')

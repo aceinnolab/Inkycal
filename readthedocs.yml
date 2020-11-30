@@ -1,4 +1,12 @@
+version: 2
+
 python:
    version: 3.7
-
-requirements_file: requirements.txt
+   install:
+       - requirements: requirements.txt
+       - method: pip
+         path: .
+sphinx:
+  builder: html
+  configuration: docs/conf.py
+  fail_on_warning: true
