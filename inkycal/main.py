@@ -56,6 +56,8 @@ logging.basicConfig(
         ]
   )
 
+filename = os.path.basename(__file__).split('.py')[0]
+logger = logging.getLogger(filename)
 
 # TODO: fix issue with non-render mode requiring SPI
 # TODO: autostart -> supervisor?
