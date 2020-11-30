@@ -19,11 +19,7 @@ A python 3 software for displaying events (from iCalendars), weather (from openw
 
 **This branch contains the latest working release of Inkycal. It's mainly intended for those who wish to test new features and give feedback. If you encounter any bugs, please report them via the [Issues] button.**
 
-* [ ] Add support for 9.7" ePaper
 * [ ] Add support for iCalendars requiring authentification
-* [x] Add info-section option in web-ui
-* [ ] Allow easy adding/removing of third-party modules
-* [ ] Finish developer documentation for third-party modules
 
 ## How to test BETA
 Please note that while inkycal is in BETA, a lot of things will change in a short time. This means that problems are fixed on-the-go. If you encounter a problem, please mention it on Discord.
