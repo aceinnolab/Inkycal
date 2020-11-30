@@ -56,10 +56,12 @@ logging.basicConfig(
         ]
   )
 
+# Show less logging for PIL module
+logging.getLogger("PIL").setLevel(logging.WARNING)
+
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 
-# TODO: fix issue with non-render mode requiring SPI
 # TODO: autostart -> supervisor?
 
 class Inkycal:
@@ -76,7 +78,6 @@ class Inkycal:
     - optimize = True/False. Reduce number of colours on the generated image
       to improve rendering on E-Papers. Set this to False for 9.7" E-Paper.
   """
-  
 
   def __init__(self, settings_path=None, render=True):
     """Initialise Inkycal"""
@@ -109,17 +110,17 @@ class Inkycal:
       except FileNotFoundError:
         print('No settings file found in /boot')
         return
-      
 
-    # Option to use epaper image optimisation, reduces colours 
+
+    # Option to use epaper image optimisation, reduces colours
     self.optimize = True
-
-    # Init Display class with model in settings file
-    from inkycal.display import Display
-    self.Display = Display(settings["model"])
 
     # Load drivers if image should be rendered
     if self.render == True:
+
+      # Init Display class with model in settings file
+      from inkycal.display import Display
+      self.Display = Display(settings["model"])
 
       # check if colours can be rendered
       self.supports_colour = True if 'colour' in settings['model'] else False
@@ -208,16 +209,13 @@ class Inkycal:
 
     for number in range(1, self._module_number):
       name = eval(f"self.module_{number}.name")
-      generate_im = f'black,colour=self.module_{number}.generate_image()'
-      save_black = f'black.save("{self.image_folder}/module{number}_black.png", "PNG")'
-      save_colour = f'colour.save("{self.image_folder}/module{number}_colour.png", "PNG")'
-      full_command = generate_im+'\n'+save_black+'\n'+save_colour
-      #print(full_command)
-
-      print(f'generating image(s) for {name}...')
+      module = eval(f'self.module_{number}')
+      print(f'generating image(s) for {name}...', end="")
       try:
-        exec(full_command)
-        self.info += f"module {number}: OK  "
+        black,colour=module.generate_image()
+        black.save(f"{self.image_folder}/module{number}_black.png", "PNG")
+        colour.save(f"{self.image_folder}/module{number}_colour.png", "PNG")
+        print('OK!')
       except Exception as Error:
         errors.append(number)
         self.info += f"module {number}: Error!  "
@@ -251,17 +249,17 @@ class Inkycal:
     print(f'Selected E-paper display: {self.settings["model"]}')
 
     while True:
-      print(f"Date: {runtime.format('D MMM YY')} | Time: {runtime.format('HH:mm')}")
-      print('Generating images for all modules...')
-                  
+      current_time = arrow.now(tz=get_system_tz())
+      print(f"Date: {current_time.format('D MMM YY')} | "
+            f"Time: {current_time.format('HH:mm')}")
+      print('Generating images for all modules...', end='')
+
       errors = [] # store module numbers in here
 
       # short info for info-section
-      self.info = f"{arrow.now(tz=get_system_tz()).format('D MMM @ HH:mm')}  "
+      self.info = f"{current_time.format('D MMM @ HH:mm')}  "
 
       for number in range(1, self._module_number):
-        
-        print(f'Generating image {number}')
 
         name = eval(f"self.module_{number}.name")
         module = eval(f'self.module_{number}')
@@ -270,8 +268,6 @@ class Inkycal:
           black,colour=module.generate_image()
           black.save(f"{self.image_folder}/module{number}_black.png", "PNG")
           colour.save(f"{self.image_folder}/module{number}_colour.png", "PNG")
-
-          print('OK!')
           self.info += f"module {number}: OK  "
         except Exception as Error:
           errors.append(number)
@@ -320,8 +316,7 @@ class Inkycal:
 
           Display.render(im_black)
 
-      print('\ninkycal has been running without any errors for '
-            f"{counter} display updates \n"
+      print(f'\nNo Errors since {counter} display updates \n'
             f'Programm started {runtime.humanize()}')
 
       sleep_time = self.countdown()
@@ -363,7 +358,7 @@ class Inkycal:
     """Assembles all sub-images to a single image"""
 
     # Create 2 blank images with the same resolution as the display
-    width, height = self.Display.get_display_size(self.settings["model"])
+    width, height = Display.get_display_size(self.settings["model"])
 
     # Since Inkycal runs in vertical mode, switch the height and width
     width, height = height, width
@@ -458,7 +453,7 @@ class Inkycal:
       print('flipping images for 9.7" epaper')
       im_black = im_black.rotate(90, expand=True)
       im_colour = im_colour.rotate(90, expand=True)
-    
+
     im_black.save(self.image_folder+'/canvas.png', 'PNG')
     im_colour.save(self.image_folder+'/canvas_colour.png', 'PNG')
 
@@ -608,7 +603,7 @@ class Inkycal:
         unregistered. e.g. `'mymodule.py'`
       - remove_file: ->bool (True/False). If set to True, the module is deleted
         after unregistering it, else it remains in the /modules folder
-        
+
 
     Usage:
       - Look for the module in Inkycal/inkycal/modules which should be removed.
@@ -636,7 +631,7 @@ class Inkycal:
           print('The module you are trying to remove is not an inkycal module.. '
                 'Not removing it.')
           return
-          
+
 
     except FileNotFoundError:
       print(f"No module named {filename} found in {module_folder}")
