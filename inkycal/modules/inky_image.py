@@ -9,7 +9,7 @@ images.
 Copyright by aceisace
 """
 
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageColor
 import requests
 import numpy
 import os
@@ -19,9 +19,7 @@ filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 
 class Inkyimage:
-  """Inkyimage class
-
-  missing documentation, lazy devs :/
+  """Custom Imge class written for commonly used image operations.
   """
 
   def __init__(self, image=None):
@@ -168,7 +166,7 @@ class Inkyimage:
   def resize(self, width=None, height=None):
     """Resize an image to desired width or height"""
     if self._image_loaded():
-      
+
       if width == None and height == None:
         print('no height of width specified')
         return
@@ -191,53 +189,115 @@ class Inkyimage:
         logger.debug(f"resized image from {initial_height} to {image.height}")
         self.image = image
 
-  def to_mono(self):
-    """Converts image to pure balck-white image (1-bit).
+  def to_palette(self, palette, dither=True):
+    """Maps an image to a given colour palette.
 
-    retrns 1-bit image
+    Maps each pixel from the image to a colour from the palette.
 
+    Args:
+      - palette: A supported token. (see below)
+      - dither:->bool. Use dithering? Set to `False` for solid colour fills.
+
+    Returns:
+      - two images: one for the coloured band and one for the black band.
+
+    Raises:
+      - ValueError if palette token is not supported
+
+    Supported palette tokens:
+
+    >>> 'bwr' # black-white-red
+    >>> 'bwy' # black-white-yellow
+    >>> 'bw'  # black-white
     """
-    if self._image_loaded():
-      image = self.image
-
-      image = image.convert('1', dither=True)
-      return image
-
-
-  def to_colour(self):
-    """Maps image colours to 3 colours.
-    """
+    # Check if an image is loaded
     if self._image_loaded():
       image = self.image.convert('RGB')
+    else:
+      print('No image loaded')
 
-      # Create a simple palette
-      pal = [255,255,255, 0,0,0, 255,0,0, 255,255,255]
+    if palette == 'bwr':
+      # black-white-red palette
+      pal = [255,255,255, 0,0,0, 255,0,0]
 
-      # Map each pixel of the opened image to the Palette
-      palette_im = Image.new('P', (3,1))
-      palette_im.putpalette(pal * 64)
-      quantized_im = image.quantize(palette=palette_im)
-      quantized_im.convert('RGB')
+    elif palette == 'bwy':
+      # black-white-yellow palette
+      pal = [255,255,255, 0,0,0, 255,255,0]
 
-      # Create a buffer for coloured pixels
-      buffer1 = numpy.array(quantized_im.convert('RGB'))
-      r1,g1,b1 = buffer1[:, :, 0], buffer1[:, :, 1], buffer1[:, :, 2]
+    elif palette == 'bw':
+      pal = None
 
-      # Create a buffer for black pixels
-      buffer2 = numpy.array(quantized_im.convert('RGB'))
-      r2,g2,b2 = buffer2[:, :, 0], buffer2[:, :, 1], buffer2[:, :, 2]
+    else:
+      raise ValueError('The given palette is not supported.')
 
-      # re-construct image from coloured-pixels buffer
-      buffer2[numpy.logical_and(r2 ==  0, b2 == 0)] = [255,255,255] # black->white
-      buffer2[numpy.logical_and(r2 ==  255, b2 == 0)] = [0,0,0] #red->black
-      im_colour = Image.fromarray(buffer2)
+    if pal:
+      # The palette needs to have 256 colors, for this, the black-colour
+      # is added until the
+      colours = len(pal) // 3
+      #print(f'The palette has {colours} colours')
 
-      # re-construct image from black pixels buffer
-      buffer1[numpy.logical_and(r1 ==  255, b1 == 0)] = [255,255,255]
+      if 256 % colours != 0:
+        #print('Filling palette with black')
+        pal += (256 % colours) * [0,0,0]
+
+      #print(pal)
+      colours = len(pal) // 3
+      #print(f'The palette now has {colours} colours')
+
+      # Create a dummy image to be used as a palette
+      palette_im = Image.new('P', (1,1))
+
+      # Attach the created palette. The palette should have 256 colours
+      # equivalent to 768 integers
+      palette_im.putpalette(pal* (256//colours))
+
+      # Quantize the image to given palette
+      quantized_im = image.quantize(palette=palette_im, dither=dither)
+      quantized_im = quantized_im.convert('RGB')
+
+      # get rgb of the non-black-white colour from the palette
+      rgb = [pal[x:x+3] for x in range(0, len(pal),3)]
+      rgb = [col for col in rgb if col != [0,0,0] and col != [255,255,255]][0]
+      r_col, g_col, b_col = rgb
+      #print(f'r:{r_col} g:{g_col} b:{b_col}')
+
+      # Create an image buffer for black pixels
+      buffer1 = numpy.array(quantized_im)
+
+      # Get RGB values of each pixel
+      r,g,b = buffer1[:, :, 0], buffer1[:, :, 1], buffer1[:, :, 2]
+
+      # convert coloured pixels to white
+      buffer1[numpy.logical_and(r==r_col, g==g_col)] = [255,255,255]
+
+      # reconstruct image for black-band
       im_black = Image.fromarray(buffer1)
 
-      return im_black, im_colour
+      # Create a buffer for coloured pixels
+      buffer2 = numpy.array(quantized_im)
+
+      # Get RGB values of each pixel
+      r,g,b = buffer2[:, :, 0], buffer2[:, :, 1], buffer2[:, :, 2]
+
+      # convert black pixels to white
+      buffer2[numpy.logical_and(r==0, g==0)] = [255,255,255]
+
+      # convert non-white pixels to black
+      buffer2[numpy.logical_and(g==g_col, b==0)] = [0,0,0]
+
+      # reconstruct image for colour-band
+      im_colour = Image.fromarray(buffer2)
+
+      #self.preview(im_black)
+      #self.preview(im_colour)
+
+    else:
+      im_black = image.convert('1', dither=dither)
+      im_colour = Image.new(mode='RGB', size=im_black.size, color='white')
+
+    return im_black, im_colour
 
 
 if __name__ == '__main__':
   print(f'running {filename} in standalone/debug mode')
+
