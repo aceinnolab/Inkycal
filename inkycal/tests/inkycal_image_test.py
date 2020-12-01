@@ -11,7 +11,7 @@ tests = [
   "config": {
     "size": [400,200],
     "path": test_path,
-    "use_colour": True,
+    "palette": "bwr",
     "autoflip": True,
     "orientation": "vertical",
     "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
@@ -23,7 +23,7 @@ tests = [
   "config": {
     "size": [800,500],
     "path": test_path,
-    "use_colour": False,
+    "palette": "bwy",
     "autoflip": True,
     "orientation": "vertical",
     "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
@@ -35,7 +35,7 @@ tests = [
   "config": {
     "size": [400,100],
     "path": test_path,
-    "use_colour": True,
+    "palette": "bw",
     "autoflip": False,
     "orientation": "vertical",
     "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
@@ -47,7 +47,7 @@ tests = [
   "config": {
     "size": [400,100],
     "path": test_path,
-    "use_colour": True,
+    "palette": "bwr",
     "autoflip": True,
     "orientation": "vertical",
     "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
@@ -59,7 +59,7 @@ tests = [
   "config": {
     "size": [400,100],
     "path": test_path,
-    "use_colour": True,
+    "palette": "bwy",
     "autoflip": True,
     "orientation": "horizontal",
     "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
@@ -71,7 +71,7 @@ tests = [
   "config": {
     "size": [500, 800],
     "path": test_path,
-    "use_colour": True,
+    "palette": "bw",
     "autoflip": True,
     "orientation": "vertical",
     "padding_x": 0, "padding_y": 0, "fontsize": 12, "language": "en"
@@ -83,7 +83,7 @@ tests = [
   "config": {
     "size": [500, 800],
     "path": test_path,
-    "use_colour": True,
+    "palette": "bwr",
     "autoflip": True,
     "orientation": "vertical",
     "padding_x": 20, "padding_y": 20, "fontsize": 12, "language": "en"
