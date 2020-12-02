@@ -5,6 +5,7 @@
 RSS module for InkyCal Project
 Copyright by aceisace
 """
+import re
 
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
@@ -111,7 +112,9 @@ class Feeds(inkycal_module):
     for feeds in self.feed_urls:
       text = feedparser.parse(feeds)
       for posts in text.entries:
-        parsed_feeds.append(f'•{posts.title}: {posts.summary}')
+        summary = posts.summary
+        parsed_feeds.append(
+          f"•{posts.title}: {re.sub('<[^<]+?>', '', posts.summary)}")
 
     self._parsed_feeds = parsed_feeds
 
