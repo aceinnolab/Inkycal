@@ -120,7 +120,7 @@ class Inkyimage:
       self.image = image
       print(f'flipped image by {angle} degrees')
 
-  def autoflip(self, layout):
+  def autoflip(self, layout:str):
     """flips the image automatically to the given layout.
 
     Args:
@@ -172,7 +172,7 @@ class Inkyimage:
   def resize(self, width=None, height=None):
     """Resize an image to desired width or height"""
     if self._image_loaded():
-
+      
       if width == None and height == None:
         print('no height of width specified')
         return
@@ -255,12 +255,20 @@ class Inkyimage:
       palette_im = Image.new('P', (1,1))
 
       # Attach the created palette. The palette should have 256 colours
-      # equivalent to 768 integers
-      palette_im.putpalette(pal* (256//colours))
 
-      # Quantize the image to given palette
-      quantized_im = image.quantize(palette=palette_im, dither=dither)
-      quantized_im = quantized_im.convert('RGB')
+      # todo: determine if image contains of only colors in pal
+      # when so, skip quantizing, as this may only cause unwanted dithering
+      needs_quantizing = True
+
+      if needs_quantizing :
+        # equivalent to 768 integers
+        palette_im.putpalette(pal* (256//colours))
+
+        # Quantize the image to given palette
+        quantized_im = image.quantize(palette=palette_im, dither=dither)
+        quantized_im = quantized_im.convert('RGB')
+      else :
+        quantized_im = image
 
       # get rgb of the non-black-white colour from the palette
       rgb = [pal[x:x+3] for x in range(0, len(pal),3)]
