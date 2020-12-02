@@ -31,25 +31,31 @@ class Inkyimage:
     # give an OK message
     print(f'{filename} loaded')
 
-  def load(self, path):
+  def load(self, path:str, bodyAsJson:str=None):
     """loads an image from a URL or filepath.
 
     Args:
       - path:The full path or url of the image file
         e.g. `https://sample.com/logo.png` or `/home/pi/Downloads/nice_pic.png`
+      - bodyAsJson:Optional arguments to pass along with path, when path is a url.
+        e.g. `{"id":"42", "token": "my_secr3t_t0ken"}`
 
     Raises:
       - FileNotFoundError: This Exception is raised when the file could not be
         found.
       - OSError: A OSError is raised when the URL doesn't point to the correct
         file-format, i.e. is not an image
-      - TypeError: if the URLS doesn't start with htpp
+      - TypeError: if the URLS doesn't start with http
     """
     # Try to open the image if it exists and is an image file
     try:
       if path.startswith('http'):
         logger.debug('loading image from URL')
-        image = Image.open(requests.get(path, stream=True).raw)
+        if bodyAsJson :
+          # body has been provided, assume POST
+          image = Image.open(requests.post(url = path, json = bodyAsJson, stream=True).raw)
+        else:
+          image = Image.open(requests.get(path, stream=True).raw)
       else:
         logger.info('loading image from local path')
         image = Image.open(path)

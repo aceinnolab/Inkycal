@@ -23,8 +23,8 @@ class Inkyimage(inkycal_module):
   requires = {
     
     "path":{
-      "label":"Path to a local folder, e.g. /home/pi/Desktop/images. "
-              "Only PNG and JPG/JPEG images are used for the slideshow."
+      "label":"Url or path to a local folder, e.g. /home/pi/Desktop/images. "
+              "Only PNG and JPG/JPEG images can be used."
       },
 
     "palette": {
@@ -36,6 +36,11 @@ class Inkyimage(inkycal_module):
 
   optional = {
     
+    "path_body":{
+        "label":"Optional and advanced: body to send along to the url in Json format."
+                "Can be used for image generation services.",
+        },
+
     "autoflip":{
         "label":"Should the image be flipped automatically?",
         "options": [True, False]
@@ -60,10 +65,11 @@ class Inkyimage(inkycal_module):
         raise Exception(f'config is missing {param}')
 
     # optional parameters
-    self.path = config['path']
-    self.palette = config['palette']
-    self.autoflip = config['autoflip']
-    self.orientation = config['orientation']
+    self.path:str        = config['path']
+    self.palette:str     = config['palette']
+    self.autoflip:bool   = config['autoflip']
+    self.orientation:str = config['orientation']
+    self.path_body:str   = config['path_body']
 
     # give an OK message
     print(f'{filename} loaded')
@@ -83,7 +89,9 @@ class Inkyimage(inkycal_module):
     im = Images()
 
     # use the image at the first index
-    im.load(self.path)
+
+    # todo: substitute more variables, like model or anything else that is determined at runtime, like colors in the palette
+    im.load(self.path,self.path_body)
 
     # Remove background if present
     im.remove_alpha()
