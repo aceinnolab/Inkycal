@@ -25,6 +25,7 @@ class Inkyimage(inkycal_module):
     "path":{
       "label":"Url or path to a local folder, e.g. /home/pi/Desktop/images. "
               "Only PNG and JPG/JPEG images can be used."
+              "Placeholders {width},{height} will be substituted with actual values."
       },
 
     "palette": {
@@ -91,6 +92,10 @@ class Inkyimage(inkycal_module):
     # use the image at the first index
 
     # todo: substitute more variables, like model or anything else that is determined at runtime, like colors in the palette
+    path = self.path \
+               .replace("{width}" ,f"{im_width}") \
+               .replace("{height}",f"{im_height}")
+
     im.load(self.path,self.path_body)
 
     # Remove background if present
