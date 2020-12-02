@@ -28,9 +28,9 @@ class Slideshow(inkycal_module):
               "Only PNG and JPG/JPEG images are used for the slideshow."
       },
 
-    "use_colour": {
-      "label":"Does the display support colour?",
-      "options": [True, False]
+    "palette": {
+      "label":"Which palette should be used for converting images?",
+      "options": ["bw", "bwr", "bwy"]
       }
 
     }
@@ -62,7 +62,7 @@ class Slideshow(inkycal_module):
 
     # optional parameters
     self.path = config['path']
-    self.use_colour = config['use_colour']
+    self.palette = config['palette']
     self.autoflip = config['autoflip']
     self.orientation = config['orientation']
 
@@ -105,6 +105,9 @@ class Slideshow(inkycal_module):
     # initialize custom image class
     im = Images()
 
+    # temporary print method, prints current filename
+    print(f'slideshow - current image name: {self.images[0].split("/")[-1]}')
+
     # use the image at the first index
     im.load(self.images[0])
 
@@ -118,12 +121,8 @@ class Slideshow(inkycal_module):
     # resize the image so it can fit on the epaper
     im.resize( width=im_width, height=im_height )
 
-    # convert images according to given settings
-    if self.use_colour == False:
-      im_black = im.to_mono()
-      im_colour = Image.new('RGB', size = im_black.size, color = 'white')
-    else:
-      im_black, im_colour = im.to_colour()
+    # convert images according to specified palette
+    im_black, im_colour = im.to_palette(self.palette)
 
     # with the images now send, clear the current image
     im.clear()
