@@ -80,7 +80,7 @@ class Inkyimage:
 
   @staticmethod
   def preview(image):
-    """"Previews an image on gpicview (only works on Rapsbian with Desktop)
+    """"Previews an image on gpicview (only works on Raspbian with Desktop)
 
 
     """
