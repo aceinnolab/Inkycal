@@ -215,6 +215,7 @@ class Inkyimage:
       image = self.image.convert('RGB')
     else:
       print('No image loaded')
+      return
 
     if palette == 'bwr':
       # black-white-red palette
