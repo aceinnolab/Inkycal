@@ -229,7 +229,7 @@ class Inkycal:
     self._assemble()
 
   def run(self):
-    """Runs main programm in nonstop mode.
+    """Runs main program in nonstop mode.
 
     Uses a infinity loop to run Inkycal nonstop. Inkycal generates the image
     from all modules, assembles them in one image, refreshed the E-Paper and
@@ -317,7 +317,7 @@ class Inkycal:
           Display.render(im_black)
 
       print(f'\nNo Errors since {counter} display updates \n'
-            f'Programm started {runtime.humanize()}')
+            f'Program started {runtime.humanize()}')
 
       sleep_time = self.countdown()
       time.sleep(sleep_time)

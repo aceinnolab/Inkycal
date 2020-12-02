@@ -172,7 +172,7 @@ The order is from latest to oldest and structured in the following way:
 
 ### Changed
 * Combined the software for the 2-colour and 3-Colour version
-* Split the main script into a settings file and the main programm itself.
+* Split the main script into a settings file and the main program itself.
 
 ## [1.2] Early October 2018
 
