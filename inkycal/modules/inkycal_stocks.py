@@ -25,8 +25,8 @@ class Stocks(inkycal_module):
 
   name = "Stocks - Displays stock market infos from Yahoo finance"
 
-  # optional parameters
-  optional = {
+  # required parameters
+  required = {
 
     "tickers": {
 
