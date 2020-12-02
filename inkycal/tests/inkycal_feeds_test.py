@@ -22,6 +22,16 @@ tests = [
     "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
     }
 },
+{
+  "position": 1,
+  "name": "Feeds",
+  "config": {
+    "size": [400,100],
+    "feed_urls": "https://www.anekdot.ru/rss/export_top.xml",
+    "shuffle_feeds": False,
+    "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
+    }
+},
 ]
 
 class module_test(unittest.TestCase):
