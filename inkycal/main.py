@@ -43,7 +43,7 @@ stream_handler.setLevel(logging.ERROR)
 logging.basicConfig(
   level = logging.DEBUG,
   format='%(asctime)s | %(name)s |  %(levelname)s: %(message)s',
-  datefmt='%d.%m.%Y %H:%M',
+  datefmt='%d-%m-%Y %H:%M:%S',
   handlers=[
 
         stream_handler,                     # add stream handler from above
