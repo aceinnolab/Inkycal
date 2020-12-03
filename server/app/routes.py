@@ -72,7 +72,7 @@ def inkycal_config():
             height = height-info_height
 
         # get all module heights, calculate single part
-        module_sizes = [int(request.form.get("module"+str(i)+"_height")) for i in range(1, no_of_modules+1)]
+        module_sizes = [int(request.form.get(f"module{i}_height")) for i in range(1, no_of_modules+1)]
 
         if sum(module_sizes) != 0:
             single_part = height / sum(module_sizes)
@@ -87,7 +87,7 @@ def inkycal_config():
                 for modules in settings:
                     if modules['name'] == request.form.get(module):
 
-                        module_height = int( request.form.get("module"+str(i)+"_height") )
+                        module_height = int( request.form.get(f"module{i}_height") )
                         conf['config']['size'] = (width, int(single_part*module_height) )
 
                         # Add required fields to the config of the module in question
@@ -95,7 +95,7 @@ def inkycal_config():
                         # Convert "True" to True, "False" to False and empty input to None
                         if 'requires' in modules:
                             for key in modules['requires']:
-                                val = request.form.get('module'+str(i)+'_'+key).replace(" ", "")
+                                val = request.form.get(f'module{i}_{key}').replace(" ", "")
                                 if val == "True":
                                     val = True
                                 elif val == "False":
@@ -110,8 +110,8 @@ def inkycal_config():
                         # Convert "True" to True, "False" to False and empty input to None
                         if 'optional' in modules:
                             for key in modules['optional']:
-                                if request.form.get(module+'_'+key):
-                                    val = request.form.get('module'+str(i)+'_'+key).replace(" ", "")
+                                if request.form.get(f'module{i}_{key}'):
+                                    val = request.form.get(f'module{i}_{key}').replace(" ", "")
                                     if val == "True":
                                         val = True
                                     elif val == "False":
