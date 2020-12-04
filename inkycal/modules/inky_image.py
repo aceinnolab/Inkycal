@@ -29,7 +29,7 @@ class Inkyimage:
     self.image = image
 
     # give an OK message
-    print(f'{filename} loaded')
+    logger.info(f'{filename} loaded')
 
   def load(self, path):
     """loads an image from a URL or filepath.
@@ -48,27 +48,30 @@ class Inkyimage:
     # Try to open the image if it exists and is an image file
     try:
       if path.startswith('http'):
-        logger.debug('loading image from URL')
+        logger.info('loading image from URL')
         image = Image.open(requests.get(path, stream=True).raw)
       else:
         logger.info('loading image from local path')
         image = Image.open(path)
     except FileNotFoundError:
-      raise ('Your file could not be found. Please check the filepath')
+      logger.error('No image file found', exc_info=True)
+      raise Exception('Your file could not be found. Please check the filepath')
+    
     except OSError:
-      raise ('Please check if the path points to an image file.')
+      logger.error('Invalid Image file provided', exc_info=True)
+      raise Exception('Please check if the path points to an image file.')
 
-    logger.debug(f'width: {image.width}, height: {image.height}')
+    logger.info(f'width: {image.width}, height: {image.height}')
 
     image.convert(mode='RGBA') #convert to a more suitable format
     self.image = image
-    print('loaded Image')
+    logger.info('loaded Image')
 
   def clear(self):
-    """Removes currently saved image if present"""
+    """Removes currently saved image if present."""
     if self.image:
       self.image = None
-      print('cleared')
+      logger.info('cleared previous image')
 
   def _preview(self):
     """Preview the image on gpicview (only works on Rapsbian with Desktop)"""
@@ -80,9 +83,7 @@ class Inkyimage:
 
   @staticmethod
   def preview(image):
-    """"Previews an image on gpicview (only works on Rapsbian with Desktop)
-
-
+    """"Previews an image on gpicview (only works on Rapsbian with Desktop).
     """
     path = '/home/pi/Desktop/'
     image.save(path+'temp.png')
@@ -94,7 +95,7 @@ class Inkyimage:
     if self.image:
       return True
     else:
-      print('image not loaded')
+      logger.error('image not loaded')
       return False
 
   def flip(self, angle):
@@ -107,12 +108,12 @@ class Inkyimage:
 
       image = self.image
       if not angle % 90 == 0:
-        print('Angle must be a multiple of 90')
+        logger.error('Angle must be a multiple of 90')
         return
 
       image = image.rotate(angle, expand = True)
       self.image = image
-      print(f'flipped image by {angle} degrees')
+      logger.info(f'flipped image by {angle} degrees')
 
   def autoflip(self, layout):
     """flips the image automatically to the given layout.
@@ -133,15 +134,15 @@ class Inkyimage:
       image = self.image
       if layout == 'horizontal':
         if (image.height > image.width):
-          print('image width greater than image height, flipping')
+          logger.info('image width greater than image height, flipping')
           image = image.rotate(90, expand=True)
 
       elif layout == 'vertical':
         if (image.width > image.height):
-          print('image width greater than image height, flipping')
+          logger.info('image width greater than image height, flipping')
           image = image.rotate(90, expand=True)
       else:
-        print('layout not supported')
+        logger.error('layout not supported')
         return
       self.image = image
 
@@ -155,20 +156,19 @@ class Inkyimage:
       image = self.image
 
       if len(image.getbands()) == 4:
-        print('has alpha')
-        logger.debug('removing transparency')
+        logger.info('removing alpha channel')
         bg = Image.new('RGBA', (image.width, image.height), 'white')
         im = Image.alpha_composite(bg, image)
 
         self.image.paste(im, (0,0))
-        print('removed alpha')
+        logger.info('removed transparency')
 
   def resize(self, width=None, height=None):
     """Resize an image to desired width or height"""
     if self._image_loaded():
 
       if width == None and height == None:
-        print('no height of width specified')
+        logger.error('no height of width specified')
         return
 
       image = self.image
@@ -178,7 +178,7 @@ class Inkyimage:
         wpercent = (width/float(image.width))
         hsize = int((float(image.height)*float(wpercent)))
         image = image.resize((width, hsize), Image.ANTIALIAS)
-        logger.debug(f"resized image from {initial_width} to {image.width}")
+        logger.info(f"resized image from {initial_width} to {image.width}")
         self.image = image
 
       if height:
@@ -186,8 +186,36 @@ class Inkyimage:
         hpercent = (height / float(image.height))
         wsize = int(float(image.width) * float(hpercent))
         image = image.resize((wsize, height), Image.ANTIALIAS)
-        logger.debug(f"resized image from {initial_height} to {image.height}")
+        logger.info(f"resized image from {initial_height} to {image.height}")
         self.image = image
+
+  @staticmethod
+  def merge(image1, image2):
+    """Merges two images into one.
+
+    Replaces white pixels of the first image with transparent ones. Then pastes
+    the first image on the second one.
+
+    Args:
+      - image1: A PIL Image object in 'RGBA' mode.
+      - image2: A PIL Image object in 'RGBA' mode.
+
+    Returns:
+      - A single image.
+    """
+
+    def clear_white(img):
+      """Replace all white pixels from image with transparent pixels"""
+      x = numpy.asarray(img.convert('RGBA')).copy()
+      x[:, :, 3] = (255 * (x[:, :, :3] != 255).any(axis=2)).astype(numpy.uint8)
+      return Image.fromarray(x)
+
+    image2 = clear_white(image2)
+    image1.paste(image2, (0,0), image2)
+    logger.info('merged given images into one')
+
+    return image1
+
 
   def to_palette(self, palette, dither=True):
     """Maps an image to a given colour palette.
@@ -214,7 +242,7 @@ class Inkyimage:
     if self._image_loaded():
       image = self.image.convert('RGB')
     else:
-      print('No image loaded')
+      logger.error('No image loaded')
 
     if palette == 'bwr':
       # black-white-red palette
@@ -228,6 +256,7 @@ class Inkyimage:
       pal = None
 
     else:
+      logger.error('The given palette is unsupported.')
       raise ValueError('The given palette is not supported.')
 
     if pal:
@@ -294,6 +323,8 @@ class Inkyimage:
     else:
       im_black = image.convert('1', dither=dither)
       im_colour = Image.new(mode='RGB', size=im_black.size, color='white')
+
+    logger.info('mapped image to specified palette')
 
     return im_black, im_colour
 
