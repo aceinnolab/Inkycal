@@ -16,3 +16,10 @@ Custom functions
 .. automodule:: inkycal.custom.functions
   :members:
 
+Helper classes
+=================
+.. automodule:: inkycal.modules.ical_parser
+  :members:
+
+.. automodule:: inkycal.modules.inky_image
+  :members:
