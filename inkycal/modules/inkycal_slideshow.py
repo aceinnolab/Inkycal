@@ -38,8 +38,8 @@ class Slideshow(inkycal_module):
   optional = {
     
     "autoflip":{
-        "label":"Should the image be flipped automatically?",
-        "options": [True, False]
+        "label":"Should the image be flipped automatically? Default is False",
+        "options": [False, True]
         },
 
     "orientation":{

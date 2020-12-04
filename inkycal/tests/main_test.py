@@ -1,7 +1,14 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+"""
+Main test (main)
+Copyright by aceisace
+"""
+import os
 import unittest
 
 from inkycal import Inkycal
-import os
 
 test_config = """
 {
