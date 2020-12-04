@@ -1,12 +1,25 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+"""
+Image test (inkycal_image)
+Copyright by aceisace
+"""
+
 import unittest
 from inkycal.modules import Inkyimage as Module
 from inkycal.custom import top_level
+from helper_functions import *
+environment = get_environment()
+
+# Set to True to preview images. Only works on Raspberry Pi OS with Desktop
+use_preview = False
+
 
 test_path = f'{top_level}/Gallery/coffee.png'
 
 tests = [
 {
-  "position": 1,
   "name": "Inkyimage",
   "config": {
     "size": [400,200],
@@ -18,7 +31,6 @@ tests = [
     }
 },
 {
-  "position": 1,
   "name": "Inkyimage",
   "config": {
     "size": [800,500],
@@ -30,7 +42,6 @@ tests = [
     }
 },
 {
-  "position": 1,
   "name": "Inkyimage",
   "config": {
     "size": [400,100],
@@ -42,7 +53,6 @@ tests = [
     }
 },
 {
-  "position": 1,
   "name": "Inkyimage",
   "config": {
     "size": [400,100],
@@ -54,7 +64,6 @@ tests = [
     }
 },
 {
-  "position": 1,
   "name": "Inkyimage",
   "config": {
     "size": [400,100],
@@ -66,7 +75,6 @@ tests = [
     }
 },
 {
-  "position": 1,
   "name": "Inkyimage",
   "config": {
     "size": [500, 800],
@@ -78,7 +86,6 @@ tests = [
     }
 },
 {
-  "position": 1,
   "name": "Inkyimage",
   "config": {
     "size": [500, 800],
@@ -101,8 +108,15 @@ class module_test(unittest.TestCase):
     for test in tests:
       print(f'test {tests.index(test)+1} generating image..')
       module = Module(test)
-      module.generate_image()
+      im_black, im_colour = module.generate_image()
       print('OK')
+      if use_preview == True and environment == 'Raspberry':
+        preview(merge(im_black, im_colour))
 
 if __name__ == '__main__':
+
+  logger = logging.getLogger()
+  logger.level = logging.DEBUG
+  logger.addHandler(logging.StreamHandler(sys.stdout))
+
   unittest.main()
