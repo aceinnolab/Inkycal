@@ -1,9 +1,22 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+"""
+Jokes test (inkycal_jokes)
+Copyright by aceisace
+"""
+
 import unittest
 from inkycal.modules import Jokes as Module
+from helper_functions import *
+environment = get_environment()
+
+# Set to True to preview images. Only works on Raspberry Pi OS with Desktop
+use_preview = False
+
 
 tests = [
 {
-  "position": 1,
   "name": "Jokes",
   "config": {
       "size": [300, 60],
@@ -11,7 +24,6 @@ tests = [
       }
 },
 {
-  "position": 1,
   "name": "Jokes",
   "config": {
       "size": [300, 30],
@@ -19,7 +31,6 @@ tests = [
       }
 },
 {
-  "position": 1,
   "name": "Jokes",
   "config": {
       "size": [100, 800],
@@ -38,8 +49,15 @@ class module_test(unittest.TestCase):
     for test in tests:
       print(f'test {tests.index(test)+1} generating image..')
       module = Module(test)
-      module.generate_image()    
+      im_black, im_colour = module.generate_image()
       print('OK')
+      if use_preview == True and environment == 'Raspberry':
+        preview(merge(im_black, im_colour))
 
 if __name__ == '__main__':
+
+  logger = logging.getLogger()
+  logger.level = logging.DEBUG
+  logger.addHandler(logging.StreamHandler(sys.stdout))
+
   unittest.main()

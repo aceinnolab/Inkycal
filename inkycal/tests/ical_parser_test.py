@@ -1,8 +1,19 @@
-import unittest
-from inkycal.modules.ical_parser import iCalendar
-from urllib.request import urlopen
-import arrow
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+"""
+iCalendar parser test (ical_parser)
+Copyright by aceisace
+"""
+
 import os
+import arrow
+import unittest
+from urllib.request import urlopen
+
+from inkycal.modules.ical_parser import iCalendar
+from helper_functions import *
+
 
 ical = iCalendar()
 test_ical = 'https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics'
@@ -39,4 +50,9 @@ class ical_parser_test(unittest.TestCase):
     os.remove('dummy.ical')
 
 if __name__ == '__main__':
+
+  logger = logging.getLogger()
+  logger.level = logging.DEBUG
+  logger.addHandler(logging.StreamHandler(sys.stdout))
+
   unittest.main()
