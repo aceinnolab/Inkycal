@@ -19,7 +19,7 @@ class Display:
   args:
     - epaper_model: The name of your E-Paper model.
 
-  
+
   """
 
   def __init__(self, epaper_model):
@@ -58,14 +58,14 @@ class Display:
         black in this image will show up as either red/yellow.
 
     Rendering an image for black-white E-Paper displays:
-    
+
     >>> sample_image = PIL.Image.open('path/to/file.png')
     >>> display = Display('my_black_white_display')
     >>> display.render(sample_image)
 
 
     Rendering black-white on coloured E-Paper displays:
-    
+
     >>> sample_image = PIL.Image.open('path/to/file.png')
     >>> display = Display('my_coloured_display')
     >>> display.render(sample_image, sample_image)
@@ -204,7 +204,7 @@ class Display:
     access to the E-Paper.
 
     You can use this function directly without creating the Display class:
-    
+
     >>> Display.get_display_names()
     """
     driver_files = top_level+'/inkycal/display/drivers/*.py'
@@ -213,7 +213,7 @@ class Display:
     drivers.remove('__init__')
     drivers.remove('epdconfig')
     print(*drivers, sep='\n')
-            
+
 if __name__ == '__main__':
   print("Running Display class in standalone mode")
-  
+
