@@ -39,9 +39,10 @@ class EPD:
 
   def getbuffer(self, image):
     """ad-hoc"""
+    image = image.rotate(90, expand=True)
     image.convert('RGB').save(images+'canvas.bmp', 'BMP')
     command = 'sudo {}IT8951/IT8951 0 0 {}'.format(driver_dir, images+'canvas.bmp')
-    print(command)
+    #print(command)
     return command
 
   def setup(self):
