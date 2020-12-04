@@ -6,15 +6,17 @@ Main class for inkycal Project
 Copyright by aceisace
 """
 
-from inkycal.display import Display
-from inkycal.custom import *
 import os
 import traceback
-import logging
-from logging.handlers import RotatingFileHandler
 import arrow
 import time
 import json
+import logging
+from logging.handlers import RotatingFileHandler
+
+from inkycal.display import Display
+from inkycal.custom import *
+from inkycal.modules.inky_image import Inkyimage as Images
 
 try:
   from PIL import Image
@@ -39,9 +41,9 @@ except ImportError:
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.ERROR)
 
-# Save all logs to a file, which contains much more detailed output
+# Save all logs to a file, which contains more detailed output
 logging.basicConfig(
-  level = logging.DEBUG,
+  level = logging.INFO,
   format='%(asctime)s | %(name)s |  %(levelname)s: %(message)s',
   datefmt='%d-%m-%Y %H:%M:%S',
   handlers=[
@@ -229,7 +231,7 @@ class Inkycal:
     self._assemble()
 
   def run(self):
-    """Runs main program in nonstop mode.
+    """Runs main programm in nonstop mode.
 
     Uses a infinity loop to run Inkycal nonstop. Inkycal generates the image
     from all modules, assembles them in one image, refreshed the E-Paper and
@@ -274,7 +276,7 @@ class Inkycal:
           print('Error!')
           print(traceback.format_exc())
           self.info += f"module {number}: Error!  "
-          logging.error(f'Exception in module {number}:', exc_info=True)
+          logger.exception(f'Exception in module {number}')
 
       if errors:
         print('Error/s in modules:',*errors)
@@ -317,7 +319,7 @@ class Inkycal:
           Display.render(im_black)
 
       print(f'\nNo Errors since {counter} display updates \n'
-            f'Program started {runtime.humanize()}')
+            f'Programm started {runtime.humanize()}')
 
       sleep_time = self.countdown()
       time.sleep(sleep_time)
@@ -337,15 +339,7 @@ class Inkycal:
       im1 = Image.open(im1_path).convert('RGBA')
       im2 = Image.open(im2_path).convert('RGBA')
 
-      def clear_white(img):
-        """Replace all white pixels from image with transparent pixels
-        """
-        x = numpy.asarray(img.convert('RGBA')).copy()
-        x[:, :, 3] = (255 * (x[:, :, :3] != 255).any(axis=2)).astype(numpy.uint8)
-        return Image.fromarray(x)
-
-      im2 = clear_white(im2)
-      im1.paste(im2, (0,0), im2)
+      im1 = Images.merge(im1, im2)
 
     # If there is no image for the coloured-band, return the bw-image
     elif os.path.exists(im1_path) and not os.path.exists(im2_path):
@@ -446,13 +440,6 @@ class Inkycal:
     if self.optimize == True:
       im_black = self._optimize_im(im_black)
       im_colour = self._optimize_im(im_colour)
-
-    # For the 9.7" ePaper, the image needs to be flipped by 90 deg first
-    # The other displays flip the image automatically
-    if self.settings["model"] == "9_in_7":
-      print('flipping images for 9.7" epaper')
-      im_black = im_black.rotate(90, expand=True)
-      im_colour = im_colour.rotate(90, expand=True)
 
     im_black.save(self.image_folder+'/canvas.png', 'PNG')
     im_colour.save(self.image_folder+'/canvas_colour.png', 'PNG')
