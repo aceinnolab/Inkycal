@@ -13,6 +13,7 @@ import arrow
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 
+
 class Calendar(inkycal_module):
   """Calendar class
   Create monthly calendar and show events from given icalendars
@@ -102,16 +103,15 @@ class Calendar(inkycal_module):
     im_colour = Image.new('RGB', size = im_size, color = 'white')
 
     # Allocate space for month-names, weekdays etc.
-    month_name_height = int(im_height * 0.1)
-    weekdays_height = int(im_height * 0.05)
+    month_name_height = int(im_height * 0.10)
+    weekdays_height = int(self.font.getsize('hg')[1] * 1.25)
     logger.debug(f"month_name_height: {month_name_height}")
     logger.debug(f"weekdays_height: {weekdays_height}")
-
 
     if self.show_events == True:
       logger.debug("Allocating space for events")
       calendar_height = int(im_height * 0.6)
-      events_height = int(im_height * 0.25)
+      events_height = im_height - month_name_height - weekdays_height - calendar_height
       logger.debug(f'calendar-section size: {im_width} x {calendar_height} px')
       logger.debug(f'events-section size: {im_width} x {events_height} px')
     else:
@@ -169,7 +169,8 @@ class Calendar(inkycal_module):
         (icon_width, weekdays_height),
         weekday_names[_],
         font = self.font,
-        autofit = True
+        autofit = True,
+        fill_height=1.0
         )
 
     # Create a calendar template and flatten (remove nestings)
@@ -191,7 +192,7 @@ class Calendar(inkycal_module):
     for number in calendar_flat:
       if number != int(now.day):
         write(im_black, grid[number], (icon_width, icon_height),
-          str(number), font = self.num_font, fill_height = 0.5)
+          str(number), font = self.num_font, fill_height = 0.5, fill_width=0.5)
 
     # Draw a red/black circle with the current day of month in white
     icon = Image.new('RGBA', (icon_width, icon_height))
@@ -208,6 +209,10 @@ class Calendar(inkycal_module):
 
     # If events should be loaded and shown...
     if self.show_events == True:
+
+      # If this month requires 5 instead of 6 rows, increase event section height
+      if len(cal.monthcalendar(now.year, now.month)) == 5:
+        events_height += icon_height
 
       # import the ical-parser
       from inkycal.modules.ical_parser import iCalendar
