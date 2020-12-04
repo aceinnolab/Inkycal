@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-RSS module for InkyCal Project
+Feeds module for InkyCal Project
 Copyright by aceisace
 """
 import re

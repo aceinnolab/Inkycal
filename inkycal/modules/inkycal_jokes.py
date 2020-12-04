@@ -96,7 +96,7 @@ class Jokes(inkycal_module):
       write(im_black, line_positions[_], (line_width, line_height),
             wrapped[_], font = self.font, alignment= 'left')
 
-    # Save image of black and colour channel in image-folder
+    # Return images for black and colour channels
     return im_black, im_colour
 
 
