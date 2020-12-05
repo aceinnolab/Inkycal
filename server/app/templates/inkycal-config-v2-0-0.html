@@ -1,0 +1,462 @@
+{% extends "base.html" %}
+
+<!-- Main container -->
+{% block content %}
+
+<!-- Wrap everything in a container-->
+<div class="container">
+
+<!-- heading -->
+<h3>Inkycal-Setup v.2.0.0</h3>
+
+<!-- Inkycal logo -->
+<img class="img-fluid" src="https://raw.githubusercontent.com/aceisace/Inky-Calendar/development/Gallery/logo-banner.png" alt="Inkycal Logo">
+<br><br>
+
+<!-- project link-->
+<div class="alert alert-light" role="alert">
+  <a href="https://github.com/aceisace/Inky-Calendar">For Inkycal Project of ace innovation laboratory - aceinnolab.com - by aceisace</a><br>
+</div>
+
+
+<!-- Instructions -->
+<div class="alert alert-primary" role="alert">
+    <h4 class="alert-heading">Instructions</h4>
+    Insert your personal details and preferences and click on 'Generate'.<br>
+    Copy the downloaded file to the Raspberry Pi.<br>
+    The location does not matter, however, you need to know the path to this file.<br>
+    <hr>
+    <p class="mb-0">If no value is filled in for any of the row, the default value will be used.</p>
+</div>
+
+<!-- Main form -->
+<form class="needs-validation" method="post" novalidate>
+    {{ form.hidden_tag() }}
+
+    <h4> General settings </h4>
+
+    <!-- group E-Paper settings in a single row-->
+    <div class="form-row">
+
+    <!-- model selection start-->
+    <div class="col">
+        <label for="model">Model</label>
+        <select class="form-control" id="model" name="model">
+
+            <option value="9_in_7">                     9.7" ePaper                         </option>
+
+            <option value="epd_7_in_5_v3_colour">       7.5" v3 (880x528px) colour          </option>
+            <option value="epd_7_in_5_v3" selected>     7.5" v3 (880x528px) black-white     </option>
+
+            <option value="epd_7_in_5_v2_colour">       7.5" v2 (800x480px) colour          </option>
+            <option value="epd_7_in_5_v2">              7.5" v2 (800x480px) black-white     </option>
+
+            <option value="epd_7_in_5_colour">          7.5" v1 (600x384px) colour          </option>
+            <option value="epd_7_in_5">                 7.5" v1 (600x384px) black-white     </option>
+
+            <option value="epd_5_in_83_colour">         5.83" colour                        </option>
+            <option value="epd_5_in_83">                5.83" black-white                   </option>
+
+            <option value="epd_4_in_2_colour">          4.2" colour                         </option>
+            <option value="epd_4_in_2">                 4.2" black-white                    </option>
+        </select>
+    </div>
+
+
+    <!-- Update interval start-->
+    <div class="col">
+        <label>Update interval</label><br>
+        <select class="form-control" id="update_interval" name="update_interval">
+            <option value=60 checked>           every 60 minutes                        </option>
+            <option value=30>                   every 30 minutes                        </option>
+            <option value=20>                   every 20 minutes                        </option>
+            <option value=15>                   every 15 minutes                        </option>
+            <option value=10>                   every 10 minutes                        </option>
+        </select>
+    </div>
+
+    <!-- Update interval end-->
+
+
+    <!-- Orientation start -->
+    <div class="col">
+        <label>Orientation</label><br>
+
+        <select class="form-control" id="orientation" name="orientation">
+            <option value=0 checked>            Flex cable left                         </option>
+            <option value=180>                  Flex cable right                        </option>
+        </select>
+
+    </div>
+
+    </div><br> <!-- row end -->
+
+    <!-- Calibration start -->
+    <div class="form-group">
+        <label>When should the display be calibrated? (Leave blank if you're unsure)</label>
+
+        <!-- Info about calibration (collapsible info)-->
+        <details>
+
+            <summary>Info about calibration</summary>
+            <blockquote class="blockquote">
+                Calibration is a way to retain nice colours on ePaper displays. It works by flushing colours a few times on the entire display.
+                Please choose 3 hours in 24-hour format (0-24) to specify at which hours calibration should be executed.
+                Please also note that it takes around 10-20 minutes to calibrate, so best to choose hours when you won't be looking at Inkycal.
+            </blockquote>
+
+        </details>
+
+
+        <!-- Calibration hours input fields-->
+        <div class="form-row">
+            <div class="col">
+                <input type="number" class="form-control" name="calibration_hour_1" value=0 min=0 max=24>
+            </div>
+
+            <div class="col">
+                <input type="number" class="form-control" name="calibration_hour_2" value=12 min=0 max=24>
+                </div>
+
+            <div class="col">
+                <input type="number" class="form-control" name="calibration_hour_3" value=18 min=0 max=24>
+            </div>
+        </div>
+        <!-- Calibration hours input end-->
+    </div>
+    <!-- Calibration end-->
+
+    <!-- Info section -->
+    <div class="form-row">
+        <div class="col">
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="info_section" name="info_section">
+                <label class="form-check-label" for="info_section">Show time of last update?</label>
+            </div>
+        </div>
+
+        <div class="col" id="info_height">
+            <div class="form-check">
+                <label class="form-check-label" for="info_section_height">Height in pixels</label>
+                <input type="number" class="form-control" id="info_section_height" name="info_section_height" value=30 min=0 max=100>
+            </div>
+        </div>
+
+    </div><br>
+
+    <h4> Common module settings </h4>
+    <div class="form-row">
+        <!-- language selection- shared by all modules -->
+        <div class="col">
+            <label for="language">Language</label>
+            <select class="form-control" id="language" name="language">
+
+                <option value="en" selected>    English                     </option>
+                <option value="de">             German                      </option>
+                <option value="ru">             Russian                     </option>
+                <option value="it">             Italian                     </option>
+                <option value="es">             Spanish                     </option>
+                <option value="fr">             French                      </option>
+                <option value="el">             Greek                       </option>
+                <option value="sv">             Swedish                     </option>
+                <option value="nl">             Dutch                       </option>
+                <option value="pl">             Polish                      </option>
+                <option value="ua">             Ukrainian                   </option>
+                <option value="nb">             Norwegian                   </option>
+                <option value="vi">             Vietnamese                  </option>
+                <option value="zh-tw">          Chinese-Taiwanese           </option>
+                <option value="zh">             Chinese                     </option>
+                <option value="ja">             Japanese                    </option>
+                <option value="ko">             Korean                      </option>
+
+            </select>
+        </div>
+
+
+        <!--fontsize selection - shared by all modules-->
+        <div class="col">
+            <label for="fontsize">Fontsize</label>
+            <input type="number" class="form-control" name="fontsize" placeholder=12 value=12 min=0 max=30>
+        </div>
+
+        <!--padding-top-bottom - shared by all modules-->
+        <div class="col">
+            <label for="padding_y">Padding top/bottom (in pixels) </label>
+            <input type="number" class="form-control" name="padding_y" placeholder=10 value=10 min=0 max=30>
+        </div>
+
+        <!--padding-left-right - shared by all modules-->
+        <div class="col">
+            <label for="padding_x">Padding right/left (in pixels) </label>
+            <input type="number" class="form-control" name="padding_x" placeholder=10 value=10 min=0 max=30>
+        </div>
+
+    </div><br>
+
+
+    <!--Create templates for modules with their respective config for later use-->
+    {% for module in conf %}
+    <template id={{ module["name"] }} >
+        <div class="card"><div class="card-header">{{ module["name_str"] }} config</div>
+            <div class="card-body">
+
+                {% if module['requires'] != {} %}
+                    <h5 class="card-title">Required config</h5>
+                {% endif %}
+
+                {% for key in module["requires"] %}
+                    {% if 'options' in module["requires"][key] %}
+                        <label for={{key}}>{{module["requires"][key]["label"]}} *</label>
+
+                        <select class="form-control" id={{key}} name={{ module["name"] }}_{{key}} required>
+                        {% for option in module["requires"][key]['options'] %}
+                            <option value={{option}}> {{option}} </option>
+                        {% endfor %}
+                        </select>
+
+                        <div class="invalid-feedback">Sorry, but this field should not be empty</div>
+                        <div class="valid-feedback"> Looks good! </div>
+                    {% endif %}
+
+                    {% if not 'options' in module["requires"][key] %}
+                        <label for={{key}}>{{module["requires"][key]["label"]}} *</label>
+                        <input type="text" class="form-control" id={{key}} name={{ module["name"] }}_{{key}} required>
+                        <div class="invalid-feedback">Sorry, but this field should not be empty</div>
+                        <div class="valid-feedback"> Looks good! </div>
+                    {% endif %}
+                    <br>
+                {% endfor %}
+
+
+                {% if module['optional'] != {} %}
+                    <h5 class="card-title">Optional config</h5>
+                {% endif %}
+
+                {% for key in module["optional"] %}
+
+                    {% if 'options' in module["optional"][key] %}
+                        <label for={{key}}>{{module["optional"][key]["label"]}}</label>
+
+                        <select class="form-control" id={{key}} name={{ module["name"] }}_{{key}}>
+                        {% for option in module["optional"][key]['options'] %}
+                            <option value={{option}}> {{option}} </option>
+                        {% endfor %}
+                        </select>
+
+                        <div class="invalid-feedback">Sorry, but this field should not be empty</div>
+                        <div class="valid-feedback"> Looks good! </div>
+                    {% endif %}
+
+                    {% if not 'options' in module["optional"][key] %}
+                        <label for={{key}}>{{module["optional"][key]["label"]}}</label>
+                        <input type="text" class="form-control" id={{key}} name={{ module["name"] }}_{{key}}>
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+        </div>
+    </template>
+    {% endfor %}
+
+    <h4> Modules config </h4>
+
+    <div class="alert alert-primary" role="alert">
+        Fields marked with an asterisk(*) are required <br>
+        <hr>
+        Module height is calculated by percentage or ratio.<br>
+        If all heights add up to 100, then heights are calculated by percentage.<br>
+        To assign the same height to all modules, the same number on all heights, e.g. 1:1:1 means all three modules will have the same height <br>
+        You can assign a different ratio too, e.g. 1:1:3, the third module has 3x the height of the first two modules.<br>
+    </div>
+
+    <!-- Basic template to choose module -->
+    <template id='module_template'>
+
+        <div id="module_id">
+            <div class="form-row">
+                <div class="col-md-8">
+                <label for="module" id="module_label">Module</label>
+                    <select class="form-control" id="selected_module" name="selected_module">
+                        <option value="None" checked>Empty</option>
+                        {% for module in conf%}
+                            <option value={{ module['name'] }} > {{module['name_str'] }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="module_height">Module height (by ratio)</label>
+                    <input type="number" class="form-control" id="module_height" name="module_height" value=20 placeholder=20 min=0 max=1200>
+                </div>
+
+            </div><br>
+            <div id="module_conf"></div>
+        </div>
+
+    </template>
+
+    <div class="module_section" id="modules"><!-- modules are added in this div --></div>
+
+
+    <br>
+    <div class="form-group">
+        <input class="btn btn-success" type="button" id="add_module" value="Add module">
+        <input class="btn btn-warning" type="button" id="remove_module" value="Remove last module">
+    </div>
+
+    <input type="number" class="d-none" id="module_counter" name="module_counter" value=0 min=0 max=10 readonly>
+
+<!--Show config of selected modules-->
+<script>
+$(document).ready(function(){
+
+var num_modules = 0;
+
+function add_module() {
+
+    num_modules += 1;
+    var new_name = 'module'+num_modules;
+    console.log('added module:',new_name);
+
+    var content = document.getElementById("module_template").content;
+    var targetContainer = document.getElementById("modules");
+    targetContainer.appendChild(document.importNode(content, true));
+
+    $('#module_id').attr("id", new_name);
+
+    $('#selected_module').attr("name", $('#selected_module').attr("name")+num_modules);
+    $('#selected_module').attr("id", $('#selected_module').attr("id")+num_modules);
+
+    $('#module_label').text("Module "+num_modules);
+    $('#module_label').attr("id", new_name+'_label');
+
+    $('#module_height').attr("name", new_name+'_height');
+    $('#module_height').attr("id", new_name+'_height');
+
+    $('#module_conf').attr("name", new_name+'_conf');
+    $('#module_conf').attr("id", new_name+'_conf');
+
+    $('#module_counter').attr('value', num_modules);
+}
+
+function remove_module() {
+    var new_name = 'module'+num_modules;
+    //console.log('removing last module');
+    $('#module'+num_modules).remove();
+    num_modules -= 1;
+    $('#module_counter').attr('value', num_modules);
+}
+
+$('#add_module').click(function(){
+    if (num_modules >= 10) {
+        console.log('you have exceeded the max number of modules!');
+        return false
+    } else {
+    add_module();
+    }
+})
+
+$('#remove_module').click(function(){
+    if (num_modules <= 0) {
+        console.log('Cannot remove any more modules!');
+        return false
+    } else {
+    console.log('removed module'+num_modules);
+    remove_module();
+    }
+})
+
+$("#info_height").hide();
+
+$("#info_section").click(function(){
+    if($(this).prop("checked") == true){
+        $('#info_height').show();
+    } else {
+        $('#info_height').hide();
+    }
+});
+
+function insert_config(module_no, module_name) {
+    console.log('module', module_no, ' set to ', module_name);
+
+    remove_config(module_no);
+
+    var module_template = document.querySelector("#"+module_name);
+    var clone = document.importNode(module_template.content, true);
+    $("#module"+module_no+"_conf").append(clone);
+
+    // With the selected module name known, we can replace the name tag of that module's config for unique id's
+    // This allows having multiple modules running with different configs for each instance
+
+    $("#module"+module_no+"_conf input").each(function(i) {
+        $(this).attr('id', "module"+module_no+"_"+$(this).attr('id'));
+        $(this).attr('name', $(this).attr('name').replace(module_name, "module"+module_no));
+    });
+
+    $("#module"+module_no+"_conf select").each(function(i) {
+        $(this).attr('id', "module"+module_no+"_"+$(this).attr('id'));
+        $(this).attr('name', $(this).attr('name').replace(module_name, "module"+module_no));
+    });
+
+}
+
+function remove_config(module_number) {
+    $("#module"+module_number+"_conf").empty();
+}
+
+$('#add_module, #remove_module').on('click',function() { //every time the add/remove module button is clicked
+
+    $("[id^=selected_module]").on('change',function() {
+
+        if ($(this).find("option:selected").val() == "None") { //check if parent is a certain name
+
+            var module_index = $(this).attr('id').replace('selected_module', "");
+            var is_module = $.isNumeric(module_index);
+            //console.log("module_index", module_index, "is_module", is_module);
+            if (is_module) { remove_config(module_index); }
+
+        } else {
+            console.log("found module");
+            var module_name = $(this).find("option:selected").val();
+            //console.log($(this).attr('id'));
+            var module_index = $(this).attr('id').replace('selected_module', "");
+            var is_module = $.isNumeric(module_index);
+            //console.log("name of module:", module_name, "index_of_module:", module_index, "is this a module: ", is_module);
+            if (document.getElementById(module_name) && is_module) {
+                insert_config(module_index, module_name);
+            }
+        }
+    });
+
+    });
+});
+</script>
+
+
+<script> // validation
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    var forms = document.getElementsByClassName('needs-validation');
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
+
+
+<div class="form-group"><br>
+    <button class="btn btn-primary btn-lg btn-block" type="submit">Generate settings file</button>
+</div>
+
+</form>
+
+</div>
+{% endblock %}
