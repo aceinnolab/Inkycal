@@ -181,7 +181,7 @@ class Inkycal:
     minutes = [_ for _ in update_timings if _>= now.minute][0] - now.minute
 
     # Print the remaining time in mins until next update
-    print(f'{minutes} Minutes left until next refresh')
+    print(f'{minutes} minutes left until next refresh')
 
     # Calculate time in seconds until next update
     remaining_time = minutes*60 + (60 - now.second)
@@ -318,8 +318,8 @@ class Inkycal:
 
           Display.render(im_black)
 
-      print(f'\nNo Errors since {counter} display updates \n'
-            f'Programm started {runtime.humanize()}')
+      print(f'\nNo errors since {counter} display updates \n'
+            f'program started {runtime.humanize()}')
 
       sleep_time = self.countdown()
       time.sleep(sleep_time)
