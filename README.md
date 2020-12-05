@@ -43,48 +43,15 @@ This software is in active development. To see the current development status, [
 * MicroUSB cable (for power)
 * Optional, a [3D-printable case](https://github.com/aceisace/Inkycal/wiki/3D-printable-files)
 
-### Installation
-```bash
-# clone the Inkycal repo
-git clone -b  release/2.0.0 https://github.com/aceisace/Inkycal
+# Installing Inkycal
 
-# go to Inkycal directory
-cd Inkycal
+## Configuring the Raspberry Pi
+1. Flash Raspberry Pi OS according to the [instructions](https://www.raspberrypi.org/software/)
+2. Create a settings file for Inkycal from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal-config-v2-0-0)
+3. Copy the generated settings.json file to the flashed SD card.
+4. 
 
-# install Inkycal
-pip3 install -e ./
-```
-
-### Creating a settings file
-Please visit the [Online WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal-config-v2-0-0) to create your settings.json file.
-
-* Fill in the details and click on `generate` to create your **settings.json** file
-* Copy the **settings.json** file to your raspberry pi (e.g. copy directly from computer to the SD Card,  WinSCP, VNC etc.) to the `/BOOT` directory. 
-
-### Running Inkycal
-Open `Python3` and run the commands below or paste the below content in an empty file and save it as a `.py` file:
-```python3
-# Open Python3 and import package
-from inkycal import Inkycal
-
-# tell the Inkycal class where your settings file is
-inky = Inkycal('/path/to/your/settings/file', render = True)
-# render means rendering (showing) on the ePaper. Setting render = False will not show anything on the ePaper
-
-# test if Inkycal can be run correctly, running this will show a bit of info for each module
-inky.test()
-
-# If there were no issues, you can run Inkycal nonstop:
-inky.run()
-```
-
-## Uninstalling Inkycal
-1) `pip3 uninstall inkycal`
-2) Remove the `Inkycal` folder
-
-
-# Setup
-## Getting the Raspberry Pi Zero W ready
+## Getting the Raspberry Pi ready
 1. Flash Raspberry Pi OS according to the instructions ([instructions](https://www.raspberrypi.org/software/))
 2. Create a simple text document named **ssh** in the boot directory to enable ssh. 
 3. Install the SD card and boot your Raspberry Pi. Connect to it over the network with ssh and login. 
@@ -95,6 +62,31 @@ inky.run()
 7. Optional: If you want to disable the on-board leds of the Raspberry, follow these instructions: 
 **[Disable on-board-led](https://www.jeffgeerling.com/blogs/jeff-geerling/controlling-pwr-act-leds-raspberry-pi)**
 
+### Installation
+```bash
+# clone the Inkycal repo
+git clone -b  release/2.0.0 https://github.com/aceisace/Inkycal
+
+# go to Inkycal directory
+cd Inkycal
+
+# install Inkycal
+pip3 install -e ./
+``` 
+
+### Running Inkycal
+Open `Python3` and run the commands below or paste the below content in an empty file and save it as a `.py` file:
+```python3
+from inkycal import Inkycal # Import Inkycal
+
+inky = Inkycal(render = True) # Initialise Inkycal
+inky.test()  # test if Inkycal can be run correctly, running this will show a bit of info for each module
+inky.run()   # If there were no issues, you can run Inkycal nonstop
+```
+
+## Uninstalling Inkycal
+1) `pip3 uninstall inkycal`
+2) Remove the `Inkycal` folder
 
 ## Contributing
 All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inkycal/blob/development/CONTRIBUTING.md).
