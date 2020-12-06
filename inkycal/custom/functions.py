@@ -40,7 +40,7 @@ available_fonts = [key for key,values in fonts.items()]
 def get_fonts():
   """Print all available fonts by name.
 
-  Searches the /font folder in Inykcal and displays all fonts found in
+  Searches the /font folder in Inkycal and displays all fonts found in
   there.
 
   Returns:
