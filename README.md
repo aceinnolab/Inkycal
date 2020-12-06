@@ -46,33 +46,35 @@ This software is in active development. To see the current development status, [
 # Installing Inkycal
 
 ## Configuring the Raspberry Pi
-1. Flash Raspberry Pi OS according to the [instructions](https://www.raspberrypi.org/software/)
-2. Create a settings file for Inkycal from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal-config-v2-0-0)
-3. Copy the generated settings.json file to the flashed SD card.
-4. 
-
-## Getting the Raspberry Pi ready
-1. Flash Raspberry Pi OS according to the instructions ([instructions](https://www.raspberrypi.org/software/))
-2. Create a simple text document named **ssh** in the boot directory to enable ssh. 
-3. Install the SD card and boot your Raspberry Pi. Connect to it over the network with ssh and login. 
-3. Expand the filesystem in the Terminal with **`sudo raspi-config --expand-rootfs`**
-4. Enable SPI by entering **`sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt`** in the Terminal
-5. Set the correct timezone with **`sudo dpkg-reconfigure tzdata`**, selecting the correct continent and then the capital of your country.
-6. Reboot to apply changes
-7. Optional: If you want to disable the on-board leds of the Raspberry, follow these instructions: 
-**[Disable on-board-led](https://www.jeffgeerling.com/blogs/jeff-geerling/controlling-pwr-act-leds-raspberry-pi)**
+1. Flash Raspberry Pi OS according to the [instructions](https://www.raspberrypi.org/software/). Leave the SD card plugged in your computer.
+2. Create and download `settings.json` file for Inkycal from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal-config-v2-0-0)
+4. Download the `ssh` text file from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/create_ssh)
+5. Create and download a WiFi-configuration file (`wpa_supplicant.conf`) from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/setup_wifi)
+6. Copy these three downloaded files to the flashed microSD card. On Windows, this is the only visible directory on the SD card. On Linux, copy these files to `/boot`
+7. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
+8. Once the green LED has stopped blinking after ~3 minutes, use an SSH client to connect to the Raspberry Pi. On Windows, you can use PUTTY but you can also use an SSH App
+on your smartphone. Use the address: `raspberrypi.local` with `pi` as the username and `raspberry` as the password.
+9. After connecting via SSH, run the following commands:
+```bash
+sudo raspi-config --expand-rootfs
+sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
+sudo dpkg-reconfigure tzdata
+```
+These commands expand the filesystem, enable SPI and setup the correct timezone on the Raspberry Pi. When running the last command, please select the continent you live in, press enter and then select the capital of the country you live in. Lastly, press enter.
+10. Change the passowrd for the user pi by entering `passwd` in the Terminal, enter your current password, hit enter, then type your new password and press enter. Please note you will have to remember this password to access your Raspberry Pi.
+11. Follow the steps in `Installation` (see below) on how to install Inkycal.
 
 ### Installation
 ```bash
 # clone the Inkycal repo
-git clone -b  release/2.0.0 https://github.com/aceisace/Inkycal
+git clone -b https://github.com/aceisace/Inkycal
 
 # go to Inkycal directory
 cd Inkycal
 
 # install Inkycal
 pip3 install -e ./
-``` 
+```
 
 ### Running Inkycal
 Open `Python3` and run the commands below or paste the below content in an empty file and save it as a `.py` file:
@@ -80,6 +82,7 @@ Open `Python3` and run the commands below or paste the below content in an empty
 from inkycal import Inkycal # Import Inkycal
 
 inky = Inkycal(render = True) # Initialise Inkycal
+# If your settings.json file is not in /boot, use the full path: inky = Inkycal('path/to/settings.json', render=True)
 inky.test()  # test if Inkycal can be run correctly, running this will show a bit of info for each module
 inky.run()   # If there were no issues, you can run Inkycal nonstop
 ```
@@ -91,7 +94,7 @@ inky.run()   # If there were no issues, you can run Inkycal nonstop
 ## Contributing
 All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inkycal/blob/development/CONTRIBUTING.md).
 
-The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer.
+The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer. If you want to have some faster responses, please use Discord (link below).
 
 ## Setting up VS Code Remote development in WSL
 In order to speed up development, most development tasks (apart from the actual rending to E-Ink display) can be developed on more powerful machines and in richer environments than running this on a Pi zero. In case of Windows PC the most convenient way is to use VS Code Remote development in Windows Subsystem for Linux (WSL), please follow [Tutorial](https://code.visualstudio.com/remote-tutorials/wsl/getting-started). 
