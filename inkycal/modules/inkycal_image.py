@@ -18,7 +18,7 @@ class Inkyimage(inkycal_module):
   """Displays an image from URL or local path
   """
 
-  name = "Inykcal Image - show an image from a URL or local path"
+  name = "Inkycal Image - show an image from a URL or local path"
 
   requires = {
     

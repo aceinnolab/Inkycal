@@ -639,7 +639,7 @@ class Inkycal:
         else:
           print('found, removing')
 
-    # Create a memory backup of inykcal init file
+    # Create a memory backup of inkycal init file
     with open(f"{top_level}/inkycal/__init__.py", mode ='r') as file:
       inkycal_init = file.read().splitlines()
 

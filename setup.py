@@ -7,7 +7,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 __project__ = "inkycal"
 __version__ = "2.0.0"
-__description__ = "Inykcal is a python3 software for syncing icalendar events, weather and news on selected E-Paper displays"
+__description__ = "Inkycal is a python3 software for syncing icalendar events, weather and news on selected E-Paper displays"
 __packages__ = ["inkycal"]
 __author__ = "aceisace"
 __author_email__ = "aceisace63@yahoo.com"

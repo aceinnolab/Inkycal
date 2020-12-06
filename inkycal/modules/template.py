@@ -2,7 +2,7 @@ import abc
 from inkycal.custom import *
 
 class inkycal_module(metaclass=abc.ABCMeta):
-  """Generic base class for inykcal modules"""
+  """Generic base class for inkycal modules"""
 
   @classmethod
   def __subclasshook__(cls, subclass):
