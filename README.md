@@ -16,7 +16,7 @@
    <a href="https://github.com/aceisace/Inkycal"><img alt="python" src="https://img.shields.io/badge/python-%3E3.7-lightgrey"></a>
 </p>
 
-Inykcal is a software written in python for selected E-Paper displays. It converts these displays into useful information dashboards. It's open-source, free for personal use, fully modular and user-friendly. Despite all this, Inkycal can run well even on the Raspberry Pi 0. Oh, and it's open for third-party modules! Hooray!
+Inykcal is a software written in python for selected E-Paper displays. It converts these displays into useful information dashboards. It's open-source, free for personal use, fully modular and user-friendly. Despite all this, Inkycal can run well even on the Raspberry Pi Zero. Oh, and it's open for third-party modules! Hooray!
 
 ## Main features
 * Monthly Calendar that shows events from your Google (or other) iCalendar/s
@@ -39,7 +39,7 @@ This software is in active development. To see the current development status, [
 
 ## Hardware required
 * One of the supported ePaper displays from waveshare: 4.2", 5.83", 7.5" (all variants), 9.7"
-* Any Raspberry Pi with 40 pins and WiFi. (Raspberry Pi 3/3B/3B+/3A/4/0W/0WH - Inkycal runs just fine on the Zero W/Zweo WH model!)
+* Any Raspberry Pi with 40 pins and WiFi. (Raspberry Pi 3/3B/3B+/3A/4/0W/0WH - Inkycal runs just fine on the Zero W/Zero WH model!)
 * MicroSD card (min. 4GB) for flashing Raspberry Pi OS **with Desktop**. **Lite is not supported!**
 * MicroUSB cable (for power)
 * Optional, a [3D-printable case](https://github.com/aceisace/Inkycal/wiki/3D-printable-files)
