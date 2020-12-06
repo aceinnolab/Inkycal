@@ -74,13 +74,13 @@ Yes, it's that simple! The above command runs the user-friendly installer. You c
 
 Should the installer fail, please open a issue or report the problem in Discord. In the meantime, you can try the [Manual Installation](https://github.com/aceisace/Inkycal/wiki/Manual-installation)
 
+If you expierence issues with getting started, please check out the [**FAQ**](https://github.com/aceisace/Inkycal/wiki). If this doesn't help, please get help from the Inkycal Discord server, we're happy to help!
+
+
 ## Contributing
 All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inkycal/blob/development/CONTRIBUTING.md).
 
 The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer. If you want to have some faster responses, please use Discord (link below).
-
-## Setting up VS Code Remote development in WSL
-In order to speed up development, most development tasks (apart from the actual rending to E-Ink display) can be developed on more powerful machines and in richer environments than running this on a Pi zero. In case of Windows PC the most convenient way is to use VS Code Remote development in Windows Subsystem for Linux (WSL), please follow [Tutorial](https://code.visualstudio.com/remote-tutorials/wsl/getting-started). 
 
 
 **P.S:** Don't forget to star and/or watch the repo. For those who have done so already, thank you very much!
