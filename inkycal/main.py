@@ -231,7 +231,7 @@ class Inkycal:
     self._assemble()
 
   def run(self):
-    """Runs main programm in nonstop mode.
+    """Runs main program in nonstop mode.
 
     Uses a infinity loop to run Inkycal nonstop. Inkycal generates the image
     from all modules, assembles them in one image, refreshed the E-Paper and
@@ -273,13 +273,13 @@ class Inkycal:
           self.info += f"module {number}: OK  "
         except Exception as Error:
           errors.append(number)
-          print('Error!')
+          print('error!')
           print(traceback.format_exc())
-          self.info += f"module {number}: Error!  "
+          self.info += f"module {number}: error!  "
           logger.exception(f'Exception in module {number}')
 
       if errors:
-        print('Error/s in modules:',*errors)
+        print('error/s in modules:',*errors)
         counter = 0
       else:
         counter += 1
