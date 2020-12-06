@@ -20,6 +20,11 @@ def index():
 def wifi_setup():
     return render_template('wifi.html', title='Wifi-setup')
 
+# SSH file
+@app.route('/create_ssh')
+def create_ssh():
+    return render_template('create_ssh.html', title='SSH file generator')
+
 
 # Inkycal-setup
 @app.route('/inkycal-config-v2-0-0', methods=['GET', 'POST'])

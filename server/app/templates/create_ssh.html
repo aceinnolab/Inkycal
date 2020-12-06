@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+<!-- Main container -->
+{% block content %}
+
+<!-- Wrap everything in a container-->
+<div class="container">
+
+<!-- heading -->
+<h3>SSH file generator</h3>
+
+<!-- Instructions -->
+<div class="alert alert-primary" role="alert">
+    <h4 class="alert-heading">Instructions</h4>
+    After flashing your microSD card with Raspberry Pi OS, click on Download SSH file. <br>
+    Place the generated file in the /BOOT folder to enable ssh.<br>
+    At the next boot, ssh will be enabled and this file will be deleted.
+    <hr>
+    You can now access the Raspberry Pi via it's IP address using a SSH Client of your choice.<br>
+    If you don't know the IP address, you can try using: raspberrypi.local<br>
+</div>
+
+<!-- Create a hidden div to prevent a fully empty file -->
+<div id='ssh' hidden># nothing in here</div>
+
+<div class="form-group">
+    <button type="button" class="btn btn-primary" onclick="getHTML('ssh.txt', 'ssh', 'text/plain')">Download SSH file</button>
+</div>
+
+<script>
+function getHTML(filename, id, mimeType) {
+var elHtml = document.getElementById(id).innerText;
+if (navigator.msSaveBlob) {
+  navigator.msSaveBlob(new Blob([elHtml], { type: mimeType + ';charset=utf-8;' }), filename);
+} else {
+    var link = document.createElement('a');
+    mimeType = mimeType || 'text/plain';
+    link.setAttribute('download', filename);
+    link.setAttribute('href', 'data:' + mimeType  +  ';charset=utf-8,' + encodeURIComponent(elHtml));
+    link.click();
+}}
+</script>
+
+
+</div>
+
+{% endblock %}
