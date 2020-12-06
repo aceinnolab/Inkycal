@@ -66,7 +66,13 @@ These commands expand the filesystem, enable SPI and setup the correct timezone 
 11. Follow the steps in `Installation` (see below) on how to install Inkycal.
 
 ### Installation
+Open a Terminal and enter the following command:
+```bash
+bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inkycal/main/installer.sh)"
+```
+Yes, it's that simple! The above command runs the user-friendly installer. You can install, update and uninstall inkycal with ease. What's more is that it also allows starting Inkycal at every boot!
 
+Should the installer fail, please open a issue or report the problem in Discord. In the meantime, you can try the [Manual Installation](https://github.com/aceisace/Inkycal/wiki/Manual-installation)
 
 ## Contributing
 All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inkycal/blob/development/CONTRIBUTING.md).
