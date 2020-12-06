@@ -1,4 +1,5 @@
 # Welcome to inkycal v2.0.0!
+## Please note that currently Inkycal is in a transition phase, please wait with installing until this notice is removed
 
 <p align="center">
         <img src="https://github.com/aceisace/Inkycal/blob/development/Gallery/logo.png" width="800">
@@ -8,11 +9,11 @@
     <a href="https://www.paypal.me/SaadNaseer" alt="Donate"><img src="https://img.shields.io/badge/Donate-PayPal-green.svg" /></a>
     <a href="https://github.com/aceisace/Inkycal/actions"><img src="https://github.com/aceisace/Inkycal/workflows/Python%20application/badge.svg"></a>
     <a href="https://github.com/aceisace/Inkycal/releases" alt="Version"><img src="https://img.shields.io/github/release/aceisace/Inkycal.svg" /></a>
-   <a href="https://github.com/aceisace/Inkycal/blob/Stable/LICENSE" alt="Licence"><img src="https://img.shields.io/github/license/aceisace/Inkycal.svg" /></a>
+   <a href="https://github.com/aceisace/Inkycal/blob/main/LICENSE" alt="Licence"><img src="https://img.shields.io/github/license/aceisace/Inkycal.svg" /></a>
    <a href="https://github.com/aceisace/Inkycal/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/aceisace/Inkycal"></a>
    <a href="https://github.com/aceisace/Inkycal/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aceisace/Inkycal?color=green"></a>
    <a href="https://github.com/aceisace/Inkycal/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/aceisace/Inkycal?color=green"></a>
-   <a href="https://github.com/aceisace/Inkycal"><img alt="python" src="https://img.shields.io/badge/python-%3E3.5-lightgrey"></a>
+   <a href="https://github.com/aceisace/Inkycal"><img alt="python" src="https://img.shields.io/badge/python-%3E3.7-lightgrey"></a>
 </p>
 
 Inykcal is a software written in python for selected E-Paper displays. It converts these displays into useful information dashboards. It's open-source, free for personal use, fully modular and user-friendly. Despite all this, Inkycal can run well even on the Raspberry Pi 0. Oh, and it's open for third-party modules! Hooray!
@@ -54,7 +55,7 @@ This software is in active development. To see the current development status, [
 7. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
 8. Once the green LED has stopped blinking after ~3 minutes, use an SSH client to connect to the Raspberry Pi. On Windows, you can use PUTTY but you can also use an SSH App
 on your smartphone. Use the address: `raspberrypi.local` with `pi` as the username and `raspberry` as the password.
-9. After connecting via SSH, run the following commands:
+9. After connecting via SSH, run the following commands, line by line:
 ```bash
 sudo raspi-config --expand-rootfs
 sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
@@ -65,31 +66,7 @@ These commands expand the filesystem, enable SPI and setup the correct timezone 
 11. Follow the steps in `Installation` (see below) on how to install Inkycal.
 
 ### Installation
-```bash
-# clone the Inkycal repo
-git clone -b https://github.com/aceisace/Inkycal
 
-# go to Inkycal directory
-cd Inkycal
-
-# install Inkycal
-pip3 install -e ./
-```
-
-### Running Inkycal
-Open `Python3` and run the commands below or paste the below content in an empty file and save it as a `.py` file:
-```python3
-from inkycal import Inkycal # Import Inkycal
-
-inky = Inkycal(render = True) # Initialise Inkycal
-# If your settings.json file is not in /boot, use the full path: inky = Inkycal('path/to/settings.json', render=True)
-inky.test()  # test if Inkycal can be run correctly, running this will show a bit of info for each module
-inky.run()   # If there were no issues, you can run Inkycal nonstop
-```
-
-## Uninstalling Inkycal
-1) `pip3 uninstall inkycal`
-2) Remove the `Inkycal` folder
 
 ## Contributing
 All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inkycal/blob/development/CONTRIBUTING.md).
