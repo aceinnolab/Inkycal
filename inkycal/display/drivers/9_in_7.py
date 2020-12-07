@@ -5,8 +5,7 @@
 Copyright by aceisace
 """
 from inkycal.custom import images, top_level
-from subprocess import call, run
-from os import chdir
+from os.path import exists
 from PIL import Image
 
 # Display resolution
@@ -19,12 +18,13 @@ class EPD:
 
   def __init__(self):
     """9.7" epaper class"""
-    with open(driver_dir+'setup_state.txt', 'r') as file:
-      setup_state = int(file.readline().rstrip())
+    # Check if zipped folders are present, if yes, assume
+    # drivers have not been installed yet
 
-    if setup_state == 0:
-      print('installing additional drivers...')
-      self.setup()
+    if exists(f'{driver_dir}IT8951.zip'):
+      print('Additional steps are required to install drivers for 9.7" E-Paper. '
+            'Please run the following command in Terminal, then retry:\n'
+            f'bash {driver_dir}install.sh')
 
   def init(self):
     pass
@@ -44,14 +44,6 @@ class EPD:
     command = 'sudo {}IT8951/IT8951 0 0 {}'.format(driver_dir, images+'canvas.bmp')
     #print(command)
     return command
-
-  def setup(self):
-    """Runs the required setup for 9.7" epaper displays"""
-    run(["chmod", "+x", driver_dir+"install.sh"])
-    call(driver_dir+"install.sh")
-
-    with open(driver_dir+'setup_state.txt', 'w') as file:
-      file.write('1')
 
   def sleep(self):
     pass
