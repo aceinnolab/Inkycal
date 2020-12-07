@@ -34,7 +34,7 @@ This software is in active development. To see the current development status, [
 
 ## Preview
 <p align="center">
-        <img src="https://github.com/aceisace/Inkycal/blob/development/Gallery/inkycal-modes.gif" width="900"><img 
+        <img src="https://github.com/aceisace/Inkycal/blob/main/Gallery/inkycal-featured-gif.gif" width="900"><img 
 </p>
 
 ## Hardware required
