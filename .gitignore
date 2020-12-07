@@ -10,8 +10,3 @@ lib/
 share/
 lib64
 pyvenv.cfg
-*.m4
-*.h
-*.guess
-*.log
-*.in
