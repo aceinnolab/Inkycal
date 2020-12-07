@@ -1,6 +1,4 @@
 # Welcome to inkycal v2.0.0!
-## Please note that currently Inkycal is in a transition phase, please wait with installing until this notice is removed
-
 <p align="center">
         <img src="https://github.com/aceisace/Inkycal/blob/development/Gallery/logo.png" width="800">
 </p>
