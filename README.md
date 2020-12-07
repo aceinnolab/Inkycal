@@ -17,10 +17,16 @@
 Inykcal is a software written in python for selected E-Paper displays. It converts these displays into useful information dashboards. It's open-source, free for personal use, fully modular and user-friendly. Despite all this, Inkycal can run well even on the Raspberry Pi Zero. Oh, and it's open for third-party modules! Hooray!
 
 ## Main features
-* Monthly Calendar that shows events from your Google (or other) iCalendar/s
-* Live weather info and forecasts for next 9 hours (openweathermap)
-* Agenda to show what is on your shedule (from your iCalendar/s)
-* RSS feeds from various providers to keep up to date with news, quotes etc. 
+Inkycal is fully modular, you can mix and match any modules you like and configure them on the web-ui. For now, these following built-in modules are supported:
+* Calendar - Monthly Calendar with option to sync events from iCalendars, e.g. Google.
+* Agenda - Agenda showing upcoming events from given iCalendar URLs.
+* Image - Display an Image from URL or local file path.
+* Slideshow - Cycle through images in a given folder and show them on the E-Paper.
+* Feeds - Syncronise RSS/ATOM feeds from your favorite providers.
+* Stocks - Display stocks using Tickers from Yahoo! Finance.
+* Weather - Show current weather, daily or hourly weather forecasts from openweathermap.
+* Todoist - Syncronise with Todoist app or website to show todos.
+* iCanHazDad - Display a random joke from iCanhazdad.com.
 
 ## News:
 * **New Inkycal release published (early December 2020)**
