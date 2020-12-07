@@ -54,7 +54,7 @@ This software is in active development. To see the current development status, [
 6. Copy these three downloaded files to the flashed microSD card. On Windows, this is the only visible directory on the SD card. On Linux, copy these files to `/boot`
 7. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
 8. Once the green LED has stopped blinking after ~3 minutes, use an SSH client to connect to the Raspberry Pi. On Windows, you can use PUTTY but you can also use an SSH App
-on your smartphone. Use the address: `raspberrypi.local` with `pi` as the username and `raspberry` as the password.
+on your smartphone. Use the address: `raspberrypi.local` with `pi` as the username and `raspberry` as the password. Fro more detailed instructions, check out the page from the [Raspberry Pi website](https://www.raspberrypi.org/documentation/remote-access/ssh/)
 9. After connecting via SSH, run the following commands, line by line:
 ```bash
 sudo raspi-config --expand-rootfs
