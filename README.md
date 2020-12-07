@@ -16,7 +16,7 @@
    <a href="https://github.com/aceisace/Inkycal"><img alt="python" src="https://img.shields.io/badge/python-%3E3.7-lightgrey"></a>
 </p>
 
-Inykcal is a software written in python for selected E-Paper displays. It converts these displays into useful information dashboards. It's open-source, free for personal use, fully modular and user-friendly. Despite all this, Inkycal can run well even on the Raspberry Pi 0. Oh, and it's open for third-party modules! Hooray!
+Inykcal is a software written in python for selected E-Paper displays. It converts these displays into useful information dashboards. It's open-source, free for personal use, fully modular and user-friendly. Despite all this, Inkycal can run well even on the Raspberry Pi Zero. Oh, and it's open for third-party modules! Hooray!
 
 ## Main features
 * Monthly Calendar that shows events from your Google (or other) iCalendar/s
@@ -39,7 +39,7 @@ This software is in active development. To see the current development status, [
 
 ## Hardware required
 * One of the supported ePaper displays from waveshare: 4.2", 5.83", 7.5" (all variants), 9.7"
-* Any Raspberry Pi with 40 pins and WiFi. (Raspberry Pi 3/3B/3B+/3A/4/0W/0WH - Inkycal runs just fine on the Zero W/Zweo WH model!)
+* Any Raspberry Pi with 40 pins and WiFi. (Raspberry Pi 3/3B/3B+/3A/4/0W/0WH - Inkycal runs just fine on the Zero W/Zero WH model!)
 * MicroSD card (min. 4GB) for flashing Raspberry Pi OS **with Desktop**. **Lite is not supported!**
 * MicroUSB cable (for power)
 * Optional, a [3D-printable case](https://github.com/aceisace/Inkycal/wiki/3D-printable-files)
@@ -54,7 +54,7 @@ This software is in active development. To see the current development status, [
 6. Copy these three downloaded files to the flashed microSD card. On Windows, this is the only visible directory on the SD card. On Linux, copy these files to `/boot`
 7. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
 8. Once the green LED has stopped blinking after ~3 minutes, use an SSH client to connect to the Raspberry Pi. On Windows, you can use PUTTY but you can also use an SSH App
-on your smartphone. Use the address: `raspberrypi.local` with `pi` as the username and `raspberry` as the password.
+on your smartphone. Use the address: `raspberrypi.local` with `pi` as the username and `raspberry` as the password. Fro more detailed instructions, check out the page from the [Raspberry Pi website](https://www.raspberrypi.org/documentation/remote-access/ssh/)
 9. After connecting via SSH, run the following commands, line by line:
 ```bash
 sudo raspi-config --expand-rootfs
@@ -74,13 +74,13 @@ Yes, it's that simple! The above command runs the user-friendly installer. You c
 
 Should the installer fail, please open a issue or report the problem in Discord. In the meantime, you can try the [Manual Installation](https://github.com/aceisace/Inkycal/wiki/Manual-installation)
 
+If you expierence issues with getting started, please check out the [**FAQ**](https://github.com/aceisace/Inkycal/wiki). If this doesn't help, please get help from the Inkycal Discord server, we're happy to help!
+
+
 ## Contributing
 All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inkycal/blob/development/CONTRIBUTING.md).
 
 The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer. If you want to have some faster responses, please use Discord (link below).
-
-## Setting up VS Code Remote development in WSL
-In order to speed up development, most development tasks (apart from the actual rending to E-Ink display) can be developed on more powerful machines and in richer environments than running this on a Pi zero. In case of Windows PC the most convenient way is to use VS Code Remote development in Windows Subsystem for Linux (WSL), please follow [Tutorial](https://code.visualstudio.com/remote-tutorials/wsl/getting-started). 
 
 
 **P.S:** Don't forget to star and/or watch the repo. For those who have done so already, thank you very much!
