@@ -1,169 +1,104 @@
 # Welcome to inkycal v2.0.0!
-
 <p align="center">
-        <img src="https://github.com/aceisace/Inky-Calendar/blob/development/Gallery/logo.png" width="800">
+        <img src="https://github.com/aceisace/Inkycal/blob/development/Gallery/logo.png" width="800">
 </p>
 
 <p align="center">
     <a href="https://www.paypal.me/SaadNaseer" alt="Donate"><img src="https://img.shields.io/badge/Donate-PayPal-green.svg" /></a>
-    <a href="https://github.com/aceisace/Inky-Calendar/actions"><img src="https://github.com/aceisace/Inky-Calendar/workflows/Python%20application/badge.svg"></a>
-    <a href="https://github.com/aceisace/Inky-Calendar/releases" alt="Version"><img src="https://img.shields.io/github/release/aceisace/Inky-Calendar.svg" /></a>
-   <a href="https://github.com/aceisace/Inky-Calendar/blob/Stable/LICENSE" alt="Licence"><img src="https://img.shields.io/github/license/aceisace/Inky-Calendar.svg" /></a>
-   <a href="https://github.com/aceisace/Inky-Calendar/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/aceisace/Inky-Calendar"></a>
-   <a href="https://github.com/aceisace/Inky-Calendar/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aceisace/Inky-Calendar?color=green"></a>
-   <a href="https://github.com/aceisace/Inky-Calendar/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/aceisace/Inky-Calendar?color=green"></a>
-   <a href="https://github.com/aceisace/Inky-Calendar"><img alt="python" src="https://img.shields.io/badge/python-%3E3.5-lightgrey"></a>
+    <a href="https://github.com/aceisace/Inkycal/actions"><img src="https://github.com/aceisace/Inkycal/workflows/Python%20application/badge.svg"></a>
+    <a href="https://github.com/aceisace/Inkycal/releases" alt="Version"><img src="https://img.shields.io/github/release/aceisace/Inkycal.svg" /></a>
+   <a href="https://github.com/aceisace/Inkycal/blob/main/LICENSE" alt="Licence"><img src="https://img.shields.io/github/license/aceisace/Inkycal.svg" /></a>
+   <a href="https://github.com/aceisace/Inkycal/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/aceisace/Inkycal"></a>
+   <a href="https://github.com/aceisace/Inkycal/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aceisace/Inkycal?color=green"></a>
+   <a href="https://github.com/aceisace/Inkycal/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/aceisace/Inkycal?color=green"></a>
+   <a href="https://github.com/aceisace/Inkycal"><img alt="python" src="https://img.shields.io/badge/python-%3E3.7-lightgrey"></a>
 </p>
 
-A python 3 software for displaying events (from iCalendars), weather (from openweathermap) and RSS feeds on selected E-Paper displays (4.2", 5.83", 7.5"(v1), 7.5"(v2)) from Waveshare/GoodDisplay.
-
-**This branch contains the latest working release of Inkycal. It's mainly intended for those who wish to test new features and give feedback. If you encounter any bugs, please report them via the [Issues] button.**
-
-* [ ] Add support for 9.7" ePaper
-* [ ] Add support for iCalendars requiring authentification
-* [x] Add info-section option in web-ui
-* [ ] Allow easy adding/removing of third-party modules
-* [ ] Finish developer documentation for third-party modules
-
-## How to test BETA
-Please note that while inkycal is in BETA, a lot of things will change in a short time. This means that problems are fixed on-the-go. If you encounter a problem, please mention it on Discord.
-
-If you were using the previous release, please re-run the instaler:
-`bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inky-Calendar/main/Installer.sh)"`
-and choose `uninstall` to uninstall the previous version. The last release and this BETA are __not__ compatible!
-
-## Updating BETA to latest version
-To update to the latest beta, please do the following:
-1) `pip3 uninstall inkycal`
-2) Remove the `Inkycal` folder (or rename it at least)
-3) follow the steps from `Installation` (see above)
-
-### Installation
-```bash
-# clone this branch
-git clone -b  release/2.0.0 https://github.com/aceisace/Inky-Calendar Inkycal
-
-# go to Inkycal directory
-cd Inkycal
-
-# install Inkycal
-pip3 install -e ./
-```
-
-### Creating a settings file
-Please visit the [Online WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal-config-v2-0-0) to create your settings.json file.
-
-* Fill in the details and click on `generate` to create your **settings.json** file
-* Copy the **settings.json** file to your raspberry pi (e.g. copy directly from computer to the SD Card,  WinSCP, VNC etc.)
-* Copy the path (location) of this file
-
-### Running Inkycal
-Open `Python3` and run the commands below or paste the below content in an empty file and save it as a `.py` file:
-```python3
-# Open Python3 and import package
-from inkycal import Inkycal
-
-# If you see 'numpy is not installed, please install with pip3 install numpy', 
-# please run the following command in the Terminal, then restart python and try again:
-# pip3 uninstall numpy
-
-# tell the Inkycal class where your settings file is
-inky = Inkycal('/path/to/your/settings/file', render = True)
-# render means rendering (showing) on the ePaper. Setting render = False will not show anything on the ePaper
-
-# test if Inkycal can be run correctly, running this will show a bit of info for each module
-inky.test()
-
-# If there were no issues, you can run Inkycal nonstop:
-inky.run()
-```
-
-### Customizing
-With this release, it has become much easier to customize the modules to suit your preferences. First, check what options can be configured for a specific module:
-
-```python
-# Module refers to the name of a module's Class, e.g. Agenda, RSS, Calendar ...
-inky.Module.set(help=True) # shows configurable options
-
-# Set a single option
-inky.Module.set(fontsize=14)
-
-# Set multiple options at once
-inky.Module.set(fontsize=14, language='de')
-```
+Inykcal is a software written in python for selected E-Paper displays. It converts these displays into useful information dashboards. It's open-source, free for personal use, fully modular and user-friendly. Despite all this, Inkycal can run well even on the Raspberry Pi Zero. Oh, and it's open for third-party modules! Hooray!
 
 ## Main features
-* Monthly Calendar that shows events from your Google (or other) iCalendar/s
-* Live weather info and forecasts for next 9 hours (openweathermap)
-* Agenda to show what is on your shedule (from your iCalendar/s)
-* RSS feeds from various providers to keep up to date with news, quotes etc. 
+Inkycal is fully modular, you can mix and match any modules you like and configure them on the web-ui. For now, these following built-in modules are supported:
+* Calendar - Monthly Calendar with option to sync events from iCalendars, e.g. Google.
+* Agenda - Agenda showing upcoming events from given iCalendar URLs.
+* Image - Display an Image from URL or local file path.
+* Slideshow - Cycle through images in a given folder and show them on the E-Paper.
+* Feeds - Syncronise RSS/ATOM feeds from your favorite providers.
+* Stocks - Display stocks using Tickers from Yahoo! Finance.
+* Weather - Show current weather, daily or hourly weather forecasts from openweathermap.
+* Todoist - Syncronise with Todoist app or website to show todos.
+* iCanHazDad - Display a random joke from iCanhazdad.com.
 
 ## News:
-* **[Server-only solution](https://github.com/Atrejoe/Inky-Calendar-Server) (Credit to Atrejoe)**
+* **New Inkycal release published (early December 2020)**
+* **Added support for all 4.2", 5.83", 7.5", 9.7" waveshare E-Paper displays**
 * **Discord chat open now. [Click here to enter](https://discord.gg/sHYKeSM)**
-* **Added support for 4.2", 5.83", 7.5" (v1), 7.5" (v2) and 9.7" E-Paper displays**
 
 ## Development status
-This software is in active development. To see the current development status, [[Click here]](https://github.com/aceisace/Inky-Calendar/projects/2).
+This software is in active development. To see the current development status, [[Click here]](https://github.com/aceisace/Inkycal/projects/2).
 
 ## Preview
 <p align="center">
-<img src="https://github.com/aceisace/Inky-Calendar/blob/main/Gallery/inkycal-modes.gif" width="900"><img 
+        <img src="https://github.com/aceisace/Inkycal/blob/main/Gallery/inkycal-featured-gif.gif" width="900"><img 
 </p>
 
 ## Hardware required
-* One of the supported ePaper displays from waveshare: 4.2", 5.83", 7.5" (640x384px), 7.5"-v2 (800x400px)
-* Any Raspberry Pi with 40 pins and WiFi. (Raspberry Pi 3/3B/3B+/3A/4/0W/0WH - Inkycal runs just fine on the Zero W/Zweo WH model!)
-* MicroSD card (min. 4GB) for flashing Raspbian **with Desktop**. **Lite is not supported!**
+* One of the supported ePaper displays from waveshare: 4.2", 5.83", 7.5" (all variants), 9.7"
+* Any Raspberry Pi with 40 pins and WiFi. (Raspberry Pi 3/3B/3B+/3A/4/0W/0WH - Inkycal runs just fine on the Zero W/Zero WH model!)
+* MicroSD card (min. 4GB) for flashing Raspberry Pi OS **with Desktop**. **Lite is not supported!**
 * MicroUSB cable (for power)
-* Optional, a [3D-printable case](https://github.com/aceisace/Inky-Calendar/wiki/3D-printable-files)
+* Optional, a [3D-printable case](https://github.com/aceisace/Inkycal/wiki/3D-printable-files)
 
-# Setup
-## Getting the Raspberry Pi Zero W ready
-1. Flash Raspberry Pi OS ([instructions](https://www.raspberrypi.org/software/))
-2. Create a simple text document named **ssh** in the boot directory to enable ssh. 
-3. Install the SD card and boot your Raspberry Pi. Connect to it over the network with ssh and login. 
-3. Expand the filesystem in the Terminal with **`sudo raspi-config --expand-rootfs`**
-4. Enable SPI by entering **`sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt`** in the Terminal
-5. Set the correct timezone with **`sudo dpkg-reconfigure tzdata`**, selecting the correct continent and then the capital of your country.
-6. Reboot to apply changes
-7. Optional: If you want to disable the on-board leds of the Raspberry, follow these instructions: 
-**[Disable on-board-led](https://www.jeffgeerling.com/blogs/jeff-geerling/controlling-pwr-act-leds-raspberry-pi)**
+# Installing Inkycal
 
+## Configuring the Raspberry Pi
+1. Flash Raspberry Pi OS according to the [instructions](https://www.raspberrypi.org/software/). Leave the SD card plugged in your computer.
+2. Create and download `settings.json` file for Inkycal from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal-config-v2-0-0)
+4. Download the `ssh` text file from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/create_ssh)
+5. Create and download a WiFi-configuration file (`wpa_supplicant.conf`) from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/setup_wifi)
+6. Copy these three downloaded files to the flashed microSD card. On Windows, this is the only visible directory on the SD card. On Linux, copy these files to `/boot`
+7. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
+8. Once the green LED has stopped blinking after ~3 minutes, use an SSH client to connect to the Raspberry Pi. On Windows, you can use PUTTY but you can also use an SSH App
+on your smartphone. Use the address: `raspberrypi.local` with `pi` as the username and `raspberry` as the password. Fro more detailed instructions, check out the page from the [Raspberry Pi website](https://www.raspberrypi.org/documentation/remote-access/ssh/)
+9. After connecting via SSH, run the following commands, line by line:
+```bash
+sudo raspi-config --expand-rootfs
+sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
+sudo dpkg-reconfigure tzdata
+```
+These commands expand the filesystem, enable SPI and setup the correct timezone on the Raspberry Pi. When running the last command, please select the continent you live in, press enter and then select the capital of the country you live in. Lastly, press enter.
 
-**Upgrading from old versions:**
-If you were using an older version, please use the uninstall option from the installer. After uninstalling, please follow the instructions from above to get started.
+10. Change the passowrd for the user pi by entering `passwd` in the Terminal, enter your current password, hit enter, then type your new password and press enter. Please note you will have to remember this password to access your Raspberry Pi.
+11. Follow the steps in `Installation` (see below) on how to install Inkycal.
 
+### Installation
+Open a Terminal and enter the following command:
+```bash
+bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inkycal/main/installer.sh)"
+```
+Yes, it's that simple! The above command runs the user-friendly installer. You can install, update and uninstall inkycal with ease. What's more is that it also allows starting Inkycal at every boot!
 
-## iCalendar
-Although Google Calendar is strongly recommended, iCalendars from other providors may work. Support for iCalendar requiring authentification (e.g. Owncloud) has been added, however this is still __experimental__.
+Should the installer fail, please open a issue or report the problem in Discord. In the meantime, you can try the [Manual Installation](https://github.com/aceisace/Inkycal/wiki/Manual-installation)
 
-If you encounter any issues with iCalendar, please use this [validator](https://icalendar.org/validator.html) to check if your links and iCalendars are valid.
-
-If you encounter errors related to your iCalendar, please feel free to report the error either by opening an issue or by sending a mail.
+If you expierence issues with getting started, please check out the [**FAQ**](https://github.com/aceisace/Inkycal/wiki). If this doesn't help, please get help from the Inkycal Discord server, we're happy to help!
 
 
 ## Contributing
-All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inky-Calendar/blob/main/CONTRIBUTING.md).
+All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inkycal/blob/development/CONTRIBUTING.md).
 
-The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer.
-
-## Setting up VS Code Remote development in WSL
-In order to speed up development, most development tasks (apart from the actual rending to E-Ink display) can be developed on more powerful machines and in richer environments than running this on a Pi zero. In case of Windows PC the most convenient way is to use VS Code Remote development in Windows Subsystem for Linux (WSL), please follow [Tutorial](https://code.visualstudio.com/remote-tutorials/wsl/getting-started). 
+The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer. If you want to have some faster responses, please use Discord (link below).
 
 
 **P.S:** Don't forget to star and/or watch the repo. For those who have done so already, thank you very much!
 
 ## Contact and Support
-* <a href="https://discord.gg/sHYKeSM">
+<a href="https://discord.gg/sHYKeSM">
         <img src="https://discord.com/assets/fc0b01fe10a0b8c602fb0106d8189d9b.png" alt="Inkycal chatroom Discord" width=200>
-  </a>
-* Email: aceisace63@yahoo.com (average response time < 24 hours)
+</a>
 
-## Buy me a coffee
+## Buy me a coffee please
 Yes please :). I do drink and like my coffee, especially when developing the inkycal software :)
 You can donate a coffee with this QR-code (Paypal):
 
 <p align="center">
-        <img src="https://raw.githubusercontent.com/aceisace/Inky-Calendar/development/Gallery/coffee.png" width=250>
+        <img src="https://raw.githubusercontent.com/aceisace/Inkycal/development/Gallery/coffee.png" width=250>
 </p>

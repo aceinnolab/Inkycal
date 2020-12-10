@@ -1,89 +1,96 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+"""
+Image test (inkycal_image)
+Copyright by aceisace
+"""
+
 import unittest
 from inkycal.modules import Inkyimage as Module
 from inkycal.custom import top_level
+from helper_functions import *
+environment = get_environment()
+
+# Set to True to preview images. Only works on Raspberry Pi OS with Desktop
+use_preview = False
+
 
 test_path = f'{top_level}/Gallery/coffee.png'
 
 tests = [
 {
-  "position": 1,
   "name": "Inkyimage",
   "config": {
     "size": [400,200],
     "path": test_path,
-    "use_colour": True,
+    "palette": "bwr",
     "autoflip": True,
     "orientation": "vertical",
     "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
     }
 },
 {
-  "position": 1,
   "name": "Inkyimage",
   "config": {
     "size": [800,500],
     "path": test_path,
-    "use_colour": False,
+    "palette": "bwy",
     "autoflip": True,
     "orientation": "vertical",
     "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
     }
 },
 {
-  "position": 1,
   "name": "Inkyimage",
   "config": {
     "size": [400,100],
     "path": test_path,
-    "use_colour": True,
+    "palette": "bw",
     "autoflip": False,
     "orientation": "vertical",
     "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
     }
 },
 {
-  "position": 1,
   "name": "Inkyimage",
   "config": {
     "size": [400,100],
     "path": test_path,
-    "use_colour": True,
+    "palette": "bwr",
     "autoflip": True,
     "orientation": "vertical",
     "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
     }
 },
 {
-  "position": 1,
   "name": "Inkyimage",
   "config": {
     "size": [400,100],
     "path": test_path,
-    "use_colour": True,
+    "palette": "bwy",
     "autoflip": True,
     "orientation": "horizontal",
     "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
     }
 },
 {
-  "position": 1,
   "name": "Inkyimage",
   "config": {
     "size": [500, 800],
     "path": test_path,
-    "use_colour": True,
+    "palette": "bw",
     "autoflip": True,
     "orientation": "vertical",
     "padding_x": 0, "padding_y": 0, "fontsize": 12, "language": "en"
     }
 },
 {
-  "position": 1,
   "name": "Inkyimage",
   "config": {
     "size": [500, 800],
     "path": test_path,
-    "use_colour": True,
+    "palette": "bwr",
     "autoflip": True,
     "orientation": "vertical",
     "padding_x": 20, "padding_y": 20, "fontsize": 12, "language": "en"
@@ -101,8 +108,15 @@ class module_test(unittest.TestCase):
     for test in tests:
       print(f'test {tests.index(test)+1} generating image..')
       module = Module(test)
-      module.generate_image()
+      im_black, im_colour = module.generate_image()
       print('OK')
+      if use_preview == True and environment == 'Raspberry':
+        preview(merge(im_black, im_colour))
 
 if __name__ == '__main__':
+
+  logger = logging.getLogger()
+  logger.level = logging.DEBUG
+  logger.addHandler(logging.StreamHandler(sys.stdout))
+
   unittest.main()

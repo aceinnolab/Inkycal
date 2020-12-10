@@ -40,18 +40,18 @@ available_fonts = [key for key,values in fonts.items()]
 def get_fonts():
   """Print all available fonts by name.
 
-  Searches the /font folder in Inykcal and displays all fonts found in
+  Searches the /font folder in Inkycal and displays all fonts found in
   there.
 
   Returns:
     printed output of all available fonts. To access a fontfile, use the
     fonts dictionary to access it.
-    
+
     >>> fonts['fontname']
 
   To use a font, use the following sytax, where fontname is one of the
   printed fonts of this function:
-  
+
   >>> ImageFont.truetype(fonts['fontname'], size = 10)
   """
   for fonts in available_fonts:
@@ -61,7 +61,7 @@ def get_fonts():
 def get_system_tz():
   """Gets the system-timezone
 
-  Gets the timezone set by the system. 
+  Gets the timezone set by the system.
 
   Returns:
     - A timezone if a system timezone was found.
@@ -106,7 +106,7 @@ def auto_fontsize(font, max_height):
 
 
 def write(image, xy, box_size, text, font=None, **kwargs):
-  """Writes text on a image. 
+  """Writes text on a image.
 
   Writes given text at given position on the specified image.
 
@@ -185,8 +185,10 @@ def write(image, xy, box_size, text, font=None, **kwargs):
   draw  = ImageDraw.Draw(image)
   space = Image.new('RGBA', (box_width, box_height))
   ImageDraw.Draw(space).text((x, y), text, fill=colour, font=font)
+
   # Uncomment following two lines, comment out above two lines to show
   # red text-box with white text (debugging purposes)
+
   #space = Image.new('RGBA', (box_width, box_height), color= 'red')
   #ImageDraw.Draw(space).text((x, y), text, fill='white', font=font)
 
@@ -258,7 +260,7 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1,0.1)):
   Args:
     - image: The image on which the border should be drawn (usually im_black or
       im_colour.
-  
+
     - xy: Tuple representing the top-left corner of the border e.g. (32, 100)
       where 32 is the x co-ordinate and 100 is the y-coordinate.
 

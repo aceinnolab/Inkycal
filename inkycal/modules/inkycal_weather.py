@@ -45,37 +45,31 @@ class Weather(inkycal_module):
     "round_temperature": {
       "label":"Round temperature to the nearest degree?",
       "options": [True, False],
-      "default" : True
       },
 
     "round_windspeed": {
       "label":"Round windspeed?",
       "options": [True, False],
-      "default": True
       },
 
     "forecast_interval": {
       "label":"Please select the forecast interval",
       "options": ["daily", "hourly"],
-      "default": "daily"
       },
 
     "units": {
       "label": "Which units should be used?",
       "options": ["metric", "imperial"],
-      "default": "metric"
       },
 
     "hour_format": {
       "label": "Which hour format do you prefer?",
-      "options": [12, 24],
-      "default": 24
+      "options": [24, 12],
       },
 
     "use_beaufort": {
       "label": "Use beaufort scale for windspeed?",
       "options": [True, False],
-      "default": True
       },
 
     }
@@ -115,30 +109,6 @@ class Weather(inkycal_module):
     print(f"{filename} loaded")
 
 
-  def _validate(self):
-
-    if not isinstance(self.api_key, str):
-      print(f'api_key should be a string, not {self.api_key}')
-
-    if not isinstance(self.round_temperature, bool):
-      print(f'round_temperature should be a boolean, not {self.round_temperature}')
-
-    if not isinstance(self.round_windspeed, bool):
-      print(f'round_windspeed should be a boolean, not {self.round_windspeed}')
-
-    if not isinstance(self.forecast_interval, int):
-      print(f'forecast_interval should be a boolean, not {self.forecast_interval}')
-
-    if not isinstance(self.units, str):
-      print(f'units should be a boolean, not {self.units}')
-
-    if not isinstance(self.hour_format, int):
-      print(f'hour_format should be a int, not {self.hour_format}')
-
-    if not isinstance(self.use_beaufort, bool):
-      print(f'use_beaufort should be a int, not {self.use_beaufort}')
-
-
   def generate_image(self):
     """Generate image for this module"""
 
@@ -156,7 +126,8 @@ class Weather(inkycal_module):
     if internet_available() == True:
       logger.info('Connection test passed')
     else:
-      raise Exception('Network could not be reached :(')
+      logger.exception('Network could not be reached :(')
+      raise
 
     def get_moon_phase():
       """Calculate the current (approximate) moon phase"""
@@ -209,6 +180,7 @@ class Weather(inkycal_module):
       size = 8
       font = ImageFont.truetype(font.path, size)
       text_width, text_height = font.getsize(text)
+
       while (text_width < int(box_width * 0.9) and
              text_height < int(box_height * 0.9)):
         size += 1
@@ -247,14 +219,16 @@ class Weather(inkycal_module):
     # Calculate size rows and columns
     col_width = im_width // 7
 
-    if (im_height // 3) > col_width//2:
-      row_height = (im_height // 4)
+    # Ratio width height
+    image_ratio = im_width / im_height
+
+    if image_ratio >= 4:
+      row_height = im_height // 3
     else:
-      row_height = (im_height // 3)
+      logger.info('Please consider decreasing the height.')
+      row_height = int( (im_height* (1-im_height/im_width)) / 3 )
 
-
-    # Adjust the fontsize to make use of most free space
-    # self.font = auto_fontsize(self.font, row_height)
+    logger.debug(f"row_height: {row_height} | col_width: {col_width}")
 
     # Calculate spacings for better centering
     spacing_top = int( (im_width % col_width) / 2 )
@@ -275,12 +249,28 @@ class Weather(inkycal_module):
     col7 = col6 + col_width
 
     # Calculate the y-axis position of each row
-    row1 = spacing_left
-    row2 = row1 + row_height
-    row3 = row2 + row_height
+    line_gap = int((im_height - spacing_top - 3*row_height) // 4)
+
+    row1 = line_gap
+    row2 = row1 + line_gap + row_height
+    row3 = row2+ line_gap + row_height
+
+    # Draw lines on each row and border
+############################################################################
+##    draw = ImageDraw.Draw(im_black)
+##    draw.line((0, 0, im_width, 0), fill='red')
+##    draw.line((0, im_height-1, im_width, im_height-1), fill='red')
+##    draw.line((0, row1, im_width, row1), fill='black')
+##    draw.line((0, row1+row_height, im_width, row1+row_height), fill='black')
+##    draw.line((0, row2, im_width, row2), fill='black')
+##    draw.line((0, row2+row_height, im_width, row2+row_height), fill='black')
+##    draw.line((0, row3, im_width, row3), fill='black')
+##    draw.line((0, row3+row_height, im_width, row3+row_height), fill='black')
+############################################################################
+
 
     # Positions for current weather details
-    weather_icon_pos = (col1, row1)
+    weather_icon_pos = (col1, 0)
     temperature_icon_pos = (col2, row1)
     temperature_pos = (col2+icon_small, row1)
     humidity_icon_pos = (col2, row2)
@@ -297,29 +287,31 @@ class Weather(inkycal_module):
 
     # Positions for forecast 1
     stamp_fc1 = (col4, row1)
-    icon_fc1 = (col4, row2)
+    icon_fc1 = (col4, row1+row_height)
     temp_fc1 = (col4, row3)
 
     # Positions for forecast 2
     stamp_fc2 = (col5, row1)
-    icon_fc2 = (col5, row2)
+    icon_fc2 = (col5, row1+row_height)
     temp_fc2 = (col5, row3)
 
     # Positions for forecast 3
     stamp_fc3 = (col6, row1)
-    icon_fc3 = (col6, row2)
+    icon_fc3 = (col6, row1+row_height)
     temp_fc3 = (col6, row3)
 
     # Positions for forecast 4
     stamp_fc4 = (col7, row1)
-    icon_fc4 = (col7, row2)
+    icon_fc4 = (col7, row1+row_height)
     temp_fc4 = (col7, row3)
 
     # Create current-weather and weather-forecast objects
     if self.location.isdigit():
+      logging.debug('looking up location by ID')
       weather = self.owm.weather_at_id(int(self.location)).weather
       forecast = self.owm.forecast_at_id(int(self.location), '3h')
     else:
+      logging.debug('looking up location by string')
       weather = self.owm.weather_at_place(self.location).weather
       forecast = self.owm.forecast_at_place(self.location, '3h')
 
@@ -333,11 +325,15 @@ class Weather(inkycal_module):
     elif self.units == 'imperial':
       temp_unit = 'fahrenheit'
 
+    logging.debug(f'temperature unit: {temp_unit}')
+    logging.debug(f'decimals temperature: {dec_temp} | decimals wind: {dec_wind}')
 
     # Get current time
     now = arrow.utcnow()
 
     if self.forecast_interval == 'hourly':
+
+      logger.debug("getting hourly forecasts")
 
       # Forecasts are provided for every 3rd full hour
       # find out how many hours there are until the next 3rd full hour
@@ -364,8 +360,8 @@ class Weather(inkycal_module):
         fc_data['fc'+str(forecasts.index(forecast)+1)] = {
           'temp':temp,
           'icon':icon,
-          'stamp': forecast_timings[forecasts.index(forecast)].format('H.00'
-                                    if self.hour_format == 24 else 'h a')
+          'stamp': forecast_timings[forecasts.index(forecast)].to(
+            get_system_tz()).format('H.00' if self.hour_format == 24 else 'h a')
           }
 
     elif self.forecast_interval == 'daily':
@@ -425,11 +421,15 @@ class Weather(inkycal_module):
     sunrise_raw = arrow.get(weather.sunrise_time()).to(self.timezone)
     sunset_raw = arrow.get(weather.sunset_time()).to(self.timezone)
 
+    logger.debug(f'weather_icon: {weather_icon}')
+
     if self.hour_format ==  12:
+      logger.debug('using 12 hour format for sunrise/sunset')
       sunrise = sunrise_raw.format('h:mm a')
       sunset = sunset_raw.format('h:mm a')
 
     elif self.hour_format == 24:
+      logger.debug('using 24 hour format for sunrise/sunset')
       sunrise = sunrise_raw.format('H:mm')
       sunset = sunset_raw.format('H:mm')
 
@@ -441,20 +441,22 @@ class Weather(inkycal_module):
     elif self.use_beaufort == False:
 
       if self.units == 'metric':
+        logging.debug('getting windspeed in metric unit')
         wind = str(weather.wind(unit='meters_sec')['speed']) + 'm/s'
 
       elif self.units == 'imperial':
+        logging.debug('getting windspeed in imperial unit')
         wind = str(weather.wind(unit='miles_hour')['speed']) + 'miles/h'
 
     dec = decimal.Decimal
     moonphase = get_moon_phase()
 
     # Fill weather details in col 1 (current weather icon)
-    draw_icon(im_colour, weather_icon_pos, (icon_large, icon_large),
+    draw_icon(im_colour, weather_icon_pos, (col_width, im_height),
               weathericons[weather_icon])
 
     # Fill weather details in col 2 (temp, humidity, wind)
-    draw_icon(im_colour, temperature_icon_pos, (row_height, row_height),
+    draw_icon(im_colour, temperature_icon_pos, (icon_small, row_height),
               '\uf053')
 
     if is_negative(temperature):
@@ -464,7 +466,7 @@ class Weather(inkycal_module):
        write(im_black, temperature_pos, (col_width-icon_small, row_height),
           temperature, font = self.font)
 
-    draw_icon(im_colour, humidity_icon_pos, (row_height, row_height),
+    draw_icon(im_colour, humidity_icon_pos, (icon_small, row_height),
           '\uf07a')
 
     write(im_black, humidity_pos, (col_width-icon_small, row_height),
@@ -480,33 +482,38 @@ class Weather(inkycal_module):
     draw_icon(im_colour, moonphase_pos, (col_width, row_height), moonphase)
 
     draw_icon(im_colour, sunrise_icon_pos, (icon_small, icon_small), '\uf051')
-    write(im_black, sunrise_time_pos, (col_width-icon_small, icon_small),
+    write(im_black, sunrise_time_pos, (col_width-icon_small, row_height),
           sunrise, font = self.font)
 
     draw_icon(im_colour, sunset_icon_pos, (icon_small, icon_small), '\uf052')
-    write(im_black, sunset_time_pos, (col_width-icon_small, icon_small), sunset,
+    write(im_black, sunset_time_pos, (col_width-icon_small, row_height), sunset,
           font = self.font)
 
     # Add the forecast data to the correct places
     for pos in range(1, len(fc_data)+1):
-      stamp = fc_data['fc'+str(pos)]['stamp']
-      icon = weathericons[fc_data['fc'+str(pos)]['icon']]
-      temp = fc_data['fc'+str(pos)]['temp']
+      stamp = fc_data[f'fc{pos}']['stamp']
 
-      write(im_black, eval('stamp_fc'+str(pos)), (col_width, row_height),
+      icon = weathericons[fc_data[f'fc{pos}']['icon']]
+      temp = fc_data[f'fc{pos}']['temp']
+
+      write(im_black, eval(f'stamp_fc{pos}'), (col_width, row_height),
         stamp, font = self.font)
-      draw_icon(im_colour, eval('icon_fc'+str(pos)), (col_width, row_height),
+      draw_icon(im_colour, eval(f'icon_fc{pos}'), (col_width, row_height+line_gap*2),
         icon)
-      write(im_black, eval('temp_fc'+str(pos)), (col_width, row_height),
+      write(im_black, eval(f'temp_fc{pos}'), (col_width, row_height),
         temp, font = self.font)
 
+
+    border_h = row3 + row_height
+    border_w = col_width - 3 #leave 3 pixels gap
+
     # Add borders around each sub-section
-    draw_border(im_black, (col1, row1), (col_width*3, im_height),
-                shrinkage=(0.02,0.1))
-    draw_border(im_black, (col4, row1), (col_width, im_height))
-    draw_border(im_black, (col5, row1), (col_width, im_height))
-    draw_border(im_black, (col6, row1), (col_width, im_height))
-    draw_border(im_black, (col7, row1), (col_width, im_height))
+    draw_border(im_black, (col1, row1), (col_width*3 - 3, border_h),
+                shrinkage=(0,0))
+
+    for _ in range(4,8):
+      draw_border(im_black, (eval(f'col{_}'), row1), (border_w, border_h),
+                  shrinkage=(0,0))
 
     # return the images ready for the display
     return im_black, im_colour

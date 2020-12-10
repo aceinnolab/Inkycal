@@ -7,7 +7,7 @@ Install inkycal  directly via the github repo:
 
 ```bash
 # clone the repo
-git clone -b  release/2.0.0 https://github.com/aceisace/Inky-Calendar Inkycal
+git clone https://github.com/aceisace/Inkycal
 
 # go to downloaded repo folder
 cd Inkycal
@@ -17,4 +17,7 @@ pip3 install -e ./
 ```
 
 ## Creating settings file
-coming soon
+Please nagivate to the [WEB-UI](https://aceisace.eu.pythonanywhere.com/index) to create your settings file. 
+
+Copy the generated settings file to the Raspberry Pi
+more coming soon..

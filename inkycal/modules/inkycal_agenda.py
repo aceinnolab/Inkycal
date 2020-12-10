@@ -59,7 +59,8 @@ class Agenda(inkycal_module):
     # Check if all required parameters are present
     for param in self.requires:
       if not param in config:
-        raise Exception('config is missing {}'.format(param))
+        raise Exception(f'config is missing {param}')
+        logger.exception(f'config is missing "{param}"')
 
     # module specific parameters
     self.date_format = config['date_format']
