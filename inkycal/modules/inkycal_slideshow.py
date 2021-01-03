@@ -13,8 +13,7 @@ from inkycal.custom import *
 # PIL has a class named Image, use alias for Inkyimage -> Images
 from inkycal.modules.inky_image import Inkyimage as Images
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 class Slideshow(inkycal_module):
   """Cycles through images in a local image folder

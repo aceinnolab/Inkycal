@@ -17,8 +17,7 @@ except ImportError:
   print('feedparser is not installed! Please install with:')
   print('pip3 install feedparser')
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 class Feeds(inkycal_module):
   """RSS class
