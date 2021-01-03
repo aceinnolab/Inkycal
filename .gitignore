@@ -10,3 +10,8 @@ lib/
 share/
 lib64
 pyvenv.cfg
+
+
+#ignores logs
+
+*.log
