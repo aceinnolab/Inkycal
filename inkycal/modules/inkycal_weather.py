@@ -18,8 +18,7 @@ except ImportError:
   print('pyowm is not installed! Please install with:')
   print('pip3 install pyowm')
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 class Weather(inkycal_module):
   """Weather class
