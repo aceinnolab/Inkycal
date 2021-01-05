@@ -15,8 +15,7 @@ import numpy
 import os
 import logging
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 class Inkyimage:
   """Custom Imge class written for commonly used image operations.
