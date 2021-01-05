@@ -182,18 +182,6 @@ class iCalendar:
       else:
         return False
 
-  @staticmethod
-  def get_system_tz():
-    """Get the timezone set by the system"""
-
-    try:
-      local_tz = time.tzname[1]
-    except:
-      print('System timezone could not be parsed!')
-      print('Please set timezone manually!. Setting timezone to None...')
-      local_tz = None
-    return local_tz
-
   def show_events(self, fmt='DD MMM YY HH:mm'):
     """print all parsed events in a more readable way
     use the format (fmt) parameter to specify the date format

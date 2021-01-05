@@ -17,6 +17,7 @@ from logging.handlers import RotatingFileHandler
 from inkycal.display import Display
 from inkycal.custom import *
 from inkycal.modules.inky_image import Inkyimage as Images
+from inkycal.custom_functions.get_system_tz import get_system_tz
 
 try:
   from PIL import Image

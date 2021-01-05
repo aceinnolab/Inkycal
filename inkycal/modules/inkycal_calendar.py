@@ -6,6 +6,7 @@ Copyright by aceisace
 """
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
+from inkycal.custom_functions.get_system_tz import get_system_tz
 
 import calendar as cal
 import arrow

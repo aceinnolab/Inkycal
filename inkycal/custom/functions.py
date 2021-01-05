@@ -57,31 +57,6 @@ def get_fonts():
   for fonts in available_fonts:
     print(fonts)
 
-
-def get_system_tz():
-  """Gets the system-timezone
-
-  Gets the timezone set by the system.
-
-  Returns:
-    - A timezone if a system timezone was found.
-    - None if no timezone was found.
-
-  The extracted timezone can be used to show the local time instead of UTC. e.g.
-
-    >>> import arrow
-    >>> print(arrow.now()) # returns non-timezone-aware time
-    >>> print(arrow.now(tz=get_system_tz()) # prints timezone aware time.
-  """
-  try:
-    local_tz = time.tzname[1]
-  except:
-    print('System timezone could not be parsed!')
-    print('Please set timezone manually!. Setting timezone to None...')
-    local_tz = None
-  return local_tz
-
-
 def auto_fontsize(font, max_height):
   """Scales a given font to 80% of max_height.
 

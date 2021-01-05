@@ -9,6 +9,7 @@ import logging
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
 from inkycal.custom_functions.internet_available import internet_available
+from inkycal.custom_functions.get_system_tz import get_system_tz
 
 import math, decimal
 import arrow
