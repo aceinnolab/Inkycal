@@ -15,8 +15,7 @@ import requests
 # Show less logging for request module
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 class Jokes(inkycal_module):
   """Icanhazdad-api class

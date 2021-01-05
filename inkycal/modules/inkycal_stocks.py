@@ -19,8 +19,7 @@ except ImportError:
   print('yfinance is not installed! Please install with:')
   print('pip3 install yfinance')
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 class Stocks(inkycal_module):
 

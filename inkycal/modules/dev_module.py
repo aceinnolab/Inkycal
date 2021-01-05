@@ -152,7 +152,7 @@ class Simple(inkycal_module):
     #-----------------------------------------------------------------------#
     # good example :)
     if config["hobbies"] and isinstance(config["hobbies"], str):
-      self.hobbies = config["age"].split(",")
+      self.hobbies = config["hobbies"].split(",")
       # split splits the string on each comma -> gives a list
       # even if a single value was entered, it will be converted to a list
     else:

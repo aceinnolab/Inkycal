@@ -12,8 +12,7 @@ from inkycal.modules.ical_parser import iCalendar
 import calendar as cal
 import arrow
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 class Agenda(inkycal_module):
   """Agenda class

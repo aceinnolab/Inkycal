@@ -10,8 +10,7 @@ from inkycal.custom import *
 import calendar as cal
 import arrow
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 
 class Calendar(inkycal_module):

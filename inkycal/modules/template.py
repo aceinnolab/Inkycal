@@ -87,6 +87,3 @@ class inkycal_module(metaclass=abc.ABCMeta):
     except:
       raise Exception(
         'Ohoh, something went wrong while trying to get the config of this module')
-
-
-

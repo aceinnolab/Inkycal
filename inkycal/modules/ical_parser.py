@@ -31,9 +31,7 @@ except ModuleNotFoundError:
   print('icalendar library could not be found. Please install this with:')
   print('pip3 install icalendar')
 
-
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 class iCalendar:
   """iCalendar parsing moudule for inkycal.

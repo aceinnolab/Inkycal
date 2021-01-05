@@ -14,8 +14,7 @@ from inkycal.custom import *
 
 from inkycal.modules.inky_image import Inkyimage as Images
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 class Inkyserver(inkycal_module):
   """Displays an image from URL or local path
