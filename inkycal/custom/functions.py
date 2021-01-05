@@ -230,30 +230,6 @@ def text_wrap(text, font=None, max_width = None):
       lines.append(line)
   return lines
 
-
-def internet_available():
-  """checks if the internet is available.
-
-  Attempts to connect to google.com with a timeout of 5 seconds to check
-  if the network can be reached.
-
-  Returns:
-    - True if connection could be established.
-    - False if the internet could not be reached.
-
-  Returned output can be used to add a check for internet availability:
-
-  >>> if internet_available() == True:
-  >>> #...do something that requires internet connectivity
-  """
-
-  try:
-    urlopen('https://google.com',timeout=5)
-    return True
-  except URLError as err:
-    return False
-
-
 def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1,0.1)):
   """Draws a border at given coordinates.
 
