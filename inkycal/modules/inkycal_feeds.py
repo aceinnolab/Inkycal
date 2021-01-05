@@ -9,6 +9,7 @@ import re
 
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
+from inkycal.custom_functions.internet_available import internet_available
 
 from random import shuffle
 try:
