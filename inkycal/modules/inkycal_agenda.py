@@ -4,13 +4,16 @@
 Agenda module for Inky-Calendar Project
 Copyright by aceisace
 """
+import logging
+import arrow
+
+import calendar as cal
 
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
 from inkycal.modules.ical_parser import iCalendar
 
-import calendar as cal
-import arrow
+
 
 logger = logging.getLogger(__name__)
 
