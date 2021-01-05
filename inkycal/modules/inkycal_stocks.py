@@ -9,6 +9,7 @@ Version 0.1: Migration to Inkycal 2.0.0b
 
 by https://github.com/worstface
 """
+import logging
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
 from inkycal.custom_functions.internet_available import internet_available

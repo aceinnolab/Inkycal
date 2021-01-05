@@ -4,6 +4,7 @@
 Weather module for Inky-Calendar software.
 Copyright by aceisace
 """
+import logging
 
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *

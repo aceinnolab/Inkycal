@@ -6,6 +6,7 @@ Feeds module for InkyCal Project
 Copyright by aceisace
 """
 import re
+import logging
 
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *

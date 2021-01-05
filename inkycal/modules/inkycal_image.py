@@ -5,6 +5,7 @@
 Image module for Inkycal Project
 Copyright by aceisace
 """
+import logging
 
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *

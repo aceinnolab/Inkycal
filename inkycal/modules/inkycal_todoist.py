@@ -5,6 +5,7 @@
 todoist module for Inky-Calendar Project
 Copyright by aceisace
 """
+import logging
 
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
