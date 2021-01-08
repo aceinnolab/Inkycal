@@ -44,4 +44,4 @@ The following people have voluteered to test the beta release (pre-release). Tha
 | **Marcel Schumann** | A special thank you for contribution! :tada: |
 | **Markus Müller** | A special thank you for contribution! :tada: |
 | **Lara** | A special thank you for contribution! :tada: |
-| **Richard Resch** | A special thank you for contribution! :tada: |
+| **Richard** | A special thank you for contribution! :tada: |
