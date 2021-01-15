@@ -13,7 +13,6 @@ import arrow
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 
-
 class Calendar(inkycal_module):
   """Calendar class
   Create monthly calendar and show events from given icalendars
@@ -36,11 +35,13 @@ class Calendar(inkycal_module):
       },
 
     "ical_urls" : {
-      "label":"iCalendar URL/s, separate multiple ones with a comma",
+      "label":"iCalendar URL/s, separate multiple ones with a comma. "+
+              "URLs of iCalendars usually end with .ics"
       },
 
     "ical_files" : {
-      "label":"iCalendar filepaths, separated with a comma",
+      "label":"iCalendar filenames (in upload folder). "
+              "Separate multiple files with a comma.",
       },
 
     "date_format":{
@@ -79,6 +80,9 @@ class Calendar(inkycal_module):
       self.ical_files = config['ical_files'].split(',')
     else:
       self.ical_files = config['ical_files']
+
+    if self.ical_files:
+      self.ical_files = [uploads_folder+ical for ical in self.ical_files]
 
     # additional configuration
     self.timezone = get_system_tz()
