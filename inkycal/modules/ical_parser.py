@@ -88,12 +88,12 @@ class iCalendar:
       for path in filepath:
         with open(path, mode='r') as ical_file:
           ical = (Calendar.from_ical(ical_file.read()))
-          self.icalendars += ical
+          self.icalendars.append(ical)
 
     elif isinstance(filepath, str):
       with open(filepath, mode='r') as ical_file:
         ical = (Calendar.from_ical(ical_file.read()))
-        self.icalendars += ical
+        self.icalendars.append(ical)
     else:
       raise Exception (f"Input: '{filepath}' is not a string or list!")
 
