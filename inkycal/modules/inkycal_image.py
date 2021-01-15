@@ -15,15 +15,16 @@ filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 
 class Inkyimage(inkycal_module):
-  """Displays a single image from URL or local path"""
+  """Displays an image from URL or local path
+  """
 
-  name = "Inykcal Image - show an image from a URL or local path"
+  name = "Inkycal Image - show an image from a URL or local path"
 
   requires = {
     
     "path":{
-      "label":"Please enter the filename of an image in the uploads folder "
-              "or enter a URL",
+      "label":"Path to a local folder, e.g. /home/pi/Desktop/images. "
+              "Only PNG and JPG/JPEG images are used for the slideshow."
       },
 
     "palette": {
@@ -58,17 +59,8 @@ class Inkyimage(inkycal_module):
       if not param in config:
         raise Exception(f'config is missing {param}')
 
-    # adjust path to upload folder if path is not a URL
-    if config['path'].startswith("http"):
-      logger.info('Detected URL')
-      self.path = config['path']
-    else:
-      self.path = uploads_folder+config['path']
-      if not os.path.exists(self.path):
-        logger.warning('no file found with matching name in uploads folder')
-        raise FileNotFoundError
-
-    # parameters
+    # optional parameters
+    self.path = config['path']
     self.palette = config['palette']
     self.autoflip = config['autoflip']
     self.orientation = config['orientation']
@@ -90,7 +82,7 @@ class Inkyimage(inkycal_module):
     # initialize custom image class
     im = Images()
 
-    # Load the image
+    # use the image at the first index
     im.load(self.path)
 
     # Remove background if present

@@ -23,10 +23,10 @@ class Slideshow(inkycal_module):
 
   requires = {
     
-##    "path":{
-##      "label":"Inkycal will look for png/jpeg/jpg images in the upload folder."
-##              " Please leave this field empty"
-##      },
+    "path":{
+      "label":"Path to a local folder, e.g. /home/pi/Desktop/images. "
+              "Only PNG and JPG/JPEG images are used for the slideshow."
+      },
 
     "palette": {
       "label":"Which palette should be used for converting images?",
@@ -61,8 +61,7 @@ class Slideshow(inkycal_module):
         raise Exception(f'config is missing {param}')
 
     # optional parameters
-    #self.path = config['path']
-    self.path = uploads_folder
+    self.path = config['path']
     self.palette = config['palette']
     self.autoflip = config['autoflip']
     self.orientation = config['orientation']
