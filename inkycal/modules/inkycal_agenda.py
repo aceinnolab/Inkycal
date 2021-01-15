@@ -24,16 +24,14 @@ class Agenda(inkycal_module):
 
   requires = {
     "ical_urls" : {
-      "label":"iCalendar URL/s, separate multiple ones with a comma"+
-      "URLs of iCalendars usually end with .ics"
+      "label":"iCalendar URL/s, separate multiple ones with a comma",
       },
 
     }
 
   optional = {
     "ical_files" : {
-      "label":"iCalendar filenames (in upload folder). "
-              "Separate multiple files with a comma.",
+      "label":"iCalendar filepaths, separated with a comma",
       },
 
     "date_format":{
@@ -80,9 +78,6 @@ class Agenda(inkycal_module):
       self.ical_files = config['ical_files'].split(',')
     else:
       self.ical_files = config['ical_files']
-
-    if self.ical_files:
-      self.ical_files = [uploads_folder+ical for ical in self.ical_files]
 
     # Additional config
     self.timezone = get_system_tz()
