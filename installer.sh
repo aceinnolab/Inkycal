@@ -83,7 +83,7 @@ inky.test()  # test if Inkycal can be run correctly, running this will show a bi
 inky.run()   # If there were no issues, you can run Inkycal nonstop
 EOF
         echo -e "\e[1;36m"Updating crontab"\e[0m"
-        (crontab -l ; echo "@reboot python3 /home/$USER/inky_run.py &")| crontab -
+        (crontab -l ; echo "@reboot sleep 60 && python3 /home/$USER/inky_run.py &")| crontab -
 	fi
 
     # Final words
