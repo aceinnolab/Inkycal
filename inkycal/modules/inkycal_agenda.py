@@ -203,7 +203,10 @@ class Agenda(inkycal_module):
             write(im_black, (x_time, line_pos[cursor][1]),
                 (time_width, line_height), time,
                 font = self.font, alignment='left')
-
+          else:
+            write(im_black, (x_time, line_pos[cursor][1]),
+                (time_width, line_height), 'All-day',
+                font = self.font, alignment='left')
           write(im_black, (x_event, line_pos[cursor][1]),
                 (event_width, line_height),
                 '• '+title, font = self.font, alignment='left')
