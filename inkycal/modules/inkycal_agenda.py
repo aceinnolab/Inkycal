@@ -182,34 +182,35 @@ class Agenda(inkycal_module):
       cursor = 0
       for _ in agenda_events:
         title = _['title']
-        # Check if items is actually today or in the future (some all-day events from yesterday get to this point.
-        if _['begin'] >= today:
-          
-            # Check if item is a date
-            if not 'end' in _:
-              ImageDraw.Draw(im_colour).line(
-                (0, line_pos[cursor][1], im_width, line_pos[cursor][1]),
-              fill = 'black')
 
-              write(im_black, line_pos[cursor], (date_width, line_height),
-                  title, font = self.font, alignment='left')
+        # Check if item is a date
+        if not 'end' in _:
+          ImageDraw.Draw(im_colour).line(
+            (0, line_pos[cursor][1], im_width, line_pos[cursor][1]),
+          fill = 'black')
 
-              cursor += 1
+          write(im_black, line_pos[cursor], (date_width, line_height),
+              title, font = self.font, alignment='left')
 
-            # Check if item is an event
-            if 'end' in _:
-              time = _['begin'].format(self.time_format)
+          cursor += 1
 
-              # Check if event is all day, if not, add the time
-              if parser.all_day(_) == False:
-                write(im_black, (x_time, line_pos[cursor][1]),
-                    (time_width, line_height), time,
-                    font = self.font, alignment='left')
+        # Check if item is an event
+        if 'end' in _:
+          time = _['begin'].format(self.time_format)
 
-              write(im_black, (x_event, line_pos[cursor][1]),
-                    (event_width, line_height),
-                    '• '+title, font = self.font, alignment='left')
-              cursor += 1
+          # Check if event is all day, if not, add the time
+          if parser.all_day(_) == False:
+            write(im_black, (x_time, line_pos[cursor][1]),
+                (time_width, line_height), time,
+                font = self.font, alignment='left')
+          else:
+            write(im_black, (x_time, line_pos[cursor][1]),
+                (time_width, line_height), 'All-day',
+                font = self.font, alignment='left')
+          write(im_black, (x_event, line_pos[cursor][1]),
+                (event_width, line_height),
+                '• '+title, font = self.font, alignment='left')
+          cursor += 1
 
     # If no events were found, write only dates and lines
     else:
