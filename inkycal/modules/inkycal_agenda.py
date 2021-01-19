@@ -173,7 +173,11 @@ class Agenda(inkycal_module):
       # Sort the combined list in chronological order of dates
       by_date = lambda event: event['begin']
       agenda_events.sort(key = by_date)
-
+      
+      # check if item is today or later (some all-day events will get past the previous filters)
+      for _ in list(agenda_events):
+        if _['begin'] < today:
+            agenda_events.remove(_)
       # Delete more entries than can be displayed (max lines)
       del agenda_events[max_lines:]
 
