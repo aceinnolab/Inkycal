@@ -129,23 +129,37 @@ class iCalendar:
                         t_start_recurring, t_end_recurring)
                         for ical in self.icalendars)
 
-    events = (
-      {
-      'title': events.get('SUMMARY').lstrip(),
+    event_list = []
+    for ical in recurring_events:
+        for events in ical:
+            this_event = {}
+            this_event['title'] = events.get('SUMMARY').lstrip()
+            
+            starts_and_ends_at_midnight = False
+            ends_on_a_later_day_than_it_started = False
+            
+            if arrow.get(events.get('dtstart').dt).format('HH:mm') and arrow.get(events.get('dtend').dt).format('HH:mm') == '00:00':
+               starts_and_ends_at_midnight = True
+                
+            if int(arrow.get(events.get('dtstart').dt).format('DDD')) < int(arrow.get(events.get('dtend').dt).format('DDD')):
+               ends_on_a_later_day_than_it_started = True
 
-      'begin': arrow.get(events.get('DTSTART').dt).to(timezone) if (
-        arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00')
-        else arrow.get(events.get('DTSTART').dt).replace(tzinfo=timezone),
+            if int(arrow.get(events.get('dtstart').dt).format('DDD')) == 365 and int(arrow.get(events.get('dtend').dt).format('DDD')) < 365:
+               ends_on_a_later_day_than_it_started = True
+                
+            if starts_and_ends_at_midnight == True and ends_on_a_later_day_than_it_started == True:
+                # this is most likely an all-day event and we need to add timezone info to it
+                this_event['begin'] = arrow.get(events.get('DTSTART').dt).replace(tzinfo=timezone)
+                this_event['end'] = arrow.get(events.get('DTEND').dt).replace(tzinfo=timezone)
+            else:
+                # this is probably not an all-day event
+                # this might be a regular old event, or an event that starts at midnight UTC but doesn't end at midnight UTC
+                this_event['begin'] = arrow.get(events.get('DTSTART').dt).to(timezone)
+                this_event['end'] = arrow.get(events.get('DTEND').dt).to(timezone)
+            
+            event_list.append(this_event)
 
-      'end':arrow.get(events.get("DTEND").dt).to(timezone) if (
-        arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00')
-        else arrow.get(events.get('DTEND').dt).replace(tzinfo=timezone)
-
-      } for ical in recurring_events for events in ical)
-
-
-    # if any recurring events were found, add them to parsed_events
-    if events: self.parsed_events += list(events)
+    if events: self.parsed_events += list(event_list)
 
     # Sort events by their beginning date
     self.sort()
