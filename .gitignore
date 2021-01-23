@@ -3,6 +3,8 @@ __pycache__/
 _build
 _static
 _templates
+.idea/
+venv/
 
 # virtual environment files
 bin/

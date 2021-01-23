@@ -16,7 +16,7 @@ test_config = """
     "update_interval": 5,
     "orientation": 0,
     "info_section": true,
-    "info_section_height": 70,
+    "info_section_height": 6,
     "calibration_hours": [0, 12, 18],
     "modules": [
         {

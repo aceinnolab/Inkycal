@@ -35,6 +35,10 @@ for path,dirs,files in os.walk(fonts_location):
       name = filename.split('.ttf')[0]
       fonts[name] = os.path.join(path, filename)
 
+    if filename.endswith('.pil'):
+      name = filename.split('.pil')[0]
+      fonts[name] = os.path.join(path, filename)
+
 available_fonts = [key for key,values in fonts.items()]
 
 def get_fonts():

@@ -6,17 +6,23 @@ Main class for inkycal Project
 Copyright by aceisace
 """
 
-import os
-import traceback
-import arrow
-import time
+import getopt
+import inspect
 import json
-import logging
+import pkgutil
+import sys
+import traceback
+from datetime import timedelta
 from logging.handlers import RotatingFileHandler
 
+import arrow
+import yaml
+
+from inkycal.custom import *
 from inkycal.display import Display
 from inkycal.custom import *
 from inkycal.modules.inky_image import Inkyimage as Images
+from inkycal.modules.template import inkycal_module
 
 try:
   from PIL import Image
@@ -39,7 +45,7 @@ except ImportError:
 # On the console, set a logger to show only important logs
 # (level ERROR or higher)
 stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.ERROR)
+stream_handler.setLevel(logging.INFO)
 
 on_rtd = os.environ.get('READTHEDOCS') == 'True'
 if on_rtd:
@@ -48,7 +54,7 @@ if on_rtd:
     format='%(asctime)s | %(name)s |  %(levelname)s: %(message)s',
     datefmt='%d-%m-%Y %H:%M:%S',
     handlers=[stream_handler])
-        
+
 else:
   # Save all logs to a file, which contains more detailed output
   logging.basicConfig(
@@ -56,9 +62,7 @@ else:
     format='%(asctime)s | %(name)s |  %(levelname)s: %(message)s',
     datefmt='%d-%m-%Y %H:%M:%S',
     handlers=[
-
           stream_handler,                     # add stream handler from above
-
           RotatingFileHandler(                # log to a file too
             f'{top_level}/logs/inkycal.log',  # file to log
             maxBytes=2097152,                 # 2MB max filesize
@@ -73,7 +77,10 @@ logging.getLogger("PIL").setLevel(logging.WARNING)
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 
+
+def upside_down(image): return image.rotate(180, expand=True)
 # TODO: autostart -> supervisor?
+
 
 class Inkycal:
   """Inkycal main class
@@ -99,29 +106,10 @@ class Inkycal:
     if render not in [True, False]:
       raise Exception(f'render must be True or False, not "{render}"')
     self.render = render
-
+    self.settings_path = settings_path
+    self.last_settings_load = None
     # load settings file - throw an error if file could not be found
-    if settings_path:
-      try:
-        with open(settings_path) as settings_file:
-          settings = json.load(settings_file)
-          self.settings = settings
-
-      except FileNotFoundError:
-        print('No settings file found in given path\n'
-              'Please double check your settings_path')
-        return
-
-    else:
-      try:
-        with open('/boot/settings.json') as settings_file:
-          settings = json.load(settings_file)
-          self.settings = settings
-
-      except FileNotFoundError:
-        print('No settings file found in /boot')
-        return
-
+    self._load_settings()
 
     # Option to use epaper image optimisation, reduces colours
     self.optimize = True
@@ -131,10 +119,10 @@ class Inkycal:
 
       # Init Display class with model in settings file
       from inkycal.display import Display
-      self.Display = Display(settings["model"])
+      self.Display = Display(self.settings["model"])
 
       # check if colours can be rendered
-      self.supports_colour = True if 'colour' in settings['model'] else False
+      self.supports_colour = True if 'colour' in self.settings['model'] else False
 
       # get calibration hours
       self._calibration_hours = self.settings['calibration_hours']
@@ -142,37 +130,66 @@ class Inkycal:
       # init calibration state
       self._calibration_state = False
 
-    # Load and intialize modules specified in the settings file
-    self._module_number = 1
-    for module in settings['modules']:
-      module_name = module['name']
-      try:
-        loader = f'from inkycal.modules import {module_name}'
-        # print(loader)
-        exec(loader)
-        setup = f'self.module_{self._module_number} = {module_name}({module})'
-        # print(setup)
-        exec(setup)
-        logger.info(('name : {name} size : {width}x{height} px'.format(
-          name = module_name,
-          width = module['config']['size'][0],
-          height = module['config']['size'][1])))
-
-        self._module_number += 1
-
-      # If a module was not found, print an error message
-      except ImportError:
-        print(f'Could not find module: "{module}". Please try to import manually')
-
-      # If something unexpected happened, show the error message
-      except Exception as e:
-        print(str(e))
-
     # Path to store images
     self.image_folder = top_level+'/images'
 
     # Give an OK message
-    print('loaded inkycal')
+    logger.info(f'loaded inkycal with settings_path={settings_path}')
+
+  def _load_settings(self):
+    if not self.settings_path:
+      self.settings_path = '/boot/settings.json'
+    try:
+      if self.last_settings_load != os.path.getmtime(self.settings_path):
+        if self.last_settings_load is not None:
+          logger.info(f'Settings file changed, reloading settings and modules.')
+        self.last_settings_load = os.path.getmtime(self.settings_path)
+      else:
+        return
+      with open(self.settings_path) as settings_file:
+        self.settings_filename = os.path.basename(self.settings_path)
+        if self.settings_path.endswith("json"):
+          settings = json.load(settings_file)
+          self.settings = settings
+        elif self.settings_path.endswith("yml") or self.settings_path.endswith("yaml"):
+          settings = yaml.safe_load(settings_file)
+          self.settings = settings
+
+      # set defaults if some values arent set
+      if self.settings.get("update_interval") is None:
+        self.settings["update_interval"] = 60
+      if self.settings.get("orientation") is None:
+        self.settings["orientation"] = 0
+      if self.settings.get("info_section") is None:
+        self.settings["info_section"] = False
+      if self.settings.get("info_section_height") is None:
+        self.settings["info_section_height"] = 6
+      if self.settings.get("calibration_hours") is None:
+        self.settings["calibration_hours"] = [0, 12, 18]
+    except FileNotFoundError or OSError:
+      logger.error(f'No settings file found at {self.settings_path}! Please double check your settings_path.')
+      return
+
+    # Load and initialize modules specified in the settings file
+    self._load_modules()
+
+  def _load_modules(self):
+    self.loaded_modules = []
+    found_modules = {}
+    imported_package = __import__('inkycal.modules', fromlist=['blah'])
+    for _, pluginname, ispkg in pkgutil.iter_modules(imported_package.__path__, imported_package.__name__ + '.'):
+      if not ispkg:
+        plugin_module = __import__(pluginname, fromlist=['blah'])
+        clsmembers = inspect.getmembers(plugin_module, inspect.isclass)
+        for (_, c) in clsmembers:
+          # Only add classes that are a sub class of Plugin, but NOT Plugin itself
+          if issubclass(c, inkycal_module) & (c is not inkycal_module):
+            found_modules[c.__name__] = c
+    for module_settings in self.settings['modules']:
+      module_constructor = found_modules[module_settings['name']]
+      if module_constructor:
+        self.loaded_modules.append(module_constructor(module_settings))
+    logger.debug(f'found_modules={found_modules} | loadedModules{self.loaded_modules}')
 
   def countdown(self, interval_mins=None):
     """Returns the remaining time in seconds until next display update"""
@@ -218,18 +235,18 @@ class Inkycal:
     # short info for info-section
     self.info = f"{arrow.now().format('D MMM @ HH:mm')}  "
 
-    for number in range(1, self._module_number):
-      name = eval(f"self.module_{number}.name")
-      module = eval(f'self.module_{number}')
+    for module in self.loaded_modules:
+      className = type(module).__name__
+      name = module.name
       print(f'generating image(s) for {name}...', end="")
       try:
         black,colour=module.generate_image()
-        black.save(f"{self.image_folder}/module{number}_black.png", "PNG")
-        colour.save(f"{self.image_folder}/module{number}_colour.png", "PNG")
+        black.save(f"{self.image_folder}/module{className}_black.png", "PNG")
+        colour.save(f"{self.image_folder}/module{className}_colour.png", "PNG")
         print('OK!')
       except Exception as Error:
-        errors.append(number)
-        self.info += f"module {number}: Error!  "
+        errors.append(className)
+        self.info += f"module {className}: Error!  "
         print('Error!')
         print(traceback.format_exc())
 
@@ -250,9 +267,6 @@ class Inkycal:
     # Get the time of initial run
     runtime = arrow.now()
 
-    # Function to flip images upside down
-    upside_down = lambda image: image.rotate(180, expand=True)
-
     # Count the number of times without any errors
     counter = 0
 
@@ -263,75 +277,63 @@ class Inkycal:
       current_time = arrow.now(tz=get_system_tz())
       print(f"Date: {current_time.format('D MMM YY')} | "
             f"Time: {current_time.format('HH:mm')}")
-      print('Generating images for all modules...', end='')
-
-      errors = [] # store module numbers in here
-
-      # short info for info-section
-      self.info = f"{current_time.format('D MMM @ HH:mm')}  "
-
-      for number in range(1, self._module_number):
-
-        name = eval(f"self.module_{number}.name")
-        module = eval(f'self.module_{number}')
-
-        try:
-          black,colour=module.generate_image()
-          black.save(f"{self.image_folder}/module{number}_black.png", "PNG")
-          colour.save(f"{self.image_folder}/module{number}_colour.png", "PNG")
-          self.info += f"module {number}: OK  "
-        except Exception as Error:
-          errors.append(number)
-          print('error!')
-          print(traceback.format_exc())
-          self.info += f"module {number}: error!  "
-          logger.exception(f'Exception in module {number}')
-
-      if errors:
-        print('error/s in modules:',*errors)
-        counter = 0
-      else:
-        counter += 1
-        print('successful')
-      del errors
-
-      # Assemble image from each module - add info section if specified
-      self._assemble()
-
-      # Check if image should be rendered
-      if self.render == True:
-        Display = self.Display
-
-        self._calibration_check()
-
-        if self.supports_colour == True:
-          im_black = Image.open(f"{self.image_folder}/canvas.png")
-          im_colour = Image.open(f"{self.image_folder}/canvas_colour.png")
-
-          # Flip the image by 180° if required
-          if self.settings['orientation'] == 180:
-            im_black = upside_down(im_black)
-            im_colour = upside_down(im_colour)
-
-          # render the image on the display
-          Display.render(im_black, im_colour)
-
-        # Part for black-white ePapers
-        elif self.supports_colour == False:
-
-          im_black = self._merge_bands()
-
-          # Flip the image by 180° if required
-          if self.settings['orientation'] == 180:
-            im_black = upside_down(im_black)
-
-          Display.render(im_black)
-
+      self.run_once()
       print(f'\nNo errors since {counter} display updates \n'
             f'program started {runtime.humanize()}')
-
       sleep_time = self.countdown()
       time.sleep(sleep_time)
+
+  def run_once(self, check_calibration=True):
+    current_time = arrow.now(tz=get_system_tz())
+    logger.info('Generating images for all modules...')
+    self._load_settings()
+    errors = False
+    # short info for info-section
+    self.info = f"{current_time.format('D MMM @ HH:mm')} {self.settings_filename} | "
+    for module in self.loaded_modules:
+      className = type(module).__name__
+      name = module.name
+      try:
+        black, colour = module.generate_image()
+        black.save(f"{self.image_folder}/module{className}_black.png", "PNG")
+        colour.save(f"{self.image_folder}/module{className}_colour.png", "PNG")
+        self.info += f"{className}: OK  "
+      except Exception as Error:
+        errors = True
+        self.info += f"{className}: ERR  "
+        logger.exception(f'Exception in module {className}')
+    # Assemble image from each module - add info section if specified
+    self._assemble()
+    # Check if image should be rendered
+    if self.render:
+      Display = self.Display
+
+      if check_calibration:
+        self._calibration_check()
+
+      if self.supports_colour:
+        im_black = Image.open(f"{self.image_folder}/canvas.png")
+        im_colour = Image.open(f"{self.image_folder}/canvas_colour.png")
+
+        # Flip the image by 180° if required
+        if self.settings['orientation'] == 180:
+          im_black = upside_down(im_black)
+          im_colour = upside_down(im_colour)
+
+        # render the image on the display
+        Display.render(im_black, im_colour)
+
+      # Part for black-white ePapers
+      elif self.supports_colour == False:
+
+        im_black = self._merge_bands()
+
+        # Flip the image by 180° if required
+        if self.settings['orientation'] == 180:
+          im_black = upside_down(im_black)
+
+        Display.render(im_black)
+    return errors
 
   def _merge_bands(self):
     """Merges black and coloured bands for black-white ePapers
@@ -373,11 +375,13 @@ class Inkycal:
     im1_cursor = 0
     im2_cursor = 0
 
-    for number in range(1, self._module_number):
+
+    for module in self.loaded_modules:
+      className = type(module).__name__
 
       # get the path of the current module's generated images
-      im1_path = f"{self.image_folder}/module{number}_black.png"
-      im2_path = f"{self.image_folder}/module{number}_colour.png"
+      im1_path = f"{self.image_folder}/module{className}_black.png"
+      im2_path = f"{self.image_folder}/module{className}_colour.png"
 
       # Check if there is an image for the black band
       if os.path.exists(im1_path):
@@ -388,7 +392,7 @@ class Inkycal:
 
         # Get the size of the section
         section_size = [i for i in self.settings['modules'] if \
-                        i['position'] == number][0]['config']['size']
+                        i['name'] == className][0]['config']['size']
 
         # Calculate coordinates to center the image
         x = int( (section_size[0] - im1_size[0]) /2)
@@ -414,7 +418,7 @@ class Inkycal:
 
         # Get the size of the section
         section_size = [i for i in self.settings['modules'] if \
-                        i['position'] == number][0]['config']['size']
+                        i['name'] == className][0]['config']['size']
 
         # Calculate coordinates to center the image
         x = int( (section_size[0]-im2_size[0]) /2)
@@ -431,19 +435,16 @@ class Inkycal:
         # Shift the y-axis cursor at the beginning of next section
         im2_cursor += section_size[1]
 
-
     # Add info-section if specified --
-
     # Calculate the max. fontsize for info-section
     if self.settings['info_section'] == True:
       info_height = self.settings["info_section_height"]
       info_width = width
-      font = self.font = ImageFont.truetype(
-        fonts['NotoSansUI-Regular'], size = 14)
+      font = self.font = ImageFont.load(fonts["slkscr-pil"])
 
       info_x = im_black.size[1] - info_height
       write(im_black, (0, info_x), (info_width, info_height),
-            self.info, font = font)
+            self.info, font=font)
 
     # optimize the image by mapping colours to pure black and white
     if self.optimize == True:
@@ -477,197 +478,57 @@ class Inkycal:
     """Calibration sheduler
     uses calibration hours from settings file to check if calibration is due"""
     now = arrow.now()
-    # print('hour:', now.hour, 'hours:', self._calibration_hours)
-    # print('state:', self._calibration_state)
-    if now.hour in self._calibration_hours and self._calibration_state == False:
+    last_calibration = now.shift(years=-1)
+    calibration_file = top_level+'/.last_calibration'
+    try:
+      if os.path.exists(calibration_file):
+        last_calibration = arrow.get(os.path.getmtime(calibration_file))
+    except OSError:
+      logger.exception(f'Exception while checking calibration')
+    max_calibration_age = timedelta(hours=1)
+    if now.hour in self._calibration_hours and (now - last_calibration) > max_calibration_age:
+      logger.info("Calibrating...")
       self.calibrate()
       self._calibration_state = True
+      if os.path.exists(calibration_file):
+        os.utime(calibration_file, None)
+      else:
+        open(calibration_file, 'a').close()
     else:
       self._calibration_state = False
 
 
-  @classmethod
-  def add_module(cls, filepath):
-    """registers a third party module for inkycal.
-
-    Uses the full filepath of the third party module to check if it is inside
-    the correct folder, then checks if it's an inkycal module. Lastly, the
-    init files in /inkycal and /inkycal/modules are updated to allow using
-    the new module.
-
-    Args:
-      - filepath: The full filepath of the third party module. Modules should be
-        in Inkycal/inkycal/modules.
-
-    Usage:
-      - download a third-party module. The exact link is provided by the
-        developer of that module and starts with
-        `https://raw.githubusercontent.com/...`
-
-        enter the following in bash to download a module::
-
-          $ cd Inkycal/inkycal/modules #navigate to modules folder in inkycal
-          $ wget https://raw.githubusercontent.com/...     #download the module
-
-        then register it with this function::
-
-          >>> import Inkycal
-          >>> Inkycal.add_module('/full/path/to/the/module/in/inkycal/modules.py')
-    """
-
-    module_folder = top_level+'/inkycal/modules'
-
-    # Check if module is inside the modules folder
-    if not module_folder in filepath:
-      raise Exception(f"Your module should be in {module_folder} "
-                      f"but is currently in {filepath}")
-
-    filename = filepath.split('.py')[0].split('/')[-1]
-
-    # Extract name of class from given module and validate if it's a inkycal
-    # module
-    with open(filepath, mode='r') as module:
-      module_content = module.read().splitlines()
-
-    for line in module_content:
-      if '(inkycal_module):' in line:
-        classname = line.split(' ')[-1].split('(')[0]
-        break
-
-    if not classname:
-      raise TypeError("your module doesn't seem to be a correct inkycal module.."
-                       "Please check your module again.")
+def main(argv):
+  settings_path = None
+  check_calibration = True
+  render = True
+  try:
+    opts, args = getopt.getopt(argv, "hs:", ["settings_path=", "no-calibration"])
+  except getopt.GetoptError:
+    usage()
+    sys.exit(2)
+  for opt, arg in opts:
+    if opt == '-h':
+      usage()
+      sys.exit()
+    elif opt in ("-s", "--settings_path"):
+      settings_path = arg
+    elif opt == "--no-render":
+      render = False
+    elif opt == "--no-calibration":
+      check_calibration = False
+  print(f'Running inkycal main once in standalone/debug mode')
+  Inkycal(settings_path, render).run_once(check_calibration)
 
 
-    # Check if filename or classname exists in init of module folder
-    with open(module_folder+'/__init__.py', mode ='r') as file:
-      module_init = file.read().splitlines()
+def usage():
+  print('Usage: main.py [OPTION]...')
+  print('Options:')
+  print('  -s <settings_path>, --settings_path=<settings_path>')
+  print('  --no-calibration')
+  print('  --no-render')
 
-    print('checking module init file..')
-    for line in module_init:
-      if filename in line:
-        raise Exception(
-          "A module with this filename already exists! \n"
-          "Please consider renaming your module and try again."
-          )
-      if classname in line:
-        raise Exception(
-          "A module with this classname already exists! \n"
-          "Please consider renaming your class and try again."
-          )
-    print('OK!')
-
-    # Check if filename or classname exists in init of inkycal folder
-    with open(top_level+'/inkycal/__init__.py', mode ='r') as file:
-      inkycal_init = file.read().splitlines()
-
-    print('checking inkycal init file..')
-    for line in inkycal_init:
-      if filename in line:
-        raise Exception(
-          "A module with this filename already exists! \n"
-          "Please consider renaming your module and try again."
-          )
-      if classname in line:
-        raise Exception(
-          "A module with this classname already exists! \n"
-          "Please consider renaming your class and try again."
-          )
-    print('OK')
-
-    # If all checks have passed, add the module in the module init file
-    with open(module_folder+'/__init__.py', mode='a') as file:
-      file.write(f'from .{filename} import {classname} # Added by module adder')
-
-    # If all checks have passed, add the module in the inkycal init file
-    with open(top_level+'/inkycal/__init__.py', mode ='a') as file:
-      file.write(f'import inkycal.modules.{filename} # Added by module adder')
-
-    print(f"Your module '{filename}' with class '{classname}' has been added "
-          "successfully! Hooray!")
-
-
-  @classmethod
-  def remove_module(cls, filename, remove_file=True):
-    """unregisters a inkycal module.
-
-    Looks for given filename.py in /modules folder, removes entries of that
-    module in init files inside /inkycal and /inkycal/modules
-
-    Args:
-      - filename: The filename (with .py ending) of the module which should be
-        unregistered. e.g. `'mymodule.py'`
-      - remove_file: ->bool (True/False). If set to True, the module is deleted
-        after unregistering it, else it remains in the /modules folder
-
-
-    Usage:
-      - Look for the module in Inkycal/inkycal/modules which should be removed.
-        Only the filename (with .py) is required, not the full path.
-
-        Use this function to unregister the module from inkycal::
-
-          >>> import Inkycal
-          >>> Inkycal.remove_module('mymodule.py')
-    """
-
-    module_folder = top_level+'/inkycal/modules'
-
-    # Check if module is inside the modules folder and extract classname
-    try:
-      with open(f"{module_folder}/{filename}", mode='r') as file:
-        module_content = file.read().splitlines()
-
-        for line in module_content:
-          if '(inkycal_module):' in line:
-            classname = line.split(' ')[-1].split('(')[0]
-            break
-
-        if not classname:
-          print('The module you are trying to remove is not an inkycal module.. '
-                'Not removing it.')
-          return
-
-
-    except FileNotFoundError:
-      print(f"No module named {filename} found in {module_folder}")
-      return
-
-    filename = filename.split('.py')[0]
-
-    # Create a memory backup of /modules init file
-    with open(module_folder+'/__init__.py', mode ='r') as file:
-      module_init = file.read().splitlines()
-
-    print('removing line from module_init')
-    # Remove lines that contain classname
-    with open(module_folder+'/__init__.py', mode ='w') as file:
-      for line in module_init:
-        if not classname in line:
-          file.write(line+'\n')
-        else:
-          print('found, removing')
-
-    # Create a memory backup of inkycal init file
-    with open(f"{top_level}/inkycal/__init__.py", mode ='r') as file:
-      inkycal_init = file.read().splitlines()
-
-    print('removing line from inkycal init')
-    # Remove lines that contain classname
-    with open(f"{top_level}/inkycal/__init__.py", mode ='w') as file:
-      for line in inkycal_init:
-        if not filename in line:
-          file.write(line+'\n')
-        else:
-          print('found, removing')
-
-    # remove the file of the third party module if it exists and remove_file
-    # was set to True (default)
-    if os.path.exists(f"{module_folder}/{filename}.py") and remove_file == True:
-      print('deleting module file')
-      os.remove(f"{module_folder}/{filename}.py")
-
-    print(f"Your module '{filename}' with class '{classname}' was removed.")
 
 if __name__ == '__main__':
-  print(f'running inkycal main in standalone/debug mode')
+  main(sys.argv[1:])
+
