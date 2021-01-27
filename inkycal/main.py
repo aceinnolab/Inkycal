@@ -161,7 +161,7 @@ class Inkycal:
       if self.settings.get("orientation") is None:
         self.settings["orientation"] = 0
       if self.settings.get("info_section") is None:
-        self.settings["info_section"] = False
+        self.settings["info_section"] = True
       if self.settings.get("info_section_height") is None:
         self.settings["info_section_height"] = 6
       if self.settings.get("calibration_hours") is None:
