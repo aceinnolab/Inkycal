@@ -16,7 +16,11 @@ from datetime import timedelta
 from logging.handlers import RotatingFileHandler
 
 import arrow
-import yaml
+try:
+  import yaml
+except ImportError:
+  print('PyYAML is not installed! This prevents the settings file being in the yaml format. Please install with:')
+  print('pip3 install PyYAML')
 
 from inkycal.custom import *
 from inkycal.display import Display
@@ -137,6 +141,13 @@ class Inkycal:
     logger.info(f'loaded inkycal with settings_path={settings_path}')
 
   def _load_settings(self):
+    """
+    (Re)loads the settings files specified in self.settings_path.
+    Reloading depends on the modification date of the file at the given location.
+    Supports json and yaml files.
+    Parsed settings file is filled with defaults and available as self.settings.
+    After a successful (re)load of the settings file a (re)load of the modules found in that file is triggered.
+    """
     if not self.settings_path:
       self.settings_path = '/boot/settings.json'
     try:
@@ -166,14 +177,18 @@ class Inkycal:
         self.settings["info_section_height"] = 6
       if self.settings.get("calibration_hours") is None:
         self.settings["calibration_hours"] = [0, 12, 18]
+
+      # Load and initialize modules specified in the settings file
+      self._load_modules()
     except FileNotFoundError or OSError:
       logger.error(f'No settings file found at {self.settings_path}! Please double check your settings_path.')
       return
 
-    # Load and initialize modules specified in the settings file
-    self._load_modules()
-
   def _load_modules(self):
+    """
+    Finds and initializes all modules located in the inkycal/modules package.
+    After that all used modules, that are mentioned in the settings file, are loaded and assigned to a class variable.
+    """
     self.loaded_modules = []
     found_modules = {}
     imported_package = __import__('inkycal.modules', fromlist=['blah'])
@@ -182,14 +197,14 @@ class Inkycal:
         plugin_module = __import__(pluginname, fromlist=['blah'])
         clsmembers = inspect.getmembers(plugin_module, inspect.isclass)
         for (_, c) in clsmembers:
-          # Only add classes that are a sub class of Plugin, but NOT Plugin itself
+          # Only add classes that are a sub class of inkycal_module, but NOT inkycal_module itself
           if issubclass(c, inkycal_module) & (c is not inkycal_module):
             found_modules[c.__name__] = c
     for module_settings in self.settings['modules']:
       module_constructor = found_modules[module_settings['name']]
       if module_constructor:
         self.loaded_modules.append(module_constructor(module_settings))
-    logger.debug(f'found_modules={found_modules} | loadedModules{self.loaded_modules}')
+    logger.debug(f'found_modules={found_modules} | loaded_modules={self.loaded_modules}')
 
   def countdown(self, interval_mins=None):
     """Returns the remaining time in seconds until next display update"""
@@ -233,7 +248,7 @@ class Inkycal:
     errors = []
 
     # short info for info-section
-    self.info = f"{arrow.now().format('D MMM @ HH:mm')}  "
+    self.info = f"{arrow.now().format('D MMM @ HH:mm')} {self.settings_filename} | "
 
     for module in self.loaded_modules:
       className = type(module).__name__
@@ -251,7 +266,7 @@ class Inkycal:
         print(traceback.format_exc())
 
     if errors:
-      print('Error/s in modules:',*errors)
+      print('Error/s in modules:', *errors)
     del errors
 
     self._assemble()
