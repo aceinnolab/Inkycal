@@ -24,6 +24,7 @@ images = top_level + '/images/'
 
 # Get available fonts within fonts folder
 fonts = {}
+disable_font_aliasing = True
 
 for path,dirs,files in os.walk(fonts_location):
   for filename in files:
@@ -186,9 +187,11 @@ def write(image, xy, box_size, text, font=None, **kwargs):
   y = int((box_height / 2) - (text_height / 2))
 
   # Draw the text in the text-box
-  draw  = ImageDraw.Draw(image)
   space = Image.new('RGBA', (box_width, box_height))
-  ImageDraw.Draw(space).text((x, y), text, fill=colour, font=font)
+  textdraw = ImageDraw.Draw(space)
+  if disable_font_aliasing:
+    textdraw.fontmode = "1"
+  textdraw.text((x, y), text, fill=colour, font=font)
 
   # Uncomment following two lines, comment out above two lines to show
   # red text-box with white text (debugging purposes)
@@ -197,7 +200,7 @@ def write(image, xy, box_size, text, font=None, **kwargs):
   #ImageDraw.Draw(space).text((x, y), text, fill='white', font=font)
 
   if rotation != None:
-    space.rotate(rotation, expand = True)
+    space.rotate(rotation, expand=True)
 
   # Update only region with text (add text with transparent background)
   image.paste(space, xy, space)

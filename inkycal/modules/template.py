@@ -23,7 +23,7 @@ class inkycal_module(metaclass=abc.ABCMeta):
 
     self.fontsize = conf["fontsize"]
     self.font = ImageFont.truetype(
-      fonts['NotoSansUI-Regular'], size = self.fontsize)
+      fonts[config['settings']['default_font']], size = self.fontsize)
 
   def set(self, help=False, **kwargs):
     """Set attributes of class, e.g. class.set(key=value)

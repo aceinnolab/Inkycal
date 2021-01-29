@@ -177,7 +177,10 @@ class Inkycal:
         self.settings["info_section_height"] = 6
       if self.settings.get("calibration_hours") is None:
         self.settings["calibration_hours"] = [0, 12, 18]
+      if self.settings.get("default_font") is None:
+        self.settings["default_font"] = "NotoSansUI-Regular"
 
+      functions.disable_font_aliasing = self.settings.get("disable_font_aliasing", True)
       # Load and initialize modules specified in the settings file
       self._load_modules()
     except FileNotFoundError or OSError:
@@ -201,6 +204,7 @@ class Inkycal:
           if issubclass(c, inkycal_module) & (c is not inkycal_module):
             found_modules[c.__name__] = c
     for module_settings in self.settings['modules']:
+      module_settings["settings"] = self.settings
       module_constructor = found_modules[module_settings['name']]
       if module_constructor:
         self.loaded_modules.append(module_constructor(module_settings))
@@ -518,7 +522,7 @@ def main(argv):
   check_calibration = True
   render = True
   try:
-    opts, args = getopt.getopt(argv, "hs:", ["settings_path=", "no-calibration"])
+    opts, args = getopt.getopt(argv, "hs:", ["settings_path=", "no-calibration", "no-render"])
   except getopt.GetoptError:
     usage()
     sys.exit(2)
