@@ -258,14 +258,15 @@ class Calendar(inkycal_module):
 
       # Draw a border with specified parameters around days with events
       for days in days_with_events:
-        draw_border(
-          im_colour,
-          grid[days],
-          (icon_width, icon_height),
-          radius = 6,
-          thickness= 1,
-          shrinkage = (0.4, 0.2)
-          )
+        if days in grid:
+          draw_border(
+            im_colour,
+            grid[days],
+            (icon_width, icon_height),
+            radius = 6,
+            thickness= 1,
+            shrinkage = (0.4, 0.2)
+            )
 
       # Filter upcoming events until 4 weeks in the future
       parser.clear_events()
