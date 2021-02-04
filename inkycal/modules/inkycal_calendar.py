@@ -213,6 +213,10 @@ class Calendar(inkycal_module):
       # If this month requires 5 instead of 6 rows, increase event section height
       if len(cal.monthcalendar(now.year, now.month)) == 5:
         events_height += icon_height
+        
+      # If this month requires 4 instead of 6 rows, increase event section height
+      elif len(cal.monthcalendar(now.year, now.month)) == 4:
+        events_height += icon_height * 2
 
       # import the ical-parser
       from inkycal.modules.ical_parser import iCalendar
