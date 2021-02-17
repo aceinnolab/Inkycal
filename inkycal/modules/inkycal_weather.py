@@ -442,11 +442,11 @@ class Weather(inkycal_module):
 
       if self.units == 'metric':
         logging.debug('getting windspeed in metric unit')
-        wind = str(round(weather.wind(unit='meters_sec')['speed']), ndigits=dec_wind) + 'm/s'
+        wind = str(round(weather.wind(unit='meters_sec')['speed'], ndigits=dec_wind)) + ' m/s'
 
       elif self.units == 'imperial':
         logging.debug('getting windspeed in imperial unit')
-        wind = str(round(weather.wind(unit='miles_hour')['speed']), ndigits=dec_wind) + 'miles/h'
+        wind = str(round(weather.wind(unit='miles_hour')['speed'], ndigits=dec_wind)) + ' mph'
 
     dec = decimal.Decimal
     moonphase = get_moon_phase()
