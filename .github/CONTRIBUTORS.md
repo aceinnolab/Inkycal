@@ -46,4 +46,8 @@ The following people have voluteered to test the beta release (pre-release). Tha
 | **Lara** | A special thank you for contribution! :tada: |
 | **Richard** | A special thank you for contribution! :tada: |
 | **[David S.](https://github.com/piimp)** | A special thank you for contribution! :tada: |
+| **Rene N** |  A special thank you for contribution! :tada: |
+| **Koorathota** |  A special thank you for contribution! :tada: |
+| **Christopher C.** | A special thank you for contribution! :tada: |
+| **Stefan A.** | A special thank you for contribution! :tada: |
 
