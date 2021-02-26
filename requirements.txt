@@ -4,7 +4,7 @@ icalendar==4.0.6                # iCalendar parsing
 recurring-ical-events==0.1.17b0 # parse recurring events
 feedparser==5.2.1               # parse RSS-feeds
 numpy>=1.18.2                   # image pre-processing #pre-installed on Raspbian, omitting
-arrow>=0.15.6 	                # time operations
+arrow==0.17.0 	                # time operations
 Flask==1.1.2                    # webserver
 Flask-WTF==0.14.3               # webforms
 todoist-python==8.1.2           # todoist api
