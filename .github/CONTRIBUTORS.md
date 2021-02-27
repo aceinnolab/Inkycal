@@ -50,4 +50,4 @@ The following people have voluteered to test the beta release (pre-release). Tha
 | **Koorathota** |  A special thank you for contribution! :tada: |
 | **Christopher C.** | A special thank you for contribution! :tada: |
 | **Stefan A.** | A special thank you for contribution! :tada: |
-
+| **Florian B.** | A special thank you for contribution! :tada: |
