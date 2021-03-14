@@ -361,7 +361,7 @@ class Weather(inkycal_module):
           'temp':temp,
           'icon':icon,
           'stamp': forecast_timings[forecasts.index(forecast)].to(
-            get_system_tz()).format('H.00' if self.hour_format == 24 else 'h a')
+            get_system_tz()).format('H:00' if self.hour_format == 24 else 'h a')
           }
 
     elif self.forecast_interval == 'daily':
