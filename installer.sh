@@ -26,9 +26,8 @@ if [ "$option" = 1 ] || [ "$option" = 3 ]; then
     pip3 uninstall Inkycal -y
 
     # Remove crontab file
-    echo -e "\e[1;36m"Replacing current crontab"\e[0m"
-    (crontab -l ; echo "")| crontab -
-
+    echo -e "\e[1;36m"Reverting crontab file"\e[0m"
+    crontab -r
     echo -e "\e[1;36m"Uninstall complete."\e[0m"
 fi
 
