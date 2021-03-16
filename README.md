@@ -65,6 +65,9 @@ sudo raspi-config --expand-rootfs
 sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
 sudo dpkg-reconfigure tzdata
 ```
+If you were using Raspberry Pi Lite, please install some missing packages too:
+`sudo apt install git python3-pip libtiff5 libopenjp2-7 rpi.gpio libxcb1 libfreetype6-dev libfreetype6-dev python3-pillow && pip3 install spidev setuptools`
+
 These commands expand the filesystem, enable SPI and setup the correct timezone on the Raspberry Pi. When running the last command, please select the continent you live in, press enter and then select the capital of the country you live in. Lastly, press enter.
 
 10. Change the passowrd for the user pi by entering `passwd` in the Terminal, enter your current password, hit enter, then type your new password and press enter. Please note you will have to remember this password to access your Raspberry Pi.
