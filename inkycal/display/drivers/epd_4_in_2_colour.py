@@ -48,7 +48,7 @@ class EPD:
         epdconfig.digital_write(self.reset_pin, 1)
         epdconfig.delay_ms(200) 
         epdconfig.digital_write(self.reset_pin, 0)
-        epdconfig.delay_ms(10)
+        epdconfig.delay_ms(5) # support v2 displays in favor of v1 displays.Change this to 10 for legacy v1 display support
         epdconfig.digital_write(self.reset_pin, 1)
         epdconfig.delay_ms(200)   
 
