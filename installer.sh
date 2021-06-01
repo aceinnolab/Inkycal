@@ -26,9 +26,8 @@ if [ "$option" = 1 ] || [ "$option" = 3 ]; then
     pip3 uninstall Inkycal -y
 
     # Remove crontab file
-    echo -e "\e[1;36m"Replacing current crontab"\e[0m"
-    (crontab -l ; echo "")| crontab -
-
+    echo -e "\e[1;36m"Reverting crontab file"\e[0m"
+    crontab -r
     echo -e "\e[1;36m"Uninstall complete."\e[0m"
 fi
 
@@ -59,6 +58,9 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
     # Installing dependencies
     echo -e "\e[1;36m"Installing Inkycal.."\e[0m"
     cd Inkycal && pip3 install -e ./
+
+    # Install additional dependencies for yfinance module (ad-hoc fix)
+    sudo apt-get install libatlas-base-dev -y && pip3 install yfinance && pip3 install -U numpy
 
     echo -e "\e[97mDo you want the software to start automatically at boot?"
     echo -e "\e[97mPress [Y] for yes or [N] for no. The default option is yes"
