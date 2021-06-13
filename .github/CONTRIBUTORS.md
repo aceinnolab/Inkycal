@@ -53,3 +53,4 @@ The following people have voluteered to test the beta release (pre-release). Tha
 | **Florian B.** | A special thank you for contribution! :tada: |
 | **Achint M.** | A special thank you for contribution! :tada: |
 | **Felix J.** | A special thank you for contribution! :tada: |
+| **Michael W.** | A special thank you for contribution! :tada: |
