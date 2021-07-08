@@ -8,4 +8,4 @@ arrow==0.17.0 	                # time operations
 Flask==1.1.2                    # webserver
 Flask-WTF==0.14.3               # webforms
 todoist-python==8.1.2           # todoist api
-yfinance==0.1.55                # yahoo stocks
+yfinance>=0.1.60                # yahoo stocks
