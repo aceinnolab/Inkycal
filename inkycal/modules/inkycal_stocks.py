@@ -173,12 +173,12 @@ class Stocks(inkycal_module):
       def percentageStr(number):
         return '({:+.2f}%)'.format(number)
       
-      def gainStr(number):      
-        return '{:+.3f}'.format(number)
+      def gainStr(precision, number):      
+        return "%+.*f" % (precision, number)
 
       stockNameLine = '{} ({})'.format(stockName, stockCurrency)
       stockCurrentValueLine = '{} {} {}'.format(
-        floatStr(precision, currentQuote), gainStr(currentGain), percentageStr(currentGainPercentage))
+        floatStr(precision, currentQuote), gainStr(precision, currentGain), percentageStr(currentGainPercentage))
       stockDayValueLine = '1d OHL: {}/{}/{}'.format(
         floatStr(precision, currentOpen), floatStr(precision, currentHigh), floatStr(precision, currentLow))
       maxQuote = max(stockHistory.High)
