@@ -23,7 +23,7 @@ __install_requires__ = ['pyowm==3.1.1',                   # weather
                         'Flask==1.1.2',                   # webserver
                         'Flask-WTF==0.14.3',              # webforms
                         'todoist-python==8.1.2',          # todoist api
-                        'yfinance>=0.1.60',               # yahoo stocks
+                        'yfinance>=0.1.62',               # yahoo stocks
                         ]
 
 __classifiers__ = [
