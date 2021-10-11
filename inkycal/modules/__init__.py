@@ -7,4 +7,5 @@ from .inkycal_image import Inkyimage
 from .inkycal_jokes import Jokes
 from .inkycal_stocks import Stocks
 from .inkycal_slideshow import Slideshow
+from .inkycal_text import Text
 #from .inkycal_server import Inkyserver
