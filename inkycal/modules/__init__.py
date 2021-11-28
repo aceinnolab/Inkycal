@@ -1,4 +1,5 @@
 from .inkycal_agenda import Agenda
+from .inkycal_agendalist import AgendaList
 from .inkycal_calendar import Calendar
 from .inkycal_weather import Weather
 from .inkycal_feeds import Feeds
