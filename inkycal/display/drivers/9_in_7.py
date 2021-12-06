@@ -4,6 +4,7 @@
 9.7" driver class
 Copyright by aceisace
 """
+from subprocess import run
 from inkycal.custom import images, top_level
 from os.path import exists
 from PIL import Image
