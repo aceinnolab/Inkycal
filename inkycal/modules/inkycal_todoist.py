@@ -163,35 +163,36 @@ class Todoist(inkycal_module):
     # Add the parsed todos on the image
     cursor = 0
     for name, todos in grouped.items():
-      if todos != []:
+      if todos:
         for todo in todos:
-          line_x, line_y = line_positions[cursor]
+          if cursor < len(line_positions):
+            line_x, line_y = line_positions[cursor]
 
-          # Add todo project name
-          write(
-            im_colour, line_positions[cursor],
-            (project_width, line_height),
-            todo['project'], font=self.font, alignment='left')
+            # Add todo project name
+            write(
+              im_colour, line_positions[cursor],
+              (project_width, line_height),
+              todo['project'], font=self.font, alignment='left')
 
-          # Add todo due if not empty
-          if todo['due'] != "":
+            # Add todo due if not empty
+            if todo['due'] != "":
+              write(
+                im_black,
+                (line_x + project_width, line_y),
+                (due_width, line_height),
+                todo['due'], font=self.font, alignment='left')
+
+            # Add todo name
             write(
               im_black,
-              (line_x + project_width, line_y),
-              (due_width, line_height),
-              todo['due'], font=self.font, alignment='left')
+              (line_x+project_width+due_width, line_y),
+              (im_width-project_width-due_width, line_height),
+              todo['name'], font=self.font, alignment='left')
 
-          # Add todo name
-          write(
-            im_black,
-            (line_x+project_width+due_width, line_y),
-            (im_width-project_width-due_width, line_height),
-            todo['name'], font=self.font, alignment='left')
-
-          cursor += 1
-          if cursor > max_lines:
-            logger.error('More todos than available lines')
-            break
+            cursor += 1
+        else:
+          logger.error('More todos than available lines')
+          break
 
     # return the images ready for the display
     return im_black, im_colour
