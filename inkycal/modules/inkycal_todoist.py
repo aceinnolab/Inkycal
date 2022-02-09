@@ -136,11 +136,14 @@ class Todoist(inkycal_module):
         'name':task['content'],
         'due':task['due']['string'] if task['due'] != None else "",
         'priority':task['priority'],
-        'project':all_projects[ task['project_id'] ]
+        'project':all_projects[ task['project_id' ] ] if task['project_id'] in all_projects else "deleted"
       }
       for task in tasks]
 
-    # logger.debug(f'simplified: {simplified}')
+    # remove groups that have been deleted
+    simplified = [task for task in simplified if task['project'] != "deleted"]
+
+    logger.debug(f'simplified: {simplified}')
 
     # Get maximum width of project names for selected font
     project_width = int(max([
