@@ -22,10 +22,10 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 * Agenda - Agenda showing upcoming events from given iCalendar URLs.
 * Image - Display an Image from URL or local file path.
 * Slideshow - Cycle through images in a given folder and show them on the E-Paper.
-* Feeds - Syncronise RSS/ATOM feeds from your favorite providers.
+* Feeds - Synchronise RSS/ATOM feeds from your favorite providers.
 * Stocks - Display stocks using Tickers from Yahoo! Finance.
 * Weather - Show current weather, daily or hourly weather forecasts from openweathermap.
-* Todoist - Syncronise with Todoist app or website to show todos.
+* Todoist - Synchronise with Todoist app or website to show todos.
 * iCanHazDad - Display a random joke from iCanhazdad.com.
 
 ## News:
@@ -58,16 +58,16 @@ This software is in active development. To see the current development status, [
 6. Copy these three downloaded files to the flashed microSD card. On Windows, this is the only visible directory on the SD card. On Linux, copy these files to `/boot`
 7. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
 8. Once the green LED has stopped blinking after ~3 minutes, use an SSH client to connect to the Raspberry Pi. On Windows, you can use PUTTY but you can also use an SSH App
-on your smartphone. Use the address: `raspberrypi.local` with `pi` as the username and `raspberry` as the password. Fro more detailed instructions, check out the page from the [Raspberry Pi website](https://www.raspberrypi.org/documentation/remote-access/ssh/)
+on your smartphone. Use the address: `raspberrypi.local` with `pi` as the username and `raspberry` as the password. For more detailed instructions, check out the page from the [Raspberry Pi website](https://www.raspberrypi.org/documentation/remote-access/ssh/)
 9. After connecting via SSH, run the following commands, line by line:
 ```bash
 sudo raspi-config --expand-rootfs
 sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
 sudo dpkg-reconfigure tzdata
 ```
-These commands expand the filesystem, enable SPI and setup the correct timezone on the Raspberry Pi. When running the last command, please select the continent you live in, press enter and then select the capital of the country you live in. Lastly, press enter.
+These commands expand the filesystem, enable SPI and set up the correct timezone on the Raspberry Pi. When running the last command, please select the continent you live in, press enter and then select the capital of the country you live in. Lastly, press enter.
 
-10. Change the passowrd for the user pi by entering `passwd` in the Terminal, enter your current password, hit enter, then type your new password and press enter. Please note you will have to remember this password to access your Raspberry Pi.
+10. Change the password for the user pi by entering `passwd` in the Terminal, enter your current password, hit enter, then type your new password and press enter. Please note you will have to remember this password to access your Raspberry Pi.
 11. Follow the steps in `Installation` (see below) on how to install Inkycal.
 
 ### Installation
@@ -97,7 +97,7 @@ The average response time for issues, PRs and emails is usually 24 hours. In som
 
 ## Buy me a coffee please
 Yes please :). I do drink and like my coffee, especially when developing the inkycal software :)
-You can donate a coffee with this QR-code (Paypal):
+You can donate a coffee with this QR-code (PayPal):
 
 <p align="center">
         <img src="https://raw.githubusercontent.com/aceisace/Inkycal/development/Gallery/coffee.png" width=250>
