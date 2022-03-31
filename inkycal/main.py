@@ -127,7 +127,7 @@ class Inkycal:
         self.optimize = True
 
         # Load drivers if image should be rendered
-        if self.render == True:
+        if self.render:
             # Init Display class with model in settings file
             # from inkycal.display import Display
             self.Display = Display(settings["model"])
@@ -177,7 +177,7 @@ class Inkycal:
         """Returns the remaining time in seconds until next display update"""
 
         # Check if empty, if empty, use value from settings file
-        if interval_mins == None:
+        if interval_mins is None:
             interval_mins = self.settings["update_interval"]
 
         # Find out at which minutes the update should happen
@@ -225,7 +225,7 @@ class Inkycal:
                 black.save(f"{self.image_folder}/module{number}_black.png", "PNG")
                 colour.save(f"{self.image_folder}/module{number}_colour.png", "PNG")
                 print('OK!')
-            except Exception as Error:
+            except:
                 errors.append(number)
                 self.info += f"module {number}: Error!  "
                 print('Error!')
@@ -240,7 +240,7 @@ class Inkycal:
     def run(self):
         """Runs main program in nonstop mode.
 
-        Uses a infinity loop to run Inkycal nonstop. Inkycal generates the image
+        Uses an infinity loop to run Inkycal nonstop. Inkycal generates the image
         from all modules, assembles them in one image, refreshed the E-Paper and
         then sleeps until the next sheduled update.
         """
@@ -270,7 +270,7 @@ class Inkycal:
 
             for number in range(1, self._module_number):
 
-                name = eval(f"self.module_{number}.name")
+                # name = eval(f"self.module_{number}.name")
                 module = eval(f'self.module_{number}')
 
                 try:
@@ -278,7 +278,7 @@ class Inkycal:
                     black.save(f"{self.image_folder}/module{number}_black.png", "PNG")
                     colour.save(f"{self.image_folder}/module{number}_colour.png", "PNG")
                     self.info += f"module {number}: OK  "
-                except Exception as Error:
+                except:
                     errors.append(number)
                     print('error!')
                     print(traceback.format_exc())
@@ -297,12 +297,12 @@ class Inkycal:
             self._assemble()
 
             # Check if image should be rendered
-            if self.render == True:
-                Display = self.Display
+            if self.render:
+                display = self.Display
 
                 self._calibration_check()
 
-                if self.supports_colour == True:
+                if self.supports_colour:
                     im_black = Image.open(f"{self.image_folder}/canvas.png")
                     im_colour = Image.open(f"{self.image_folder}/canvas_colour.png")
 
@@ -312,10 +312,10 @@ class Inkycal:
                         im_colour = upside_down(im_colour)
 
                     # render the image on the display
-                    Display.render(im_black, im_colour)
+                    display.render(im_black, im_colour)
 
                 # Part for black-white ePapers
-                elif self.supports_colour == False:
+                elif not self.supports_colour:
 
                     im_black = self._merge_bands()
 
@@ -323,7 +323,7 @@ class Inkycal:
                     if self.settings['orientation'] == 180:
                         im_black = upside_down(im_black)
 
-                    Display.render(im_black)
+                    display.render(im_black)
 
             print(f'\nNo errors since {counter} display updates \n'
                   f'program started {runtime.humanize()}')
@@ -331,12 +331,11 @@ class Inkycal:
             sleep_time = self.countdown()
             time.sleep(sleep_time)
 
-    def _merge_bands(self):
+    @staticmethod
+    def _merge_bands():
         """Merges black and coloured bands for black-white ePapers
         returns the merged image
         """
-
-        im_path = images
 
         im1_path, im2_path = images + 'canvas.png', images + 'canvas_colour.png'
 
@@ -350,7 +349,10 @@ class Inkycal:
 
         # If there is no image for the coloured-band, return the bw-image
         elif os.path.exists(im1_path) and not os.path.exists(im2_path):
-            im1 = Image.open(im1_name).convert('RGBA')
+            im1 = Image.open(im1_path).convert('RGBA')
+
+        else:
+            raise FileNotFoundError("Inkycal cannot find images to merge")
 
         return im1
 
@@ -384,8 +386,7 @@ class Inkycal:
                 im1_size = im1.size
 
                 # Get the size of the section
-                section_size = [i for i in self.settings['modules'] if \
-                                i['position'] == number][0]['config']['size']
+                section_size = [i for i in self.settings['modules'] if i['position'] == number][0]['config']['size']
 
                 # Calculate coordinates to center the image
                 x = int((section_size[0] - im1_size[0]) / 2)
@@ -410,8 +411,7 @@ class Inkycal:
                 im2_size = im2.size
 
                 # Get the size of the section
-                section_size = [i for i in self.settings['modules'] if \
-                                i['position'] == number][0]['config']['size']
+                section_size = [i for i in self.settings['modules'] if i['position'] == number][0]['config']['size']
 
                 # Calculate coordinates to center the image
                 x = int((section_size[0] - im2_size[0]) / 2)
@@ -431,7 +431,7 @@ class Inkycal:
         # Add info-section if specified --
 
         # Calculate the max. fontsize for info-section
-        if self.settings['info_section'] == True:
+        if self.settings['info_section']:
             info_height = self.settings["info_section_height"]
             info_width = width
             font = self.font = ImageFont.truetype(
@@ -442,14 +442,44 @@ class Inkycal:
                   self.info, font=font)
 
         # optimize the image by mapping colours to pure black and white
-        if self.optimize == True:
+        if self.optimize:
             im_black = self._optimize_im(im_black)
             im_colour = self._optimize_im(im_colour)
 
         im_black.save(self.image_folder + '/canvas.png', 'PNG')
         im_colour.save(self.image_folder + '/canvas_colour.png', 'PNG')
 
-    def _optimize_im(self, image, threshold=220):
+        # Additionally combine the two images with color
+        def clear_white(img):
+            """Replace all white pixels from image with transparent pixels
+            """
+            x = numpy.asarray(img.convert('RGBA')).copy()
+            x[:, :, 3] = (255 * (x[:, :, :3] != 255).any(axis=2)).astype(numpy.uint8)
+            return Image.fromarray(x)
+
+        # Additionally combine the two images with color
+        def black_to_colour(img):
+            """Replace all black pixels from image with red pixels
+            """
+            buffer = numpy.array(img.convert('RGB'))
+            red, green = buffer[:, :, 0], buffer[:, :, 1]
+
+            threshold = 220
+
+            # non-white -> red
+            buffer[numpy.logical_and(red <= threshold, green <= threshold)] = [255, 0, 0]
+
+            return Image.fromarray(buffer)
+
+        # Save full-screen images as well
+        im_black = clear_white(im_black)
+        im_colour = black_to_colour(im_colour)
+
+        im_colour.paste(im_black, (0, 0), im_black)
+        im_colour.save(images + 'full-screen.png', 'PNG')
+
+    @staticmethod
+    def _optimize_im(image, threshold=220):
         """Optimize the image for rendering on ePaper displays"""
 
         buffer = numpy.array(image.convert('RGB'))
@@ -506,83 +536,84 @@ class Inkycal:
 
             then register it with this function::
 
-              >>> import Inkycal
+              >>> from inkycal import Inkycal
               >>> Inkycal.add_module('/full/path/to/the/module/in/inkycal/modules.py')
         """
 
         module_folder = top_level + '/inkycal/modules'
 
+        if module_folder in filepath:
+            filename = filepath.split('.py')[0].split('/')[-1]
+
+            # Extract name of class from given module and validate if it's an inkycal
+            # module
+            with open(filepath, mode='r') as module:
+                module_content = module.read().splitlines()
+
+            for line in module_content:
+                if '(inkycal_module):' in line:
+                    classname = line.split(' ')[-1].split('(')[0]
+                    break
+
+            if not classname:
+                raise TypeError("your module doesn't seem to be a correct inkycal module.."
+                                "Please check your module again.")
+
+            # Check if filename or classname exists in init of module folder
+            with open(module_folder + '/__init__.py', mode='r') as file:
+                module_init = file.read().splitlines()
+
+            print('checking module init file..')
+            for line in module_init:
+                if filename in line:
+                    raise Exception(
+                        "A module with this filename already exists! \n"
+                        "Please consider renaming your module and try again."
+                    )
+                if classname in line:
+                    raise Exception(
+                        "A module with this classname already exists! \n"
+                        "Please consider renaming your class and try again."
+                    )
+            print('OK!')
+
+            # Check if filename or classname exists in init of inkycal folder
+            with open(top_level + '/inkycal/__init__.py', mode='r') as file:
+                inkycal_init = file.read().splitlines()
+
+            print('checking inkycal init file..')
+            for line in inkycal_init:
+                if filename in line:
+                    raise Exception(
+                        "A module with this filename already exists! \n"
+                        "Please consider renaming your module and try again."
+                    )
+                if classname in line:
+                    raise Exception(
+                        "A module with this classname already exists! \n"
+                        "Please consider renaming your class and try again."
+                    )
+            print('OK')
+
+            # If all checks have passed, add the module in the module init file
+            with open(module_folder + '/__init__.py', mode='a') as file:
+                file.write(f'from .{filename} import {classname} # Added by module adder')
+
+            # If all checks have passed, add the module in the inkycal init file
+            with open(top_level + '/inkycal/__init__.py', mode='a') as file:
+                file.write(f'import inkycal.modules.{filename} # Added by module adder')
+
+            print(f"Your module '{filename}' with class '{classname}' has been added "
+                  "successfully! Hooray!")
+            return
+
         # Check if module is inside the modules folder
-        if not module_folder in filepath:
-            raise Exception(f"Your module should be in {module_folder} "
-                            f"but is currently in {filepath}")
-
-        filename = filepath.split('.py')[0].split('/')[-1]
-
-        # Extract name of class from given module and validate if it's a inkycal
-        # module
-        with open(filepath, mode='r') as module:
-            module_content = module.read().splitlines()
-
-        for line in module_content:
-            if '(inkycal_module):' in line:
-                classname = line.split(' ')[-1].split('(')[0]
-                break
-
-        if not classname:
-            raise TypeError("your module doesn't seem to be a correct inkycal module.."
-                            "Please check your module again.")
-
-        # Check if filename or classname exists in init of module folder
-        with open(module_folder + '/__init__.py', mode='r') as file:
-            module_init = file.read().splitlines()
-
-        print('checking module init file..')
-        for line in module_init:
-            if filename in line:
-                raise Exception(
-                    "A module with this filename already exists! \n"
-                    "Please consider renaming your module and try again."
-                )
-            if classname in line:
-                raise Exception(
-                    "A module with this classname already exists! \n"
-                    "Please consider renaming your class and try again."
-                )
-        print('OK!')
-
-        # Check if filename or classname exists in init of inkycal folder
-        with open(top_level + '/inkycal/__init__.py', mode='r') as file:
-            inkycal_init = file.read().splitlines()
-
-        print('checking inkycal init file..')
-        for line in inkycal_init:
-            if filename in line:
-                raise Exception(
-                    "A module with this filename already exists! \n"
-                    "Please consider renaming your module and try again."
-                )
-            if classname in line:
-                raise Exception(
-                    "A module with this classname already exists! \n"
-                    "Please consider renaming your class and try again."
-                )
-        print('OK')
-
-        # If all checks have passed, add the module in the module init file
-        with open(module_folder + '/__init__.py', mode='a') as file:
-            file.write(f'from .{filename} import {classname} # Added by module adder')
-
-        # If all checks have passed, add the module in the inkycal init file
-        with open(top_level + '/inkycal/__init__.py', mode='a') as file:
-            file.write(f'import inkycal.modules.{filename} # Added by module adder')
-
-        print(f"Your module '{filename}' with class '{classname}' has been added "
-              "successfully! Hooray!")
+        raise Exception(f"Your module should be in {module_folder} "
+                        f"but is currently in {filepath}")
 
     @classmethod
     def remove_module(cls, filename, remove_file=True):
-        """unregisters a inkycal module.
+        """unregisters an inkycal module.
 
         Looks for given filename.py in /modules folder, removes entries of that
         module in init files inside /inkycal and /inkycal/modules
@@ -600,7 +631,7 @@ class Inkycal:
 
             Use this function to unregister the module from inkycal::
 
-              >>> import Inkycal
+              >>> from inkycal import Inkycal
               >>> Inkycal.remove_module('mymodule.py')
         """
 
@@ -620,7 +651,6 @@ class Inkycal:
                     print('The module you are trying to remove is not an inkycal module.. '
                           'Not removing it.')
                     return
-
 
         except FileNotFoundError:
             print(f"No module named {filename} found in {module_folder}")
@@ -649,14 +679,14 @@ class Inkycal:
         # Remove lines that contain classname
         with open(f"{top_level}/inkycal/__init__.py", mode='w') as file:
             for line in inkycal_init:
-                if not filename in line:
-                    file.write(line + '\n')
-                else:
+                if filename in line:
                     print('found, removing')
+                else:
+                    file.write(line + '\n')
 
         # remove the file of the third party module if it exists and remove_file
         # was set to True (default)
-        if os.path.exists(f"{module_folder}/{filename}.py") and remove_file == True:
+        if os.path.exists(f"{module_folder}/{filename}.py") and remove_file is True:
             print('deleting module file')
             os.remove(f"{module_folder}/{filename}.py")
 
