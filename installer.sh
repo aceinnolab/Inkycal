@@ -31,19 +31,19 @@ if [ "$option" = 1 ] || [ "$option" = 3 ]; then
     echo -e "\e[1;36m"Uninstall complete."\e[0m"
 fi
 
-# Update Inkycal 
+# Update Inkycal
 if [ "$option" = 1 ]; then
-    if [ -d "/home/$USER/Inkycal" ]; then
-        echo -e "Found Inkycal folder in /home/$USER. Renaming it to Inkycal-old"
+    if [ -d "$HOME/Inkycal" ]; then
+        echo -e "Found Inkycal folder in $HOME. Renaming it to Inkycal-old"
         mv Inkycal Inkycal-old
     fi
 fi
 
 # Full uninstall - remove Inkycal folder
 if [ "$option" = 3 ]; then
-    if [ -d "/home/$USER/Inkycal" ]; then
-        echo -e "Found Inkycal folder in /home/$USER. Deleting previous Inkycal-folder"
-        cd
+    if [ -d "$HOME/Inkycal" ]; then
+        echo -e "Found Inkycal folder in $HOME. Deleting previous Inkycal-folder"
+        cd "$HOME" || exit
         rm -rf Inkycal
     fi
 fi
@@ -53,7 +53,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
 
     # Cloning Inky-Calendar repo
     echo -e "\e[1;36m"Cloning Inkycal repo from Github"\e[0m"
-    cd /home/"$USER" && git clone https://github.com/aceisace/Inkycal
+    cd "$HOME" && git clone https://github.com/aceisace/Inkycal
 
     # Installing dependencies
     echo -e "\e[1;36m"Installing Inkycal.."\e[0m"
@@ -76,7 +76,7 @@ if [ "$option" = 1 ] || [ "$option" = 2 ]; then
 
 	    echo -e "\e[1;36m"Creating inky_run.py file in home directory"\e[0m"
 
-	    bash -c 'cat > /home/$USER/inky_run.py' << EOF
+	    bash -c 'cat > $HOME/inky_run.py' << EOF
 from inkycal import Inkycal # Import Inkycal
 
 inky = Inkycal(render = True) # Initialise Inkycal
@@ -85,7 +85,7 @@ inky.test()  # test if Inkycal can be run correctly, running this will show a bi
 inky.run()   # If there were no issues, you can run Inkycal nonstop
 EOF
         echo -e "\e[1;36m"Updating crontab"\e[0m"
-        (crontab -l ; echo "@reboot sleep 60 && python3 /home/$USER/inky_run.py &")| crontab -
+        (crontab -l ; echo "@reboot sleep 60 && python3 /$HOME/inky_run.py &")| crontab -
 	fi
 
     # Final words
