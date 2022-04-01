@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+#!python3
 
 """
 Image module for Inkycal Project
@@ -14,95 +13,96 @@ from inkycal.modules.inky_image import Inkyimage as Images
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 
+
 class Inkyimage(inkycal_module):
-  """Displays an image from URL or local path
-  """
+    """Displays an image from URL or local path
+    """
 
-  name = "Inkycal Image - show an image from a URL or local path"
+    name = "Inkycal Image - show an image from a URL or local path"
 
-  requires = {
-    
-    "path":{
-      "label":"Path to a local folder, e.g. /home/pi/Desktop/images. "
-              "Only PNG and JPG/JPEG images are used for the slideshow."
-      },
+    requires = {
 
-    "palette": {
-      "label":"Which palette should be used for converting images?",
-      "options": ["bw", "bwr", "bwy"]
-      }
-
-    }
-
-  optional = {
-    
-    "autoflip":{
-        "label":"Should the image be flipped automatically?",
-        "options": [True, False]
+        "path": {
+            "label": "Path to a local folder, e.g. /home/pi/Desktop/images. "
+                     "Only PNG and JPG/JPEG images are used for the slideshow."
         },
 
-    "orientation":{
-      "label": "Please select the desired orientation",
-      "options": ["vertical", "horizontal"]
-      }
+        "palette": {
+            "label": "Which palette should be used for converting images?",
+            "options": ["bw", "bwr", "bwy"]
+        }
+
     }
 
-  def __init__(self, config):
-    """Initialize module"""
+    optional = {
 
-    super().__init__(config)
+        "autoflip": {
+            "label": "Should the image be flipped automatically?",
+            "options": [True, False]
+        },
 
-    config = config['config']
+        "orientation": {
+            "label": "Please select the desired orientation",
+            "options": ["vertical", "horizontal"]
+        }
+    }
 
-    # required parameters
-    for param in self.requires:
-      if not param in config:
-        raise Exception(f'config is missing {param}')
+    def __init__(self, config):
+        """Initialize module"""
 
-    # optional parameters
-    self.path = config['path']
-    self.palette = config['palette']
-    self.autoflip = config['autoflip']
-    self.orientation = config['orientation']
+        super().__init__(config)
 
-    # give an OK message
-    print(f'{filename} loaded')
+        config = config['config']
 
+        # required parameters
+        for param in self.requires:
+            if not param in config:
+                raise Exception(f'config is missing {param}')
 
-  def generate_image(self):
-    """Generate image for this module"""
+        # optional parameters
+        self.path = config['path']
+        self.palette = config['palette']
+        self.autoflip = config['autoflip']
+        self.orientation = config['orientation']
 
-    # Define new image size with respect to padding
-    im_width = int(self.width - (2 * self.padding_left))
-    im_height = int(self.height - (2 * self.padding_top))
-    im_size = im_width, im_height
+        # give an OK message
+        print(f'{filename} loaded')
 
-    logger.info(f'Image size: {im_size}')
+    def generate_image(self):
+        """Generate image for this module"""
 
-    # initialize custom image class
-    im = Images()
+        # Define new image size with respect to padding
+        im_width = int(self.width - (2 * self.padding_left))
+        im_height = int(self.height - (2 * self.padding_top))
+        im_size = im_width, im_height
 
-    # use the image at the first index
-    im.load(self.path)
+        logger.info(f'Image size: {im_size}')
 
-    # Remove background if present
-    im.remove_alpha()
+        # initialize custom image class
+        im = Images()
 
-    # if autoflip was enabled, flip the image
-    if self.autoflip == True:
-      im.autoflip(self.orientation)
+        # use the image at the first index
+        im.load(self.path)
 
-    # resize the image so it can fit on the epaper
-    im.resize( width=im_width, height=im_height )
+        # Remove background if present
+        im.remove_alpha()
 
-    # convert images according to specified palette
-    im_black, im_colour = im.to_palette(self.palette)
+        # if autoflip was enabled, flip the image
+        if self.autoflip == True:
+            im.autoflip(self.orientation)
 
-    # with the images now send, clear the current image
-    im.clear()
+        # resize the image so it can fit on the epaper
+        im.resize(width=im_width, height=im_height)
 
-    # return images
-    return im_black, im_colour
+        # convert images according to specified palette
+        im_black, im_colour = im.to_palette(self.palette)
+
+        # with the images now send, clear the current image
+        im.clear()
+
+        # return images
+        return im_black, im_colour
+
 
 if __name__ == '__main__':
-  print(f'running {filename} in standalone/debug mode')
+    print(f'running {filename} in standalone/debug mode')

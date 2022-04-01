@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+#!python3
 
 """
 Slideshow test (inkycal_slideshow)

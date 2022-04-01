@@ -35,12 +35,13 @@ import time
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 
+
 class RaspberryPi:
     # Pin definition
-    RST_PIN         = 17
-    DC_PIN          = 25
-    CS_PIN          = 8
-    BUSY_PIN        = 24
+    RST_PIN = 17
+    DC_PIN = 25
+    CS_PIN = 8
+    BUSY_PIN = 24
 
     def __init__(self):
         import spidev
@@ -76,7 +77,7 @@ class RaspberryPi:
 
     def module_exit(self):
         logger.debug("spi end")
-        #self.SPI.close() #removed as it causes some problems
+        # self.SPI.close() #removed as it causes some problems
 
         logger.debug("close 5V, Module enters 0 power consumption ...")
         self.GPIO.output(self.RST_PIN, 0)
@@ -87,10 +88,10 @@ class RaspberryPi:
 
 class JetsonNano:
     # Pin definition
-    RST_PIN         = 17
-    DC_PIN          = 25
-    CS_PIN          = 8
-    BUSY_PIN        = 24
+    RST_PIN = 17
+    DC_PIN = 25
+    CS_PIN = 8
+    BUSY_PIN = 24
 
     def __init__(self):
         import ctypes
@@ -151,6 +152,5 @@ else:
 
 for func in [x for x in dir(implementation) if not x.startswith('_')]:
     setattr(sys.modules[__name__], func, getattr(implementation, func))
-
 
 ### END OF FILE ###

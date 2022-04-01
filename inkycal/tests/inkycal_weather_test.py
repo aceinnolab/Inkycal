@@ -1,3 +1,5 @@
+#!python3
+
 import unittest
 from inkycal.modules import Weather as Module
 from helper_functions import *
