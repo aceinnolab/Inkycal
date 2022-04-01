@@ -1,4 +1,4 @@
-# Display class (for dirving E-Paper displays)
+# Display class (for driving E-Paper displays)
 from inkycal.display import Display
 
 # Default modules
