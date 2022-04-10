@@ -58,7 +58,7 @@ class Inkyserver(inkycal_module):
 
         # required parameters
         for param in self.requires:
-            if not param in config:
+            if param not in config:
                 raise Exception(f'config is missing {param}')
 
         # optional parameters

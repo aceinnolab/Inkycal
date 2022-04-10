@@ -5,12 +5,11 @@ Agenda module for Inky-Calendar Project
 Copyright by aceisace
 """
 
-from inkycal.modules.template import inkycal_module
+import arrow
+
 from inkycal.custom import *
 from inkycal.modules.ical_parser import iCalendar
-
-import calendar as cal
-import arrow
+from inkycal.modules.template import inkycal_module
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
@@ -58,9 +57,8 @@ class Agenda(inkycal_module):
 
         # Check if all required parameters are present
         for param in self.requires:
-            if not param in config:
+            if param not in config:
                 raise Exception(f'config is missing {param}')
-                logger.exception(f'config is missing "{param}"')
 
         # module specific parameters
         self.date_format = config['date_format']
@@ -184,7 +182,7 @@ class Agenda(inkycal_module):
                 title = _['title']
 
                 # Check if item is a date
-                if not 'end' in _:
+                if 'end' not in _:
                     ImageDraw.Draw(im_colour).line(
                         (0, line_pos[cursor][1], im_width, line_pos[cursor][1]),
                         fill='black')
@@ -199,7 +197,7 @@ class Agenda(inkycal_module):
                     time = _['begin'].format(self.time_format)
 
                     # Check if event is all day, if not, add the time
-                    if parser.all_day(_) == False:
+                    if not parser.all_day(_):
                         write(im_black, (x_time, line_pos[cursor][1]),
                               (time_width, line_height), time,
                               font=self.font, alignment='left')

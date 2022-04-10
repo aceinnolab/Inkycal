@@ -115,7 +115,7 @@ class Simple(inkycal_module):
         # Check if all required parameters are present
         # remove this if your module has no required parameters
         for param in self.requires:
-            if not param in config:
+            if param not in config:
                 raise Exception('config is missing {}'.format(param))
 
         # the web-UI removes any blank space from the input

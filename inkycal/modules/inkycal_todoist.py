@@ -8,11 +8,7 @@ Copyright by aceisace
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
 
-try:
-    import todoist
-except ImportError:
-    print('todoist is not installed! Please install with:')
-    print('pip3 install todoist-python')
+import todoist
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
@@ -20,7 +16,7 @@ logger = logging.getLogger(filename)
 
 class Todoist(inkycal_module):
     """Todoist api class
-    parses todo's from api-key
+    parses todos from api-key
     """
 
     name = "Todoist API - show your todos from todoist"
@@ -47,7 +43,7 @@ class Todoist(inkycal_module):
 
         # Check if all required parameters are present
         for param in self.requires:
-            if not param in config:
+            if param not in config:
                 raise Exception(f'config is missing {param}')
 
         # module specific parameters
@@ -84,11 +80,11 @@ class Todoist(inkycal_module):
         im_colour = Image.new('RGB', size=im_size, color='white')
 
         # Check if internet is available
-        if internet_available() == True:
+        if internet_available():
             logger.info('Connection test passed')
             self._api.sync()
         else:
-            raise Exception('Network could not be reached :/')
+            raise NetworkNotReachableError
 
         # Set some parameters for formatting todos
         line_spacing = 1
@@ -134,7 +130,7 @@ class Todoist(inkycal_module):
         simplified = [
             {
                 'name': task['content'],
-                'due': task['due']['string'] if task['due'] != None else "",
+                'due': task['due']['string'] if task['due'] is not None else "",
                 'priority': task['priority'],
                 'project': all_projects[task['project_id']] if task['project_id'] in all_projects else "deleted"
             }
@@ -170,13 +166,13 @@ class Todoist(inkycal_module):
                     if cursor < len(line_positions):
                         line_x, line_y = line_positions[cursor]
 
-                        # Add todo project name
+                        # Add todos project name
                         write(
                             im_colour, line_positions[cursor],
                             (project_width, line_height),
                             todo['project'], font=self.font, alignment='left')
 
-                        # Add todo due if not empty
+                        # Add todos due if not empty
                         if todo['due'] != "":
                             write(
                                 im_black,
@@ -184,7 +180,7 @@ class Todoist(inkycal_module):
                                 (due_width, line_height),
                                 todo['due'], font=self.font, alignment='left')
 
-                        # Add todo name
+                        # Add todos name
                         write(
                             im_black,
                             (line_x + project_width + due_width, line_y),

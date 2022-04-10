@@ -49,10 +49,10 @@ class Jokes(inkycal_module):
         im_colour = Image.new('RGB', size=im_size, color='white')
 
         # Check if internet is available
-        if internet_available() == True:
+        if internet_available():
             logger.info('Connection test passed')
         else:
-            raise Exception('Network could not be reached :/')
+            raise NetworkNotReachableError
 
         # Set some parameters for formatting feeds
         line_spacing = 1

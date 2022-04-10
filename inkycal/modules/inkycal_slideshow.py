@@ -97,7 +97,7 @@ class Slideshow(inkycal_module):
             return somelist[1:] + somelist[:1]
 
         # Switch to the next image if this is not the first run
-        if self._first_run == True:
+        if self._first_run:
             self._first_run = False
         else:
             self.images = rotate(self.images)
@@ -115,7 +115,7 @@ class Slideshow(inkycal_module):
         im.remove_alpha()
 
         # if autoflip was enabled, flip the image
-        if self.autoflip == True:
+        if self.autoflip:
             im.autoflip(self.orientation)
 
         # resize the image so it can fit on the epaper

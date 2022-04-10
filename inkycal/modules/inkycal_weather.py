@@ -10,13 +10,8 @@ from inkycal.custom import *
 
 import math, decimal
 import arrow
-from locale import getdefaultlocale as sys_locale
 
-try:
-    from pyowm.owm import OWM
-except ImportError:
-    print('pyowm is not installed! Please install with:')
-    print('pip3 install pyowm')
+from pyowm.owm import OWM
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
@@ -123,11 +118,10 @@ class Weather(inkycal_module):
         im_colour = Image.new('RGB', size=im_size, color='white')
 
         # Check if internet is available
-        if internet_available() == True:
+        if internet_available():
             logger.info('Connection test passed')
         else:
-            logger.exception('Network could not be reached :(')
-            raise
+            raise NetworkNotReachableError
 
         def get_moon_phase():
             """Calculate the current (approximate) moon phase"""
@@ -426,11 +420,11 @@ class Weather(inkycal_module):
             sunset = sunset_raw.format('H:mm')
 
         # Format the windspeed to user preference
-        if self.use_beaufort == True:
+        if self.use_beaufort:
             logger.debug("using beaufort for wind")
             wind = str(weather.wind(unit='beaufort')['speed'])
 
-        elif self.use_beaufort == False:
+        else:
 
             if self.units == 'metric':
                 logging.debug('getting windspeed in metric unit')
