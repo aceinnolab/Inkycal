@@ -61,17 +61,11 @@ int main(int argc, char *argv[])
     //Exception handling:ctrl + c
     signal(SIGINT, Handler);
 
-    if (argc < 2){
-        Debug("Please input VCOM value on FPC cable!\r\n");
-        Debug("Example: sudo ./epd -2.51\r\n");
+    if (argc != 4){
+		Debug("Usage: sudo ./epd -2.51 0 bmp_filepath\r\n");
+        Debug("To use the test, please navigate to Inkycal/inkycal/display/drivers/parallel_drivers and then run\r\n");
+        Debug("Test: sudo ./epd -2.51 0 test\r\n");
         exit(1);
-    }
-	if (argc != 3){
-		Debug("Please input e-Paper display mode!\r\n");
-		Debug("Example: sudo ./epd -2.51 0 or sudo ./epd -2.51 1\r\n");
-		Debug("Now, 10.3 inch glass panle is mode1, else is mode0\r\n");
-		Debug("If you don't know what to type in just type 0 \r\n");
-		exit(1);
     }
 
     //Init the BCM2835 Device
@@ -121,50 +115,25 @@ int main(int argc, char *argv[])
 #if(SHOW_BMP)
     //Show a bmp file
     //1bp use A2 mode by default, before used it, refresh the screen with WHITE
-    Display_BMP_Example(Panel_Width, Panel_Height, Init_Target_Memory_Addr, BitsPerPixel_4, "/home/pi/InkycalVenv/inkycal/display/drivers/7_in_8_drivers/pic/1872x1404_2.bmp");
-    EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, GC16_Mode);
-#endif
-
-#if(USE_Normal_Demo)
-/*
-    //Show 16 grayscale
-    Display_ColorPalette_Example(Panel_Width, Panel_Height, Init_Target_Memory_Addr);
-	EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, GC16_Mode);
-
-    //Show some character and pattern
-    Display_CharacterPattern_Example(Panel_Width, Panel_Height, Init_Target_Memory_Addr, BitsPerPixel_4);
-    EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, GC16_Mode);
-
-    //Show a bmp file
-    //1bp use A2 mode by default, before used it, refresh the screen with WHITE
-    Display_BMP_Example(Panel_Width, Panel_Height, Init_Target_Memory_Addr, BitsPerPixel_1);
-    Display_BMP_Example(Panel_Width, Panel_Height, Init_Target_Memory_Addr, BitsPerPixel_2);
-    Display_BMP_Example(Panel_Width, Panel_Height, Init_Target_Memory_Addr, BitsPerPixel_4);
-    EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, GC16_Mode);
+    Display_BMP_Example(Panel_Width, Panel_Height, Init_Target_Memory_Addr, BitsPerPixel_4, argv[3]);
+    //EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, GC16_Mode);
     
-    //Show A2 mode refresh effect
-    EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, A2_Mode);
-    Dynamic_Refresh_Example(Dev_Info,Init_Target_Memory_Addr);
-    EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, A2_Mode);
-    EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, GC16_Mode);
-	
-    //Show how to display a gif, not works well on 6inch e-Paper HAT, 9.7inch e-Paper HAT, others work well
-    EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, A2_Mode);
-    Dynamic_GIF_Example(Panel_Width, Panel_Height, Init_Target_Memory_Addr);
-    EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, A2_Mode);
-    EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, GC16_Mode);
-
-    //Show how to test frame rate, test it individually,which is related to refresh area size and refresh mode
-    EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, A2_Mode);
-    Check_FrameRate_Example(800, 600, Init_Target_Memory_Addr, BitsPerPixel_1);
-    EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, A2_Mode);
-    EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, GC16_Mode);
-    * */
+    if( strcmp(argv[3], "test") == 0){
+        Debug("----RUNNING DISPLAY TEST----...hold on tight! \r\n");
+        char Path[30];
+        sprintf(Path,"./pic/%dx%d_0.bmp", Panel_Width, Panel_Height);
+        Display_BMP_Example(Panel_Width, Panel_Height, Init_Target_Memory_Addr, BitsPerPixel_4, Path);
+    }else{
+        Debug("Loading BMP File \r\n");
+        Display_BMP_Example(Panel_Width, Panel_Height, Init_Target_Memory_Addr, BitsPerPixel_4, argv[3]);
+    }
+        
 #endif
+
 
 
     //We recommended refresh the panel to white color before storing in the warehouse.
-    EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, INIT_Mode);
+    // EPD_IT8951_Clear_Refresh(Dev_Info, Init_Target_Memory_Addr, INIT_Mode);
 
     //EPD_IT8951_Standby();
     EPD_IT8951_Sleep();

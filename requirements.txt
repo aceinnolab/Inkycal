@@ -1,11 +1,30 @@
-wheel==0.37.1                   # wheels
-pyowm==3.3.0                    # weather
-Pillow>=7.1.1                   # imaging
-icalendar==4.0.9                # iCalendar parsing
-recurring-ical-events==0.1.17b0 # parse recurring events
-feedparser==6.0.8               # parse RSS-feeds
-numpy==1.21.5                   # image pre-processing #pre-installed on Raspbian, omitting
-arrow==1.2.2 	                # time operations
-todoist-python==8.1.3           # todoist api
-yfinance>=0.1.62                # yahoo stocks
-matplotlib==3.5.1               # plotting
+arrow==1.2.2
+certifi==2021.10.8
+charset-normalizer==2.0.12
+cycler==0.11.0
+feedparser==6.0.8
+fonttools==4.32.0
+geojson==2.5.0
+icalendar==4.0.9
+idna==3.3
+kiwisolver==1.4.2
+lxml==4.8.0
+matplotlib==3.5.1
+multitasking==0.0.10
+numpy==1.21.5
+packaging==21.3
+pandas==1.3.5
+Pillow==9.1.0
+pyowm==3.3.0
+pyparsing==3.0.7
+PySocks==1.7.1
+python-dateutil==2.8.2
+pytz==2022.1
+recurring-ical-events==0.1.17b0
+requests==2.27.1
+sgmllib3k==1.0.0
+six==1.16.0
+todoist-python==8.1.3
+typing_extensions==4.1.1
+urllib3==1.26.9
+yfinance==0.1.70
