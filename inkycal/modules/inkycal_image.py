@@ -88,7 +88,7 @@ class Inkyimage(inkycal_module):
         im.remove_alpha()
 
         # if autoflip was enabled, flip the image
-        if self.autoflip == True:
+        if self.autoflip:
             im.autoflip(self.orientation)
 
         # resize the image so it can fit on the epaper

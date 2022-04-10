@@ -109,9 +109,7 @@ class Inkycal:
                     self.settings = settings
 
             except FileNotFoundError:
-                print('No settings file found in given path\n'
-                      'Please double check your settings_path')
-                return
+                raise SettingsFileNotFoundError
 
         else:
             try:
@@ -120,8 +118,7 @@ class Inkycal:
                     self.settings = settings
 
             except FileNotFoundError:
-                print('No settings file found in /boot')
-                return
+                raise SettingsFileNotFoundError
 
         # Option to use epaper image optimisation, reduces colours
         self.optimize = True

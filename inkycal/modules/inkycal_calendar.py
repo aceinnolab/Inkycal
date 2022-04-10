@@ -108,7 +108,7 @@ class Calendar(inkycal_module):
         logger.debug(f"month_name_height: {month_name_height}")
         logger.debug(f"weekdays_height: {weekdays_height}")
 
-        if self.show_events == True:
+        if self.show_events:
             logger.debug("Allocating space for events")
             calendar_height = int(im_height * 0.6)
             events_height = im_height - month_name_height - weekdays_height - calendar_height
@@ -207,7 +207,7 @@ class Calendar(inkycal_module):
         im_colour.paste(icon, current_day_pos, icon)
 
         # If events should be loaded and shown...
-        if self.show_events == True:
+        if self.show_events:
 
             # If this month requires 5 instead of 6 rows, increase event section height
             if len(cal.monthcalendar(now.year, now.month)) == 5:
@@ -277,7 +277,7 @@ class Calendar(inkycal_module):
             self._upcoming_events = upcoming_events
 
             # delete events which won't be able to fit (more events than lines)
-            upcoming_events[:max_event_lines]
+            upcoming_events = upcoming_events[:max_event_lines]
 
             # Check if any events were found in the given timerange
             if upcoming_events:
@@ -315,7 +315,7 @@ class Calendar(inkycal_module):
                                   date, font=self.font, alignment='left')
 
                             # Check if event is all day
-                            if parser.all_day(event) == True:
+                            if parser.all_day(event):
                                 write(im_black, (date_width, event_lines[cursor][1]),
                                       (event_width_l, line_height), name, font=self.font,
                                       alignment='left')

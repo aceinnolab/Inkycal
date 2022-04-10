@@ -11,11 +11,7 @@ from inkycal.custom import *
 
 from random import shuffle
 
-try:
-    import feedparser
-except ImportError:
-    print('feedparser is not installed! Please install with:')
-    print('pip3 install feedparser')
+import feedparser
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
@@ -54,7 +50,7 @@ class Feeds(inkycal_module):
 
         # Check if all required parameters are present
         for param in self.requires:
-            if not param in config:
+            if param not in config:
                 raise Exception(f'config is missing {param}')
 
         # required parameters
@@ -89,10 +85,10 @@ class Feeds(inkycal_module):
         im_colour = Image.new('RGB', size=im_size, color='white')
 
         # Check if internet is available
-        if internet_available() == True:
+        if internet_available():
             logger.info('Connection test passed')
         else:
-            raise Exception('Network could not be reached :/')
+            raise NetworkNotReachableError
 
         # Set some parameters for formatting feeds
         line_spacing = 1
@@ -119,7 +115,7 @@ class Feeds(inkycal_module):
         self._parsed_feeds = parsed_feeds
 
         # Shuffle the list to prevent showing the same content
-        if self.shuffle_feeds == True:
+        if self.shuffle_feeds:
             shuffle(parsed_feeds)
 
         # Trim down the list to the max number of lines

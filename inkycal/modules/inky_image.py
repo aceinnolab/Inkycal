@@ -9,7 +9,7 @@ images.
 Copyright by aceisace
 """
 
-from PIL import Image, ImageOps, ImageColor
+from PIL import Image
 import requests
 import numpy
 import os
@@ -134,12 +134,12 @@ class Inkyimage:
 
             image = self.image
             if layout == 'horizontal':
-                if (image.height > image.width):
+                if image.height > image.width:
                     logger.info('image width greater than image height, flipping')
                     image = image.rotate(90, expand=True)
 
             elif layout == 'vertical':
-                if (image.width > image.height):
+                if image.width > image.height:
                     logger.info('image width greater than image height, flipping')
                     image = image.rotate(90, expand=True)
             else:
@@ -242,7 +242,7 @@ class Inkyimage:
         if self._image_loaded():
             image = self.image.convert('RGB')
         else:
-            logger.error('No image loaded')
+            raise FileNotFoundError
 
         if palette == 'bwr':
             # black-white-red palette

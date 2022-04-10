@@ -243,7 +243,7 @@ def internet_available():
 
     Returned output can be used to add a check for internet availability:
 
-    >>> if internet_available() == True:
+    >>> if internet_available():
     >>> #...do something that requires internet connectivity
     """
 

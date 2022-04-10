@@ -4,6 +4,15 @@
 iCalendar (parsing) module for Inky-Calendar Project
 Copyright by aceisace
 """
+import urllib
+import arrow
+from urllib.request import urlopen
+import logging
+import time
+import os
+
+import recurring_ical_events
+from icalendar import Calendar
 
 """               ---info about iCalendars---
 • all day events start at midnight, ending at midnight of the next day
@@ -12,24 +21,6 @@ Copyright by aceisace
 • Only non-all_day events or multi-day need to be converted to
   local timezone. Converting all-day events to local timezone is a problem!
 """
-
-import arrow
-from urllib.request import urlopen
-import logging
-import time
-import os
-
-try:
-    import recurring_ical_events
-except ModuleNotFoundError:
-    print('recurring-ical-events library could not be found.')
-    print('Please install this with: pip3 install recurring-ical-events')
-
-try:
-    from icalendar import Calendar, Event
-except ModuleNotFoundError:
-    print('icalendar library could not be found. Please install this with:')
-    print('pip3 install icalendar')
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
@@ -49,20 +40,6 @@ class iCalendar:
         add username and password to access protected files
         """
 
-        if type(url) == list:
-            if (username == None) and (password == None):
-                ical = [Calendar.from_ical(str(urlopen(_).read().decode()))
-                        for _ in url]
-            else:
-                ical = [auth_ical(each_url, username, password) for each_url in url]
-        elif type(url) == str:
-            if (username == None) and (password == None):
-                ical = [Calendar.from_ical(str(urlopen(url).read().decode()))]
-            else:
-                ical = [auth_ical(url, username, password)]
-        else:
-            raise Exception(f"Input: '{url}' is not a string or list!")
-
         def auth_ical(url, uname, passwd):
             """Authorisation helper for protected ical files"""
 
@@ -73,6 +50,20 @@ class iCalendar:
             opener = urllib.request.build_opener(handler)
             ical = Calendar.from_ical(str(opener.open(url).read().decode()))
             return ical
+
+        if type(url) == list:
+            if (username is None) and (password is None):
+                ical = [Calendar.from_ical(str(urlopen(_).read().decode()))
+                        for _ in url]
+            else:
+                ical = [auth_ical(each_url, username, password) for each_url in url]
+        elif type(url) == str:
+            if (username is None) and (password is None):
+                ical = [Calendar.from_ical(str(urlopen(url).read().decode()))]
+            else:
+                ical = [auth_ical(url, username, password)]
+        else:
+            raise Exception(f"Input: '{url}' is not a string or list!")
 
         # Add the parsed icalendar/s to the self.icalendars list
         if ical: self.icalendars += ical
@@ -106,7 +97,7 @@ class iCalendar:
         Returns a list of events sorted by date
         """
         if type(timeline_start) == arrow.arrow.Arrow:
-            if timezone == None:
+            if timezone is None:
                 timezone = 'UTC'
             t_start = timeline_start
             t_end = timeline_end
