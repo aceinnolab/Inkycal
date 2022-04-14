@@ -1,13 +1,13 @@
 # Welcome to inkycal v2.0.2!
 <p align="center">
-        <img src="https://github.com/aceisace/Inkycal/blob/development/Gallery/logo.png" width="800">
+        <img src="https://raw.githubusercontent.com/aceisace/Inkycal/assets/Repo/logo.png" width="800">
 </p>
 
 <p align="center">
-    <a href="https://www.paypal.me/SaadNaseer" alt="Donate"><img src="https://img.shields.io/badge/Donate-PayPal-green.svg" /></a>
+    <a href="https://www.paypal.me/SaadNaseer"><img alt="Donate" src="https://img.shields.io/badge/Donate-PayPal-green.svg" /></a>
     <a href="https://github.com/aceisace/Inkycal/actions"><img src="https://github.com/aceisace/Inkycal/workflows/Python%20application/badge.svg"></a>
-    <a href="https://github.com/aceisace/Inkycal/releases" alt="Version"><img src="https://img.shields.io/github/release/aceisace/Inkycal.svg" /></a>
-   <a href="https://github.com/aceisace/Inkycal/blob/main/LICENSE" alt="Licence"><img src="https://img.shields.io/github/license/aceisace/Inkycal.svg" /></a>
+    <a href="https://github.com/aceisace/Inkycal/releases"><img alt="Version" src="https://img.shields.io/github/release/aceisace/Inkycal.svg" /></a>
+   <a href="https://github.com/aceisace/Inkycal/blob/main/LICENSE"><img alt="Licence" src="https://img.shields.io/github/license/aceisace/Inkycal.svg" /></a>
    <a href="https://github.com/aceisace/Inkycal/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/aceisace/Inkycal"></a>
    <a href="https://github.com/aceisace/Inkycal/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aceisace/Inkycal?color=green"></a>
    <a href="https://github.com/aceisace/Inkycal/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/aceisace/Inkycal?color=green"></a>
@@ -22,20 +22,20 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 * Agenda - Agenda showing upcoming events from given iCalendar URLs.
 * Image - Display an Image from URL or local file path.
 * Slideshow - Cycle through images in a given folder and show them on the E-Paper.
-* Feeds - Syncronise RSS/ATOM feeds from your favorite providers.
+* Feeds - Synchronise RSS/ATOM feeds from your favorite providers.
 * Stocks - Display stocks using Tickers from Yahoo! Finance.
 * Weather - Show current weather, daily or hourly weather forecasts from openweathermap.
-* Todoist - Syncronise with Todoist app or website to show todos.
+* Todoist - Synchronise with Todoist app or website to show todos.
 * iCanHazDad - Display a random joke from iCanhazdad.com.
 
 ## Preview
 <p align="center">
-        <img src="https://github.com/aceisace/Inkycal/blob/main/Gallery/inkycal-featured-gif.gif" width="900"><img>
+        <img src="https://github.com/aceisace/Inkycal/blob/assets/Repo/inkycal-featured-gif.gif?raw=true" width="900">
 </p>
 
 ## Hardware required
 * One of the supported ePaper displays from waveshare: 4.2", 5.83", 7.5" (all variants), 9.7"
-* Any Raspberry Pi with 40 pins and WiFi. (Raspberry Pi 3/3B/3B+/3A/4/0W/0WH - Inkycal runs just fine on the Zero W/Zero WH model!)
+* Any Raspberry Pi with 40 pins and Wi-Fi. (Raspberry Pi 3/3B/3B+/3A/4/0W/0WH - Inkycal runs just fine on the Zero W/Zero WH model!)
 * MicroSD card (min. 4GB) for flashing Raspberry Pi OS **with Desktop**. **Lite is not supported!**
 * MicroUSB cable (for power)
 * Optional, a [3D-printable case](https://github.com/aceisace/Inkycal/wiki/3D-printable-files)
@@ -47,17 +47,17 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 5. Create and download a WiFi-configuration file (`wpa_supplicant.conf`) from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/setup_wifi)
 6. Copy these three downloaded files to the flashed microSD card. On Windows, this is the only visible directory on the SD card. On Linux, copy these files to `/boot`
 7. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
-8. Once the green LED has stopped blinking after ~3 minutes, use an SSH client to connect to the Raspberry Pi. On Windows, you can use PUTTY but you can also use an SSH App
-on your smartphone. Use the address: `raspberrypi.local` with `pi` as the username and `raspberry` as the password. Fro more detailed instructions, check out the page from the [Raspberry Pi website](https://www.raspberrypi.org/documentation/remote-access/ssh/)
+8. Once the green LED has stopped blinking after ~3 minutes, use an SSH client to connect to the Raspberry Pi. On Windows, you can use PUTTY, but you can also use an SSH App
+on your smartphone. Use the address: `raspberrypi.local` with `pi` as the username and `raspberry` as the password. For more detailed instructions, check out the page from the [Raspberry Pi website](https://www.raspberrypi.org/documentation/remote-access/ssh/)
 9. After connecting via SSH, run the following commands, line by line:
 ```bash
 sudo raspi-config --expand-rootfs
 sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
 sudo dpkg-reconfigure tzdata
 ```
-These commands expand the filesystem, enable SPI and setup the correct timezone on the Raspberry Pi. When running the last command, please select the continent you live in, press enter and then select the capital of the country you live in. Lastly, press enter.
+These commands expand the filesystem, enable SPI and set up the correct timezone on the Raspberry Pi. When running the last command, please select the continent you live in, press enter and then select the capital of the country you live in. Lastly, press enter.
 
-10. Change the passowrd for the user pi by entering `passwd` in the Terminal, enter your current password, hit enter, then type your new password and press enter. Please note you will have to remember this password to access your Raspberry Pi.
+10. Change the password for the user pi by entering `passwd` in the Terminal, enter your current password, hit enter, then type your new password and press enter. Please note you will have to remember this password to access your Raspberry Pi.
 11. Follow the steps in `Installation` (see below) on how to install Inkycal.
 
 *Sounds too complicated? We've got you covered, you can now purchase an Inkycal on Tindie:* [Buy Inkycal online](https://www.tindie.com/products/aceisace4444/inkycal-build-v1/)
@@ -128,7 +128,7 @@ The average response time for issues, PRs and emails is usually 24 hours. In som
 
 ## Join us on Discord!
 <a href="https://discord.gg/sHYKeSM">
-        <img src="https://discord.com/assets/fc0b01fe10a0b8c602fb0106d8189d9b.png" alt="Inkycal chatroom Discord" width=200>
+        <img src="https://github.com/aceisace/Inkycal/blob/assets/Repo/discord-logo.png?raw=true" alt="Inkycal chatroom Discord" width=200>
 </a>
 
 ## Buy me a coffee please
@@ -136,5 +136,5 @@ Yes please :). I do drink and like my coffee, especially when developing the ink
 You can donate a coffee with this QR-code (Paypal):
 
 <p align="center">
-        <img src="https://raw.githubusercontent.com/aceisace/Inkycal/development/Gallery/coffee.png" width=250>
+        <img src="https://github.com/aceisace/Inkycal/blob/assets/Repo/coffee.png?raw=true" width=250>
 </p>
