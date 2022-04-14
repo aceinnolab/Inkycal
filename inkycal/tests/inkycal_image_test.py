@@ -6,6 +6,10 @@ Copyright by aceisace
 """
 
 import unittest
+
+import requests
+from PIL import Image
+
 from inkycal.modules import Inkyimage as Module
 from inkycal.custom import top_level
 from helper_functions import *
@@ -15,7 +19,11 @@ environment = get_environment()
 # Set to True to preview images. Only works on Raspberry Pi OS with Desktop
 use_preview = False
 
-test_path = f'{top_level}/Gallery/coffee.png'
+url = "https://github.com/aceisace/Inkycal/raw/assets/Repo/coffee.png"
+
+im = Image.open(requests.get(url, stream=True).raw)
+im.save("test.png", "PNG")
+test_path = "test.png"
 
 tests = [
     {
