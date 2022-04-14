@@ -1,6 +1,6 @@
 #!python3
 """
-7.8" parallel driver class
+10.3" driver class
 Copyright by aceisace
 """
 from subprocess import run
@@ -19,11 +19,10 @@ driver_dir = top_level + '/inkycal/display/drivers/parallel_drivers/'
 
 command = f'sudo {driver_dir}epd -{VCOM} 0 {image_folder + "canvas.bmp"}'
 
-
 class EPD:
 
     def __init__(self):
-        """7.8" epaper class"""
+        """10.3" epaper class"""
         pass
 
     def init(self):
