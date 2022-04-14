@@ -36,5 +36,5 @@ jobs:
         cd inkycal/modules && ls -al
         cd ..
         cd tests
-        sed -i '' 's/secret_key =.*/secret_key = "${{secrets.OPENWEATHERMAP_API_KEY}}"/' inkycal_weather_test.py
+        sed -i 's/ecret_key =.*/secret_key = "${{secrets.OPENWEATHERMAP_API_KEY}}"/' inkycal_weather_test.py
         for f in *.py; do python3 "$f"; done
