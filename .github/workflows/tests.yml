@@ -16,7 +16,7 @@ jobs:
 
     - name: Clone repo
       run: |
-        git clone --branch main --single-branch https://github.com/aceisace/Inkycal
+        git clone --branch feature/venv --single-branch https://github.com/aceisace/Inkycal
 
     - name: Install dependencies and run
       run: |
