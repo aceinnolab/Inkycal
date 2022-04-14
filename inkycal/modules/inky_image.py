@@ -15,6 +15,8 @@ import numpy
 import os
 import logging
 
+from PIL.Image import Resampling
+
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
 
@@ -178,7 +180,7 @@ class Inkyimage:
                 initial_width = image.width
                 wpercent = (width / float(image.width))
                 hsize = int((float(image.height) * float(wpercent)))
-                image = image.resize((width, hsize), Image.ANTIALIAS)
+                image = image.resize((width, hsize), Resampling.LANCZOS)
                 logger.info(f"resized image from {initial_width} to {image.width}")
                 self.image = image
 
@@ -186,7 +188,7 @@ class Inkyimage:
                 initial_height = image.height
                 hpercent = (height / float(image.height))
                 wsize = int(float(image.width) * float(hpercent))
-                image = image.resize((wsize, height), Image.ANTIALIAS)
+                image = image.resize((wsize, height), Resampling.LANCZOS)
                 logger.info(f"resized image from {initial_height} to {image.height}")
                 self.image = image
 
