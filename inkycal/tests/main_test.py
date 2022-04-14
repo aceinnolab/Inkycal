@@ -60,15 +60,15 @@ test_config = """
 class ModuleTest(unittest.TestCase):
     @staticmethod
     def test_without_rendering():
-        # Create temporary json settings file with the config from above
-        with open('dummy.json', mode="w") as file:
-            file.write(test_config)
+        # Check if settings.json file exists in current directory
+        if not os.path.exists("settings.json"):
+            # Create temporary json settings file with the config from above
+            with open('settings.json', mode="w") as file:
+                file.write(test_config)
         print('testing Inkycal in non-render-mode...', end="")
-        inky = Inkycal('dummy.json', render=False)
+        inky = Inkycal('settings.json', render=False)
         inky.test()
         print('OK')
-
-        os.remove('dummy.json')
 
 
 if __name__ == '__main__':
