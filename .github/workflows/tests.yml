@@ -9,20 +9,30 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Python 3.10.2
+    - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
-        python-version: 3.10.2
+        python-version: 3.9
 
     - name: Clone repo
       run: |
-        git clone https://github.com/aceisace/Inkycal
+        git clone --branch feature/venv --single-branch https://github.com/aceisace/Inkycal
+
+    - name: Creating virtual evvironment
+      run: |
+        cd Inkycal
+        python3 -m venv venv
+        source venv/bin/activate
+        python -m pip install --upgrade pip
+        
+    - name: Downloading settings.json file
+      run: |
+        wget https://raw.githubusercontent.com/aceisace/Inkycal/assets/tests/settings.json
 
     - name: Install dependencies and run
       run: |
-        python -m pip install --upgrade pip
-        cd Inkycal
-        pip3 install -e ./
+        pip install wheel
+        pip install -e ./
         cd inkycal/modules && ls -al
         cd ..
         cd tests
