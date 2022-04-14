@@ -1,4 +1,4 @@
-# Welcome to inkycal v2.0.0!
+# Welcome to inkycal v2.0.2!
 <p align="center">
         <img src="https://github.com/aceisace/Inkycal/blob/development/Gallery/logo.png" width="800">
 </p>
@@ -28,17 +28,9 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 * Todoist - Syncronise with Todoist app or website to show todos.
 * iCanHazDad - Display a random joke from iCanhazdad.com.
 
-## News:
-* **New Inkycal release published (early December 2020)**
-* **Added support for all 4.2", 5.83", 7.5", 9.7" waveshare E-Paper displays**
-* **Discord chat open now. [Click here to enter](https://discord.gg/sHYKeSM)**
-
-## Development status
-This software is in active development. To see the current development status, [[Click here]](https://github.com/aceisace/Inkycal/projects/2).
-
 ## Preview
 <p align="center">
-        <img src="https://github.com/aceisace/Inkycal/blob/main/Gallery/inkycal-featured-gif.gif" width="900"><img 
+        <img src="https://github.com/aceisace/Inkycal/blob/main/Gallery/inkycal-featured-gif.gif" width="900"><img>
 </p>
 
 ## Hardware required
@@ -47,8 +39,6 @@ This software is in active development. To see the current development status, [
 * MicroSD card (min. 4GB) for flashing Raspberry Pi OS **with Desktop**. **Lite is not supported!**
 * MicroUSB cable (for power)
 * Optional, a [3D-printable case](https://github.com/aceisace/Inkycal/wiki/3D-printable-files)
-
-# Installing Inkycal
 
 ## Configuring the Raspberry Pi
 1. Flash Raspberry Pi OS according to the [instructions](https://www.raspberrypi.org/software/). Leave the SD card plugged in your computer.
@@ -70,27 +60,73 @@ These commands expand the filesystem, enable SPI and setup the correct timezone 
 10. Change the passowrd for the user pi by entering `passwd` in the Terminal, enter your current password, hit enter, then type your new password and press enter. Please note you will have to remember this password to access your Raspberry Pi.
 11. Follow the steps in `Installation` (see below) on how to install Inkycal.
 
-### Installation
-Open a Terminal and enter the following command:
+*Sounds too complicated? We've got you covered, you can now purchase an Inkycal on Tindie:* [Buy Inkycal online](https://www.tindie.com/products/aceisace4444/inkycal-build-v1/)
+Do note that these are made on demand and not always available, best to keep checking.
+
+## Installing Inkycal
+The previous installer has been deprecated to give more transparency about the installation of Inkycal.
+
+Run the following steps to install Inkycal. Do not use sudo for this:
 ```bash
-bash -c "$(curl -sL https://raw.githubusercontent.com/aceisace/Inkycal/main/installer.sh)"
+cd $HOME
+git clone --branch feature/venv --single-branch https://github.com/aceisace/Inkycal
+cd Inkycal
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install --upgrade pip
+pip install wheel
+pip install -e ./
 ```
-Yes, it's that simple! The above command runs the user-friendly installer. You can install, update and uninstall inkycal with ease. What's more is that it also allows starting Inkycal at every boot!
 
-Should the installer fail, please open a issue or report the problem in Discord. In the meantime, you can try the [Manual Installation](https://github.com/aceisace/Inkycal/wiki/Manual-installation)
+## Running on each boot
+To make inkycal run on each boot automatically, you can use crontab. Do not use sudo for this
+```bash
+(crontab -l ; echo "@reboot sleep 60 && cd $HOME/Inkycal && source venv/bin/activate && python3 inky_run.py &")| crontab -
+```
 
-If you expierence issues with getting started, please check out the [**FAQ**](https://github.com/aceisace/Inkycal/wiki). If this doesn't help, please get help from the Inkycal Discord server, we're happy to help!
+## Updating Inkycal
+To update Inkycal to the latest version, navigate to the Inkycal folder, then run:
+```bash
+git pull
+```
+Yep. It's actually that simple!
+But, if you have made changes to Inkycal, those will be overwritten. 
+If that is the case, backup your modified files somewhere else if you need them. Then run:
 
+```bash
+git reset --hard
+git pull
+```
+
+## Uninstalling Inkycal
+We'll miss you, but we don't want to make it hard for you to leave.
+Just delete the Inkycal folder, and you're good to go!
+
+Additionally, if you want to reset your crontab file, which runs inkycal at boot, run:
+```bash
+crontab -r
+```
+
+## Modifying Inkycal
+Inkycal now runs in a virtual environment to support more devices than just the Raspberry Pi. Therefore, to make changes to Inkycal, navigate to Inkycal, then run:
+```bash
+source venv/bin/activate
+```
+Then modify the files as needed and experiment with Inkycal.
+To deactivate the virtual environment, simply run:
+```bash
+deactivate
+```
 
 ## Contributing
 All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inkycal/blob/development/CONTRIBUTING.md).
 
-The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer. If you want to have some faster responses, please use Discord (link below).
+The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer. If you want to have some faster responses, please use Discord (link below)
 
 
 **P.S:** Don't forget to star and/or watch the repo. For those who have done so already, thank you very much!
 
-## Contact and Support
+## Join us on Discord!
 <a href="https://discord.gg/sHYKeSM">
         <img src="https://discord.com/assets/fc0b01fe10a0b8c602fb0106d8189d9b.png" alt="Inkycal chatroom Discord" width=200>
 </a>
