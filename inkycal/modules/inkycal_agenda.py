@@ -194,7 +194,7 @@ class Agenda(inkycal_module):
 
                 # Check if item is an event
                 if 'end' in _:
-                    time = _['begin'].format(self.time_format)
+                    time = _['begin'].format(self.time_format, locale=self.language)
 
                     # Check if event is all day, if not, add the time
                     if not parser.all_day(_):
