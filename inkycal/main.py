@@ -270,8 +270,8 @@ class Inkycal:
 
                 try:
                     black, colour = module.generate_image()
-                    black.save(f"{self.image_folder}/module{number}_black.png", "PNG")
-                    colour.save(f"{self.image_folder}/module{number}_colour.png", "PNG")
+                    black.save(f"{self.image_folder}module{number}_black.png", "PNG")
+                    colour.save(f"{self.image_folder}module{number}_colour.png", "PNG")
                     self.info += f"module {number}: OK  "
                 except:
                     errors.append(number)
@@ -298,8 +298,8 @@ class Inkycal:
                 self._calibration_check()
 
                 if self.supports_colour:
-                    im_black = Image.open(f"{self.image_folder}/canvas.png")
-                    im_colour = Image.open(f"{self.image_folder}/canvas_colour.png")
+                    im_black = Image.open(f"{self.image_folder}canvas.png")
+                    im_colour = Image.open(f"{self.image_folder}canvas_colour.png")
 
                     # Flip the image by 180° if required
                     if self.settings['orientation'] == 180:
@@ -370,8 +370,8 @@ class Inkycal:
         for number in range(1, self._module_number):
 
             # get the path of the current module's generated images
-            im1_path = f"{self.image_folder}/module{number}_black.png"
-            im2_path = f"{self.image_folder}/module{number}_colour.png"
+            im1_path = f"{self.image_folder}module{number}_black.png"
+            im2_path = f"{self.image_folder}module{number}_colour.png"
 
             # Check if there is an image for the black band
             if os.path.exists(im1_path):
@@ -441,8 +441,8 @@ class Inkycal:
             im_black = self._optimize_im(im_black)
             im_colour = self._optimize_im(im_colour)
 
-        im_black.save(self.image_folder + '/canvas.png', 'PNG')
-        im_colour.save(self.image_folder + '/canvas_colour.png', 'PNG')
+        im_black.save(self.image_folder + 'canvas.png', 'PNG')
+        im_colour.save(self.image_folder + 'canvas_colour.png', 'PNG')
 
         # Additionally, combine the two images with color
         def clear_white(img):
