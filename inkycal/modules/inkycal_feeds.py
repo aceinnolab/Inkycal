@@ -112,9 +112,9 @@ class Feeds(inkycal_module):
     for feeds in self.feed_urls:
       text = feedparser.parse(feeds)
       for posts in text.entries:
-        summary = posts.summary
-        parsed_feeds.append(
-          f"•{posts.title}: {re.sub('<[^<]+?>', '', posts.summary)}")
+        if 'summary' in posts:
+          summary = posts.summary
+          parsed_feeds.append(f"•{posts.title}: {re.sub('<[^<]+?>', '', summary)}")
 
     self._parsed_feeds = parsed_feeds
 
