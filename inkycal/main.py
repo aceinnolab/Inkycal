@@ -118,6 +118,9 @@ class Inkycal:
             except FileNotFoundError:
                 raise SettingsFileNotFoundError
 
+        if not os.path.exists(image_folder):
+            os.mkdir(image_folder)
+
         # Option to use epaper image optimisation, reduces colours
         self.optimize = True
 
