@@ -6,16 +6,14 @@ Main class for inkycal Project
 Copyright by aceisace
 """
 
-import os
-import traceback
-import arrow
-import time
 import json
-import logging
+import traceback
 from logging.handlers import RotatingFileHandler
 
-from inkycal.display import Display
+import arrow
+
 from inkycal.custom import *
+from inkycal.display import Display
 from inkycal.modules.inky_image import Inkyimage as Images
 
 try:
@@ -165,7 +163,7 @@ class Inkycal:
                 print(str(e))
 
         # Path to store images
-        self.image_folder = top_level + '/images'
+        self.image_folder = image_folder
 
         # Give an OK message
         print('loaded inkycal')
@@ -219,8 +217,8 @@ class Inkycal:
             print(f'generating image(s) for {name}...', end="")
             try:
                 black, colour = module.generate_image()
-                black.save(f"{self.image_folder}/module{number}_black.png", "PNG")
-                colour.save(f"{self.image_folder}/module{number}_colour.png", "PNG")
+                black.save(f"{self.image_folder}module{number}_black.png", "PNG")
+                colour.save(f"{self.image_folder}module{number}_colour.png", "PNG")
                 print('OK!')
             except:
                 errors.append(number)
@@ -334,7 +332,7 @@ class Inkycal:
         returns the merged image
         """
 
-        im1_path, im2_path = images + 'canvas.png', images + 'canvas_colour.png'
+        im1_path, im2_path = image_folder + 'canvas.png', image_folder + 'canvas_colour.png'
 
         # If there is an image for black and colour, merge them
         if os.path.exists(im1_path) and os.path.exists(im2_path):
@@ -446,7 +444,7 @@ class Inkycal:
         im_black.save(self.image_folder + '/canvas.png', 'PNG')
         im_colour.save(self.image_folder + '/canvas_colour.png', 'PNG')
 
-        # Additionally combine the two images with color
+        # Additionally, combine the two images with color
         def clear_white(img):
             """Replace all white pixels from image with transparent pixels
             """
@@ -454,7 +452,7 @@ class Inkycal:
             x[:, :, 3] = (255 * (x[:, :, :3] != 255).any(axis=2)).astype(numpy.uint8)
             return Image.fromarray(x)
 
-        # Additionally combine the two images with color
+        # Additionally, combine the two images with color
         def black_to_colour(img):
             """Replace all black pixels from image with red pixels
             """
@@ -473,7 +471,7 @@ class Inkycal:
         im_colour = black_to_colour(im_colour)
 
         im_colour.paste(im_black, (0, 0), im_black)
-        im_colour.save(images + 'full-screen.png', 'PNG')
+        im_colour.save(image_folder + 'full-screen.png', 'PNG')
 
     @staticmethod
     def _optimize_im(image, threshold=220):
