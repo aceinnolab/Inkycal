@@ -20,7 +20,7 @@ top_level = os.path.dirname(
 
 # Get path of 'fonts' and 'images' folders within Inkycal folder
 fonts_location = top_level + '/fonts/'
-images = top_level + '/images/'
+image_folder = top_level + '/image_folder/'
 
 # Get available fonts within fonts folder
 fonts = {}

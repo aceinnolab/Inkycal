@@ -30,39 +30,7 @@ tests = [
             "tickers": [],
             "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
         }
-    },
-    {
-        "name": "Stocks",
-        "config": {
-            "size": [528, 200],
-            "tickers": ['TSLA', 'AMD', 'NVDA', '^DJI', 'BTC-USD', 'EURUSD=X'],
-            "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
-        }
-    },
-    {
-        "name": "Stocks",
-        "config": {
-            "size": [528, 800],
-            "tickers": ['TSLA', 'AMD', 'NVDA', '^DJI', 'BTC-USD', 'EURUSD=X'],
-            "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
-        }
-    },
-    {
-        "name": "Stocks",
-        "config": {
-            "size": [528, 100],
-            "tickers": "TSLA,AMD,NVDA,^DJI,BTC-USD,EURUSD=X",
-            "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
-        }
-    },
-    {
-        "name": "Stocks",
-        "config": {
-            "size": [528, 400],
-            "tickers": ['TSLA', 'AMD', 'NVDA', '^DJI', 'BTC-USD', 'EURUSD=X'],
-            "padding_x": 10, "padding_y": 10, "fontsize": 14, "language": "en"
-        }
-    },
+    }
 ]
 
 
