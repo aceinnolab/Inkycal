@@ -68,6 +68,7 @@ The previous installer has been deprecated to give more transparency about the i
 
 Run the following steps to install Inkycal. Do not use sudo for this:
 ```bash
+sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev
 cd $HOME
 git clone --branch feature/venv --single-branch https://github.com/aceisace/Inkycal
 cd Inkycal
