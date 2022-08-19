@@ -79,6 +79,12 @@ pip install wheel
 pip install -e ./
 ```
 
+## Running Inkycal
+To run Inkycal, type in the following command in the terminal:
+```bash
+python3 inky_run.py
+```
+
 ## Running on each boot
 To make inkycal run on each boot automatically, you can use crontab. Do not use sudo for this
 ```bash
