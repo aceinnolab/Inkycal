@@ -117,7 +117,7 @@ crontab -r
 ## Modifying Inkycal
 Inkycal now runs in a virtual environment to support more devices than just the Raspberry Pi. Therefore, to make changes to Inkycal, navigate to Inkycal, then run:
 ```bash
-source venv/bin/activate
+cd $HOME/Inkycal && source venv/bin/activate
 ```
 Then modify the files as needed and experiment with Inkycal.
 To deactivate the virtual environment, simply run:
