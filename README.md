@@ -34,11 +34,13 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 </p>
 
 ## Hardware required
-* One of the supported ePaper displays from waveshare: 4.2", 5.83", 7.5" (all variants), 9.7"
-* Any Raspberry Pi with 40 pins and Wi-Fi. (Raspberry Pi 3/3B/3B+/3A/4/0W/0WH - Inkycal runs just fine on the Zero W/Zero WH model!)
-* MicroSD card (min. 4GB) for flashing Raspberry Pi OS **with Desktop**. **Lite is not supported!**
+* One of the supported ePaper displays from waveshare: 4.2", 5.83", 7.5", 7.8"(!), 9.7"(!), 10.3"(!)
+* Any Raspberry Pi with 40 pins and Wi-Fi. (Raspberry Pi 4/3/3B/3B+/3A/4/0W/0WH - Inkycal runs just fine on the Zero W/Zero WH model!)
+* MicroSD card (min. 4GB) for flashing Raspberry Pi OS
 * MicroUSB cable (for power)
 * Optional, a [3D-printable case](https://github.com/aceisace/Inkycal/wiki/3D-printable-files)
+
+(!) -> These displays are parallel displays, featuring 16 greyscales, much faster refreshs, but are more expensive and require a bigger driver board
 
 ## Configuring the Raspberry Pi
 1. Flash Raspberry Pi OS according to the [instructions](https://www.raspberrypi.org/software/). Leave the SD card plugged in your computer.
@@ -60,13 +62,16 @@ These commands expand the filesystem, enable SPI and set up the correct timezone
 10. Change the password for the user pi by entering `passwd` in the Terminal, enter your current password, hit enter, then type your new password and press enter. Please note you will have to remember this password to access your Raspberry Pi.
 11. Follow the steps in `Installation` (see below) on how to install Inkycal.
 
-*Sounds too complicated? We've got you covered, you can now purchase an Inkycal on Tindie:* [Buy Inkycal online](https://www.tindie.com/products/aceisace4444/inkycal-build-v1/)
-Do note that these are made on demand and not always available, best to keep checking.
+*Sounds too complicated? We've got you covered, you can now purchase a fully configured Inkycal on Tindie. These work as simple as plug-and-play. All the hard work is done in advance for you :100:*
+ 
+[<a href="https://www.tindie.com/stores/aceisace4444/?ref=offsite_badges&utm_source=sellers_aceisace4444&utm_medium=badges&utm_campaign=badge_large"><img src="https://d2ss6ovg47m0r5.cloudfront.net/badges/tindie-larges.png" alt="I sell on Tindie" width="200" height="104"></a>](https://www.tindie.com/products/aceisace4444/inkycal-build-v1/)
+
+Do note that these are made on demand and not always available, best to keep checking :wink:
 
 ## Installing Inkycal
 The previous installer has been deprecated to give more transparency about the installation of Inkycal.
 
-Run the following steps to install Inkycal. Do not use sudo for this:
+Run the following steps to install Inkycal. Do **not** use sudo for this, except where explicitly specified.
 ```bash
 sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev
 cd $HOME
@@ -82,6 +87,8 @@ pip install -e ./
 ## Running Inkycal
 To run Inkycal, type in the following command in the terminal:
 ```bash
+cd $HOME/Inkycal
+source venv/bin/activate
 python3 inky_run.py
 ```
 
@@ -134,12 +141,15 @@ The average response time for issues, PRs and emails is usually 24 hours. In som
 **P.S:** Don't forget to star and/or watch the repo. For those who have done so already, thank you very much!
 
 ## Join us on Discord!
+We're happy to help, to beginners and developers alike. In fact, you are more likely to get faster support on Discord than on Github.
 <a href="https://discord.gg/sHYKeSM">
         <img src="https://github.com/aceisace/Inkycal/blob/assets/Repo/discord-logo.png?raw=true" alt="Inkycal chatroom Discord" width=200>
 </a>
 
-## Buy me a coffee please
-Yes please :). I do drink and like my coffee, especially when developing the inkycal software :)
+## Buy me a :coffee: please
+Yes please! I do drink and like my :coffee:, especially when developing Inkycal :laugh:
+Apart from coffee, I also invest in getting new hardware and displays for Inkycal as well as maintaining the servers
+Financial contributions will also be remembered on the contributors page, along with your first name.
 You can donate a coffee with this QR-code (Paypal):
 
 <p align="center">
