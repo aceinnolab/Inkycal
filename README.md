@@ -155,3 +155,12 @@ You can donate a coffee with this QR-code (Paypal):
 <p align="center">
         <img src="https://github.com/aceisace/Inkycal/blob/assets/Repo/coffee.png?raw=true" width=250>
 </p>
+
+## As featured on
+* [makeuseof - fantastic projects using an eink display](http://makeuseof.com/fantastic-projects-using-an-e-ink-display/)
+* [magpi.de](https://www.magpi.de/news/maginkcal-ein-kalender-mit-epaper-display-und-raspberry-pi)
+* [reddit - Inkycal](https://www.reddit.com/r/InkyCal/)
+* [schuemann.it](https://schuemann.it/2019/09/11/e-ink-calendar-with-a-raspberry-pi/)
+* [huernerfuerst.de](https://www.huenerfuerst.de/archives/e-ink-kalender-mit-einem-raspberry-pi-zero-teil-1-was-wird-benoetigt)
+* [raspberrypi.com](https://www.raspberrypi.com/news/ashleys-top-five-projects-for-raspberry-pi-first-timers/)
+* [canox.net](https://canox.net/2019/06/raspberry-pi-als-e-ink-kalender/)
