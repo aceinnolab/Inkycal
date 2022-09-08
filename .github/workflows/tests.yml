@@ -27,6 +27,7 @@ jobs:
         
     - name: Install dependencies
       run: |
+        echo "$PWD"
         pip install wheel
         pip install -e ./
         # cd inkycal/modules && ls -al
@@ -36,7 +37,8 @@ jobs:
         OPENWEATHERMAP_API_KEY: secrets.OPENWEATHERMAP_API_KEY
         
       run: |
-        #cd ..
+        echo "$PWD"
+        # cd ..
         cd tests
         wget https://raw.githubusercontent.com/aceisace/Inkycal/assets/tests/settings.json
         # sed -i 's/"api_key":.*/"api_key": "${{secrets.OPENWEATHERMAP_API_KEY}}",/' settings.json
