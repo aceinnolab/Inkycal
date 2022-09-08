@@ -28,6 +28,7 @@ jobs:
     - name: Install dependencies and run tests
       env:
         OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
+        TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
       run: |
         echo "$PWD"
         pip install wheel
@@ -36,5 +37,5 @@ jobs:
         cd ..
         cd tests
         wget https://raw.githubusercontent.com/aceisace/Inkycal/assets/tests/settings.json
-        sed -i 's/"api_key":.*/"api_key": "${{secrets.OPENWEATHERMAP_API_KEY}}",/' settings.json
+        # doesn't work :( sed -i 's/"api_key":.*/"api_key": "${{secrets.OPENWEATHERMAP_API_KEY}}",/' settings.json
         for f in *.py; do python3 "$f"; done
