@@ -27,7 +27,7 @@ jobs:
         
     - name: Install dependencies and run tests
       env:
-        OPENWEATHERMAP_API_KEY: secrets.OPENWEATHERMAP_API_KEY
+        OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
       run: |
         echo "$PWD"
         pip install wheel
