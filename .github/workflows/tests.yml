@@ -32,6 +32,8 @@ jobs:
         echo "$PWD"
         pip install wheel
         pip install -e ./
+        cd inkycal/modules && ls -al
+        cd ..
         cd tests
         wget https://raw.githubusercontent.com/aceisace/Inkycal/assets/tests/settings.json
         # sed -i 's/"api_key":.*/"api_key": "${{secrets.OPENWEATHERMAP_API_KEY}}",/' settings.json
