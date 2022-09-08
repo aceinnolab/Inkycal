@@ -27,8 +27,8 @@ tests = [
     {
         "name": "Feeds",
         "config": {
-            "size": [400, 100],
-            "feed_urls": "http://feeds.bbci.co.uk/news/world/rss.xml#",
+            "size": [400, 800],
+            "feed_urls": "https://www.foodandco.fi/modules/MenuRss/MenuRss/CurrentDay?costNumber=3003&language=en",
             "shuffle_feeds": False,
             "padding_x": 10, "padding_y": 10, "fontsize": 14, "language": "en"
         }
@@ -57,8 +57,10 @@ class module_test(unittest.TestCase):
             module = Module(test)
             im_black, im_colour = module.generate_image()
             print('OK')
-            if use_preview == True and environment == 'Raspberry':
+            if use_preview and environment == 'Raspberry':
                 preview(merge(im_black, im_colour))
+            im = merge(im_black, im_colour)
+            im.show()
 
 
 if __name__ == '__main__':
