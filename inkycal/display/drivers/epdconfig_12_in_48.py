@@ -53,20 +53,12 @@ EPD_S1_BUSY_PIN  =19
 EPD_M2_BUSY_PIN  =27
 EPD_S2_BUSY_PIN  =24
 
-find_dirs = [
-    os.path.dirname(os.path.realpath(__file__)),
-    '/usr/local/lib',
-    '/usr/lib',
-]
-spi = None
-for find_dir in find_dirs:
-    so_filename = os.path.join(find_dir, 'epd_12_in_48_lib.so')
-    if os.path.exists(so_filename):
-        spi = CDLL(so_filename)
-        break
-if spi is None:
-    RuntimeError('Cannot find epd_12_in_48_lib.so')
+additional_driver_path = f"{os.getcwd()}/epd_12_in_48_lib.so"
 
+if not os.path.exists(additional_driver_path):
+    RuntimeError("Inkycal cannot find the additional driver files for 12in48 3-colour")
+
+spi = CDLL(additional_driver_path)
 
 def digital_write(pin, value):
     GPIO.output(pin, value)
