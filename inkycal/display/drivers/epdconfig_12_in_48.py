@@ -53,7 +53,7 @@ EPD_S1_BUSY_PIN  =19
 EPD_M2_BUSY_PIN  =27
 EPD_S2_BUSY_PIN  =24
 
-additional_driver_path = f"{os.getcwd()}/epd_12_in_48_lib.so"
+additional_driver_path = f"{os.path.dirname(os.path.realpath(__file__))}/epd_12_in_48_lib.so"
 
 if not os.path.exists(additional_driver_path):
     RuntimeError("Inkycal cannot find the additional driver files for 12in48 3-colour")
