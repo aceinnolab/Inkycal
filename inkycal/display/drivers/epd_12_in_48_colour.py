@@ -172,7 +172,6 @@ class EPD(object):
         return buf
         
     def display(self, blackbuf, redbuf):
-        start = time.clock()
                     
         #S2 part 648*492
         self.S2_SendCommand(0x10)
@@ -213,14 +212,10 @@ class EPD(object):
         for y in  range(492, 984):
             for x in  range(81, 163):
                 self.S1_SendData(~redbuf[y*163 + x])
-                
-        end = time.clock()
-        print("use time: %f"%(end - start))
         self.TurnOnDisplay()
 
     def clear(self):
         """Clear contents of image buffer"""
-        start = time.clock()
         
         self.S2_SendCommand(0x10)
         for y in  range(0, 492):
@@ -257,11 +252,6 @@ class EPD(object):
         for y in  range(492, 984):
             for x in  range(81, 163):
                 self.S1_SendData(0x00)
-                
-        end = time.clock()
-        print (end)
-        print (start)
-        print("use time: %f" %(end - start))
         
         self.TurnOnDisplay()
         
