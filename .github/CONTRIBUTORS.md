@@ -60,3 +60,4 @@ The following people have voluteered to test the beta release (pre-release). Tha
 | **Martin K.** |  A special thank you for your contribution! :tada: |
 | **Simon K.** |  A special thank you for your contribution! :tada: |
 | **Roman F.** |  A special thank you for your contribution! :tada: |
+| **Lars L.**| A special thank you for your contribution! :tada: |
