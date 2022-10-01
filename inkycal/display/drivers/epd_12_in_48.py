@@ -151,7 +151,6 @@ class EPD(object):
         return buf
         
     def display(self, buf):
-        start = time.clock()       
 
         #M1 part 648*492    
         self.M1_SendCommand(0x13)
@@ -177,13 +176,10 @@ class EPD(object):
             for x in  range(0, 81):
                 self.S2_SendData(buf[y*163 + x])
                 
-        end = time.clock()
-        print("use time:%f"%(end - start))
         self.TurnOnDisplay()
 
     def clear(self):
         """Clear contents of image buffer"""
-        start = time.clock()
         self.M1_SendCommand(0x13)
         for y in  range(492, 984):
             for x in  range(0, 81):
@@ -203,8 +199,6 @@ class EPD(object):
         for y in  range(0, 492):
             for x in  range(0, 81):
                 self.S2_SendData(0xff)
-        end = time.clock()
-        print("use time:%f"%(end - start))
         self.TurnOnDisplay()
         
     """   M1S1M2S2 Write register address and data     """
