@@ -1,7 +1,7 @@
 #!python3
 
 """
-Weather module for Inky-Calendar software.
+Inkycal weather module
 Copyright by aceisace
 """
 

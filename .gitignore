@@ -142,5 +142,5 @@ dmypy.json
 .pyre/
 /ftp/
 
-# log files
-*.log
+# inkycal logs
+*inkycal.log*

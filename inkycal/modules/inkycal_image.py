@@ -1,7 +1,7 @@
 #!python3
 
 """
-Image module for Inkycal Project
+Inkycal Image Module
 Copyright by aceisace
 """
 

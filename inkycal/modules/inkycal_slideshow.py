@@ -1,7 +1,7 @@
 #!python3
 
 """
-Image module for Inkycal Project
+Inkycal Slideshow Module
 Copyright by aceisace
 """
 import glob

@@ -1,7 +1,7 @@
 #!python3
 
 """
-Calendar module for Inky-Calendar Project
+Inkycal Calendar Module
 Copyright by aceisace
 """
 from inkycal.modules.template import inkycal_module

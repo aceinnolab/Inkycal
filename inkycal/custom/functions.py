@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-Inky-Calendar custom-functions for ease-of-use
+Inkycal custom-functions for ease-of-use
 
 Copyright by aceisace
 """

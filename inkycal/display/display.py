@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-Inky-Calendar epaper functions
+Inkycal ePaper driving functions
 Copyright by aceisace
 """
 from importlib import import_module

@@ -33,7 +33,6 @@ for count, url in enumerate(im_urls):
 
 test_path = "tmp"
 
-
 tests = [
     {
         "name": "Slideshow",
