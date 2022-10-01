@@ -1,5 +1,4 @@
 #!python3
-
 """
 Stocks Module for Inkycal Project
 

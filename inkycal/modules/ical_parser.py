@@ -1,7 +1,7 @@
 #!python3
 
 """
-iCalendar (parsing) module for Inky-Calendar Project
+Inkycal iCalendar parsing module
 Copyright by aceisace
 """
 import urllib

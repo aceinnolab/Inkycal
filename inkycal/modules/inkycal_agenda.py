@@ -1,7 +1,7 @@
 #!python3
 
 """
-Agenda module for Inky-Calendar Project
+Inkycal Agenda Module
 Copyright by aceisace
 """
 
