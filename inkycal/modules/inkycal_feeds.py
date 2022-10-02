@@ -111,6 +111,10 @@ class Feeds(inkycal_module):
                 if "summary" in posts:
                     summary = posts["summary"]
                     parsed_feeds.append(f"•{posts.title}: {re.sub('<[^<]+?>', '', posts.summary)}")
+                # if "description" in posts:
+
+        parsed_feeds = [i.split("\n") for i in parsed_feeds][0]
+        parsed_feeds = [i for i in parsed_feeds if i]
 
         self._parsed_feeds = parsed_feeds
 

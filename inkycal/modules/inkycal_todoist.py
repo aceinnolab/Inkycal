@@ -1,14 +1,15 @@
 #!python3
 
 """
-todoist module for Inky-Calendar Project
+Inkycal Todoist Module
 Copyright by aceisace
 """
 
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
 
-import todoist
+from todoist_api_python.api_async import TodoistAPIAsync
+from todoist_api_python.api import TodoistAPI
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
@@ -16,7 +17,7 @@ logger = logging.getLogger(filename)
 
 class Todoist(inkycal_module):
     """Todoist api class
-    parses todos from api-key
+    parses todo's from api-key
     """
 
     name = "Todoist API - show your todos from todoist"
@@ -55,8 +56,7 @@ class Todoist(inkycal_module):
         else:
             self.project_filter = config['project_filter']
 
-        self._api = todoist.TodoistAPI(config['api_key'])
-        self._api.sync()
+        self._api = TodoistAPI(config['api_key'])
 
         # give an OK message
         print(f'{filename} loaded')
@@ -82,7 +82,6 @@ class Todoist(inkycal_module):
         # Check if internet is available
         if internet_available():
             logger.info('Connection test passed')
-            self._api.sync()
         else:
             raise NetworkNotReachableError
 
@@ -100,44 +99,40 @@ class Todoist(inkycal_module):
             (0, spacing_top + _ * line_height) for _ in range(max_lines)]
 
         # Get all projects by name and id
-        all_projects = {project['id']: project['name']
-                        for project in self._api.projects.all()}
+        all_projects = self._api.get_projects()
+        filtered_project_ids_and_names = {project.id: project.name for project in all_projects}
+        all_active_tasks = self._api.get_tasks()
 
         logger.debug(f"all_projects: {all_projects}")
 
         # Filter entries in all_projects if filter was given
         if self.project_filter:
-            for project_id in list(all_projects):
-                if all_projects[project_id] not in self.project_filter:
-                    del all_projects[project_id]
+            filtered_projects = [project for project in all_projects if project.name in self.project_filter]
+            filtered_project_ids_and_names = {project.id: project.name for project in filtered_projects}
+            filtered_project_ids = [project for project in filtered_project_ids_and_names]
+            logger.debug(f"filtered projects: {filtered_projects}")
 
-            logger.debug(f"all_project: {all_projects}")
-
-            # If filter was activated and no roject was found with that name,
+            # If filter was activated and no project was found with that name,
             # raise an exception to avoid showing a blank image
-            if all_projects == {}:
+            if not filtered_projects:
                 logger.error('No project found from project filter!')
                 logger.error('Please double check spellings in project_filter')
                 raise Exception('No matching project found in filter. Please '
                                 'double check spellings in project_filter or leave'
                                 'empty')
-
-        # Create single-use generator to filter undone and non-deleted tasks
-        tasks = (task.data for task in self._api.state['items'] if
-                 task['checked'] == 0 and task['is_deleted'] == 0)
+            # filtered version of all active tasks
+            all_active_tasks = [task for task in all_active_tasks if task.project_id in filtered_project_ids]
 
         # Simplify the tasks for faster processing
         simplified = [
             {
-                'name': task['content'],
-                'due': task['due']['string'] if task['due'] is not None else "",
-                'priority': task['priority'],
-                'project': all_projects[task['project_id']] if task['project_id'] in all_projects else "deleted"
+                'name': task.content,
+                'due': task.due,
+                'priority': task.priority,
+                'project': filtered_project_ids_and_names[task.project_id]
             }
-            for task in tasks]
-
-        # remove groups that have been deleted
-        simplified = [task for task in simplified if task['project'] != "deleted"]
+            for task in all_active_tasks
+        ]
 
         logger.debug(f'simplified: {simplified}')
 
