@@ -8,11 +8,9 @@ Copyright by aceisace
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
 
-from todoist_api_python.api_async import TodoistAPIAsync
 from todoist_api_python.api import TodoistAPI
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 
 class Todoist(inkycal_module):
@@ -59,7 +57,7 @@ class Todoist(inkycal_module):
         self._api = TodoistAPI(config['api_key'])
 
         # give an OK message
-        print(f'{filename} loaded')
+        print(f'{__name__} loaded')
 
     def _validate(self):
         """Validate module-specific parameters"""
@@ -192,4 +190,4 @@ class Todoist(inkycal_module):
 
 
 if __name__ == '__main__':
-    print(f'running {filename} in standalone/debug mode')
+    print(f'running {__name__} in standalone/debug mode')
