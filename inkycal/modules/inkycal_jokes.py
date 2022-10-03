@@ -14,8 +14,7 @@ import requests
 # Show less logging for request module
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 
 class Jokes(inkycal_module):
@@ -33,7 +32,7 @@ class Jokes(inkycal_module):
         config = config['config']
 
         # give an OK message
-        print(f'{filename} loaded')
+        print(f'{__name__} loaded')
 
     def generate_image(self):
         """Generate image for this module"""
@@ -101,4 +100,4 @@ class Jokes(inkycal_module):
 
 
 if __name__ == '__main__':
-    print(f'running {filename} in standalone/debug mode')
+    print(f'running {__name__} in standalone/debug mode')

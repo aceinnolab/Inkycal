@@ -13,8 +13,7 @@ from random import shuffle
 
 import feedparser
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 
 class Feeds(inkycal_module):
@@ -63,7 +62,7 @@ class Feeds(inkycal_module):
         self.shuffle_feeds = config["shuffle_feeds"]
 
         # give an OK message
-        print(f'{filename} loaded')
+        print(f'{__name__} loaded')
 
     def _validate(self):
         """Validate module-specific parameters"""
@@ -155,4 +154,4 @@ class Feeds(inkycal_module):
 
 
 if __name__ == '__main__':
-    print(f'running {filename} in standalone/debug mode')
+    print(f'running {__name__} in standalone/debug mode')

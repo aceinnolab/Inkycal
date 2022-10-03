@@ -10,8 +10,7 @@ from inkycal.custom import *
 
 from inkycal.modules.inky_image import Inkyimage as Images
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 
 class Inkyimage(inkycal_module):
@@ -66,7 +65,7 @@ class Inkyimage(inkycal_module):
         self.orientation = config['orientation']
 
         # give an OK message
-        print(f'{filename} loaded')
+        print(f'{__name__} loaded')
 
     def generate_image(self):
         """Generate image for this module"""
@@ -105,4 +104,4 @@ class Inkyimage(inkycal_module):
 
 
 if __name__ == '__main__':
-    print(f'running {filename} in standalone/debug mode')
+    print(f'running {__name__} in standalone/debug mode')

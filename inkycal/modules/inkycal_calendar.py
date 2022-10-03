@@ -10,8 +10,7 @@ from inkycal.custom import *
 import calendar as cal
 import arrow
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 
 class Calendar(inkycal_module):
@@ -86,7 +85,7 @@ class Calendar(inkycal_module):
             fonts['NotoSans-SemiCondensed'], size=self.fontsize)
 
         # give an OK message
-        print(f'{filename} loaded')
+        print(f'{__name__} loaded')
 
     def generate_image(self):
         """Generate image for this module"""
@@ -341,4 +340,4 @@ class Calendar(inkycal_module):
 
 
 if __name__ == '__main__':
-    print(f'running {filename} in standalone mode')
+    print(f'running {__name__} in standalone mode')

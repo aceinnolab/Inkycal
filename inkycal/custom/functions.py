@@ -11,7 +11,7 @@ from urllib.request import urlopen
 import os
 import time
 
-logs = logging.getLogger('inkycal_custom')
+logs = logging.getLogger(__name__)
 logs.setLevel(level=logging.INFO)
 
 # Get the path to the Inkycal folder
@@ -26,14 +26,14 @@ image_folder = top_level + '/image_folder/'
 fonts = {}
 
 for path, dirs, files in os.walk(fonts_location):
-    for filename in files:
-        if filename.endswith('.otf'):
-            name = filename.split('.otf')[0]
-            fonts[name] = os.path.join(path, filename)
+    for _ in files:
+        if _.endswith('.otf'):
+            name = _.split('.otf')[0]
+            fonts[name] = os.path.join(path, _)
 
-        if filename.endswith('.ttf'):
-            name = filename.split('.ttf')[0]
-            fonts[name] = os.path.join(path, filename)
+        if _.endswith('.ttf'):
+            name = _.split('.ttf')[0]
+            fonts[name] = os.path.join(path, _)
 
 available_fonts = [key for key, values in fonts.items()]
 
@@ -206,6 +206,7 @@ def text_wrap(text, font=None, max_width=None):
     Uses a Font object for more accurate calculations.
 
     Args:
+      - text -> Text as a string
       - font: A PIL font object which is used to calculate the size.
       - max_width: int-> a width in pixels defining the maximum width before
         splitting the text into the next chunk.

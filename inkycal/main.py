@@ -71,8 +71,7 @@ else:
 # Show less logging for PIL module
 logging.getLogger("PIL").setLevel(logging.WARNING)
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 
 # TODO: autostart -> supervisor?
