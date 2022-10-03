@@ -13,8 +13,7 @@ from inkycal.custom import *
 
 from inkycal.modules.inky_image import Inkyimage as Images
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 
 class Inkyserver(inkycal_module):
@@ -73,7 +72,7 @@ class Inkyserver(inkycal_module):
             self.path_body = config['path_body']
 
         # give an OK message
-        print(f'{filename} loaded')
+        print(f'{__name__} loaded')
 
     def generate_image(self):
         """Generate image for this module"""
@@ -122,7 +121,7 @@ class Inkyserver(inkycal_module):
 
 
 if __name__ == '__main__':
-    print(f'running {filename} in standalone/debug mode')
+    print(f'running {__name__} in standalone/debug mode')
 
 ##  'https://inkycal.robertsirre.nl/panel/calendar/{model}?width={width}&height={height}'
 ##path = path.replace('{model}', model).replace('{width}',str(display_width)).replace('{height}',str(display_height))

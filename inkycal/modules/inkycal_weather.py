@@ -8,13 +8,13 @@ Copyright by aceisace
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
 
-import math, decimal
+import math
+import decimal
 import arrow
 
 from pyowm.owm import OWM
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 
 class Weather(inkycal_module):
@@ -102,7 +102,7 @@ class Weather(inkycal_module):
             fonts['weathericons-regular-webfont'], size=self.fontsize)
 
         # give an OK message
-        print(f"{filename} loaded")
+        print(f"{__name__} loaded")
 
     def generate_image(self):
         """Generate image for this module"""
@@ -505,4 +505,4 @@ class Weather(inkycal_module):
 
 
 if __name__ == '__main__':
-    print(f'running {filename} in standalone mode')
+    print(f'running {__name__} in standalone mode')

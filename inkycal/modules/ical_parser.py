@@ -22,8 +22,7 @@ from icalendar import Calendar
   local timezone. Converting all-day events to local timezone is a problem!
 """
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 
 class iCalendar:
@@ -203,4 +202,4 @@ class iCalendar:
 
 
 if __name__ == '__main__':
-    print(f'running {filename} in standalone mode')
+    print(f'running {__name__} in standalone mode')

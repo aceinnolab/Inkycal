@@ -15,8 +15,7 @@ import requests
 
 from PIL import Image
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 
 class Inkyimage:
@@ -30,7 +29,7 @@ class Inkyimage:
         self.image = image
 
         # give an OK message
-        logger.info(f'{filename} loaded')
+        logger.info(f'{__name__} loaded')
 
     def load(self, path):
         """loads an image from a URL or filepath.
@@ -330,4 +329,4 @@ class Inkyimage:
 
 
 if __name__ == '__main__':
-    print(f'running {filename} in standalone/debug mode')
+    print(f'running {__name__} in standalone/debug mode')

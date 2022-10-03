@@ -38,8 +38,7 @@ except ImportError:
 #############################################################################
 
 # Get the name of this file, set up logging for this filename
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 
 #############################################################################
@@ -159,7 +158,7 @@ class Simple(inkycal_module):
         # -----------------------------------------------------------------------#
 
         # give an OK message
-        print(f'{filename} loaded')
+        print(f'{__name__} loaded')
 
     #############################################################################
     #                 Validation of module specific parameters   (optional)     #
@@ -220,7 +219,7 @@ class Simple(inkycal_module):
 
 
 if __name__ == '__main__':
-    print('running {0} in standalone mode'.format(filename))
+    print('running {0} in standalone mode'.format(__name__))
 
 ################################################################################
 # Last steps

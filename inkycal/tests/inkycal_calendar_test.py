@@ -80,7 +80,7 @@ class module_test(unittest.TestCase):
             module = Module(test)
             im_black, im_colour = module.generate_image()
             print('OK')
-            if use_preview == True and environment == 'Raspberry':
+            if use_preview and environment == 'Raspberry':
                 preview(merge(im_black, im_colour))
 
 

@@ -12,8 +12,7 @@ from inkycal.custom import *
 # PIL has a class named Image, use alias for Inkyimage -> Images
 from inkycal.modules.inky_image import Inkyimage as Images
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 
 class Slideshow(inkycal_module):
@@ -80,7 +79,7 @@ class Slideshow(inkycal_module):
         self._first_run = True
 
         # give an OK message
-        print(f'{filename} loaded')
+        print(f'{__name__} loaded')
 
     def generate_image(self):
         """Generate image for this module"""
@@ -132,4 +131,4 @@ class Slideshow(inkycal_module):
 
 
 if __name__ == '__main__':
-    print(f'running {filename} in standalone/debug mode')
+    print(f'running {__name__} in standalone/debug mode')

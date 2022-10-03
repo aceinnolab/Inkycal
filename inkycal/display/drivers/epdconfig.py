@@ -32,8 +32,7 @@ import logging
 import sys
 import time
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
 
 
 class RaspberryPi:
