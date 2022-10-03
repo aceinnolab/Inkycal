@@ -7,3 +7,4 @@ from .inkycal_image import Inkyimage
 from .inkycal_jokes import Jokes
 from .inkycal_stocks import Stocks
 from .inkycal_slideshow import Slideshow
+from .inkycal_textfile_to_display import TextToDisplay
