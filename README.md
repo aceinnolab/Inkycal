@@ -150,10 +150,12 @@ We're happy to help, to beginners and developers alike. In fact, you are more li
 Yes please! I do drink and like my :coffee:, especially when developing Inkycal :laugh:
 Apart from coffee, I also invest in getting new hardware and displays for Inkycal as well as maintaining the servers
 Financial contributions will also be remembered on the contributors page, along with your first name.
-You can donate a coffee with this QR-code (Paypal):
+You can donate a coffee with these QR-Codes: (Paypal - left, bitcoin - right)
+
 
 <p align="center">
         <img src="https://github.com/aceisace/Inkycal/blob/assets/Repo/coffee.png?raw=true" width=250>
+        <img src="https://github.com/aceisace/Inkycal/blob/assets/Repo/bitcoin_qr.png?raw=true" width=300>
 </p>
 
 ## As featured on
