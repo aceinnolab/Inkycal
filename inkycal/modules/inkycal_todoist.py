@@ -4,6 +4,7 @@
 Inkycal Todoist Module
 Copyright by aceisace
 """
+import arrow
 
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
@@ -125,7 +126,7 @@ class Todoist(inkycal_module):
         simplified = [
             {
                 'name': task.content,
-                'due': task.due,
+                'due': arrow.get(task.due.date, "YYYY-MM-DD").format("D-MMM-YY") if task.due else "",
                 'priority': task.priority,
                 'project': filtered_project_ids_and_names[task.project_id]
             }
@@ -134,27 +135,33 @@ class Todoist(inkycal_module):
 
         logger.debug(f'simplified: {simplified}')
 
-        # Get maximum width of project names for selected font
-        project_width = int(max(
-            [self.font.getsize(task['project']) for task in simplified]
-        ) * 1.1)
-
-        # Get maximum width of project dues for selected font
-        due_width = int(max([
-            self.font.getsize(task['due']) for task in simplified]) * 1.1)
-
-        # Group tasks by project name
-        grouped = {name: [] for id_, name in all_projects.items()}
+        project_lengths = []
+        due_lengths = []
 
         for task in simplified:
-            if task['project'] in grouped:
-                grouped[task['project']].append(task)
+            if task["project"]:
+                project_lengths.append(int(self.font.getlength(task['project']) * 1.1))
+            if task["due"]:
+                due_lengths.append(int(self.font.getlength(task['due']) * 1.1))
 
-        logger.debug(f"grouped: {grouped}")
+        # Get maximum width of project names for selected font
+        project_offset = int(max(project_lengths)) if project_lengths else 0
+
+        # Get maximum width of project dues for selected font
+        due_offset = int(max(due_lengths)) if due_lengths else 0
+
+        # create a dict with names of filtered groups
+        groups = {group_name:[] for group_name in filtered_project_ids_and_names.values()}
+        for task in simplified:
+            group_of_current_task = task["project"]
+            if group_of_current_task in groups:
+                groups[group_of_current_task].append(task)
+
+        logger.debug(f"grouped: {groups}")
 
         # Add the parsed todos on the image
         cursor = 0
-        for name, todos in grouped.items():
+        for name, todos in groups.items():
             if todos:
                 for todo in todos:
                     if cursor < len(line_positions):
@@ -164,23 +171,23 @@ class Todoist(inkycal_module):
                             # Add todos project name
                             write(
                                 im_colour, line_positions[cursor],
-                                (project_width, line_height),
+                                (project_offset, line_height),
                                 todo['project'], font=self.font, alignment='left')
 
                         # Add todos due if not empty
                         if todo['due']:
                             write(
                                 im_black,
-                                (line_x + project_width, line_y),
-                                (due_width, line_height),
+                                (line_x + project_offset, line_y),
+                                (due_offset, line_height),
                                 todo['due'], font=self.font, alignment='left')
 
                         if todo['name']:
                             # Add todos name
                             write(
                                 im_black,
-                                (line_x + project_width + due_width, line_y),
-                                (im_width - project_width - due_width, line_height),
+                                (line_x + project_offset + due_offset, line_y),
+                                (im_width - project_offset - due_offset, line_height),
                                 todo['name'], font=self.font, alignment='left')
 
                         cursor += 1
