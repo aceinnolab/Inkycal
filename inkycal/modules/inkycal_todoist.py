@@ -135,12 +135,13 @@ class Todoist(inkycal_module):
         logger.debug(f'simplified: {simplified}')
 
         # Get maximum width of project names for selected font
-        project_width = int(max([
-            self.font.getsize(task['project'])[0] for task in simplified]) * 1.1)
+        project_width = int(max(
+            [self.font.getsize(task['project']) for task in simplified]
+        ) * 1.1)
 
         # Get maximum width of project dues for selected font
         due_width = int(max([
-            self.font.getsize(task['due'])[0] for task in simplified]) * 1.1)
+            self.font.getsize(task['due']) for task in simplified]) * 1.1)
 
         # Group tasks by project name
         grouped = {name: [] for id_, name in all_projects.items()}
