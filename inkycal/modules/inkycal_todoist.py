@@ -164,7 +164,7 @@ class Todoist(inkycal_module):
         for name, todos in groups.items():
             if todos:
                 for todo in todos:
-                    if cursor < len(line_positions):
+                    if cursor < max_lines:
                         line_x, line_y = line_positions[cursor]
 
                         if todo['project']:
@@ -191,9 +191,9 @@ class Todoist(inkycal_module):
                                 todo['name'], font=self.font, alignment='left')
 
                         cursor += 1
-                else:
-                    logger.error('More todos than available lines')
-                    break
+                    else:
+                        logger.error('More todos than available lines')
+                        break
 
         # return the images ready for the display
         return im_black, im_colour
