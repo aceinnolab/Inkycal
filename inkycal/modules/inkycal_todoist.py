@@ -10,7 +10,7 @@ from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
 
 try:
-  import todoist
+  from todoist_api_python.api import TodoistAPI
 except ImportError:
   print('todoist is not installed! Please install with:')
   print('pip3 install todoist-python')
@@ -59,9 +59,8 @@ class Todoist(inkycal_module):
     else:
       self.project_filter = config['project_filter']
 
-    self._api = todoist.TodoistAPI(config['api_key'])
-    self._api.sync()
-
+    self._api = TodoistAPI(config['api_key'])
+   
     # give an OK message
     print(f'{filename} loaded')
 
@@ -86,7 +85,6 @@ class Todoist(inkycal_module):
     # Check if internet is available
     if internet_available() == True:
       logger.info('Connection test passed')
-      self._api.sync()
     else:
       raise Exception('Network could not be reached :/')
 
@@ -104,8 +102,12 @@ class Todoist(inkycal_module):
       (0, spacing_top + _ * line_height ) for _ in range(max_lines)]
 
     # Get all projects by name and id
-    all_projects = {project['id']: project['name']
-                    for project in self._api.projects.all()}
+
+    #all_projects = {project['id']: project['name']
+    #                for project in self._api.get_projects()}
+    all_projects = {}
+    for project in self._api.get_projects():
+      all_projects[project.id] = project.name
 
     logger.debug(f"all_projects: {all_projects}")
 
@@ -126,22 +128,22 @@ class Todoist(inkycal_module):
                         'double check spellings in project_filter or leave'
                         'empty')
 
-    # Create single-use generator to filter undone and non-deleted tasks
-    tasks = (task.data for task in self._api.state['items'] if
-               task['checked'] == 0 and task['is_deleted']==0)
+    tasks = (task for task in self._api.get_tasks() if
+                task.is_completed == False)
 
     # Simplify the tasks for faster processing
     simplified = [
-      {
-        'name':task['content'],
-        'due':task['due']['string'] if task['due'] != None else "",
-        'priority':task['priority'],
-        'project':all_projects[ task['project_id' ] ] if task['project_id'] in all_projects else "deleted"
-      }
-      for task in tasks]
+        {
+        'name':task.content,
+        'due':task.due.string if task.due != None else "",
+        'priority':task.priority,
+        'project':all_projects[ task.project_id ] if task.project_id in all_projects else "deleted"
+        }
+        for task in tasks]
 
-    # remove groups that have been deleted
-    simplified = [task for task in simplified if task['project'] != "deleted"]
+    # remove groups that have been deleted 
+    # - not sure if this is needed anymore or exactly how to do it --dealyllama
+    #simplified = [task for task in simplified if task.project != "deleted"]
 
     logger.debug(f'simplified: {simplified}')
 
