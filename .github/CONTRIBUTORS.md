@@ -34,6 +34,7 @@ The following people have voluteered to test the beta release (pre-release). Tha
 | **surak** | [Alexandre Strube](https://github.com/surak) | for various suggestions, PRs |
 | **Hubert** | Hubert |for extending the events fetcher, adding support for recurring events, date formattings and other code suggestions|
 | **Crickus** | [Dimka](https://github.com/Crickus) | For helping with adding support for 9.7" E-Paper display|
+| **dealyllama** | [dealyllama] () | Tweaked the todoist module to use the new API
 
 ## Financial Contributions
 | Name | Contribution details |
