@@ -7,6 +7,6 @@ numpy>=1.18.2                   # image pre-processing #pre-installed on Raspbia
 arrow==0.17.0 	                # time operations
 Flask==1.1.2                    # webserver
 Flask-WTF==0.14.3               # webforms
-todoist-python==8.1.2           # todoist api
+todoist_api_python==2.0.2       # new todoist api
 yfinance>=0.1.62                # yahoo stocks
 matplotlib==3.4.2               # plotting 
