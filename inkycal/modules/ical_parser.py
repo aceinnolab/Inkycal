@@ -15,6 +15,7 @@ Copyright by aceisace
 
 import arrow
 from urllib.request import urlopen
+import urllib.request as url_req
 import logging
 import time
 import os
@@ -49,15 +50,18 @@ class iCalendar:
     add username and password to access protected files
     """
 
+    # Adding some extra header info to the request to prevent school calendar from blocking this pull        
+    hdr = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)' }
+
     if type(url) == list:
       if (username == None) and (password == None):
-        ical = [Calendar.from_ical(str(urlopen(_).read().decode()))
+        ical = [Calendar.from_ical(str(urlopen(url_req.Request(_, headers=hdr)).read().decode()))
                                    for _ in url]
       else:
         ical = [auth_ical(each_url, username, password) for each_url in url]
     elif type(url) == str:
       if (username == None) and (password == None):
-        ical = [Calendar.from_ical(str(urlopen(url).read().decode()))]
+        ical = [Calendar.from_ical(str(urlopen(url_req.Request(url, headers=hdr)).read().decode()))]
       else:
         ical = [auth_ical(url, username, password)]
     else:

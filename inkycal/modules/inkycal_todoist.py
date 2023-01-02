@@ -145,6 +145,11 @@ class Todoist(inkycal_module):
     # Make sure tasks are ordered by due date    
     simplified = sorted(simplified, key=lambda i: i['due'])        
 
+    # Convert the dates to an easier to ready format
+    for x in simplified:
+      if x['due'] != "":
+        x['due'] = datetime.strptime(x['due'],'%Y-%m-%d').strftime("%a %b %d")
+
     # remove groups that have been deleted 
     # - not sure if this is needed anymore or exactly how to do it --dealyllama
     #simplified = [task for task in simplified if task.project != "deleted"]
@@ -189,7 +194,7 @@ class Todoist(inkycal_module):
                 im_black,
                 (line_x + project_width, line_y),
                 (due_width, line_height),
-                datetime.strptime(todo['due'],'%Y-%m-%d').strftime("%b %d"), 
+                todo['due'], 
                 font=self.font, alignment='left')
 
             # Add todo name
