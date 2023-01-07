@@ -9,6 +9,7 @@ from inkycal.custom import *
 
 import calendar as cal
 import arrow
+import requests
 
 filename = os.path.basename(__file__).split('.py')[0]
 logger = logging.getLogger(filename)
@@ -63,6 +64,11 @@ class Calendar(inkycal_module):
     super().__init__(config)
     config = config['config']
 
+    self.show_btc = bool(config.get('show_btc_price_at_month_name', False))
+    logger.info('Show BTC price at Month name: %s', self.show_btc)
+    self.coinprice_url = config.get('coin_price_url', None)
+    logger.debug('coinprice_url: %s', self.coinprice_url)
+
     # optional parameters
     self.weekstart = config['week_starts_on']
     self.show_events = config['show_events']
@@ -87,6 +93,17 @@ class Calendar(inkycal_module):
 
     # give an OK message
     print(f'{filename} loaded')
+
+
+  def get_btc_price_in_euro(self):
+    if self.coinprice_url is None:
+      return ''
+    response = requests.get(self.coinprice_url)
+    data = response.json()
+    euro_str = (data["bpi"]["EUR"]["rate"]).replace(',','')
+    euro = euro_str.split('.')
+    return "; BTC: " + euro[0] + "€"
+
 
   def generate_image(self):
     """Generate image for this module"""
@@ -153,8 +170,12 @@ class Calendar(inkycal_module):
       weekstart = now.shift(days = - now.isoweekday())
 
     # Write the name of current month
+    month_name = str(now.format('MMMM', locale=self.language))
+    if self.show_btc:
+      month_name = month_name+ self.get_btc_price_in_euro()
+
     write(im_black, (0,0),(im_width, month_name_height),
-      str(now.format('MMMM',locale=self.language)), font = self.font,
+      month_name, font = self.font,
       autofit = True)
 
     # Set up weeknames in local language and add to main section

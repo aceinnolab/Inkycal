@@ -68,7 +68,22 @@ sudo dpkg-reconfigure tzdata
 These commands expand the filesystem, enable SPI and set up the correct timezone on the Raspberry Pi. When running the last command, please select the continent you live in, press enter and then select the capital of the country you live in. Lastly, press enter.
 
 10. Change the password for the user pi by entering `passwd` in the Terminal, enter your current password, hit enter, then type your new password and press enter. Please note you will have to remember this password to access your Raspberry Pi.
-11. Follow the steps in `Installation` (see below) on how to install Inkycal.
+11. If needed, disable the green LEDs on a Raspberry Pi Zero. To permanently disable the lights, edit the boot config file using the following command:
+- Edit the file:
+```bash
+sudo nano /boot/config.txt
+```
+- Add in to the bottom:
+```bash
+# Disable the ACT LED on the Pi Zero
+dtparam=act_led_trigger=none
+dtparam=act_led_activelow=on
+```
+- Reboot the Pi:
+```bash
+sudo reboot
+```
+12. Follow the steps in `Installation` (see below) on how to install Inkycal.
 
 ### Installation
 Open a Terminal and enter the following command:
