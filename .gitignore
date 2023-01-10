@@ -143,4 +143,4 @@ dmypy.json
 /ftp/
 
 # inkycal logs
-*inkycal.log*
+/logs
