@@ -151,7 +151,7 @@ def write(image, xy, box_size, text, font=None, **kwargs):
     box_width, box_height = box_size
 
     # Increase fontsize to fit specified height and width of text box
-    if (autofit == True) or (fill_width != 1.0) or (fill_height != 0.8):
+    if autofit or (fill_width != 1.0) or (fill_height != 0.8):
         size = 8
         font = ImageFont.truetype(font.path, size)
         text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
@@ -169,7 +169,7 @@ def write(image, xy, box_size, text, font=None, **kwargs):
         while (text_width, text_height) > (box_width, box_height):
             text = text[0:-1]
             text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
-        logs.debug((text))
+        logs.debug(text)
 
     # Align text to desired position
     if alignment == "center" or None:
@@ -192,7 +192,7 @@ def write(image, xy, box_size, text, font=None, **kwargs):
     # space = Image.new('RGBA', (box_width, box_height), color= 'red')
     # ImageDraw.Draw(space).text((x, y), text, fill='white', font=font)
 
-    if rotation != None:
+    if rotation:
         space.rotate(rotation, expand=True)
 
     # Update only region with text (add text with transparent background)
