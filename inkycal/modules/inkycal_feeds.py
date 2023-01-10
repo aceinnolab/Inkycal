@@ -112,10 +112,9 @@ class Feeds(inkycal_module):
                     parsed_feeds.append(f"•{posts.title}: {re.sub('<[^<]+?>', '', posts.summary)}")
                 # if "description" in posts:
 
-        parsed_feeds = [i.split("\n") for i in parsed_feeds][0]
-        parsed_feeds = [i for i in parsed_feeds if i]
-
-        self._parsed_feeds = parsed_feeds
+        if parsed_feeds:
+            parsed_feeds = [i.split("\n") for i in parsed_feeds][0]
+            parsed_feeds = [i for i in parsed_feeds if i]
 
         # Shuffle the list to prevent showing the same content
         if self.shuffle_feeds:
@@ -134,7 +133,6 @@ class Feeds(inkycal_module):
             if counter < max_lines:
                 filtered_feeds.append(wrapped)
         filtered_feeds = flatten(filtered_feeds)
-        self._filtered_feeds = filtered_feeds
 
         logger.debug(f'filtered feeds -> {filtered_feeds}')
 

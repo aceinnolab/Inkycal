@@ -9,33 +9,17 @@ Copyright by aceisace
 import glob
 import hashlib
 import json
-import os
 import traceback
 from logging.handlers import RotatingFileHandler
 
 import arrow
+import numpy
 
 from inkycal.custom import *
 from inkycal.display import Display
 from inkycal.modules.inky_image import Inkyimage as Images
 
-try:
-    from PIL import Image
-except ImportError:
-    print('Pillow is not installed! Please install with:')
-    print('pip3 install Pillow')
-
-try:
-    import numpy
-except ImportError:
-    print('numpy is not installed!. \nIf you are on Windows '
-          'run: pip3 install numpy \nIf you are on Raspberry Pi '
-          'remove numpy: pip3 uninstall numpy \nThen try again.')
-
-# (i): Logging shows logs above a threshold level.
-# e.g. logging.DEBUG will show all from DEBUG until CRITICAL
-# e.g. logging.ERROR will show from ERROR until CRITICAL
-# #DEBUG > #INFO > #ERROR > #WARNING > #CRITICAL
+from PIL import Image
 
 # On the console, set a logger to show only important logs
 # (level ERROR or higher)
@@ -51,6 +35,10 @@ if on_rtd:
         handlers=[stream_handler])
 
 else:
+
+    if not os.path.exists(f'{top_level}/logs'):
+        os.mkdir(f'{top_level}/logs')
+
     # Save all logs to a file, which contains more detailed output
     logging.basicConfig(
         level=logging.INFO,

@@ -34,53 +34,65 @@ import sys
 
 from ctypes import *
 
-EPD_SCK_PIN   =11
-EPD_MOSI_PIN  =10
+EPD_SCK_PIN = 11
+EPD_MOSI_PIN = 10
 
-EPD_M1_CS_PIN  =8
-EPD_S1_CS_PIN  =7
-EPD_M2_CS_PIN  =17
-EPD_S2_CS_PIN  =18
+EPD_M1_CS_PIN = 8
+EPD_S1_CS_PIN = 7
+EPD_M2_CS_PIN = 17
+EPD_S2_CS_PIN = 18
 
-EPD_M1S1_DC_PIN  =13
-EPD_M2S2_DC_PIN  =22
+EPD_M1S1_DC_PIN = 13
+EPD_M2S2_DC_PIN = 22
 
-EPD_M1S1_RST_PIN =6
-EPD_M2S2_RST_PIN =23
+EPD_M1S1_RST_PIN = 6
+EPD_M2S2_RST_PIN = 23
 
-EPD_M1_BUSY_PIN  =5
-EPD_S1_BUSY_PIN  =19
-EPD_M2_BUSY_PIN  =27
-EPD_S2_BUSY_PIN  =24
+EPD_M1_BUSY_PIN = 5
+EPD_S1_BUSY_PIN = 19
+EPD_M2_BUSY_PIN = 27
+EPD_S2_BUSY_PIN = 24
 
-additional_driver_path = f"{os.path.dirname(os.path.realpath(__file__))}/epd_12_in_48_lib.so"
+find_dirs = [
+    os.path.dirname(os.path.realpath(__file__)),
+    '/usr/local/lib',
+    '/usr/lib',
+]
+spi = None
+for find_dir in find_dirs:
+    so_filename = os.path.join(find_dir, 'epd_12_in_48_lib.so')
+    if os.path.exists(so_filename):
+        spi = CDLL(so_filename)
+        break
+if spi is None:
+    RuntimeError('Cannot find epd_12_in_48_lib.so')
 
-if not os.path.exists(additional_driver_path):
-    RuntimeError("Inkycal cannot find the additional driver files for 12in48 3-colour")
-
-spi = CDLL(additional_driver_path)
 
 def digital_write(pin, value):
     GPIO.output(pin, value)
 
+
 def digital_read(pin):
     return GPIO.input(pin)
 
-def spi_writebyte(value): 
+
+def spi_writebyte(value):
     spi.DEV_SPI_WriteByte(value)
- 
+
+
 def delay_ms(delaytime):
     time.sleep(delaytime / 1000.0)
-        
+
+
 def module_init():
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
-    GPIO.setup(EPD_SCK_PIN, GPIO.OUT)    
+    GPIO.setup(EPD_SCK_PIN, GPIO.OUT)
     GPIO.setup(EPD_MOSI_PIN, GPIO.OUT)
-    
+
     logging.debug("python call wiringPi Lib")
-    
-    GPIO.setup(EPD_M2S2_RST_PIN, GPIO.OUT)    
+
+    GPIO.setup(EPD_M2S2_RST_PIN, GPIO.OUT)
     GPIO.setup(EPD_M1S1_RST_PIN, GPIO.OUT)
     GPIO.setup(EPD_M2S2_DC_PIN, GPIO.OUT)
     GPIO.setup(EPD_M1S1_DC_PIN, GPIO.OUT)
@@ -93,18 +105,19 @@ def module_init():
     GPIO.setup(EPD_S2_BUSY_PIN, GPIO.IN)
     GPIO.setup(EPD_M1_BUSY_PIN, GPIO.IN)
     GPIO.setup(EPD_M2_BUSY_PIN, GPIO.IN)
-    
+
     digital_write(EPD_M1_CS_PIN, 1)
     digital_write(EPD_S1_CS_PIN, 1)
     digital_write(EPD_M2_CS_PIN, 1)
     digital_write(EPD_S2_CS_PIN, 1)
-    
+
     digital_write(EPD_M2S2_RST_PIN, 0)
     digital_write(EPD_M1S1_RST_PIN, 0)
     digital_write(EPD_M2S2_DC_PIN, 1)
     digital_write(EPD_M1S1_DC_PIN, 1)
 
     spi.DEV_ModuleInit()
+
 
 def module_exit():
     digital_write(EPD_M2S2_RST_PIN, 0)
@@ -116,25 +129,25 @@ def module_exit():
     digital_write(EPD_M1_CS_PIN, 1)
     digital_write(EPD_M2_CS_PIN, 1)
 
+
 def spi_readbyte(Reg):
     GPIO.setup(EPD_MOSI_PIN, GPIO.IN)
-    j=0
+    j = 0
     # time.sleep(0.01)
     for i in range(0, 8):
-        GPIO.output(EPD_SCK_PIN, GPIO.LOW) 
+        GPIO.output(EPD_SCK_PIN, GPIO.LOW)
         # time.sleep(0.01) 
-        j = j << 1 
-        if(GPIO.input(EPD_MOSI_PIN) == GPIO.HIGH):
+        j = j << 1
+        if (GPIO.input(EPD_MOSI_PIN) == GPIO.HIGH):
             j |= 0x01
         else:
-            j &= 0xfe 
-        # time.sleep(0.01)
-        GPIO.output(EPD_SCK_PIN, GPIO.HIGH) 
+            j &= 0xfe
+            # time.sleep(0.01)
+        GPIO.output(EPD_SCK_PIN, GPIO.HIGH)
         # time.sleep(0.01)  
     GPIO.setup(EPD_MOSI_PIN, GPIO.OUT)
-    return j 
-    
+    return j
+
+
 def delay_ms(delaytime):
     time.sleep(delaytime / 1000.0)
-
-  

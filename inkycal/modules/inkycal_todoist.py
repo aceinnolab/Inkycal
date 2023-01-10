@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 class Todoist(inkycal_module):
     """Todoist api class
-    parses todo's from api-key
+    parses todos from the todoist api.
     """
 
     name = "Todoist API - show your todos from todoist"
