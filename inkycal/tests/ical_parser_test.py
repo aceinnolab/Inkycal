@@ -40,7 +40,7 @@ class ical_parser_test(unittest.TestCase):
 
     def test_laod_from_file(self):
         print('testing loading from file...', end="")
-        dummy = str(urlopen(test_ical).read().decode())
+        dummy = str(urlopen(test_ical, timeout=10).read().decode())
         with open('dummy.ical', mode="w", encoding="utf-8") as file:
             file.write(dummy)
         ical.load_from_file('dummy.ical')
