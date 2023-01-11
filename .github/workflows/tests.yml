@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
@@ -13,7 +14,6 @@ jobs:
       with:
         python-version: 3.9
 
-  download and install:
     - name: Clone repo
       run: |
         git clone --branch feature/venv --single-branch https://github.com/aceisace/Inkycal
@@ -24,13 +24,13 @@ jobs:
         python3 -m venv venv
         source venv/bin/activate
         python -m pip install --upgrade pip
-        
+
     - name: Install dependencies
       run: |
+        echo "$PWD"
         pip install wheel
         pip install -e ./
 
-  unit testing:
     - name: Setup test environment and run tests 
       run: |
         cd inkycal/tests
