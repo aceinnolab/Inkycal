@@ -25,17 +25,20 @@ jobs:
         source venv/bin/activate
         python -m pip install --upgrade pip
         
-    - name: Install dependencies and run tests
-      env:
-        OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
-        TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
+    - name: Install dependencies
       run: |
         echo "$PWD"
         pip install wheel
         pip install -e ./
+
+    - name: Setup test environment
+      run: |
         cd inkycal/modules && ls -al
         cd ..
         cd tests
+        echo "${{ secrets.ENV_FILE }}" > .env
         wget https://raw.githubusercontent.com/aceisace/Inkycal/assets/tests/settings.json
-        # doesn't work :( sed -i 's/"api_key":.*/"api_key": "${{secrets.OPENWEATHERMAP_API_KEY}}",/' settings.json
+
+    - name: Run unittests
+      run: |
         for f in *.py; do python3 "$f"; done
