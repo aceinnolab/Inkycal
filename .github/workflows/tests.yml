@@ -38,5 +38,6 @@ jobs:
 
     - name: Run unittests
       run: |
+        cd inkycal/tests
         wget https://raw.githubusercontent.com/aceisace/Inkycal/assets/tests/settings.json
         for f in *.py; do python3 "$f"; done
