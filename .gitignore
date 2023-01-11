@@ -144,3 +144,7 @@ dmypy.json
 
 # inkycal logs
 /logs
+
+# inkycal tests
+/inkycal/tests/tmp/
+!/inkycal/tests/*.py
