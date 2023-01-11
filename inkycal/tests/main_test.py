@@ -64,7 +64,8 @@ class ModuleTest(unittest.TestCase):
             with open('settings.json', mode="w", encoding="utf-8") as file:
                 file.write(test_config)
         print('testing Inkycal in non-render-mode...', end="")
-        inky = Inkycal('settings.json', render=False)
+        absolute_path_settings_json = os.path.abspath('settings.json')
+        inky = Inkycal(settings_path=absolute_path_settings_json, render=False)
         inky.test()
         print('OK')
 
