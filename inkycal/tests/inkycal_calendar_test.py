@@ -1,20 +1,19 @@
 #!python3
-
 """
-Calendar test (inkycal_calendar)
-Copyright by aceisace
+inkycal_calendar unittest
 """
-
+import logging
+import sys
 import unittest
+
 from inkycal.modules import Calendar as Module
-from helper_functions import *
 
-environment = get_environment()
+from inkycal.modules.inky_image import Inkyimage
+from inkycal.tests import Config
+preview = Inkyimage.preview
+merge = Inkyimage.merge
 
-# Set to True to preview images. Only works on Raspberry Pi OS with Desktop
-use_preview = False
-
-sample_url = "https://www.officeholidays.com/ics-fed/usa"
+sample_url = Config.SAMPLE_ICAL_URL
 
 tests = [
     {
@@ -80,7 +79,7 @@ class module_test(unittest.TestCase):
             module = Module(test)
             im_black, im_colour = module.generate_image()
             print('OK')
-            if use_preview and environment == 'Raspberry':
+            if Config.USE_PREVIEW:
                 preview(merge(im_black, im_colour))
 
 

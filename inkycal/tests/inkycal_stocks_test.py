@@ -1,18 +1,16 @@
 #!python3
-
 """
-Stocks test (inkycal_stocks)
-Copyright by aceisace
+inkycal_stocks unittest
 """
-
+import logging
+import sys
 import unittest
 from inkycal.modules import Stocks as Module
-from helper_functions import *
 
-environment = get_environment()
-
-# Set to True to preview images. Only works on Raspberry Pi OS with Desktop
-use_preview = False
+from inkycal.modules.inky_image import Inkyimage
+from inkycal.tests import Config
+preview = Inkyimage.preview
+merge = Inkyimage.merge
 
 tests = [
     {
@@ -46,7 +44,7 @@ class module_test(unittest.TestCase):
             module = Module(test)
             im_black, im_colour = module.generate_image()
             print('OK')
-            if use_preview == True and environment == 'Raspberry':
+            if Config.USE_PREVIEW:
                 preview(merge(im_black, im_colour))
 
 

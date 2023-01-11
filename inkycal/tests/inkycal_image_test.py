@@ -1,23 +1,21 @@
 #!python3
 
 """
-Image test (inkycal_image)
-Copyright by aceisace
+inkycal_image unittest
 """
-
+import logging
+import sys
 import unittest
 
 import requests
 from PIL import Image
 
 from inkycal.modules import Inkyimage as Module
-from inkycal.custom import top_level
-from helper_functions import *
 
-environment = get_environment()
-
-# Set to True to preview images. Only works on Raspberry Pi OS with Desktop
-use_preview = False
+from inkycal.modules.inky_image import Inkyimage
+from inkycal.tests import Config
+preview = Inkyimage.preview
+merge = Inkyimage.merge
 
 url = "https://github.com/aceisace/Inkycal/raw/assets/Repo/coffee.png"
 
@@ -118,7 +116,7 @@ class module_test(unittest.TestCase):
             module = Module(test)
             im_black, im_colour = module.generate_image()
             print('OK')
-            if use_preview == True and environment == 'Raspberry':
+            if Config.USE_PREVIEW:
                 preview(merge(im_black, im_colour))
 
 
