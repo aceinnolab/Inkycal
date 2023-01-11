@@ -28,3 +28,5 @@ todoist-api-python==2.0.2
 typing_extensions==4.4.0
 urllib3==1.26.13
 yfinance==0.2.3
+python-dotenv~=0.21.0
+setuptools==65.6.3

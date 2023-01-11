@@ -1,13 +1,14 @@
 #!python3
+import logging
 import os
+import sys
 import unittest
 from inkycal.modules import TextToDisplay as Module
-from helper_functions import *
 
-environment = get_environment()
-
-# Set to True to preview images. Only works on Raspberry Pi OS with Desktop
-use_preview = False
+from inkycal.modules.inky_image import Inkyimage
+from inkycal.tests import Config
+preview = Inkyimage.preview
+merge = Inkyimage.merge
 
 file_path = None
 
@@ -78,6 +79,7 @@ tests = [
 
 
 class TestTextToDisplay(unittest.TestCase):
+
     def test_get_config(self):
         print('getting data for web-ui...', end="")
         Module.get_config()
@@ -91,7 +93,7 @@ class TestTextToDisplay(unittest.TestCase):
             print("Filepath does not exist. Creating dummy file")
 
             tmp_path = "tmp.txt"
-            with open(tmp_path, mode="w") as file:
+            with open(tmp_path, mode="w", encoding="utf-8") as file:
                 file.writelines(dummy_data)
 
             # update tests with new temp path
@@ -99,7 +101,7 @@ class TestTextToDisplay(unittest.TestCase):
                 test["config"]["filepath"] = tmp_path
 
         else:
-            make_request = True if file_path.startswith("https://") else False
+            make_request = bool(file_path.startswith("https://"))
             if not make_request and not os.path.exists(file_path):
                 raise FileNotFoundError("Your text file could not be found")
 
@@ -108,7 +110,7 @@ class TestTextToDisplay(unittest.TestCase):
             module = Module(test)
             im_black, im_colour = module.generate_image()
             print('OK')
-            if use_preview and environment == 'Raspberry':
+            if Config.USE_PREVIEW:
                 preview(merge(im_black, im_colour))
             im = merge(im_black, im_colour)
             im.show()

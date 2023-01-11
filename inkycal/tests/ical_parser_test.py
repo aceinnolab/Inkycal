@@ -1,20 +1,19 @@
 #!python3
-
 """
 iCalendar parser test (ical_parser)
-Copyright by aceisace
 """
-
+import logging
 import os
-import arrow
+import sys
 import unittest
 from urllib.request import urlopen
 
+import arrow
 from inkycal.modules.ical_parser import iCalendar
-from helper_functions import *
+from inkycal.tests import Config
 
 ical = iCalendar()
-test_ical = 'https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics'
+test_ical = Config.TEST_ICAL_URL
 
 
 class ical_parser_test(unittest.TestCase):
@@ -42,7 +41,7 @@ class ical_parser_test(unittest.TestCase):
     def test_laod_from_file(self):
         print('testing loading from file...', end="")
         dummy = str(urlopen(test_ical).read().decode())
-        with open('dummy.ical', mode="w") as file:
+        with open('dummy.ical', mode="w", encoding="utf-8") as file:
             file.write(dummy)
         ical.load_from_file('dummy.ical')
         print('OK')

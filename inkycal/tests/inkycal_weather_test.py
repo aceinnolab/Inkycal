@@ -1,15 +1,18 @@
 #!python3
-import os
+"""
+inkycal_weather unittest
+"""
+import logging
+import sys
 import unittest
 from inkycal.modules import Weather as Module
-from helper_functions import *
 
-environment = get_environment()
+from inkycal.modules.inky_image import Inkyimage
+from inkycal.tests import Config
+preview = Inkyimage.preview
+merge = Inkyimage.merge
 
-# Set to True to preview images. Only works on Raspberry Pi OS with Desktop
-use_preview = False
-
-secret_key = os.environ["OPENWEATHERMAP_API_KEY"] or ""
+owm_api_key = Config.OPENWEATHERMAP_API_KEY
 location = 'Stuttgart, DE'
 
 tests = [
@@ -18,7 +21,7 @@ tests = [
         "name": "Weather",
         "config": {
             "size": [500, 100],
-            "api_key": secret_key,
+            "api_key": owm_api_key,
             "location": location,
             "round_temperature": True,
             "round_windspeed": True,
@@ -37,7 +40,7 @@ tests = [
         "name": "Weather",
         "config": {
             "size": [500, 150],
-            "api_key": secret_key,
+            "api_key": owm_api_key,
             "location": "2643123",
             "round_temperature": True,
             "round_windspeed": True,
@@ -56,7 +59,7 @@ tests = [
         "name": "Weather",
         "config": {
             "size": [500, 200],
-            "api_key": secret_key,
+            "api_key": owm_api_key,
             "location": location,
             "round_temperature": False,
             "round_windspeed": True,
@@ -75,7 +78,7 @@ tests = [
         "name": "Weather",
         "config": {
             "size": [500, 100],
-            "api_key": secret_key,
+            "api_key": owm_api_key,
             "location": location,
             "round_temperature": True,
             "round_windspeed": False,
@@ -94,7 +97,7 @@ tests = [
         "name": "Weather",
         "config": {
             "size": [500, 150],
-            "api_key": secret_key,
+            "api_key": owm_api_key,
             "location": location,
             "round_temperature": True,
             "round_windspeed": True,
@@ -113,7 +116,7 @@ tests = [
         "name": "Weather",
         "config": {
             "size": [500, 150],
-            "api_key": secret_key,
+            "api_key": owm_api_key,
             "location": location,
             "round_temperature": True,
             "round_windspeed": True,
@@ -132,7 +135,7 @@ tests = [
         "name": "Weather",
         "config": {
             "size": [500, 100],
-            "api_key": secret_key,
+            "api_key": owm_api_key,
             "location": location,
             "round_temperature": True,
             "round_windspeed": True,
@@ -151,7 +154,7 @@ tests = [
         "name": "Weather",
         "config": {
             "size": [500, 100],
-            "api_key": secret_key,
+            "api_key": owm_api_key,
             "location": location,
             "round_temperature": True,
             "round_windspeed": True,
@@ -175,16 +178,14 @@ class module_test(unittest.TestCase):
         print('OK')
 
     def test_generate_image(self):
-        if secret_key:
-            for test in tests:
-                print(f'test {tests.index(test) + 1} generating image..')
-                module = Module(test)
-                im_black, im_colour = module.generate_image()
-                print('OK')
-                if use_preview and environment == 'Raspberry':
-                    preview(merge(im_black, im_colour))
-        else:
-            print('No key given, omitted testing')
+        for test in tests:
+            print(f'test {tests.index(test) + 1} generating image..')
+            module = Module(test)
+            im_black, im_colour = module.generate_image()
+            print('OK')
+            if Config.USE_PREVIEW:
+                preview(merge(im_black, im_colour))
+
 
 
 if __name__ == '__main__':

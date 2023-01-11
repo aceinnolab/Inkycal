@@ -1,8 +1,6 @@
 #!python3
-
 """
-Main test (main)
-Copyright by aceisace
+Inkycal main unittest
 """
 import os
 import unittest
@@ -63,7 +61,7 @@ class ModuleTest(unittest.TestCase):
         # Check if settings.json file exists in current directory
         if not os.path.exists("settings.json"):
             # Create temporary json settings file with the config from above
-            with open('settings.json', mode="w") as file:
+            with open('settings.json', mode="w", encoding="utf-8") as file:
                 file.write(test_config)
         print('testing Inkycal in non-render-mode...', end="")
         inky = Inkycal('settings.json', render=False)

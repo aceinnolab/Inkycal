@@ -2,22 +2,20 @@
 
 """
 Slideshow test (inkycal_slideshow)
-Copyright by aceisace
 """
+import logging
 import os
+import sys
 import unittest
-
 import requests
 from PIL import Image
 
 from inkycal.modules import Slideshow as Module
-from inkycal.custom import top_level
-from helper_functions import *
+from inkycal.modules.inky_image import Inkyimage
+from inkycal.tests import Config
 
-environment = get_environment()
-
-# Set to True to preview images. Only works on Raspberry Pi OS with Desktop
-use_preview = False
+preview = Inkyimage.preview
+merge = Inkyimage.merge
 
 if not os.path.exists("tmp"):
     os.mkdir("tmp")
@@ -42,7 +40,10 @@ tests = [
             "palette": "bwy",
             "autoflip": True,
             "orientation": "vertical",
-            "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
+            "padding_x": 10,
+            "padding_y": 10,
+            "fontsize": 12,
+            "language": "en"
         }
     },
     {
@@ -53,7 +54,10 @@ tests = [
             "palette": "bw",
             "autoflip": True,
             "orientation": "vertical",
-            "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
+            "padding_x": 10,
+            "padding_y": 10,
+            "fontsize": 12,
+            "language": "en"
         }
     },
     {
@@ -64,7 +68,10 @@ tests = [
             "palette": "bwr",
             "autoflip": False,
             "orientation": "vertical",
-            "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
+            "padding_x": 10,
+            "padding_y": 10,
+            "fontsize": 12,
+            "language": "en"
         }
     },
     {
@@ -75,7 +82,10 @@ tests = [
             "palette": "bwy",
             "autoflip": True,
             "orientation": "vertical",
-            "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
+            "padding_x": 10,
+            "padding_y": 10,
+            "fontsize": 12,
+            "language": "en"
         }
     },
     {
@@ -86,7 +96,10 @@ tests = [
             "palette": "bwy",
             "autoflip": True,
             "orientation": "horizontal",
-            "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
+            "padding_x": 10,
+            "padding_y": 10,
+            "fontsize": 12,
+            "language": "en"
         }
     },
     {
@@ -97,7 +110,10 @@ tests = [
             "palette": "bw",
             "autoflip": True,
             "orientation": "vertical",
-            "padding_x": 0, "padding_y": 0, "fontsize": 12, "language": "en"
+            "padding_x": 0,
+            "padding_y": 0,
+            "fontsize": 12,
+            "language": "en"
         }
     },
     {
@@ -109,7 +125,10 @@ tests = [
             "palette": "bwr",
             "autoflip": True,
             "orientation": "vertical",
-            "padding_x": 20, "padding_y": 20, "fontsize": 12, "language": "en"
+            "padding_x": 20,
+            "padding_y": 20,
+            "fontsize": 12,
+            "language": "en"
         }
     },
 ]
@@ -127,22 +146,22 @@ class module_test(unittest.TestCase):
             module = Module(test)
             im_black, im_colour = module.generate_image()
             print('OK')
-            if use_preview == True and environment == 'Raspberry':
+            if Config.USE_PREVIEW:
                 preview(merge(im_black, im_colour))
 
     def test_switch_to_next_image(self):
         print(f'testing switching to next images..')
         module = Module(tests[0])
         im_black, im_colour = module.generate_image()
-        if use_preview == True and environment == 'Raspberry':
+        if Config.USE_PREVIEW:
             preview(merge(im_black, im_colour))
 
         im_black, im_colour = module.generate_image()
-        if use_preview == True and environment == 'Raspberry':
+        if Config.USE_PREVIEW:
             preview(merge(im_black, im_colour))
 
         im_black, im_colour = module.generate_image()
-        if use_preview == True and environment == 'Raspberry':
+        if Config.USE_PREVIEW:
             preview(merge(im_black, im_colour))
 
         print('OK')

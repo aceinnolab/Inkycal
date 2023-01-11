@@ -1,24 +1,30 @@
 #!python3
-import os
+"""
+inkycal_todoist unittest
+"""
+import logging
+import sys
 import unittest
 from inkycal.modules import Todoist as Module
-from helper_functions import *
 
-environment = get_environment()
+from inkycal.modules.inky_image import Inkyimage
+from inkycal.tests import Config
+preview = Inkyimage.preview
+merge = Inkyimage.merge
 
-# Set to True to preview images. Only works on Raspberry Pi OS with Desktop
-use_preview = False
-
-api_key = os.environ["TODOIST_API_KEY"] or ""
+api_key = Config.TODOIST_API_KEY
 
 tests = [
     {
         "name": "Todoist",
         "config": {
-            "size": [500, 200],
+            "size": [400, 1000],
             "api_key": api_key,
             "project_filter": None,
-            "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
+            "padding_x": 10,
+            "padding_y": 10,
+            "fontsize": 12,
+            "language": "en"
         }
     },
 ]
@@ -38,8 +44,9 @@ class module_test(unittest.TestCase):
                 module = Module(test)
                 im_black, im_colour = module.generate_image()
                 print('OK')
-                if use_preview and environment == 'Raspberry':
+                if Config.USE_PREVIEW:
                     preview(merge(im_black, im_colour))
+                merge(im_black, im_colour).show()
         else:
             print('No api key given, omitting test')
 
