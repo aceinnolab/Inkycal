@@ -1,9 +1,6 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-
+#!python3
 """
-Main test (main)
-Copyright by aceisace
+Inkycal main unittest
 """
 import os
 import unittest
@@ -56,18 +53,22 @@ test_config = """
 }
 
 """
-class module_test(unittest.TestCase):
-  def test_without_rendering(self):
-    # Create temporary json settings file with the config from above
-    with open('dummy.json', mode="w") as file:
-      file.write(test_config)
-    print('testing Inkycal in non-render-mode...', end = "")
-    inky = Inkycal('dummy.json', render=False)
-    inky.test()
-    print('OK')
 
-    os.remove('dummy.json')
+
+class ModuleTest(unittest.TestCase):
+    @staticmethod
+    def test_without_rendering():
+        # Check if settings.json file exists in current directory
+        if not os.path.exists("settings.json"):
+            # Create temporary json settings file with the config from above
+            with open('settings.json', mode="w", encoding="utf-8") as file:
+                file.write(test_config)
+        print('testing Inkycal in non-render-mode...', end="")
+        absolute_path_settings_json = os.path.abspath('settings.json')
+        inky = Inkycal(settings_path=absolute_path_settings_json, render=False)
+        inky.test()
+        print('OK')
 
 
 if __name__ == '__main__':
-  unittest.main()
+    unittest.main()
