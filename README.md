@@ -75,7 +75,7 @@ Run the following steps to install Inkycal. Do **not** use sudo for this, except
 ```bash
 sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev
 cd $HOME
-git clone --branch feature/venv --single-branch https://github.com/aceisace/Inkycal
+git clone --branch main --single-branch https://github.com/aceisace/Inkycal
 cd Inkycal
 python3 -m venv venv
 source venv/bin/activate
