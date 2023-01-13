@@ -39,7 +39,26 @@ The following people have voluteered to test the beta release (pre-release). Tha
 ## Financial Contributions
 | Name | Contribution details |
 | --- | --- |
-| **Kevin** | A special thank you for contribution! :tada: |
-| **Eric** | A special thank you for contribution! :tada: |
-| **Thomas** |  A special thank you for contribution! :tada: |
-| **Marcel Schumann** | A special thank you for contribution! :tada: |
+| **Kevin** | A special thank you for your contribution! :tada: |
+| **Eric** | A special thank you for your contribution! :tada: |
+| **Thomas** |  A special thank you for your contribution! :tada: |
+| **Marcel S.** | A special thank you for your contribution! :tada: |
+| **Markus M.** | A special thank you for your contribution! :tada: |
+| **Lara** | A special thank you for your contribution! :tada: |
+| **Richard** | A special thank you for your contribution! :tada: |
+| **[David S.](https://github.com/piimp)** | A special thank you for your contribution! :tada: |
+| **Rene N** |  A special thank you for your contribution! :tada: |
+| **Koorathota** |  A special thank you for your contribution! :tada: |
+| **Christopher C.** | A special thank you for your contribution! :tada: |
+| **Stefan A.** | A special thank you for your contribution! :tada: |
+| **Florian B.** | A special thank you for your contribution! :tada: |
+| **Achint M.** | A special thank you for your contribution! :tada: |
+| **Felix J.** | A special thank you for your contribution! :tada: |
+| **Michael W.** | A special thank you for your contribution! :tada: |
+| **Dennis R.** | A special thank you for your contribution! :tada: |
+| **Max G.** | A special thank you for your contribution! :tada: |
+| **Sun L.** |  A special thank you for your contribution! :tada: |
+| **Martin K.** |  A special thank you for your contribution! :tada: |
+| **Simon K.** |  A special thank you for your contribution! :tada: |
+| **Roman F.** |  A special thank you for your contribution! :tada: |
+| **Lars L.**| A special thank you for your contribution! :tada: |

@@ -1,5 +1,5 @@
 # Quickstart
-<img align="center" src="https://raw.githubusercontent.com/aceisace/Inky-Calendar/development/Gallery/logo.png" width="800">
+<img align="center" src="https://github.com/aceisace/Inkycal/raw/assets/Repo/logo.png" width="800">
 
 ## Installing Inkycal
 

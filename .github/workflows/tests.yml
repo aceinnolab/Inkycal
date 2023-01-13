@@ -9,21 +9,31 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Python 3.8
+    - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
-        python-version: 3.8
+        python-version: 3.9
 
     - name: Clone repo
       run: |
-        git clone https://github.com/aceisace/Inkycal
+        git clone --branch feature/venv --single-branch https://github.com/aceisace/Inkycal
 
-    - name: Install dependencies and run
+    - name: Creating virtual evvironment
       run: |
-        python -m pip install --upgrade pip
         cd Inkycal
-        pip3 install -e ./
-        cd inkycal/modules && ls -al
-        cd ..
-        cd tests
+        python3 -m venv venv
+        source venv/bin/activate
+        python -m pip install --upgrade pip
+
+    - name: Install dependencies
+      run: |
+        echo "$PWD"
+        pip install wheel
+        pip install -e ./
+
+    - name: Setup test environment and run tests 
+      run: |
+        cd inkycal/tests
+        echo "${{ secrets.ENV_FILE }}" > .env
+        wget https://raw.githubusercontent.com/aceisace/Inkycal/assets/tests/settings.json
         for f in *.py; do python3 "$f"; done
