@@ -4,14 +4,13 @@
 </p>
 
 <p align="center">
-    <a href="https://www.paypal.me/SaadNaseer"><img alt="Donate" src="https://img.shields.io/badge/Donate-PayPal-green.svg" /></a>
     <a href="https://github.com/aceisace/Inkycal/actions"><img src="https://github.com/aceisace/Inkycal/workflows/Python%20application/badge.svg"></a>
     <a href="https://github.com/aceisace/Inkycal/releases"><img alt="Version" src="https://img.shields.io/github/release/aceisace/Inkycal.svg" /></a>
    <a href="https://github.com/aceisace/Inkycal/blob/main/LICENSE"><img alt="Licence" src="https://img.shields.io/github/license/aceisace/Inkycal.svg" /></a>
    <a href="https://github.com/aceisace/Inkycal/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/aceisace/Inkycal"></a>
    <a href="https://github.com/aceisace/Inkycal/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aceisace/Inkycal?color=green"></a>
    <a href="https://github.com/aceisace/Inkycal/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/aceisace/Inkycal?color=green"></a>
-   <a href="https://github.com/aceisace/Inkycal"><img alt="python" src="https://img.shields.io/badge/python-%3E3.7-lightgrey"></a>
+   <a href="https://github.com/aceisace/Inkycal"><img alt="python" src="https://img.shields.io/badge/python-%3E3.8-lightgrey"></a>
 </p>
 
 Inkycal is a software written in python for selected E-Paper displays. It converts these displays into useful information dashboards. It's open-source, free for personal use, fully modular and user-friendly. Despite all this, Inkycal can run well even on the Raspberry Pi Zero. Oh, and it's open for third-party modules! Hooray!
@@ -73,7 +72,7 @@ The previous installer has been deprecated to give more transparency about the i
 
 Run the following steps to install Inkycal. Do **not** use sudo for this, except where explicitly specified.
 ```bash
-sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev
+sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc
 cd $HOME
 git clone --branch main --single-branch https://github.com/aceisace/Inkycal
 cd Inkycal
