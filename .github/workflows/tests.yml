@@ -16,7 +16,7 @@ jobs:
 
     - name: Clone repo
       run: |
-        git clone --branch feature/venv --single-branch https://github.com/aceisace/Inkycal
+        git clone --single-branch https://github.com/aceisace/Inkycal
 
     - name: Creating virtual evvironment
       run: |
@@ -31,9 +31,13 @@ jobs:
         pip install wheel
         pip install -e ./
 
-    - name: Setup test environment and run tests 
+    - name: Setup test environment and run tests
+      env:
+        OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
+        SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
+        TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
+        TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
       run: |
         cd inkycal/tests
-        echo "${{ secrets.ENV_FILE }}" > .env
         wget https://raw.githubusercontent.com/aceisace/Inkycal/assets/tests/settings.json
         for f in *.py; do python3 "$f"; done
