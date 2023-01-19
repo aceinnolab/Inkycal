@@ -14,8 +14,8 @@ jobs:
       with:
         python-version: 3.9
 
-  clone-repo:
-    name: clone repo
+  test:
+    name: Inkycal testing
     needs: build
     runs-on: ubuntu-latest
     
@@ -24,12 +24,6 @@ jobs:
       run: |
         git clone --single-branch https://github.com/aceisace/Inkycal
 
-  install:
-    name: install dependencies
-    needs: clone-repo
-    runs-on: ubuntu-latest
-    
-    steps:
     - name: Creating virtual evvironment
       run: |
         cd Inkycal
@@ -43,13 +37,7 @@ jobs:
         pip install wheel
         pip install -e ./
 
-  test:
-    name: run tests
-    needs: install
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Setup test environment and run tests
+    - name: Run tests
       env:
         OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
         SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
