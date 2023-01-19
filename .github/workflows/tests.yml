@@ -8,14 +8,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: Set up Python 3.9
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4
       with:
         python-version: 3.9
 
   test:
-    name: Inkycal testing
+    name: run Inkycal tests
     needs: build
     runs-on: ubuntu-latest
     
@@ -24,16 +24,12 @@ jobs:
       run: |
         git clone --single-branch https://github.com/aceisace/Inkycal
 
-    - name: Creating virtual evvironment
+    - name: Creating virtual evvironment and install dependencies
       run: |
         cd Inkycal
         python3 -m venv venv
         source venv/bin/activate
         python -m pip install --upgrade pip
-
-    - name: Install dependencies
-      run: |
-        echo "$PWD"
         pip install wheel
         pip install -e ./
 
