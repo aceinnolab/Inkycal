@@ -21,7 +21,7 @@ jobs:
     - uses: actions/stale@v5
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        stale-issue-message: 'Marking this issue as stale due to inactivity. Please re-open if the need arises.'
-        stale-pr-message: 'Marking this PR as stale due to inactivity. Please re-open if the need arises.'
+        stale-issue-message: 'Marking this issue as stale due to inactivity'
+        stale-pr-message: 'Marking this PR as stale due to inactivity'
         stale-issue-label: 'no-issue-activity'
         stale-pr-label: 'no-pr-activity'
