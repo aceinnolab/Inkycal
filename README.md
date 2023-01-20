@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/aceisace/Inkycal/actions"><img src="https://github.com/aceisace/Inkycal/workflows/Python%20application/badge.svg"></a>
+    <a href="https://github.com/aceisace/Inkycal/actions/workflows/tests.yml"><img src="https://github.com/aceisace/Inkycal/actions/workflows/tests.yml/badge.svg"></a>
     <a href="https://github.com/aceisace/Inkycal/releases"><img alt="Version" src="https://img.shields.io/github/release/aceisace/Inkycal.svg" /></a>
    <a href="https://github.com/aceisace/Inkycal/blob/main/LICENSE"><img alt="Licence" src="https://img.shields.io/github/license/aceisace/Inkycal.svg" /></a>
    <a href="https://github.com/aceisace/Inkycal/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/aceisace/Inkycal"></a>
