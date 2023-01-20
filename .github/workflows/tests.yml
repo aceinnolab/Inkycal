@@ -1,7 +1,10 @@
-name: Python application
+name: Inkycal testing
 
-on: [push]
-
+on:
+  push:
+    branches:
+      - main
+      
 jobs:
   build:
     name: build ubuntu
