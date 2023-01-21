@@ -72,7 +72,8 @@ The previous installer has been deprecated to give more transparency about the i
 
 Run the following steps to install Inkycal. Do **not** use sudo for this, except where explicitly specified.
 ```bash
-sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc
+# RPi only
+sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev
 cd $HOME
 git clone --branch main --single-branch https://github.com/aceisace/Inkycal
 cd Inkycal
