@@ -1,9 +1,7 @@
 #!python3
-# -*- coding: utf-8 -*-
 
 """
-Main class for inkycal Project
-Copyright by aceisace
+Inkycal main class
 """
 
 import glob
@@ -45,9 +43,7 @@ else:
         format='%(asctime)s | %(name)s |  %(levelname)s: %(message)s',
         datefmt='%d-%m-%Y %H:%M:%S',
         handlers=[
-
             stream_handler,  # add stream handler from above
-
             RotatingFileHandler(  # log to a file too
                 f'{top_level}/logs/inkycal.log',  # file to log
                 maxBytes=2097152,  # 2MB max filesize
@@ -61,8 +57,6 @@ logging.getLogger("PIL").setLevel(logging.WARNING)
 
 logger = logging.getLogger(__name__)
 
-
-# TODO: autostart -> supervisor?
 
 class Inkycal:
     """Inkycal main class
@@ -79,14 +73,10 @@ class Inkycal:
         to improve rendering on E-Papers. Set this to False for 9.7" E-Paper.
     """
 
-    def __init__(self, settings_path=None, render=True):
+    def __init__(self, settings_path: str = None, render: bool = True):
         """Initialise Inkycal"""
 
         self._release = '2.0.2'
-
-        # Check if render was set correctly
-        if render not in [True, False]:
-            raise Exception(f'render must be True or False, not "{render}"')
         self.render = render
 
         # load settings file - throw an error if file could not be found
@@ -114,6 +104,11 @@ class Inkycal:
         # Option to use epaper image optimisation, reduces colours
         self.optimize = True
 
+        # backward support for settings file without this key
+        self.add_border = False
+        if "border_around_modules" in settings and settings["border_around_modules"]:
+            self.add_border = True
+
         # Load drivers if image should be rendered
         if self.render:
             # Init Display class with model in settings file
@@ -129,7 +124,7 @@ class Inkycal:
             # init calibration state
             self._calibration_state = False
 
-        # Load and intialize modules specified in the settings file
+        # Load and initialise modules specified in the settings file
         self._module_number = 1
         for module in settings['modules']:
             module_name = module['name']
@@ -164,7 +159,7 @@ class Inkycal:
         # Give an OK message
         print('loaded inkycal')
 
-    def countdown(self, interval_mins=None):
+    def countdown(self, interval_mins: int = None):
         """Returns the remaining time in seconds until next display update"""
 
         # Check if empty, if empty, use value from settings file
@@ -213,6 +208,8 @@ class Inkycal:
             print(f'generating image(s) for {name}...', end="")
             try:
                 black, colour = module.generate_image()
+                if self.add_border:
+                    draw_border_2(im=black, xy=(1, 1), size=(black.width-2, black.height-2), radius=5)
                 black.save(f"{self.image_folder}module{number}_black.png", "PNG")
                 colour.save(f"{self.image_folder}module{number}_colour.png", "PNG")
                 print('OK!')
@@ -265,7 +262,6 @@ class Inkycal:
                 self._write_image_hash(item[0], item[1])
             print("Refresh needed: {a}".format(a=res))
         return res
-
 
     def run(self):
         """Runs main program in nonstop mode.
@@ -349,8 +345,8 @@ class Inkycal:
 
                     # render the image on the display
                     if not self.settings.get('image_hash', False) or self._needs_image_update([
-                      (f"{self.image_folder}/canvas.png.hash", im_black),
-                      (f"{self.image_folder}/canvas_colour.png.hash", im_colour)
+                        (f"{self.image_folder}/canvas.png.hash", im_black),
+                        (f"{self.image_folder}/canvas_colour.png.hash", im_colour)
                     ]):
                         # render the image on the display
                         display.render(im_black, im_colour)
@@ -365,7 +361,7 @@ class Inkycal:
                         im_black = upside_down(im_black)
 
                     if not self.settings.get('image_hash', False) or self._needs_image_update([
-                      (f"{self.image_folder}/canvas.png.hash", im_black),
+                        (f"{self.image_folder}/canvas.png.hash", im_black),
                     ]):
                         display.render(im_black)
 

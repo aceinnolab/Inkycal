@@ -279,17 +279,17 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
 
     colour = 'black'
 
-    # size from function paramter
+    # size from function parameter
     width, height = int(size[0] * (1 - shrinkage[0])), int(size[1] * (1 - shrinkage[1]))
 
     # shift cursor to move rectangle to center
     offset_x, offset_y = int((size[0] - width) / 2), int((size[1] - height) / 2)
 
     x, y, diameter = xy[0] + offset_x, xy[1] + offset_y, radius * 2
-    # lenght of rectangle size
+    # length of rectangle size
     a, b = (width - diameter), (height - diameter)
 
-    # Set coordinates for staright lines
+    # Set coordinates for straight lines
     p1, p2 = (x + radius, y), (x + radius + a, y)
     p3, p4 = (x + width, y + radius), (x + width, y + radius + b)
     p5, p6 = (p2[0], y + height), (p1[0], y + height)
@@ -313,3 +313,12 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
         draw.arc((c3, c4), 270, 360, fill=colour, width=thickness)
         draw.arc((c5, c6), 0, 90, fill=colour, width=thickness)
         draw.arc((c7, c8), 90, 180, fill=colour, width=thickness)
+
+
+def draw_border_2(im: Image, xy: tuple, size: tuple, radius: int):
+    draw = ImageDraw.Draw(im)
+
+    x, y = xy
+    w, h = size
+
+    draw.rounded_rectangle(xy=(x, y, x + w, y + h), outline="black", radius=radius)
