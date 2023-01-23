@@ -98,7 +98,7 @@ python3 inky_run.py
 ## Running on each boot
 To make inkycal run on each boot automatically, you can use crontab. Do not use sudo for this
 ```bash
-(crontab -l ; echo "@reboot sleep 60 && cd $HOME/Inkycal && source venv/bin/activate && python3 inky_run.py &")| crontab -
+(crontab -l ; echo "@reboot sleep 60 && cd $HOME/Inkycal && venv/bin/python inky_run.py &")| crontab -
 ```
 
 ## Updating Inkycal
