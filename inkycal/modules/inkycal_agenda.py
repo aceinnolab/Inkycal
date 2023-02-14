@@ -1,233 +1,230 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+#!python3
+
 """
-Agenda module for Inky-Calendar Project
+Inkycal Agenda Module
 Copyright by aceisace
 """
 
-from inkycal.modules.template import inkycal_module
-from inkycal.custom import *
-from inkycal.modules.ical_parser import iCalendar
-
-import calendar as cal
 import arrow
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+from inkycal.custom import *
+from inkycal.modules.ical_parser import iCalendar
+from inkycal.modules.template import inkycal_module
+
+logger = logging.getLogger(__name__)
+
 
 class Agenda(inkycal_module):
-  """Agenda class
-  Create agenda and show events from given icalendars
-  """
+    """Agenda class
+    Create agenda and show events from given icalendars
+    """
 
-  name = "Agenda - Display upcoming events from given iCalendars"
+    name = "Agenda - Display upcoming events from given iCalendars"
 
-  requires = {
-    "ical_urls" : {
-      "label":"iCalendar URL/s, separate multiple ones with a comma",
-      },
-
-    }
-
-  optional = {
-    "ical_files" : {
-      "label":"iCalendar filepaths, separated with a comma",
-      },
-
-    "date_format":{
-      "label":"Use an arrow-supported token for custom date formatting "+
-      "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. ddd D MMM",
-      "default": "ddd D MMM",
-      },
-
-    "time_format":{
-      "label":"Use an arrow-supported token for custom time formatting "+
-      "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm",
-      "default":"HH:mm",
-      },
-
+    requires = {
+        "ical_urls": {
+            "label": "iCalendar URL/s, separate multiple ones with a comma",
+        },
 
     }
 
-  def __init__(self, config):
-    """Initialize inkycal_agenda module"""
+    optional = {
+        "ical_files": {
+            "label": "iCalendar filepaths, separated with a comma",
+        },
 
-    super().__init__(config)
+        "date_format": {
+            "label": "Use an arrow-supported token for custom date formatting " +
+                     "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. ddd D MMM",
+            "default": "ddd D MMM",
+        },
 
-    config = config['config']
+        "time_format": {
+            "label": "Use an arrow-supported token for custom time formatting " +
+                     "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm",
+            "default": "HH:mm",
+        },
 
-    # Check if all required parameters are present
-    for param in self.requires:
-      if not param in config:
-        raise Exception(f'config is missing {param}')
-        logger.exception(f'config is missing "{param}"')
+    }
 
-    # module specific parameters
-    self.date_format = config['date_format']
-    self.time_format = config['time_format']
-    self.language = config['language']
+    def __init__(self, config):
+        """Initialize inkycal_agenda module"""
 
-    # Check if ical_files is an empty string
-    if config['ical_urls'] and isinstance(config['ical_urls'], str):
-      self.ical_urls = config['ical_urls'].split(',')
-    else:
-      self.ical_urls = config['ical_urls']
+        super().__init__(config)
 
-    # Check if ical_files is an empty string
-    if config['ical_files'] and isinstance(config['ical_files'], str):
-      self.ical_files = config['ical_files'].split(',')
-    else:
-      self.ical_files = config['ical_files']
+        config = config['config']
 
-    # Additional config
-    self.timezone = get_system_tz()
+        # Check if all required parameters are present
+        for param in self.requires:
+            if param not in config:
+                raise Exception(f'config is missing {param}')
 
-    # give an OK message
-    print(f'{filename} loaded')
+        # module specific parameters
+        self.date_format = config['date_format']
+        self.time_format = config['time_format']
+        self.language = config['language']
 
-  def generate_image(self):
-    """Generate image for this module"""
+        # Check if ical_files is an empty string
+        if config['ical_urls'] and isinstance(config['ical_urls'], str):
+            self.ical_urls = config['ical_urls'].split(',')
+        else:
+            self.ical_urls = config['ical_urls']
 
-    # Define new image size with respect to padding
-    im_width = int(self.width - (2 * self.padding_left))
-    im_height = int(self.height - (2 * self.padding_top))
-    im_size = im_width, im_height
+        # Check if ical_files is an empty string
+        if config['ical_files'] and isinstance(config['ical_files'], str):
+            self.ical_files = config['ical_files'].split(',')
+        else:
+            self.ical_files = config['ical_files']
 
-    logger.info(f'Image size: {im_size}')
+        # Additional config
+        self.timezone = get_system_tz()
 
-    # Create an image for black pixels and one for coloured pixels
-    im_black = Image.new('RGB', size = im_size, color = 'white')
-    im_colour = Image.new('RGB', size = im_size, color = 'white')
+        # give an OK message
+        print(f'{__name__} loaded')
 
-    # Calculate the max number of lines that can fit on the image
-    line_spacing = 1
-    line_height = int(self.font.getsize('hg')[1]) + line_spacing
-    line_width = im_width
-    max_lines = im_height // line_height
-    logger.debug(f'max lines: {max_lines}')
+    def generate_image(self):
+        """Generate image for this module"""
 
-    # Create timeline for agenda
-    now = arrow.now()
-    today = now.floor('day')
+        # Define new image size with respect to padding
+        im_width = int(self.width - (2 * self.padding_left))
+        im_height = int(self.height - (2 * self.padding_top))
+        im_size = im_width, im_height
 
-    # Create a list of dates for the next days
-    agenda_events = [
-      {'begin':today.shift(days=+_),
-       'title': today.shift(days=+_).format(
-         self.date_format,locale=self.language)}
-      for _ in range(max_lines)]
+        logger.info(f'Image size: {im_size}')
 
-    # Load icalendar from config
-    self.ical = iCalendar()
-    parser = self.ical
+        # Create an image for black pixels and one for coloured pixels
+        im_black = Image.new('RGB', size=im_size, color='white')
+        im_colour = Image.new('RGB', size=im_size, color='white')
 
-    if self.ical_urls:
-      parser.load_url(self.ical_urls)
+        # Calculate the max number of lines that can fit on the image
+        line_spacing = 1
+        line_height = int(self.font.getsize('hg')[1]) + line_spacing
+        line_width = im_width
+        max_lines = im_height // line_height
+        logger.debug(f'max lines: {max_lines}')
 
-    if self.ical_files:
-      parser.load_from_file(self.ical_files)
+        # Create timeline for agenda
+        now = arrow.now()
+        today = now.floor('day')
 
-    # Load events from all icalendar in timerange
-    upcoming_events = parser.get_events(today, agenda_events[-1]['begin'],
-                                        self.timezone)
+        # Create a list of dates for the next days
+        agenda_events = [
+            {'begin': today.shift(days=+_),
+             'title': today.shift(days=+_).format(
+                 self.date_format, locale=self.language)}
+            for _ in range(max_lines)]
 
-    # Sort events by beginning time
-    parser.sort()
-    #parser.show_events()
+        # Load icalendar from config
+        self.ical = iCalendar()
+        parser = self.ical
 
-    # Set the width for date, time and event titles
-    date_width = int(max([self.font.getsize(
-          dates['begin'].format(self.date_format, locale=self.language))[0]
-          for dates in agenda_events]) * 1.2)
-    logger.debug(f'date_width: {date_width}')
+        if self.ical_urls:
+            parser.load_url(self.ical_urls)
 
-    # Calculate positions for each line
-    line_pos = [(0, int(line * line_height)) for line in range(max_lines)]
-    logger.debug(f'line_pos: {line_pos}')
+        if self.ical_files:
+            parser.load_from_file(self.ical_files)
 
-    # Check if any events were filtered
-    if upcoming_events:
-      logger.info('Managed to parse events from urls')
+        # Load events from all icalendar in timerange
+        upcoming_events = parser.get_events(today, agenda_events[-1]['begin'],
+                                            self.timezone)
 
-      # Find out how much space the event times take
-      time_width = int(max([self.font.getsize(
-          events['begin'].format(self.time_format, locale=self.language))[0]
-          for events in upcoming_events]) * 1.2)
-      logger.debug(f'time_width: {time_width}')
+        # Sort events by beginning time
+        parser.sort()
+        # parser.show_events()
 
-      # Calculate x-pos for time
-      x_time = date_width
-      logger.debug(f'x-time: {x_time}')
+        # Set the width for date, time and event titles
+        date_width = int(max([self.font.getsize(
+            dates['begin'].format(self.date_format, locale=self.language))[0]
+                              for dates in agenda_events]) * 1.2)
+        logger.debug(f'date_width: {date_width}')
 
-      # Find out how much space is left for event titles
-      event_width = im_width - time_width - date_width
-      logger.debug(f'width for events: {event_width}')
+        # Calculate positions for each line
+        line_pos = [(0, int(line * line_height)) for line in range(max_lines)]
+        logger.debug(f'line_pos: {line_pos}')
 
-      # Calculate x-pos for event titles
-      x_event = date_width + time_width
-      logger.debug(f'x-event: {x_event}')
+        # Check if any events were filtered
+        if upcoming_events:
+            logger.info('Managed to parse events from urls')
 
-      # Merge list of dates and list of events
-      agenda_events += upcoming_events
+            # Find out how much space the event times take
+            time_width = int(max([self.font.getsize(
+                events['begin'].format(self.time_format, locale=self.language))[0]
+                                  for events in upcoming_events]) * 1.2)
+            logger.debug(f'time_width: {time_width}')
 
-      # Sort the combined list in chronological order of dates
-      by_date = lambda event: event['begin']
-      agenda_events.sort(key = by_date)
+            # Calculate x-pos for time
+            x_time = date_width
+            logger.debug(f'x-time: {x_time}')
 
-      # Delete more entries than can be displayed (max lines)
-      del agenda_events[max_lines:]
+            # Find out how much space is left for event titles
+            event_width = im_width - time_width - date_width
+            logger.debug(f'width for events: {event_width}')
 
-      self._agenda_events = agenda_events
+            # Calculate x-pos for event titles
+            x_event = date_width + time_width
+            logger.debug(f'x-event: {x_event}')
 
-      cursor = 0
-      for _ in agenda_events:
-        title = _['title']
+            # Merge list of dates and list of events
+            agenda_events += upcoming_events
 
-        # Check if item is a date
-        if not 'end' in _:
-          ImageDraw.Draw(im_colour).line(
-            (0, line_pos[cursor][1], im_width, line_pos[cursor][1]),
-          fill = 'black')
+            # Sort the combined list in chronological order of dates
+            by_date = lambda event: event['begin']
+            agenda_events.sort(key=by_date)
 
-          write(im_black, line_pos[cursor], (date_width, line_height),
-              title, font = self.font, alignment='left')
+            # Delete more entries than can be displayed (max lines)
+            del agenda_events[max_lines:]
 
-          cursor += 1
+            self._agenda_events = agenda_events
 
-        # Check if item is an event
-        if 'end' in _:
-          time = _['begin'].format(self.time_format)
+            cursor = 0
+            for _ in agenda_events:
+                title = _['title']
 
-          # Check if event is all day, if not, add the time
-          if parser.all_day(_) == False:
-            write(im_black, (x_time, line_pos[cursor][1]),
-                (time_width, line_height), time,
-                font = self.font, alignment='left')
+                # Check if item is a date
+                if 'end' not in _:
+                    ImageDraw.Draw(im_colour).line(
+                        (0, line_pos[cursor][1], im_width, line_pos[cursor][1]),
+                        fill='black')
 
-          write(im_black, (x_event, line_pos[cursor][1]),
-                (event_width, line_height),
-                '• '+title, font = self.font, alignment='left')
-          cursor += 1
+                    write(im_black, line_pos[cursor], (date_width, line_height),
+                          title, font=self.font, alignment='left')
 
-    # If no events were found, write only dates and lines
-    else:
-      logger.info('no events found')
+                    cursor += 1
 
-      cursor = 0
-      for _ in agenda_events:
-        title = _['title']
-        ImageDraw.Draw(im_colour).line(
-            (0, line_pos[cursor][1], im_width, line_pos[cursor][1]),
-            fill = 'black')
+                # Check if item is an event
+                if 'end' in _:
+                    time = _['begin'].format(self.time_format, locale=self.language)
 
-        write(im_black, line_pos[cursor], (date_width, line_height),
-              title, font = self.font, alignment='left')
+                    # Check if event is all day, if not, add the time
+                    if not parser.all_day(_):
+                        write(im_black, (x_time, line_pos[cursor][1]),
+                              (time_width, line_height), time,
+                              font=self.font, alignment='left')
 
-        cursor += 1
+                    write(im_black, (x_event, line_pos[cursor][1]),
+                          (event_width, line_height),
+                          '• ' + title, font=self.font, alignment='left')
+                    cursor += 1
 
+        # If no events were found, write only dates and lines
+        else:
+            logger.info('no events found')
 
-    # return the images ready for the display
-    return im_black, im_colour
+            cursor = 0
+            for _ in agenda_events:
+                title = _['title']
+                ImageDraw.Draw(im_colour).line(
+                    (0, line_pos[cursor][1], im_width, line_pos[cursor][1]),
+                    fill='black')
+
+                write(im_black, line_pos[cursor], (date_width, line_height),
+                      title, font=self.font, alignment='left')
+
+                cursor += 1
+
+        # return the images ready for the display
+        return im_black, im_colour
+
 
 if __name__ == '__main__':
-  print(f'running {filename} in standalone mode')
+    print(f'running {__name__} in standalone mode')

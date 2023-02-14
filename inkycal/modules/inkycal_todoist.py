@@ -1,200 +1,203 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+#!python3
 
 """
-todoist module for Inky-Calendar Project
+Inkycal Todoist Module
 Copyright by aceisace
 """
+import arrow
 
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
 
-try:
-  import todoist
-except ImportError:
-  print('todoist is not installed! Please install with:')
-  print('pip3 install todoist-python')
+from todoist_api_python.api import TodoistAPI
 
-filename = os.path.basename(__file__).split('.py')[0]
-logger = logging.getLogger(filename)
+logger = logging.getLogger(__name__)
+
 
 class Todoist(inkycal_module):
-  """Todoist api class
-  parses todo's from api-key
-  """
+    """Todoist api class
+    parses todos from the todoist api.
+    """
 
-  name = "Todoist API - show your todos from todoist"
+    name = "Todoist API - show your todos from todoist"
 
-  requires = {
-    'api_key': {
-      "label":"Please enter your Todoist API-key",
-      },
-  }
-
-  optional = {
-    'project_filter': {
-      "label":"Show Todos only from following project (separated by a comma). Leave empty to show "+
-              "todos from all projects",
+    requires = {
+        'api_key': {
+            "label": "Please enter your Todoist API-key",
+        },
     }
-  }
 
-  def __init__(self, config):
-    """Initialize inkycal_rss module"""
+    optional = {
+        'project_filter': {
+            "label": "Show Todos only from following project (separated by a comma). Leave empty to show " +
+                     "todos from all projects",
+        }
+    }
 
-    super().__init__(config)
+    def __init__(self, config):
+        """Initialize inkycal_rss module"""
 
-    config = config['config']
+        super().__init__(config)
 
-    # Check if all required parameters are present
-    for param in self.requires:
-      if not param in config:
-        raise Exception(f'config is missing {param}')
+        config = config['config']
 
-    # module specific parameters
-    self.api_key = config['api_key']
+        # Check if all required parameters are present
+        for param in self.requires:
+            if param not in config:
+                raise Exception(f'config is missing {param}')
 
-    # if project filter is set, initialize it
-    if config['project_filter'] and isinstance(config['project_filter'], str):
-      self.project_filter = config['project_filter'].split(',')
-    else:
-      self.project_filter = config['project_filter']
+        # module specific parameters
+        self.api_key = config['api_key']
 
-    self._api = todoist.TodoistAPI(config['api_key'])
-    self._api.sync()
+        # if project filter is set, initialize it
+        if config['project_filter'] and isinstance(config['project_filter'], str):
+            self.project_filter = config['project_filter'].split(',')
+        else:
+            self.project_filter = config['project_filter']
 
-    # give an OK message
-    print(f'{filename} loaded')
+        self._api = TodoistAPI(config['api_key'])
 
-  def _validate(self):
-    """Validate module-specific parameters"""
-    if not isinstance(self.api_key, str):
-      print('api_key has to be a string: "Yourtopsecretkey123" ')
+        # give an OK message
+        print(f'{__name__} loaded')
 
-  def generate_image(self):
-    """Generate image for this module"""
+    def _validate(self):
+        """Validate module-specific parameters"""
+        if not isinstance(self.api_key, str):
+            print('api_key has to be a string: "Yourtopsecretkey123" ')
 
-    # Define new image size with respect to padding
-    im_width = int(self.width - (2 * self.padding_left))
-    im_height = int(self.height - (2 * self.padding_top))
-    im_size = im_width, im_height
-    logger.info(f'Image size: {im_size}')
+    def generate_image(self):
+        """Generate image for this module"""
 
-    # Create an image for black pixels and one for coloured pixels
-    im_black = Image.new('RGB', size = im_size, color = 'white')
-    im_colour = Image.new('RGB', size = im_size, color = 'white')
+        # Define new image size with respect to padding
+        im_width = int(self.width - (2 * self.padding_left))
+        im_height = int(self.height - (2 * self.padding_top))
+        im_size = im_width, im_height
+        logger.info(f'Image size: {im_size}')
 
-    # Check if internet is available
-    if internet_available() == True:
-      logger.info('Connection test passed')
-      self._api.sync()
-    else:
-      raise Exception('Network could not be reached :/')
+        # Create an image for black pixels and one for coloured pixels
+        im_black = Image.new('RGB', size=im_size, color='white')
+        im_colour = Image.new('RGB', size=im_size, color='white')
 
-    # Set some parameters for formatting todos
-    line_spacing = 1
-    line_height = self.font.getsize('hg')[1] + line_spacing
-    line_width = im_width
-    max_lines = (im_height // (self.font.getsize('hg')[1] + line_spacing))
+        # Check if internet is available
+        if internet_available():
+            logger.info('Connection test passed')
+        else:
+            raise NetworkNotReachableError
 
-    # Calculate padding from top so the lines look centralised
-    spacing_top = int( im_height % line_height / 2 )
+        # Set some parameters for formatting todos
+        line_spacing = 1
+        line_height = self.font.getsize('hg')[1] + line_spacing
+        line_width = im_width
+        max_lines = (im_height // (self.font.getsize('hg')[1] + line_spacing))
 
-    # Calculate line_positions
-    line_positions = [
-      (0, spacing_top + _ * line_height ) for _ in range(max_lines)]
+        # Calculate padding from top so the lines look centralised
+        spacing_top = int(im_height % line_height / 2)
 
-    # Get all projects by name and id
-    all_projects = {project['id']: project['name']
-                    for project in self._api.projects.all()}
+        # Calculate line_positions
+        line_positions = [
+            (0, spacing_top + _ * line_height) for _ in range(max_lines)]
 
-    logger.debug(f"all_projects: {all_projects}")
+        # Get all projects by name and id
+        all_projects = self._api.get_projects()
+        filtered_project_ids_and_names = {project.id: project.name for project in all_projects}
+        all_active_tasks = self._api.get_tasks()
 
-    # Filter entries in all_projects if filter was given
-    if self.project_filter:
-      for project_id in list(all_projects):
-        if all_projects[project_id] not in self.project_filter:
-          del all_projects[project_id]
+        logger.debug(f"all_projects: {all_projects}")
 
-      logger.debug(f"all_project: {all_projects}")
+        # Filter entries in all_projects if filter was given
+        if self.project_filter:
+            filtered_projects = [project for project in all_projects if project.name in self.project_filter]
+            filtered_project_ids_and_names = {project.id: project.name for project in filtered_projects}
+            filtered_project_ids = [project for project in filtered_project_ids_and_names]
+            logger.debug(f"filtered projects: {filtered_projects}")
 
-      # If filter was activated and no roject was found with that name,
-      # raise an exception to avoid showing a blank image
-      if all_projects == {}:
-        logger.error('No project found from project filter!')
-        logger.error('Please double check spellings in project_filter')
-        raise Exception('No matching project found in filter. Please '
-                        'double check spellings in project_filter or leave'
-                        'empty')
+            # If filter was activated and no project was found with that name,
+            # raise an exception to avoid showing a blank image
+            if not filtered_projects:
+                logger.error('No project found from project filter!')
+                logger.error('Please double check spellings in project_filter')
+                raise Exception('No matching project found in filter. Please '
+                                'double check spellings in project_filter or leave'
+                                'empty')
+            # filtered version of all active tasks
+            all_active_tasks = [task for task in all_active_tasks if task.project_id in filtered_project_ids]
 
-    # Create single-use generator to filter undone and non-deleted tasks
-    tasks = (task.data for task in self._api.state['items'] if
-               task['checked'] == 0 and task['is_deleted']==0)
+        # Simplify the tasks for faster processing
+        simplified = [
+            {
+                'name': task.content,
+                'due': arrow.get(task.due.date, "YYYY-MM-DD").format("D-MMM-YY") if task.due else "",
+                'priority': task.priority,
+                'project': filtered_project_ids_and_names[task.project_id]
+            }
+            for task in all_active_tasks
+        ]
 
-    # Simplify the tasks for faster processing
-    simplified = [
-      {
-        'name':task['content'],
-        'due':task['due']['string'] if task['due'] != None else "",
-        'priority':task['priority'],
-        'project':all_projects[ task['project_id'] ]
-      }
-      for task in tasks]
+        logger.debug(f'simplified: {simplified}')
 
-    # logger.debug(f'simplified: {simplified}')
+        project_lengths = []
+        due_lengths = []
 
-    # Get maximum width of project names for selected font
-    project_width = int(max([
-      self.font.getsize(task['project'])[0] for task in simplified ]) * 1.1)
+        for task in simplified:
+            if task["project"]:
+                project_lengths.append(int(self.font.getlength(task['project']) * 1.1))
+            if task["due"]:
+                due_lengths.append(int(self.font.getlength(task['due']) * 1.1))
 
-    # Get maximum width of project dues for selected font
-    due_width = int(max([
-      self.font.getsize(task['due'])[0] for task in simplified ]) * 1.1)
+        # Get maximum width of project names for selected font
+        project_offset = int(max(project_lengths)) if project_lengths else 0
 
-    # Group tasks by project name
-    grouped = {name: [] for  id_, name in all_projects.items()}
+        # Get maximum width of project dues for selected font
+        due_offset = int(max(due_lengths)) if due_lengths else 0
 
-    for task in simplified:
-      if task['project'] in grouped:
-        grouped[task['project']].append(task)
+        # create a dict with names of filtered groups
+        groups = {group_name:[] for group_name in filtered_project_ids_and_names.values()}
+        for task in simplified:
+            group_of_current_task = task["project"]
+            if group_of_current_task in groups:
+                groups[group_of_current_task].append(task)
 
-    logger.debug(f"grouped: {grouped}")
+        logger.debug(f"grouped: {groups}")
 
+        # Add the parsed todos on the image
+        cursor = 0
+        for name, todos in groups.items():
+            if todos:
+                for todo in todos:
+                    if cursor < max_lines:
+                        line_x, line_y = line_positions[cursor]
 
-    # Add the parsed todos on the image
-    cursor = 0
-    for name, todos in grouped.items():
-      if todos != []:
-        for todo in todos:
-          line_x, line_y = line_positions[cursor]
+                        if todo['project']:
+                            # Add todos project name
+                            write(
+                                im_colour, line_positions[cursor],
+                                (project_offset, line_height),
+                                todo['project'], font=self.font, alignment='left')
 
-          # Add todo project name
-          write(
-            im_colour, line_positions[cursor],
-            (project_width, line_height),
-            todo['project'], font=self.font, alignment='left')
+                        # Add todos due if not empty
+                        if todo['due']:
+                            write(
+                                im_black,
+                                (line_x + project_offset, line_y),
+                                (due_offset, line_height),
+                                todo['due'], font=self.font, alignment='left')
 
-          # Add todo due if not empty
-          if todo['due'] != "":
-            write(
-              im_black,
-              (line_x + project_width, line_y),
-              (due_width, line_height),
-              todo['due'], font=self.font, alignment='left')
+                        if todo['name']:
+                            # Add todos name
+                            write(
+                                im_black,
+                                (line_x + project_offset + due_offset, line_y),
+                                (im_width - project_offset - due_offset, line_height),
+                                todo['name'], font=self.font, alignment='left')
 
-          # Add todo name
-          write(
-            im_black,
-            (line_x+project_width+due_width, line_y),
-            (im_width-project_width-due_width, line_height),
-            todo['name'], font=self.font, alignment='left')
+                        cursor += 1
+                    else:
+                        logger.error('More todos than available lines')
+                        break
 
-          cursor += 1
-          if cursor > max_lines:
-            logger.error('More todos than available lines')
-            break
+        # return the images ready for the display
+        return im_black, im_colour
 
-    # return the images ready for the display
-    return im_black, im_colour
 
 if __name__ == '__main__':
-  print(f'running {filename} in standalone/debug mode')
+    print(f'running {__name__} in standalone/debug mode')

@@ -1,29 +1,42 @@
-name: Python application
+name: Inkycal testing
 
-on: [push]
-
+on:
+  push:
+    branches:
+      - main
+      
 jobs:
   build:
-
+    name: run Inkycal tests
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.7
+        python-version: 3.9
 
     - name: Clone repo
       run: |
-        git clone https://github.com/aceisace/Inkycal
-
-    - name: Install dependencies and run
+        git clone --single-branch https://github.com/aceisace/Inkycal
+    - name: Creating virtual environment
       run: |
-        python -m pip install --upgrade pip
         cd Inkycal
-        pip3 install -e ./
-        cd inkycal/modules && ls -al
-        cd ..
-        cd tests
+        python3 -m venv venv
+        source venv/bin/activate
+        python -m pip install --upgrade pip
+    - name: Install dependencies
+      run: |
+        pip install wheel
+        pip install -e ./
+    - name: Setup test environment and run tests
+      env:
+        OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
+        SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
+        TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
+        TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
+      run: |
+        cd inkycal/tests
+        wget https://raw.githubusercontent.com/aceisace/Inkycal/assets/tests/settings.json
         for f in *.py; do python3 "$f"; done
