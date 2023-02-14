@@ -132,8 +132,15 @@ class Weather(inkycal_module):
             lunations = dec("0.20439731") + (days * dec("0.03386319269"))
             position = lunations % dec(1)
             index = math.floor((position * dec(8)) + dec("0.5"))
-            return {0: '\uf095', 1: '\uf099', 2: '\uf09c', 3: '\uf0a0',
-                    4: '\uf0a3', 5: '\uf0a7', 6: '\uf0aa', 7: '\uf0ae'}[int(index) & 7]
+            return {
+                0: '\uf095',
+                1: '\uf099',
+                2: '\uf09c',
+                3: '\uf0a0',
+                4: '\uf0a3',
+                5: '\uf0a7',
+                6: '\uf0aa',
+                7: '\uf0ae'}[int(index) & 7]
 
         def is_negative(temp):
             """Check if temp is below freezing point of water (0°C/30°F)
@@ -148,12 +155,24 @@ class Weather(inkycal_module):
 
         # Lookup-table for weather icons and weather codes
         weathericons = {
-            '01d': '\uf00d', '02d': '\uf002', '03d': '\uf013',
-            '04d': '\uf012', '09d': '\uf01a ', '10d': '\uf019',
-            '11d': '\uf01e', '13d': '\uf01b', '50d': '\uf014',
-            '01n': '\uf02e', '02n': '\uf013', '03n': '\uf013',
-            '04n': '\uf013', '09n': '\uf037', '10n': '\uf036',
-            '11n': '\uf03b', '13n': '\uf038', '50n': '\uf023'
+            '01d': '\uf00d',
+            '02d': '\uf002',
+            '03d': '\uf013',
+            '04d': '\uf012',
+            '09d': '\uf01a',
+            '10d': '\uf019',
+            '11d': '\uf01e',
+            '13d': '\uf01b',
+            '50d': '\uf014',
+            '01n': '\uf02e',
+            '02n': '\uf013',
+            '03n': '\uf013',
+            '04n': '\uf013',
+            '09n': '\uf037',
+            '10n': '\uf036',
+            '11n': '\uf03b',
+            '13n': '\uf038',
+            '50n': '\uf023'
         }
 
         def draw_icon(image, xy, box_size, icon, rotation=None):
@@ -163,6 +182,43 @@ class Weather(inkycal_module):
             box_size = size of text-box -> (width,height)
             icon = icon-unicode, looks this up in weathericons dictionary
             """
+
+            icon_size_correction = {
+                '\uf00d': 10 / 60,
+                '\uf02e': 51 / 150,
+                '\uf019': 21 / 60,
+                '\uf01b': 21 / 60,
+                '\uf0b5': 51 / 150,
+                '\uf050': 25 / 60,
+                '\uf013': 51 / 150,
+                '\uf002': 0,
+                '\uf031': 29 / 100,
+                '\uf015': 21 / 60,
+                '\uf01e': 52 / 150,
+                '\uf056': 51 / 150,
+                '\uf053': 14 / 150,
+                '\uf012': 51 / 150,
+                '\uf01a': 51 / 150,
+                '\uf014': 51 / 150,
+                '\uf037': 42 / 150,
+                '\uf036': 42 / 150,
+                '\uf03b': 42 / 150,
+                '\uf038': 42 / 150,
+                '\uf023': 35 / 150,
+                '\uf07a': 35 / 150,
+                '\uf051': 18 / 150,
+                '\uf052': 18 / 150,
+                '\uf0aa': 0,
+                '\uf095': 0,
+                '\uf099': 0,
+                '\uf09c': 0,
+                '\uf0a0': 0,
+                '\uf0a3': 0,
+                '\uf0a7': 0,
+                '\uf0aa': 0,
+                '\uf0ae': 0
+            }
+
             x, y = xy
             box_width, box_height = box_size
             text = icon
@@ -183,7 +239,7 @@ class Weather(inkycal_module):
 
             # Align text to desired position
             x = int((box_width / 2) - (text_width / 2))
-            y = int((box_height / 2) - (text_height / 2))
+            y = int((box_height / 2) - (text_height / 2) - (icon_size_correction[icon] * size) / 2)
 
             # Draw the text in the text-box
             draw = ImageDraw.Draw(image)
