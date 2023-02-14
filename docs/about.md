@@ -1,5 +1,5 @@
 # About Inkycal
-<img align="center" src="https://raw.githubusercontent.com/aceisace/Inky-Calendar/development/Gallery/logo.png" width="800">
+<img align="center" src="https://github.com/aceisace/Inkycal/raw/assets/Repo/logo.png" width="800">
 
 Inkycal is a python3 software for selected E-Paper displays.
 It's open-source (non-commercially), fully modular, user friendly and even runs
@@ -27,5 +27,5 @@ Open source means we work for nothing, but it doesn't mean we don't need
 anything. We invest a large amount of time, effort and coffee to develop
 Inkycal.
 
-Please support Inkycal via a **[DONATION](https://www.paypal.me/SaadNaseer)**
+Please support Inkycal via a **[DONATION](https://www.paypal.me/aceinnolab)**
 to help us keep this project alive. Thank You!

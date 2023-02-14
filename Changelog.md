@@ -4,6 +4,25 @@ The order is from latest to oldest and structured in the following way:
 * Version name with date of publishing
 * Sections with either 'added', 'fixed', 'updated' and 'changed'
 
+## [2.0.2] 2022
+### Added
+* Added support of 12.48" E-Paper display (all variants)
+* Added support of 10.3" parallel display
+* Added support of 9.7" parallel display
+* Added support of 7.8" parallel display
+* Added support to run Inkycal on non Rpi-devices
+
+### Changed
+* Installation procedure changed to virtual environments. This keeps Inkycal dependencies isolated from the system itself, allows clean uninstalling and makes it OS-independent
+
+### Removed
+* Removed installer for better transparency of install
+* Removed local web-ui
+
+### Fixed
+* Minor bugfixes and stability improvements
+
+
 ## [1.7.1] Mid January 2020
 
 ### Added
