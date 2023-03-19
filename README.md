@@ -43,12 +43,12 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 
 ## Configuring the Raspberry Pi
 1. Flash Raspberry Pi OS according to the [instructions](https://www.raspberrypi.org/software/). Leave the SD card plugged in your computer.
-2. Create and download `settings.json` file for Inkycal from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal-config-v2-0-0)
-3. Download the `ssh` text file from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/create_ssh)
+2. Create and download `settings.json` file for Inkycal from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal-config-v2-0-0).
+3. Download the `ssh` text file from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/create_ssh).
 4. Create and download a WiFi-configuration file (`wpa_supplicant.conf`) from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/setup_wifi)
-5. Copy these three downloaded files to the flashed microSD card. On Windows, this is the only visible directory on the SD card. On Linux, copy these files to `/boot`
+5. Copy these three downloaded files (`settings.json`, `ssh`, `wpa_supplicant.conf`) to the flashed microSD card in the `/boot` folder of microSD card. On Windows, this is the only visible directory on the SD card. On Linux, copy these files to `/boot` of the microSD card.
 6. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
-7. Once the green LED has stopped blinking after ~3 minutes, use an SSH client to connect to the Raspberry Pi. On Windows, you can use PUTTY, but you can also use an SSH App
+7. Once the green LED has stopped blinking after ~3 minutes, use an SSH client to connect to the Raspberry Pi. On Windows, you can use PUTTY, but you can also use an SSH App.
 on your smartphone. Use the address: `raspberrypi.local` with `pi` as the username and `raspberry` as the password. For more detailed instructions, check out the page from the [Raspberry Pi website](https://www.raspberrypi.org/documentation/remote-access/ssh/)
 8. After connecting via SSH, run the following commands, line by line:
 ```bash
