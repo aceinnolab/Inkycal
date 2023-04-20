@@ -14,4 +14,4 @@ import inkycal.modules.inkycal_slideshow
 
 # Main file
 from inkycal.main import Inkycal
-import inkycal.modules.inkycal_stocks
+#import inkycal.modules.inkycal_stocks
