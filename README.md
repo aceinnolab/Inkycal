@@ -41,6 +41,9 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 
 (!) -> These displays are parallel displays, featuring 16 greyscales, much faster refreshs, but are more expensive and require a bigger driver board
 
+## Important note for Raspberry Pi OS!
+Please note that with the latest version of Raspberry Pi OS, there no longer is the default user pi, as it is (now) considered a security risk. You will now have to set both, a new username and password. While the fix in the software is in progress, please use the Raspberry Pi flashing tool and set the username via the gear button to `pi`. Special thanks to LakesideMiners [Discord] for the note.
+
 ## Configuring the Raspberry Pi
 1. Flash Raspberry Pi OS according to the [instructions](https://www.raspberrypi.org/software/). Leave the SD card plugged in your computer.
 2. Create and download `settings.json` file for Inkycal from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal-config-v2-0-0).
