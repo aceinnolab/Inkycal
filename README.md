@@ -42,7 +42,9 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 (!) -> These displays are parallel displays, featuring 16 greyscales, much faster refreshs, but are more expensive and require a bigger driver board
 
 ## Important note for Raspberry Pi OS!
-Please note that with the latest version of Raspberry Pi OS, there no longer is the default user pi, as it is (now) considered a security risk. You will now have to set both, a new username and password. While the fix in the software is in progress, please use the Raspberry Pi flashing tool and set the username via the gear button to `pi`. Special thanks to LakesideMiners [Discord] for the note.
+Please note that with the latest version of Raspberry Pi OS, there no longer is the default user pi, as it is (now) considered a security risk. You will now have to set both, a new username and password. While the fix in the software is in progress, please use the Raspberry Pi flashing tool and set the username via the gear button to `pi`. Special thanks to LakesideMiners [Discord] for the note. Here is a GIF showing how to set a username in the new Raspberry Pi OS:
+
+<img src="https://raw.githubusercontent.com/aceisace/Inkycal/assets/Wiki/inkycal-rpi-os-username.gif" alt="raspberry-pi-os-add-user" width="600">
 
 ## Configuring the Raspberry Pi
 1. Flash Raspberry Pi OS according to the [instructions](https://www.raspberrypi.org/software/). Leave the SD card plugged in your computer.
@@ -64,7 +66,7 @@ These commands expand the filesystem, enable SPI and set up the correct timezone
 10. Change the password for the user pi by entering `passwd` in the Terminal, enter your current password, hit enter, then type your new password and press enter. Please note you will have to remember this password to access your Raspberry Pi.
 11. Follow the steps in `Installation` (see below) on how to install Inkycal.
 
-*Sounds too complicated? We've got you covered, you can now purchase a fully configured Inkycal on Tindie. These work as simple as plug-and-play. All the hard work is done in advance for you :100:*
+*Sounds too complicated or cannot source the parts yourself? We've got you covered, you can now purchase a fully configured Inkycal on Tindie. These work as simple as plug-and-play. All the hard work is done in advance for you :100:*
  
 [<a href="https://www.tindie.com/stores/aceisace4444/?ref=offsite_badges&utm_source=sellers_aceisace4444&utm_medium=badges&utm_campaign=badge_large"><img src="https://d2ss6ovg47m0r5.cloudfront.net/badges/tindie-larges.png" alt="I sell on Tindie" width="200" height="104"></a>](https://www.tindie.com/products/aceisace4444/inkycal-build-v1/)
 
