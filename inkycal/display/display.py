@@ -4,6 +4,7 @@
 Inkycal ePaper driving functions
 Copyright by aceisace
 """
+import os
 from importlib import import_module
 from PIL import Image
 
@@ -207,12 +208,9 @@ class Display:
 
         >>> Display.get_display_names()
         """
-        driver_files = top_level + '/inkycal/display/drivers/*.py'
-        drivers = glob.glob(driver_files)
-        drivers = [i.split('/')[-1].split('.')[0] for i in drivers]
-        drivers.remove('__init__')
-        drivers.remove('epdconfig')
-        print(*drivers, sep='\n')
+        driver_files = top_level + '/inkycal/display/drivers/'
+        drivers = [i for i in os.listdir(driver_files) if i.endswith(".py") and not i.startswith("__") and "_" in i]
+        return drivers
 
 
 if __name__ == '__main__':
