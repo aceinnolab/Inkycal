@@ -25,7 +25,7 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 * Stocks - Display stocks using Tickers from Yahoo! Finance.
 * Weather - Show current weather, daily or hourly weather forecasts from openweathermap.
 * Todoist - Synchronise with Todoist app or website to show todos.
-* iCanHazDad - Display a random joke from iCanhazdad.com.
+* iCanHazDad - Display a random joke from [iCanHazDad.com](iCanhazdad.com).
 
 ## Preview
 <p align="center">
@@ -34,7 +34,7 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 
 ## Hardware required
 * One of the supported ePaper displays from waveshare: 4.2", 5.83", 7.5", 7.8"(!), 9.7"(!), 10.3"(!)
-* Any Raspberry Pi with 40 pins and Wi-Fi. (Raspberry Pi 4/3/3B/3B+/3A/4/0W/0WH - Inkycal runs just fine on the Zero W/Zero WH model!)
+* Any Raspberry Pi with 40 pins and Wi-Fi. (Raspberry Pi 4/3/3B/3B+/3A/0W/0WH - Inkycal runs just fine on the Zero W/Zero WH model!)
 * MicroSD card (min. 4GB) for flashing Raspberry Pi OS
 * MicroUSB cable (for power)
 * Optional, a [3D-printable case](https://github.com/aceisace/Inkycal/wiki/3D-printable-files)
@@ -42,7 +42,7 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 (!) -> These displays are parallel displays, featuring 16 greyscales, much faster refreshs, but are more expensive and require a bigger driver board
 
 ## Important note for Raspberry Pi OS!
-Please note that with the latest version of Raspberry Pi OS, there no longer is the default user pi, as it is (now) considered a security risk. You will now have to set both, a new username and password. While the fix in the software is in progress, please use the Raspberry Pi flashing tool and set the username via the gear button to `pi`. Special thanks to LakesideMiners [Discord] for the note. Here is a GIF showing how to set a username in the new Raspberry Pi OS:
+Please note that with the latest version of Raspberry Pi OS, there no longer is the default user pi, as it is (now) considered a security risk. You will now have to set both, a new username and password. While the fix in the software is in progress, please use the Raspberry Pi flashing tool and set the username via the gear button to `pi`. Special thanks to LakesideMiners from the [Discord] for the note. Here is a GIF showing how to set a username this way!
 
 <img src="https://raw.githubusercontent.com/aceisace/Inkycal/assets/Wiki/inkycal-rpi-os-username.gif" alt="raspberry-pi-os-add-user" width="600">
 
@@ -141,7 +141,7 @@ deactivate
 ```
 
 ## Contributing
-All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inkycal/blob/development/CONTRIBUTING.md).
+All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inkycal/blob/main/.github/CONTRIBUTING.md)
 
 The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer. If you want to have some faster responses, please use Discord (link below)
 
