@@ -1,15 +1,12 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
 """
 Inkycal ePaper driving functions
 Copyright by aceisace
 """
+import asyncio
 import os
 from importlib import import_module
-from PIL import Image
 
-from inkycal.custom import top_level
-import glob
+from PIL import Image
 
 
 class Display:
@@ -18,25 +15,20 @@ class Display:
     Creates an instance of the driver for the selected E-Paper model and allows
     rendering images and calibrating the E-Paper display
 
-    args:
+    Args:
       - epaper_model: The name of your E-Paper model.
-
 
     """
 
     def __init__(self, epaper_model):
         """Load the drivers for this epaper model"""
 
-        if 'colour' in epaper_model:
-            self.supports_colour = True
-        else:
-            self.supports_colour = False
-
         try:
             driver_path = f'inkycal.display.drivers.{epaper_model}'
             driver = import_module(driver_path)
             self._epaper = driver.EPD()
             self.model_name = epaper_model
+            self.supported_colours = self._epaper.supported_colours
 
         except ImportError:
             raise Exception('This module is not supported. Check your spellings?')
@@ -44,7 +36,7 @@ class Display:
         except FileNotFoundError:
             raise Exception('SPI could not be found. Please check if SPI is enabled')
 
-    def render(self, im_black, im_colour=None):
+    async def render(self, im_black: Image.Image, im_colour=Image.Image or None) -> None:
         """Renders an image on the selected E-Paper display.
 
         Initlializes the E-Paper display, sends image data and executes command
@@ -61,45 +53,46 @@ class Display:
 
         Rendering an image for black-white E-Paper displays:
 
-        >>> sample_image = PIL.Image.open('path/to/file.png')
+        >>> sample_image = Image.open('path/to/file.png')
         >>> display = Display('my_black_white_display')
         >>> display.render(sample_image)
 
 
         Rendering black-white on coloured E-Paper displays:
 
-        >>> sample_image = PIL.Image.open('path/to/file.png')
+        >>> sample_image = Image.open('path/to/file.png')
         >>> display = Display('my_coloured_display')
         >>> display.render(sample_image, sample_image)
 
 
         Rendering coloured image where 2 images are available:
 
-        >>> black_image = PIL.Image.open('path/to/file.png') # black pixels
-        >>> colour_image = PIL.Image.open('path/to/file.png') # coloured pixels
+        >>> black_image = Image.open('path/to/file.png') # black pixels
+        >>> colour_image = Image.open('path/to/file.png') # coloured pixels
         >>> display = Display('my_coloured_display')
         >>> display.render(black_image, colour_image)
         """
 
         epaper = self._epaper
 
-        if not self.supports_colour:
-            print('Initialising..', end='')
-            epaper.init()
-            print('Updating display......', end='')
-            epaper.display(epaper.getbuffer(im_black))
-            print('Done')
 
-        elif self.supports_colour:
-            if not im_colour:
-                raise Exception('im_colour is required for coloured epaper displays')
-            print('Initialising..', end='')
-            epaper.init()
-            print('Updating display......', end='')
-            epaper.display(epaper.getbuffer(im_black), epaper.getbuffer(im_colour))
-            print('Done')
+        print('[Display] init..', end='')
+        epaper.init()
+        print('[Display] updating...', end='')
 
-        print('Sending E-Paper to deep sleep...', end='')
+        try:
+            loop = asyncio.get_event_loop()
+            if len(self.supported_colours == 2):
+                loop.run_until_complete(asyncio.wait_for(epaper.display(epaper.getbuffer(im_black)), timeout=60))
+            else:
+                loop.run_until_complete(asyncio.wait_for(epaper.display(epaper.getbuffer(im_black), epaper.getbuffer(im_colour)), timeout=60))
+        except asyncio.TimeoutError:
+            raise AssertionError("Failed to display an image on the display. This may be due to the following:"
+                                 "- Incorrectly selected driver"
+                                 "- Incorrect wiring (especially when not using the driver hat"
+                                 "- Incorrectly inserted display cable. The display needs to face up when connecting the driver board")
+
+        print('[Display] sleep mode', end='')
         epaper.sleep()
         print('Done')
 
@@ -125,13 +118,13 @@ class Display:
         epaper = self._epaper
         epaper.init()
 
-        display_size = self.get_display_size(self.model_name)
+        display_size = epaper.get_display_size()
 
         white = Image.new('1', display_size, 'white')
         black = Image.new('1', display_size, 'black')
 
         print('----------Started calibration of ePaper display----------')
-        if self.supports_colour:
+        for colour in epaper.supported_colours:
             for _ in range(cycles):
                 print('Calibrating...', end=' ')
                 print('black...', end=' ')
@@ -142,24 +135,11 @@ class Display:
                 epaper.display(epaper.getbuffer(white), epaper.getbuffer(white))
                 print(f'Cycle {_ + 1} of {cycles} complete')
 
-        if not self.supports_colour:
-            for _ in range(cycles):
-                print('Calibrating...', end=' ')
-                print('black...', end=' ')
-                epaper.display(epaper.getbuffer(black))
-                print('white...')
-                epaper.display(epaper.getbuffer(white)),
-                print(f'Cycle {_ + 1} of {cycles} complete')
-
             print('-----------Calibration complete----------')
             epaper.sleep()
 
-    @classmethod
-    def get_display_size(cls, model_name):
+    def get_display_size(self) -> tuple:
         """Returns the size of the display as a tuple -> (width, height)
-
-        Looks inside "drivers" folder for the given model name, then returns it's
-        size.
 
         Args:
           - model_name: str -> The name of the E-Paper display to get it's size.
@@ -171,29 +151,10 @@ class Display:
 
         >>> Display.get_display_size('model_name')
         """
-        if not isinstance(model_name, str):
-            print('model_name should be a string')
-            return
-        else:
-            driver_files = top_level + '/inkycal/display/drivers/*.py'
-            drivers = glob.glob(driver_files)
-            drivers = [i.split('/')[-1].split('.')[0] for i in drivers]
-            drivers.remove('__init__')
-            drivers.remove('epdconfig')
-            if model_name not in drivers:
-                print('This model name was not found. Please double check your spellings')
-                return
-            else:
-                with open(top_level + '/inkycal/display/drivers/' + model_name + '.py') as file:
-                    for line in file:
-                        if 'EPD_WIDTH=' in line.replace(" ", ""):
-                            width = int(line.rstrip().replace(" ", "").split('=')[-1])
-                        if 'EPD_HEIGHT=' in line.replace(" ", ""):
-                            height = int(line.rstrip().replace(" ", "").split('=')[-1])
-                return width, height
+        return self._epaper.EPD_WIDTH, self._epaper.EPD_HEIGHT
 
     @classmethod
-    def get_display_names(cls):
+    def get_display_names(cls) -> list:
         """Prints all supported E-Paper models.
 
         Fetches all filenames in driver folder and prints them on the console.
@@ -208,10 +169,14 @@ class Display:
 
         >>> Display.get_display_names()
         """
-        driver_files = top_level + '/inkycal/display/drivers/'
-        drivers = [i for i in os.listdir(driver_files) if i.endswith(".py") and not i.startswith("__") and "_" in i]
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
+        driver_files = f"{current_dir}/drivers"
+        drivers = [i for i in os.listdir(driver_files) if i.endswith(".py") and i.startswith("inkycal") and "_" in i]
         return drivers
 
 
 if __name__ == '__main__':
     print("Running Display class in standalone mode")
+    a = Display.get_display_names()
+    b = 1
