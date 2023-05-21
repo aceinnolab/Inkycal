@@ -1,9 +1,8 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 """
 Inkycal custom-functions for ease-of-use
 
-Copyright by aceisace
+Copyright by aceinnolab
 """
 import logging
 from PIL import Image, ImageDraw, ImageFont, ImageColor
