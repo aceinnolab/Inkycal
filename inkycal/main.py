@@ -1,9 +1,7 @@
 #!python3
-# -*- coding: utf-8 -*-
-
 """
 Main class for inkycal Project
-Copyright by aceisace
+Copyright by aceinnolab
 """
 
 import glob
@@ -17,7 +15,7 @@ import numpy
 
 from inkycal.custom import *
 from inkycal.display import Display
-from inkycal.modules.inky_image import Inkyimage as Images
+from inkycal.custom.inky_image import CustomImage as Images
 
 from PIL import Image
 
@@ -61,9 +59,6 @@ logging.getLogger("PIL").setLevel(logging.WARNING)
 
 logger = logging.getLogger(__name__)
 
-
-# TODO: autostart -> supervisor?
-
 class Inkycal:
     """Inkycal main class
 
@@ -79,10 +74,10 @@ class Inkycal:
         to improve rendering on E-Papers. Set this to False for 9.7" E-Paper.
     """
 
-    def __init__(self, settings_path=None, render=True):
+    def __init__(self, settings_path=str or None, render:bool=True):
         """Initialise Inkycal"""
 
-        self._release = '2.0.2'
+        self._release = '2.0.3'
 
         # Check if render was set correctly
         if render not in [True, False]:
@@ -101,7 +96,7 @@ class Inkycal:
 
         else:
             try:
-                with open('/boot/settings.json') as settings_file:
+                with open('/boot/settings.json', mode="r", encoding="utf-8") as settings_file:
                     settings = json.load(settings_file)
                     self.settings = settings
 
@@ -119,6 +114,9 @@ class Inkycal:
             # Init Display class with model in settings file
             # from inkycal.display import Display
             self.Display = Display(settings["model"])
+
+            # show splashscreen
+            self.Display.test_display()
 
             # check if colours can be rendered
             self.supports_colour = True if 'colour' in settings['model'] else False
@@ -739,3 +737,4 @@ class Inkycal:
 
 if __name__ == '__main__':
     print(f'running inkycal main in standalone/debug mode')
+    a = Inkycal()

@@ -3,7 +3,7 @@
 """
 Third party module template (inkycal-compatible module)
 
-Copyright by aceisace
+Copyright by aceinnolab
 """
 
 #############################################################################

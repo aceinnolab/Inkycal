@@ -1,10 +1,12 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+#!python3
 """
-Inkycal ePaper driving functions
-Copyright by aceisace
+Inkycal e-Paper driving functions
+Copyright by aceinnolab
 """
+import json
 from importlib import import_module
+
+import requests
 from PIL import Image
 
 from inkycal.custom import top_level
@@ -60,22 +62,22 @@ class Display:
 
         Rendering an image for black-white E-Paper displays:
 
-        >>> sample_image = PIL.Image.open('path/to/file.png')
+        >>> sample_image = Image.open('path/to/file.png')
         >>> display = Display('my_black_white_display')
         >>> display.render(sample_image)
 
 
         Rendering black-white on coloured E-Paper displays:
 
-        >>> sample_image = PIL.Image.open('path/to/file.png')
+        >>> sample_image = Image.open('path/to/file.png')
         >>> display = Display('my_coloured_display')
         >>> display.render(sample_image, sample_image)
 
 
         Rendering coloured image where 2 images are available:
 
-        >>> black_image = PIL.Image.open('path/to/file.png') # black pixels
-        >>> colour_image = PIL.Image.open('path/to/file.png') # coloured pixels
+        >>> black_image = Image.open('path/to/file.png') # black pixels
+        >>> colour_image = Image.open('path/to/file.png') # coloured pixels
         >>> display = Display('my_coloured_display')
         >>> display.render(black_image, colour_image)
         """
@@ -100,6 +102,21 @@ class Display:
 
         print('Sending E-Paper to deep sleep...', end='')
         epaper.sleep()
+        print('Done')
+
+
+    def test_display(self):
+        splashscreen_url = "https://aceinnolab.com/inkycal/splashscreen"
+        data = {"display": self.model_name}
+        headers = {"content-type": "application/json"}
+        im_data_raw = requests.post(url=splashscreen_url, headers=headers, data=json.dumps(data)).raw
+        image = Image.open(im_data_raw).convert("1")
+
+        epaper = self._epaper
+        print('Initialising..', end='')
+        epaper.init()
+        print('Updating display......', end='')
+        epaper.display(epaper.getbuffer(image))
         print('Done')
 
     def calibrate(self, cycles=3):
