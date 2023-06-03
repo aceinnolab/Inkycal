@@ -32,7 +32,7 @@ jobs:
 
       - name: Create Archive
         run: |
-          tar -czf workspace.tar.gz Inkycal
+          tar -czf workspace.tar.gz .
 
       - name: Save Workspace Archive
         uses: actions/upload-artifact@v2
@@ -63,7 +63,7 @@ jobs:
           TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
         run: |
           source venv/bin/activate
-          cd Inkycal/tests
+          cd inkycal/tests
           wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
           for f in *.py; do python3 "$f"; done
 
