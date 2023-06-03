@@ -31,6 +31,7 @@ jobs:
 
       - name: Create Archive
         run: |
+          cd ..
           tar -czf workspace.tar.gz Inkycal
 
       - name: Save Workspace Archive
