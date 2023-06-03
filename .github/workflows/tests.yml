@@ -20,7 +20,7 @@ jobs:
     - name: Clone repo
       run: |
         git clone --single-branch https://github.com/aceinnolab/Inkycal
-    - name: Creating virtual environment and install dependencies
+    - name: Creating virtual environment generate docs and install dependencies
       run: |
         cd Inkycal
         echo "$PWD"
@@ -29,9 +29,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install wheel
         pip install -e ./
-    - name: generate docs
-      run: |
-        python -m pip install sphinx sphinx-autobuild
         cd docsource && make html
         make github
         cd ..
