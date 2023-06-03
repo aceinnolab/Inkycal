@@ -30,6 +30,6 @@ urllib3==2.0.2
 yfinance==0.2.18
 python-dotenv==1.0.0
 setuptools==67.8.0
-sphinxemoji==0.2.0		# for emoji support on documentation
-sphinx-rtd-theme==1.2.1         # better theme for documentation
-recommonmark==0.7.1             # markdown support for documentation
+sphinxemoji==0.2.0
+sphinx-rtd-theme==1.2.1
+recommonmark==0.7.1
