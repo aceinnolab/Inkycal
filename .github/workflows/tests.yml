@@ -41,6 +41,7 @@ jobs:
         branch: main
         commit_message: auto-generated docs
         commit_options: '--no-verify'
+        push_options: --force
     - name: Setup test environment and run tests
       env:
         OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
