@@ -40,6 +40,7 @@ jobs:
       run: |
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
+        git config --global init.defaultBranch main
 
     - name: Commit and Push Changes
       run: |
@@ -47,7 +48,7 @@ jobs:
         git init
         git add -A
         git commit -m "Update documentation"
-        git push --force --quiet --set-upstream origin main
+        git push --force --quiet origin
     - name: Setup test environment and run tests
       env:
         OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
