@@ -32,7 +32,8 @@ jobs:
 
       - name: Create Archive
         run: |
-          tar -czf workspace.tar.gz .
+          mkdir artefacts
+          tar -czf artefacts/workspace.tar.gz --exclude=./artefacts .
 
       - name: Save Workspace Archive
         uses: actions/upload-artifact@v2
