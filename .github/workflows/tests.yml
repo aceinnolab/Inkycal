@@ -29,11 +29,15 @@ jobs:
           pip install wheel
           pip install -e .
 
-      - name: Save Workspace
+      - name: Create Archive
+        run: |
+          tar -czf workspace.tar.gz venv
+
+      - name: Save Workspace Archive
         uses: actions/upload-artifact@v2
         with:
           name: workspace
-          path: venv
+          path: workspace.tar.gz
 
   test:
     name: Run Tests
@@ -45,6 +49,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: workspace
+
+      - name: Extract Workspace Archive
+        run: |
+          tar -xzf workspace.tar.gz
 
       - name: Run Tests
         env:
@@ -69,6 +77,10 @@ jobs:
         with:
           name: workspace
 
+      - name: Extract Workspace Archive
+        run: |
+          tar -xzf workspace.tar.gz
+
       - name: Generate Docs
         run: |
           source venv/bin/activate
@@ -85,6 +97,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: workspace
+
+      - name: Extract Workspace Archive
+        run: |
+          tar -xzf workspace.tar.gz
 
       - name: Publish Docs
         run: |
