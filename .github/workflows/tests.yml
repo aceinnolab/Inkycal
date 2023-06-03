@@ -14,9 +14,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Clone Repo
-        run: git clone https://github.com/aceinnolab/Inkycal
-
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
         with:
@@ -24,12 +21,17 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          cd Inkycal
           python3 -m venv venv
           source venv/bin/activate
           python -m pip install --upgrade pip
           pip install wheel
-          pip install -e ./
+          pip install -e .
+
+      - name: Save Workspace
+        uses: actions/upload-artifact@v2
+        with:
+          name: workspace
+          path: venv
 
   test:
     name: Run Tests
@@ -40,8 +42,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Clone repo
-        run: git clone https://github.com/aceinnolab/Inkycal
+      - name: Restore Workspace
+        uses: actions/download-artifact@v2
+        with:
+          name: workspace
 
       - name: Run Tests
         env:
@@ -50,7 +54,8 @@ jobs:
           TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
           TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
         run: |
-          cd Inkycal/inkycal/tests
+          source venv/bin/activate
+          cd Inkycal/tests
           wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
           for f in *.py; do python3 "$f"; done
 
@@ -63,11 +68,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Clone Repo
-        run: git clone https://github.com/aceinnolab/Inkycal
+      - name: Restore Workspace
+        uses: actions/download-artifact@v2
+        with:
+          name: workspace
 
       - name: Generate Docs
         run: |
+          source venv/bin/activate
           cd Inkycal/docsource
           make html
 
@@ -80,16 +88,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Clone Repo
-        run: git clone https://github.com/aceinnolab/Inkycal
+      - name: Restore Workspace
+        uses: actions/download-artifact@v2
+        with:
+          name: workspace
 
       - name: Publish Docs
         run: |
-          cd Inkycal
+          source venv/bin/activate
+          cp -R Inkycal/docsource/_build/html/. docs/
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-          cp -R docsource/_build/html/. docs/
           git add docs
           git commit -m "Update documentation"
           git push --force --quiet
