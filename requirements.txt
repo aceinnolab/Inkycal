@@ -30,7 +30,7 @@ urllib3==2.0.2
 yfinance==0.2.18
 python-dotenv==1.0.0
 setuptools==67.8.0
-sphinx==7.0.1
+sphinx==6.2.1
 sphinxemoji==0.2.0
 sphinx-rtd-theme==1.2.1
 recommonmark==0.7.1
