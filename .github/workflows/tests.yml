@@ -48,7 +48,8 @@ jobs:
         git init
         git add -A
         git commit -m "Update documentation"
-        git push --force --quiet origin
+        cd ..
+        git push --force --quiet --set-upstream origin main
     - name: Setup test environment and run tests
       env:
         OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
