@@ -26,35 +26,27 @@ from PIL import Image
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.ERROR)
 
-on_rtd = os.environ.get('READTHEDOCS') == 'True'
-if on_rtd:
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s | %(name)s |  %(levelname)s: %(message)s',
-        datefmt='%d-%m-%Y %H:%M:%S',
-        handlers=[stream_handler])
 
-else:
 
-    if not os.path.exists(f'{top_level}/logs'):
-        os.mkdir(f'{top_level}/logs')
+if not os.path.exists(f'{top_level}/logs'):
+    os.mkdir(f'{top_level}/logs')
 
-    # Save all logs to a file, which contains more detailed output
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s | %(name)s |  %(levelname)s: %(message)s',
-        datefmt='%d-%m-%Y %H:%M:%S',
-        handlers=[
+# Save all logs to a file, which contains more detailed output
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s | %(name)s |  %(levelname)s: %(message)s',
+    datefmt='%d-%m-%Y %H:%M:%S',
+    handlers=[
 
-            stream_handler,  # add stream handler from above
+        stream_handler,  # add stream handler from above
 
-            RotatingFileHandler(  # log to a file too
-                f'{top_level}/logs/inkycal.log',  # file to log
-                maxBytes=2097152,  # 2MB max filesize
-                backupCount=5  # create max 5 log files
-            )
-        ]
-    )
+        RotatingFileHandler(  # log to a file too
+            f'{top_level}/logs/inkycal.log',  # file to log
+            maxBytes=2097152,  # 2MB max filesize
+            backupCount=5  # create max 5 log files
+        )
+    ]
+)
 
 # Show less logging for PIL module
 logging.getLogger("PIL").setLevel(logging.WARNING)
