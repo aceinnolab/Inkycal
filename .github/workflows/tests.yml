@@ -109,7 +109,12 @@ jobs:
           echo "$PWD"
           ls
           source venv/bin/activate
-          cd docs && make html && cd ..
+          cd docs 
+          echo "$PWD"
+          ls
+          make html && cd ..
+          echo "$PWD"
+          ls
           cp -r docsource/_build/html/. docs/
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
