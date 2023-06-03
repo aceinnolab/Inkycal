@@ -109,8 +109,9 @@ jobs:
           echo "$PWD"
           ls
           source venv/bin/activate
-          cd docsource 
-          make github && cd ..
+          cd docsource && make github && cd ..
+          echo "$PWD"
+          ls
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
           git add docs
