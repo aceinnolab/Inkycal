@@ -44,16 +44,12 @@ jobs:
         wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
         for f in *.py; do python3 "$f"; done
         cd .. && cd ..
-
-    - name: Configure Git
-      run: |
+        
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
         git config --global init.defaultBranch main
-
-    - name: Commit and Push Changes
-      run: |
         cd docs/
+        git init
         git add -A
         git commit -m "Update documentation"
         cd ..
