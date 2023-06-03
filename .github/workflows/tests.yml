@@ -31,12 +31,10 @@ jobs:
         pip install -e ./
     - name: generate docs
       run: |
+        python -m pip install sphinx sphinx-autobuild
         cd docsource && make html
-    - name: Deploy Docs to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ._build/html
+        make github
+        cd ..
     - name: Setup test environment and run tests
       env:
         OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
@@ -44,7 +42,6 @@ jobs:
         TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
         TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
       run: |
-        cd ..
         echo "$PWD"
         cd inkycal/tests
         wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
