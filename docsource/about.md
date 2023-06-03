@@ -1,8 +1,8 @@
 # About Inkycal
-<img align="center" src="https://github.com/aceisace/Inkycal/raw/assets/Repo/logo.png" width="800">
+<img align="center" src="https://github.com/aceinnolab/Inkycal/blob/assets/Repo/logo.png" width="800" alt="inkycal logo">
 
 Inkycal is a python3 software for selected E-Paper displays.
-It's open-source (non-commercially), fully modular, user friendly and even runs
+It's open-source (non-commercially), fully modular, user-friendly and even runs
 well even on the Raspberry Pi Zero. Inkycal even has a web-UI which takes
 care of adding your details! No more editing files, Yay :partying_face:
 
@@ -11,7 +11,7 @@ in it's environment and shows you all information without you having to look
 them up. Several built-in modules help you stay organised by:
 * providing the weather forecast for the full week or next few hours
 * getting the latest news from ATOM/RSS feeds
-* showing your iCalendar agenda, which may be syncronised with your phone
+* showing your iCalendar agenda, which may be synchronised with your phone
 * showing a monthly Calendar which may also show events synced with Google etc.
 * fetch some jokes form the web to help you smile :)
 

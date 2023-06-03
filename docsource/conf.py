@@ -12,17 +12,17 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('.'))
 
 master_doc = 'index'
 # -- Project information -----------------------------------------------------
 
 project = 'inkycal'
-copyright = '2018-2020, Ace Isace'
-author = 'Ace Isace'
+copyright = '2018-2023, aceinnolab'
+author = 'aceinnolab'
 
 # The full version, including alpha/beta/rc tags
-release = '2.0.0'
+release = '2.0.3'
 
 
 # -- General configuration ---------------------------------------------------
