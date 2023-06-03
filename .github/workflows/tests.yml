@@ -86,29 +86,6 @@ jobs:
       - name: Generate Docs
         run: |
           source venv/bin/activate
-          cd docsource
-          make html
-
-  publish-docs:
-    name: Publish Docs
-    needs: generate-docs
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Restore Workspace
-        uses: actions/download-artifact@v2
-        with:
-          name: workspace
-
-      - name: Extract Workspace Archive
-        run: |
-          tar -xzf workspace.tar.gz
-
-      - name: Publish Docs to Github Pages
-        run: |
-          echo "$PWD"
-          ls
-          source venv/bin/activate
           cd docsource && make github && cd ..
           echo "$PWD"
           ls
