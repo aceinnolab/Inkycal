@@ -3,7 +3,6 @@
 Tests config
 """
 import os
-from enum import Enum
 from dotenv import load_dotenv
 
 # relative import

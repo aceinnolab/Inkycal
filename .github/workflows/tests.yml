@@ -22,8 +22,13 @@ jobs:
     - name: Clone repo
       run: |
         git clone https://github.com/aceinnolab/Inkycal
-    - name: Creating virtual environment generate docs and install dependencies
 
+    - name: Generate docs and run tests
+      env:
+        OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
+        SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
+        TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
+        TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
       run: |
         cd Inkycal
         echo "$PWD"
@@ -35,14 +40,6 @@ jobs:
         cd docsource && make html
         make github
         cd ..
-
-    - name: Setup test environment and run tests
-      env:
-        OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
-        SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
-        TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
-        TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
-      run: |
         cd inkycal/tests
         wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
         for f in *.py; do python3 "$f"; done
@@ -57,7 +54,6 @@ jobs:
     - name: Commit and Push Changes
       run: |
         cd docs/
-        git init
         git add -A
         git commit -m "Update documentation"
         cd ..
