@@ -6,29 +6,23 @@ on:
       - main
 
 jobs:
-  build:
-    name: run Inkycal tests
+  clone-setup-install:
+    name: Clone, Setup, and Install
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Clone Repo
+        run: git clone https://github.com/aceinnolab/Inkycal
+
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
 
-      - name: Clone repo
-        run: |
-          git clone https://github.com/aceinnolab/Inkycal
-
-      - name: Generate docs and run tests
-        env:
-          OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
-          SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
-          TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
-          TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
+      - name: Install Dependencies
         run: |
           cd Inkycal
           python3 -m venv venv
@@ -36,16 +30,66 @@ jobs:
           python -m pip install --upgrade pip
           pip install wheel
           pip install -e ./
-          cd docsource && make html
-          make github
-          cd ..
-          cd inkycal/tests
+
+  test:
+    name: Run Tests
+    needs: clone-setup-install
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Clone repo
+        run: git clone https://github.com/aceinnolab/Inkycal
+
+      - name: Run Tests
+        env:
+          OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
+          SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
+          TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
+          TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
+        run: |
+          cd Inkycal/inkycal/tests
           wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
           for f in *.py; do python3 "$f"; done
-          cd .. && cd ..
+
+  generate-docs:
+    name: Generate Docs
+    needs: clone-setup-install
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Clone Repo
+        run: git clone https://github.com/aceinnolab/Inkycal
+
+      - name: Generate Docs
+        run: |
+          cd Inkycal/docsource
+          make html
+
+  publish-docs:
+    name: Publish Docs
+    needs: generate-docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Clone Repo
+        run: git clone https://github.com/aceinnolab/Inkycal
+
+      - name: Publish Docs
+        run: |
+          cd Inkycal
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          cp -R docsource/_build/html/. docs/
           git add docs
           git commit -m "Update documentation"
           git push --force --quiet
