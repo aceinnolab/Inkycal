@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      
+
 jobs:
   build:
     name: run Inkycal tests
@@ -13,40 +13,40 @@ jobs:
       contents: write
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.9
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
 
-    - name: Clone repo
-      run: |
-        git clone https://github.com/aceinnolab/Inkycal
+      - name: Clone repo
+        run: |
+          git clone https://github.com/aceinnolab/Inkycal
 
-    - name: Generate docs and run tests
-      env:
-        OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
-        SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
-        TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
-        TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
-      run: |
-        cd Inkycal
-        echo "$PWD"
-        python3 -m venv venv
-        source venv/bin/activate
-        python -m pip install --upgrade pip
-        pip install wheel
-        pip install -e ./
-        cd docsource && make html
-        make github
-        cd ..
-#        cd inkycal/tests
-#        wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
-#        for f in *.py; do python3 "$f"; done
-#        cd .. && cd ..
-        
-        git config --global user.name 'GitHub Actions'
-        git config --global user.email 'actions@github.com'
-        git add docs
-        git commit -m "Update documentation"
-        git push --force --quiet
+      - name: Generate docs and run tests
+        env:
+          OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
+          SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
+          TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
+          TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
+        run: |
+          cd Inkycal
+          echo "$PWD"
+          python3 -m venv venv
+          source venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install wheel
+          pip install -e ./
+          cd docsource && make html
+          make github
+          cd ..
+          #        cd inkycal/tests
+          #        wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
+          #        for f in *.py; do python3 "$f"; done
+          #        cd .. && cd ..
+          
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add docs
+          git commit -m "Update documentation"
+          git push --force --quiet
