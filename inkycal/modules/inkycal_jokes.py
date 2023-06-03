@@ -4,7 +4,7 @@
 iCanHazDadJoke module for InkyCal Project
 Special thanks to Erik Fredericks (@efredericks) for the template!
 
-Copyright by aceisace
+Copyright by aceinnolab
 """
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *

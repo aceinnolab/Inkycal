@@ -19,7 +19,7 @@ __description__ = "Inkycal is a python3 software for syncing icalendar events, w
 __packages__ = ["inkycal"]
 __author__ = "aceisace"
 __author_email__ = "aceisace63@yahoo.com"
-__url__ = "https://github.com/aceisace/Inkycal"
+__url__ = "https://github.com/aceinnolab/Inkycal"
 
 __install_requires__ = required
 

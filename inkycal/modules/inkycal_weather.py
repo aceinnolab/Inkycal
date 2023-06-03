@@ -2,7 +2,7 @@
 
 """
 Inkycal weather module
-Copyright by aceisace
+Copyright by aceinnolab
 """
 
 from inkycal.modules.template import inkycal_module

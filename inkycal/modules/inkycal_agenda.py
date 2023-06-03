@@ -2,7 +2,7 @@
 
 """
 Inkycal Agenda Module
-Copyright by aceisace
+Copyright by aceinnolab
 """
 
 import arrow

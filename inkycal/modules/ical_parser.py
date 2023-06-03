@@ -2,7 +2,7 @@
 
 """
 Inkycal iCalendar parsing module
-Copyright by aceisace
+Copyright by aceinnolab
 """
 import urllib
 import arrow

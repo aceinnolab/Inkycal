@@ -1,7 +1,7 @@
 #!python3
 """
 9.7" driver class
-Copyright by aceisace
+Copyright by aceinnolab
 """
 from subprocess import run
 from inkycal.custom import image_folder, top_level

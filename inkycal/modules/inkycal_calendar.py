@@ -2,7 +2,7 @@
 
 """
 Inkycal Calendar Module
-Copyright by aceisace
+Copyright by aceinnolab
 """
 
 # pylint: disable=logging-fstring-interpolation

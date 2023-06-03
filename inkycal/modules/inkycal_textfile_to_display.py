@@ -5,7 +5,7 @@ Textfile module for InkyCal Project
 Reads data from a plain .txt file and renders it on the display.
 If the content is too long, it will be truncated from the back until it fits
 
-Copyright by aceisace
+Copyright by aceinnolab
 """
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
