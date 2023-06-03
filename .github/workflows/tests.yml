@@ -28,10 +28,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install wheel
           pip install -e .
+          cd ..
 
       - name: Create Archive
         run: |
-          cd ..
           tar -czf workspace.tar.gz Inkycal
 
       - name: Save Workspace Archive
