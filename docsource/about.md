@@ -7,7 +7,7 @@ well even on the Raspberry Pi Zero. Inkycal even has a web-UI which takes
 care of adding your details! No more editing files, Yay :partying_face:
 
 The main idea behind Inkycal was to create a dashboard that blends in well
-in it's environment and shows you all information without you having to look
+in its environment and shows you all information without you having to look
 them up. Several built-in modules help you stay organised by:
 * providing the weather forecast for the full week or next few hours
 * getting the latest news from ATOM/RSS feeds
