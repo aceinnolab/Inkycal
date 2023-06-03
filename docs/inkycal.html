@@ -45,10 +45,64 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Inkycal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#display">Display</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#custom-functions">Custom functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#helper-classes">Helper classes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Inkycal</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#inkycal.main.Inkycal"><code class="docutils literal notranslate"><span class="pre">Inkycal</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.add_module"><code class="docutils literal notranslate"><span class="pre">Inkycal.add_module()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.calibrate"><code class="docutils literal notranslate"><span class="pre">Inkycal.calibrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.countdown"><code class="docutils literal notranslate"><span class="pre">Inkycal.countdown()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.remove_module"><code class="docutils literal notranslate"><span class="pre">Inkycal.remove_module()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.run"><code class="docutils literal notranslate"><span class="pre">Inkycal.run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.test"><code class="docutils literal notranslate"><span class="pre">Inkycal.test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#module-inkycal.display.display">Display</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#inkycal.display.display.Display"><code class="docutils literal notranslate"><span class="pre">Display</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.display.display.Display.calibrate"><code class="docutils literal notranslate"><span class="pre">Display.calibrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.display.display.Display.get_display_names"><code class="docutils literal notranslate"><span class="pre">Display.get_display_names()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.display.display.Display.get_display_size"><code class="docutils literal notranslate"><span class="pre">Display.get_display_size()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.display.display.Display.render"><code class="docutils literal notranslate"><span class="pre">Display.render()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#module-inkycal.custom.functions">Custom functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#inkycal.custom.functions.auto_fontsize"><code class="docutils literal notranslate"><span class="pre">auto_fontsize()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inkycal.custom.functions.draw_border"><code class="docutils literal notranslate"><span class="pre">draw_border()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inkycal.custom.functions.get_fonts"><code class="docutils literal notranslate"><span class="pre">get_fonts()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inkycal.custom.functions.get_system_tz"><code class="docutils literal notranslate"><span class="pre">get_system_tz()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inkycal.custom.functions.internet_available"><code class="docutils literal notranslate"><span class="pre">internet_available()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inkycal.custom.functions.text_wrap"><code class="docutils literal notranslate"><span class="pre">text_wrap()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inkycal.custom.functions.write"><code class="docutils literal notranslate"><span class="pre">write()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#module-inkycal.modules.ical_parser">Helper classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#inkycal.modules.ical_parser.iCalendar"><code class="docutils literal notranslate"><span class="pre">iCalendar</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.ical_parser.iCalendar.all_day"><code class="docutils literal notranslate"><span class="pre">iCalendar.all_day()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.ical_parser.iCalendar.clear_events"><code class="docutils literal notranslate"><span class="pre">iCalendar.clear_events()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.ical_parser.iCalendar.get_events"><code class="docutils literal notranslate"><span class="pre">iCalendar.get_events()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.ical_parser.iCalendar.get_system_tz"><code class="docutils literal notranslate"><span class="pre">iCalendar.get_system_tz()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.ical_parser.iCalendar.load_from_file"><code class="docutils literal notranslate"><span class="pre">iCalendar.load_from_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.ical_parser.iCalendar.load_url"><code class="docutils literal notranslate"><span class="pre">iCalendar.load_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.ical_parser.iCalendar.show_events"><code class="docutils literal notranslate"><span class="pre">iCalendar.show_events()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.ical_parser.iCalendar.sort"><code class="docutils literal notranslate"><span class="pre">iCalendar.sort()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#inkycal.modules.inky_image.Inkyimage"><code class="docutils literal notranslate"><span class="pre">Inkyimage</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.inky_image.Inkyimage.autoflip"><code class="docutils literal notranslate"><span class="pre">Inkyimage.autoflip()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.inky_image.Inkyimage.clear"><code class="docutils literal notranslate"><span class="pre">Inkyimage.clear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.inky_image.Inkyimage.flip"><code class="docutils literal notranslate"><span class="pre">Inkyimage.flip()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.inky_image.Inkyimage.load"><code class="docutils literal notranslate"><span class="pre">Inkyimage.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.inky_image.Inkyimage.merge"><code class="docutils literal notranslate"><span class="pre">Inkyimage.merge()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.inky_image.Inkyimage.preview"><code class="docutils literal notranslate"><span class="pre">Inkyimage.preview()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.inky_image.Inkyimage.remove_alpha"><code class="docutils literal notranslate"><span class="pre">Inkyimage.remove_alpha()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.inky_image.Inkyimage.resize"><code class="docutils literal notranslate"><span class="pre">Inkyimage.resize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.inky_image.Inkyimage.to_palette"><code class="docutils literal notranslate"><span class="pre">Inkyimage.to_palette()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About Inkycal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev_doc.html">Developer documentation</a></li>
@@ -79,17 +133,599 @@
            <div itemprop="articleBody">
              
   <img alt="../Gallery/logo.png" class="align-center" src="../Gallery/logo.png" />
-<section id="inkycal">
-<h1>Inkycal<a class="headerlink" href="#inkycal" title="Permalink to this heading"></a></h1>
+<section id="module-inkycal.main">
+<span id="inkycal"></span><h1>Inkycal<a class="headerlink" href="#module-inkycal.main" title="Permalink to this heading"></a></h1>
+<p>Main class for inkycal Project
+Copyright by aceinnolab</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="inkycal.main.Inkycal">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">inkycal.main.</span></span><span class="sig-name descname"><span class="pre">Inkycal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal" title="Permalink to this definition"></a></dt>
+<dd><p>Inkycal main class</p>
+<p>Main class of Inkycal, test and run the main Inkycal program.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>settings_path = str -&gt; the full path to your settings.json file
+if no path is given, tries looking for settings file in /boot folder.</p></li>
+<li><p>render = bool (True/False) -&gt; show the image on the epaper display?</p></li>
+</ul>
+</dd>
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>optimize = True/False. Reduce number of colours on the generated image
+to improve rendering on E-Papers. Set this to False for 9.7” E-Paper.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.main.Inkycal.add_module">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal.add_module" title="Permalink to this definition"></a></dt>
+<dd><p>registers a third party module for inkycal.</p>
+<p>Uses the full filepath of the third party module to check if it is inside
+the correct folder, then checks if it’s an inkycal module. Lastly, the
+init files in /inkycal and /inkycal/modules are updated to allow using
+the new module.</p>
+<dl>
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>filepath: The full filepath of the third party module. Modules should be
+in Inkycal/inkycal/modules.</p></li>
+</ul>
+</dd>
+<dt>Usage:</dt><dd><ul>
+<li><p>download a third-party module. The exact link is provided by the
+developer of that module and starts with
+<cite>https://raw.githubusercontent.com/…</cite></p>
+<p>enter the following in bash to download a module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd Inkycal/inkycal/modules #navigate to modules folder in inkycal
+$ wget https://raw.githubusercontent.com/...     #download the module
+</pre></div>
+</div>
+<p>then register it with this function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">inkycal</span> <span class="kn">import</span> <span class="n">Inkycal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Inkycal</span><span class="o">.</span><span class="n">add_module</span><span class="p">(</span><span class="s1">&#39;/full/path/to/the/module/in/inkycal/modules.py&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.main.Inkycal.calibrate">
+<span class="sig-name descname"><span class="pre">calibrate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal.calibrate" title="Permalink to this definition"></a></dt>
+<dd><p>Calibrate the E-Paper display</p>
+<p>Uses the Display class to calibrate the display with the default of 3
+cycles. After a refresh cycle, a new image is generated and shown.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.main.Inkycal.countdown">
+<span class="sig-name descname"><span class="pre">countdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interval_mins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal.countdown" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the remaining time in seconds until next display update</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.main.Inkycal.remove_module">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remove_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal.remove_module" title="Permalink to this definition"></a></dt>
+<dd><p>unregisters an inkycal module.</p>
+<p>Looks for given filename.py in /modules folder, removes entries of that
+module in init files inside /inkycal and /inkycal/modules</p>
+<dl>
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>filename: The filename (with .py ending) of the module which should be
+unregistered. e.g. <cite>‘mymodule.py’</cite></p></li>
+<li><p>remove_file: -&gt;bool (True/False). If set to True, the module is deleted
+after unregistering it, else it remains in the /modules folder</p></li>
+</ul>
+</dd>
+<dt>Usage:</dt><dd><ul>
+<li><p>Look for the module in Inkycal/inkycal/modules which should be removed.
+Only the filename (with .py) is required, not the full path.</p>
+<p>Use this function to unregister the module from inkycal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">inkycal</span> <span class="kn">import</span> <span class="n">Inkycal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Inkycal</span><span class="o">.</span><span class="n">remove_module</span><span class="p">(</span><span class="s1">&#39;mymodule.py&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.main.Inkycal.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal.run" title="Permalink to this definition"></a></dt>
+<dd><p>Runs main program in nonstop mode.</p>
+<p>Uses an infinity loop to run Inkycal nonstop. Inkycal generates the image
+from all modules, assembles them in one image, refreshed the E-Paper and
+then sleeps until the next sheduled update.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.main.Inkycal.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal.test" title="Permalink to this definition"></a></dt>
+<dd><p>Tests if Inkycal can run without issues.</p>
+<p>Attempts to import module names from settings file. Loads the config
+for each module and initializes the module. Tries to run the module and
+checks if the images could be generated correctly.</p>
+<p>Generated images can be found in the /images folder of Inkycal.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="display">
-<h1>Display<a class="headerlink" href="#display" title="Permalink to this heading"></a></h1>
+<section id="module-inkycal.display.display">
+<span id="display"></span><h1>Display<a class="headerlink" href="#module-inkycal.display.display" title="Permalink to this heading"></a></h1>
+<p>Inkycal ePaper driving functions
+Copyright by aceinnolab</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="inkycal.display.display.Display">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">inkycal.display.display.</span></span><span class="sig-name descname"><span class="pre">Display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epaper_model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.display.display.Display" title="Permalink to this definition"></a></dt>
+<dd><p>Display class for inkycal</p>
+<p>Creates an instance of the driver for the selected E-Paper model and allows
+rendering images and calibrating the E-Paper display</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>epaper_model: The name of your E-Paper model.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.display.display.Display.calibrate">
+<span class="sig-name descname"><span class="pre">calibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cycles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.display.display.Display.calibrate" title="Permalink to this definition"></a></dt>
+<dd><p>Calibrates the display to retain crisp colours</p>
+<p>Flushes the selected display several times with it’s supported colours,
+removing any previous effects of ghosting.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>cycles: -&gt; int. The number of times to flush the display with it’s
+supported colours.</p></li>
+</ul>
+</dd>
+</dl>
+<p>It’s recommended to calibrate the display after every 6 display updates
+for best results. For black-white only displays, calibration is less
+critical, but not calibrating regularly results in grey-ish text.</p>
+<p>Please note that calibration takes a while to complete. 3 cycles may
+take 10 minutes on black-white E-Papers while it takes 20 minutes on coloured
+E-Paper displays.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.display.display.Display.get_display_names">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_display_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#inkycal.display.display.Display.get_display_names" title="Permalink to this definition"></a></dt>
+<dd><p>Prints all supported E-Paper models.</p>
+<p>Fetches all filenames in driver folder and prints them on the console.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Printed version of all supported Displays.</p>
+</dd>
+</dl>
+<p>Use one of the models to intilialize the Display class in order to gain
+access to the E-Paper.</p>
+<p>You can use this function directly without creating the Display class:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Display</span><span class="o">.</span><span class="n">get_display_names</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.display.display.Display.get_display_size">
+<span class="sig-name descname"><span class="pre">get_display_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#inkycal.display.display.Display.get_display_size" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the size of the display as a tuple -&gt; (width, height)</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>model_name: str -&gt; The name of the E-Paper display to get it’s size.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><p>(width, height) -&gt;tuple, showing the size of the display</p>
+</dd>
+</dl>
+<p>You can use this function directly without creating the Display class:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Display</span><span class="o">.</span><span class="n">get_display_size</span><span class="p">(</span><span class="s1">&#39;model_name&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.display.display.Display.render">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">im_black:</span> <span class="pre">~PIL.Image.Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">im_colour=&lt;class</span> <span class="pre">'PIL.Image.Image'&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#inkycal.display.display.Display.render" title="Permalink to this definition"></a></dt>
+<dd><p>Renders an image on the selected E-Paper display.</p>
+<p>Initlializes the E-Paper display, sends image data and executes command
+to update the display.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>im_black: The image for the black-pixels. Anything in this image that is
+black is rendered as black on the display. This is required and ideally
+should be a black-white image.</p></li>
+<li><p>im_colour: For E-Paper displays supporting colour, a separate image,
+ideally black-white is required for the coloured pixels. Anything that is
+black in this image will show up as either red/yellow.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Rendering an image for black-white E-Paper displays:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;path/to/file.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s1">&#39;my_black_white_display&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">display</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">sample_image</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Rendering black-white on coloured E-Paper displays:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;path/to/file.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s1">&#39;my_coloured_display&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">display</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">sample_image</span><span class="p">,</span> <span class="n">sample_image</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Rendering coloured image where 2 images are available:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">black_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;path/to/file.png&#39;</span><span class="p">)</span> <span class="c1"># black pixels</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">colour_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;path/to/file.png&#39;</span><span class="p">)</span> <span class="c1"># coloured pixels</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s1">&#39;my_coloured_display&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">display</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">black_image</span><span class="p">,</span> <span class="n">colour_image</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="custom-functions">
-<h1>Custom functions<a class="headerlink" href="#custom-functions" title="Permalink to this heading"></a></h1>
+<section id="module-inkycal.custom.functions">
+<span id="custom-functions"></span><h1>Custom functions<a class="headerlink" href="#module-inkycal.custom.functions" title="Permalink to this heading"></a></h1>
+<p>Inkycal custom-functions for ease-of-use</p>
+<p>Copyright by aceinnolab</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="inkycal.custom.functions.auto_fontsize">
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">auto_fontsize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">font</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_height</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.auto_fontsize" title="Permalink to this definition"></a></dt>
+<dd><p>Scales a given font to 80% of max_height.</p>
+<p>Gets the height of a font and scales it until 80% of the max_height
+is filled.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>font: A PIL Font object.</p></li>
+<li><p>max_height: An integer representing the height to adjust the font to
+which the given font should be scaled to.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><p>A PIL font object with modified height.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inkycal.custom.functions.draw_border">
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">draw_border</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shrinkage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.1,</span> <span class="pre">0.1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.draw_border" title="Permalink to this definition"></a></dt>
+<dd><p>Draws a border at given coordinates.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>image: The image on which the border should be drawn (usually im_black or
+im_colour.</p></li>
+<li><p>xy: Tuple representing the top-left corner of the border e.g. (32, 100)
+where 32 is the x co-ordinate and 100 is the y-coordinate.</p></li>
+<li><p>size: Size of the border as a tuple -&gt; (width, height).</p></li>
+<li><p>radius: Radius of the corners, where 0 = plain rectangle, 5 = round corners.</p></li>
+<li><p>thickness: Thickness of the border in pixels.</p></li>
+<li><p>shrinkage: A tuple containing decimals presenting a percentage of shrinking
+-&gt; (width_shrink_percentage, height_shrink_percentage).
+e.g. (0.1, 0.2) ~ shrinks the width of border by 10%, shrinks height of
+border by 20%</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inkycal.custom.functions.get_fonts">
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">get_fonts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.get_fonts" title="Permalink to this definition"></a></dt>
+<dd><p>Print all available fonts by name.</p>
+<p>Searches the /font folder in Inkycal and displays all fonts found in
+there.</p>
+<dl>
+<dt>Returns:</dt><dd><p>printed output of all available fonts. To access a fontfile, use the
+fonts dictionary to access it.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fonts</span><span class="p">[</span><span class="s1">&#39;fontname&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>To use a font, use the following sytax, where fontname is one of the
+printed fonts of this function:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">fonts</span><span class="p">[</span><span class="s1">&#39;fontname&#39;</span><span class="p">],</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inkycal.custom.functions.get_system_tz">
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">get_system_tz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.get_system_tz" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the system-timezone</p>
+<p>Gets the timezone set by the system.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>A timezone if a system timezone was found.</p></li>
+<li><p>None if no timezone was found.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The extracted timezone can be used to show the local time instead of UTC. e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">arrow</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arrow</span><span class="o">.</span><span class="n">now</span><span class="p">())</span> <span class="c1"># returns non-timezone-aware time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arrow</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">get_system_tz</span><span class="p">())</span> <span class="c1"># prints timezone aware time.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inkycal.custom.functions.internet_available">
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">internet_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.internet_available" title="Permalink to this definition"></a></dt>
+<dd><p>checks if the internet is available.</p>
+<p>Attempts to connect to google.com with a timeout of 5 seconds to check
+if the network can be reached.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>True if connection could be established.</p></li>
+<li><p>False if the internet could not be reached.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returned output can be used to add a check for internet availability:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">internet_available</span><span class="p">():</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#...do something that requires internet connectivity</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inkycal.custom.functions.text_wrap">
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">text_wrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.text_wrap" title="Permalink to this definition"></a></dt>
+<dd><p>Splits a very long text into smaller parts</p>
+<p>Splits a long text to smaller lines which can fit in a line with max_width.
+Uses a Font object for more accurate calculations.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>text -&gt; Text as a string</p></li>
+<li><p>font: A PIL font object which is used to calculate the size.</p></li>
+<li><p>max_width: int-&gt; a width in pixels defining the maximum width before
+splitting the text into the next chunk.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><p>A list containing chunked strings of the full text.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inkycal.custom.functions.write">
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.write" title="Permalink to this definition"></a></dt>
+<dd><p>Writes text on a image.</p>
+<p>Writes given text at given position on the specified image.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>image: The image to draw this text on, usually im_black or im_colour.</p></li>
+<li><p>xy: tuple-&gt; (x,y) representing the x and y co-ordinate.</p></li>
+<li><p>box_size: tuple -&gt; (width, height) representing the size of the text box.</p></li>
+<li><p>text: string, the actual text to add on the image.</p></li>
+<li><p>font: A PIL Font object e.g.
+ImageFont.truetype(fonts[‘fontname’], size = 10).</p></li>
+</ul>
+</dd>
+<dt>Args: (optional)</dt><dd><ul class="simple">
+<li><p>alignment: alignment of the text, use ‘center’, ‘left’, ‘right’.</p></li>
+<li><p>autofit: bool (True/False). Automatically increases fontsize to fill in
+as much of the box-height as possible.</p></li>
+<li><p>colour: black by default, do not change as it causes issues with rendering
+on e-Paper.</p></li>
+<li><p>rotation: Rotate the text with the text-box by a given angle anti-clockwise.</p></li>
+<li><p>fill_width: Decimal representing a percentage e.g. 0.9 # 90%. Fill a
+maximum of 90% of the size of the full width of text-box.</p></li>
+<li><p>fill_height: Decimal representing a percentage e.g. 0.9 # 90%. Fill a
+maximum of 90% of the size of the full height of the text-box.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="helper-classes">
-<h1>Helper classes<a class="headerlink" href="#helper-classes" title="Permalink to this heading"></a></h1>
+<section id="module-inkycal.modules.ical_parser">
+<span id="helper-classes"></span><h1>Helper classes<a class="headerlink" href="#module-inkycal.modules.ical_parser" title="Permalink to this heading"></a></h1>
+<p>Inkycal iCalendar parsing module
+Copyright by aceinnolab</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="inkycal.modules.ical_parser.iCalendar">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">inkycal.modules.ical_parser.</span></span><span class="sig-name descname"><span class="pre">iCalendar</span></span><a class="headerlink" href="#inkycal.modules.ical_parser.iCalendar" title="Permalink to this definition"></a></dt>
+<dd><p>iCalendar parsing moudule for inkycal.
+Parses events from given iCalendar URLs / paths</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.ical_parser.iCalendar.all_day">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_day</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.ical_parser.iCalendar.all_day" title="Permalink to this definition"></a></dt>
+<dd><p>Check if an event is an all day event.
+Returns True if event is all day, else False</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.ical_parser.iCalendar.clear_events">
+<span class="sig-name descname"><span class="pre">clear_events</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.ical_parser.iCalendar.clear_events" title="Permalink to this definition"></a></dt>
+<dd><p>clear previously parsed events</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.ical_parser.iCalendar.get_events">
+<span class="sig-name descname"><span class="pre">get_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeline_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeline_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timezone</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.ical_parser.iCalendar.get_events" title="Permalink to this definition"></a></dt>
+<dd><p>Input an arrow (time) object for:
+* the beginning of timeline (events have to end after this time)
+* the end of the timeline (events have to begin before this time)
+* timezone if events should be formatted to local time
+Returns a list of events sorted by date</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.ical_parser.iCalendar.get_system_tz">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_system_tz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.ical_parser.iCalendar.get_system_tz" title="Permalink to this definition"></a></dt>
+<dd><p>Get the timezone set by the system</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.ical_parser.iCalendar.load_from_file">
+<span class="sig-name descname"><span class="pre">load_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.ical_parser.iCalendar.load_from_file" title="Permalink to this definition"></a></dt>
+<dd><p>Input a string or list of strings containing valid iCalendar filepaths
+example: ‘path1’ (single file) OR [‘path1’, ‘path2’] (multiple files)
+returns a list of iCalendars as string (raw)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.ical_parser.iCalendar.load_url">
+<span class="sig-name descname"><span class="pre">load_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.ical_parser.iCalendar.load_url" title="Permalink to this definition"></a></dt>
+<dd><p>Input a string or list of strings containing valid iCalendar URLs
+example: ‘URL1’ (single url) OR [‘URL1’, ‘URL2’] (multiple URLs)
+add username and password to access protected files</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.ical_parser.iCalendar.show_events">
+<span class="sig-name descname"><span class="pre">show_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'DD</span> <span class="pre">MMM</span> <span class="pre">YY</span> <span class="pre">HH:mm'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.ical_parser.iCalendar.show_events" title="Permalink to this definition"></a></dt>
+<dd><p>print all parsed events in a more readable way
+use the format (fmt) parameter to specify the date format
+see <a class="reference external" href="https://arrow.readthedocs.io/en/latest/#supported-tokens">https://arrow.readthedocs.io/en/latest/#supported-tokens</a>
+for more info tokens</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.ical_parser.iCalendar.sort">
+<span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.ical_parser.iCalendar.sort" title="Permalink to this definition"></a></dt>
+<dd><p>Sort all parsed events in order of beginning time</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-inkycal.modules.inky_image"></span><p>Custom image class for Inkycal Project
+Takes care of handling images. Made to be used by other modules to handle
+images.</p>
+<p>Copyright by aceinnolab</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="inkycal.modules.inky_image.Inkyimage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">inkycal.modules.inky_image.</span></span><span class="sig-name descname"><span class="pre">Inkyimage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.inky_image.Inkyimage" title="Permalink to this definition"></a></dt>
+<dd><p>Custom Imge class written for commonly used image operations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.inky_image.Inkyimage.autoflip">
+<span class="sig-name descname"><span class="pre">autoflip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layout</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.inky_image.Inkyimage.autoflip" title="Permalink to this definition"></a></dt>
+<dd><p>flips the image automatically to the given layout.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>layout:-&gt; str. Choose <cite>horizontal</cite> or <cite>vertical</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Checks the image’s width and height.</p>
+<p>In horizontal mode, the image is flipped if the image height is greater
+than the image width.</p>
+<p>In vertical mode, the image is flipped if the image width is greater
+than the image height.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.inky_image.Inkyimage.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.inky_image.Inkyimage.clear" title="Permalink to this definition"></a></dt>
+<dd><p>Removes currently saved image if present.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.inky_image.Inkyimage.flip">
+<span class="sig-name descname"><span class="pre">flip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.inky_image.Inkyimage.flip" title="Permalink to this definition"></a></dt>
+<dd><p>Flips the image by the given angle.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>angle:-&gt;int. A multiple of 90, e.g. 90, 180, 270, 360.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.inky_image.Inkyimage.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.inky_image.Inkyimage.load" title="Permalink to this definition"></a></dt>
+<dd><p>loads an image from a URL or filepath.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>path:The full path or url of the image file
+e.g. <cite>https://sample.com/logo.png</cite> or <cite>/home/pi/Downloads/nice_pic.png</cite></p></li>
+</ul>
+</dd>
+<dt>Raises:</dt><dd><ul class="simple">
+<li><p>FileNotFoundError: This Exception is raised when the file could not be
+found.</p></li>
+<li><p>OSError: A OSError is raised when the URL doesn’t point to the correct
+file-format, i.e. is not an image</p></li>
+<li><p>TypeError: if the URLS doesn’t start with htpp</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.inky_image.Inkyimage.merge">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.inky_image.Inkyimage.merge" title="Permalink to this definition"></a></dt>
+<dd><p>Merges two images into one.</p>
+<p>Replaces white pixels of the first image with transparent ones. Then pastes
+the first image on the second one.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>image1: A PIL Image object in ‘RGBA’ mode.</p></li>
+<li><p>image2: A PIL Image object in ‘RGBA’ mode.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>A single image.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.inky_image.Inkyimage.preview">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">preview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.inky_image.Inkyimage.preview" title="Permalink to this definition"></a></dt>
+<dd><p>“Previews an image on gpicview (only works on Rapsbian with Desktop).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.inky_image.Inkyimage.remove_alpha">
+<span class="sig-name descname"><span class="pre">remove_alpha</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.inky_image.Inkyimage.remove_alpha" title="Permalink to this definition"></a></dt>
+<dd><p>Removes transparency if image has transparency.</p>
+<p>Checks if an image has an alpha band and replaces the transparency with
+white pixels.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.inky_image.Inkyimage.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.inky_image.Inkyimage.resize" title="Permalink to this definition"></a></dt>
+<dd><p>Resize an image to desired width or height</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.modules.inky_image.Inkyimage.to_palette">
+<span class="sig-name descname"><span class="pre">to_palette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">palette</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dither</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.inky_image.Inkyimage.to_palette" title="Permalink to this definition"></a></dt>
+<dd><p>Maps an image to a given colour palette.</p>
+<p>Maps each pixel from the image to a colour from the palette.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>palette: A supported token. (see below)</p></li>
+<li><p>dither:-&gt;bool. Use dithering? Set to <cite>False</cite> for solid colour fills.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>two images: one for the coloured band and one for the black band.</p></li>
+</ul>
+</dd>
+<dt>Raises:</dt><dd><ul class="simple">
+<li><p>ValueError if palette token is not supported</p></li>
+</ul>
+</dd>
+</dl>
+<p>Supported palette tokens:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;bwr&#39;</span> <span class="c1"># black-white-red</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;bwy&#39;</span> <span class="c1"># black-white-yellow</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;bw&#39;</span>  <span class="c1"># black-white</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 
