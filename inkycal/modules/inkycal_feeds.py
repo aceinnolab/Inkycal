@@ -2,7 +2,7 @@
 
 """
 Feeds module for InkyCal Project
-Copyright by aceisace
+Copyright by aceinnolab
 """
 import re
 

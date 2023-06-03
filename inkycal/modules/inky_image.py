@@ -6,7 +6,7 @@ Custom image class for Inkycal Project
 Takes care of handling images. Made to be used by other modules to handle
 images.
 
-Copyright by aceisace
+Copyright by aceinnolab
 """
 import logging
 import os

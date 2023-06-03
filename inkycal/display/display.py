@@ -1,6 +1,6 @@
 """
 Inkycal ePaper driving functions
-Copyright by aceisace
+Copyright by aceinnolab
 """
 import asyncio
 import os

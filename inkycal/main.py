@@ -3,7 +3,7 @@
 
 """
 Main class for inkycal Project
-Copyright by aceisace
+Copyright by aceinnolab
 """
 
 import glob

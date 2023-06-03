@@ -2,7 +2,7 @@
 
 """
 Inkycal Slideshow Module
-Copyright by aceisace
+Copyright by aceinnolab
 """
 import glob
 

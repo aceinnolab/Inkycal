@@ -3,7 +3,7 @@
 """
 Inkycal-server module for Inkycal Project
 by Aterju (https://inkycal.robertsirre.nl/)
-Copyright by aceisace
+Copyright by aceinnolab
 """
 
 import requests
