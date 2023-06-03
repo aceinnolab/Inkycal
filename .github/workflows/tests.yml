@@ -104,10 +104,12 @@ jobs:
         run: |
           tar -xzf workspace.tar.gz
 
-      - name: Publish Docs
+      - name: Publish Docs to Github Pages
         run: |
+          echo "$PWD"
+          ls
           source venv/bin/activate
-          cp -R docsource/_build/html/. docs/
+          cp -r docsource/_build/html/. docs/
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
           git add docs
