@@ -53,4 +53,4 @@ jobs:
         git add -A
         git commit -m "Update documentation"
         cd ..
-        git push --force --quiet --set-upstream origin main
+        git push --force --quiet --set-upstream "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" main
