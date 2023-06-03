@@ -21,7 +21,7 @@ jobs:
 
     - name: Clone repo
       run: |
-        git clone --single-branch https://github.com/aceinnolab/Inkycal
+        git clone https://github.com/aceinnolab/Inkycal
     - name: Creating virtual environment generate docs and install dependencies
 
       run: |
