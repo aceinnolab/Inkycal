@@ -1,5 +1,6 @@
-.. image:: ../Gallery/logo.png
-   :align: center
+.. image:: https://raw.githubusercontent.com/aceisace/Inkycal/assets/Repo/logo.png
+    :alt: logo
+    :align: center
 
 Inkycal
 ===========================
