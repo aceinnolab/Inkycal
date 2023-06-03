@@ -20,20 +20,18 @@ jobs:
     - name: Clone repo
       run: |
         git clone --single-branch https://github.com/aceinnolab/Inkycal
-    - name: Creating virtual environment
+    - name: Creating virtual environment and install dependencies
       run: |
         cd Inkycal
+        echo "$PWD"
         python3 -m venv venv
         source venv/bin/activate
         python -m pip install --upgrade pip
-    - name: Install dependencies
-      run: |
         pip install wheel
         pip install -e ./
     - name: generate docs
       run: |
-        cd docsource
-        make html
+        cd docsource && make html
     - name: Deploy Docs to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
