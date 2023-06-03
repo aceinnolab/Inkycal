@@ -46,6 +46,8 @@ jobs:
         TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
         TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
       run: |
+        cd ..
+        echo "$PWD"
         cd inkycal/tests
         wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
         for f in *.py; do python3 "$f"; done
