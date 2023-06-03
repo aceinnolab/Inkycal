@@ -61,8 +61,9 @@ jobs:
           TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
           TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
         run: |
+          echo "$PWD"
           source venv/bin/activate
-          cd inkycal/tests
+          cd Inkycal/tests
           wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
           for f in *.py; do python3 "$f"; done
 
@@ -84,7 +85,8 @@ jobs:
       - name: Generate Docs
         run: |
           source venv/bin/activate
-          cd docsource
+          echo "$PWD"
+          cd Inkycal/docsource
           make html
 
   publish-docs:
@@ -104,8 +106,9 @@ jobs:
 
       - name: Publish Docs
         run: |
+          echo "$PWD"
           source venv/bin/activate
-          cp -R docsource/_build/html/. docs/
+          cp -R Inkycal/docsource/_build/html/. docs/
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
           git add docs
