@@ -5,8 +5,8 @@
 
 Inkycal documentation
 ======================
-.. image:: ../Gallery/logo.png
-   :align: center
+.. image:: https://github.com/aceinnolab/Inkycal/blob/assets/Repo/logo.png
+    :alt: logo
 
 .. toctree::
    :maxdepth: 2
