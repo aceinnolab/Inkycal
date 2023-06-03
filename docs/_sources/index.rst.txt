@@ -5,7 +5,7 @@
 
 Inkycal documentation
 ======================
-.. image:: https://github.com/aceinnolab/Inkycal/blob/assets/Repo/logo.png
+.. image:: https://raw.githubusercontent.com/aceisace/Inkycal/assets/Repo/logo.png
     :alt: logo
 
 .. toctree::
