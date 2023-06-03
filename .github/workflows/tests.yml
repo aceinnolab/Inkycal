@@ -46,7 +46,7 @@ jobs:
         git init
         git add -A
         git commit -m "Update documentation"
-        git push --force --quiet "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
+        git push --force --quiet --set-upstream https://github.com/aceinnolab/Inkycal main
     - name: Setup test environment and run tests
       env:
         OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
