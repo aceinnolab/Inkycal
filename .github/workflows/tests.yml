@@ -39,7 +39,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: workspace
-          path: workspace.tar.gz
+          path: artefacts/workspace.tar.gz
 
   test:
     name: Run Tests
