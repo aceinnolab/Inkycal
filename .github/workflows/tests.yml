@@ -109,10 +109,10 @@ jobs:
           echo "$PWD"
           ls
           source venv/bin/activate
-          cd docs 
+          cd docsource 
           echo "$PWD"
           ls
-          make html && cd ..
+          make github && cd ..
           echo "$PWD"
           ls
           cp -r docsource/_build/html/. docs/
