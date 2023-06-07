@@ -34,3 +34,4 @@ sphinx==6.2.1
 sphinxemoji==0.2.0
 sphinx-rtd-theme==1.2.1
 recommonmark==0.7.1
+cryptography==40.0.2
