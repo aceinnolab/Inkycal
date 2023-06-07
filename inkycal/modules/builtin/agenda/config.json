@@ -1,0 +1,30 @@
+{
+  "parameters": [
+    {
+      "name": "ical_urls",
+      "description": "iCalendar URL/s, separate multiple ones with a comma",
+      "type": "str",
+      "required": false
+    },
+    {
+      "name": "ical_files",
+      "description": "iCalendar filepaths, separated with a comma",
+      "type": "str",
+      "required": false
+    },
+    {
+      "name": "date_format",
+      "description": "Use an arrow-supported token for custom date formatting.\nSee https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. ddd D MMM.",
+      "type": "str",
+      "required": false,
+      "default": "ddd D MMM"
+    },
+    {
+      "name": "time_format",
+      "description": "Use an arrow-supported token for custom time formatting.\nSee https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm.",
+      "type": "str",
+      "required": false,
+      "default": "HH:mm"
+    }
+  ]
+}

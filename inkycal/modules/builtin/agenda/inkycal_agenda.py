@@ -3,83 +3,72 @@
 Inkycal Agenda Module
 Copyright by aceinnolab
 """
+import json
 
 import arrow
 
 from inkycal.custom import *
 from inkycal.custom.ical_parser import iCalendar
+from inkycal.custom.layout_generator import LayoutGenerator
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
 
 
+class ConfigLoader:
+    def load_config(self, config_file):
+        with open(config_file) as file:
+            config = json.load(file)
+        return config
+
+
+# TODO: use default if parameter in settings equals none
+
 class Agenda(inkycal_module):
-    """Agenda class
-    Create agenda and show events from given icalendars
-    """
+    """Agenda - Display upcoming events from given iCalendars"""
 
-    name = "Agenda - Display upcoming events from given iCalendars"
+    def __init__(self, config, ical_urls: str or None = None, ical_files: str or None = None,
+                 date_format: str = "ddd D MMM", time_format: str = "HH:mm") -> None:
+        """Agenda - Display upcoming events from given iCalendars.
 
-    requires = {
-        "ical_urls": {
-            "label": "iCalendar URL/s, separate multiple ones with a comma",
-        },
+        Args:
+            config:
+                The default inkycal module config.
+            ical_urls:
+                iCalendar URL/s, separate multiple ones with a comma.
+            ical_files:
+                iCalendar filepaths, separated with a comma.
+            date_format:
+                Use an arrow-supported token for custom date formatting.
+                See https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. ddd D MMM.
+            time_format:
+                Use an arrow-supported token for custom time formatting.
+                See https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm.
 
-    }
-
-    optional = {
-        "ical_files": {
-            "label": "iCalendar filepaths, separated with a comma",
-        },
-
-        "date_format": {
-            "label": "Use an arrow-supported token for custom date formatting " +
-                     "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. ddd D MMM",
-            "default": "ddd D MMM",
-        },
-
-        "time_format": {
-            "label": "Use an arrow-supported token for custom time formatting " +
-                     "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm",
-            "default": "HH:mm",
-        },
-
-    }
-
-    def __init__(self, config):
-        """Initialize inkycal_agenda module"""
-
+        Returns:
+            None.
+        """
         super().__init__(config)
-
-        config = config['config']
-
-        # Check if all required parameters are present
-        for param in self.requires:
-            if param not in config:
-                raise Exception(f'config is missing {param}')
-
-        # module specific parameters
-        self.date_format = config['date_format']
-        self.time_format = config['time_format']
-        self.language = config['language']
-
-        # Check if ical_files is an empty string
-        if config['ical_urls'] and isinstance(config['ical_urls'], str):
-            self.ical_urls = config['ical_urls'].split(',')
-        else:
-            self.ical_urls = config['ical_urls']
-
-        # Check if ical_files is an empty string
-        if config['ical_files'] and isinstance(config['ical_files'], str):
-            self.ical_files = config['ical_files'].split(',')
-        else:
-            self.ical_files = config['ical_files']
+        self.ical_urls = ical_urls
+        self.ical_files = ical_files
+        self.date_format = date_format
+        self.time_format = time_format
 
         # Additional config
         self.timezone = get_system_tz()
 
         # give an OK message
         print(f'{__name__} loaded')
+
+    def initialize(self, config, module_config):
+        # required parameters -> config["ical_urls"] , optional parameters: config.get("ical_urls")
+        ical_urls = module_config.get("ical_urls")
+        ical_files = module_config.get("ical_files")
+        date_format = module_config.get("date_format")
+        time_format = module_config.get("time_format")
+
+        return self.__class__(config, ical_urls=ical_urls, ical_files=ical_files, date_format=date_format,
+                              time_format=time_format)
 
     def generate_image(self):
         """Generate image for this module"""
@@ -108,9 +97,10 @@ class Agenda(inkycal_module):
 
         # Create a list of dates for the next days
         agenda_events = [
-            {'begin': today.shift(days=+_),
-             'title': today.shift(days=+_).format(
-                 self.date_format, locale=self.language)}
+            {
+                'begin': today.shift(days=+_),
+                'title': today.shift(days=+_).format(
+                    self.date_format, locale=self.language)}
             for _ in range(max_lines)]
 
         # Load icalendar from config
@@ -227,3 +217,9 @@ class Agenda(inkycal_module):
 
 if __name__ == '__main__':
     print(f'running {__name__} in standalone mode')
+    keys = Agenda.__init__.__code__.co_varnames[1:]
+    key_docs = {
+        key: get_param_docstring(Agenda, key)
+        for key in keys
+    }
+    b = 1

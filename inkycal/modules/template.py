@@ -1,6 +1,9 @@
 #!python3
 
 import abc
+import inspect
+import json
+
 from inkycal.custom import *
 
 
@@ -18,7 +21,7 @@ class inkycal_module(metaclass=abc.ABCMeta):
 
         # Initializes base module
         # sets properties shared amongst all sections
-        self.config = conf = config['config']
+        self.config = conf = config
         self.width, self.height = conf['size']
 
         self.padding_left = self.padding_right = conf["padding_x"]
@@ -28,6 +31,18 @@ class inkycal_module(metaclass=abc.ABCMeta):
         self.font = ImageFont.truetype(
             fonts['NotoSansUI-Regular'], size=self.fontsize)
 
+    @classmethod
+    def get_config(cls):
+        derived_class = inspect.getmodule(cls).__name__
+        config_path = "/".join(os.path.abspath(derived_class).split("/")[:-1])+"/config.json"
+        if not os.path.exists(config_path):
+            raise FileNotFoundError("no config.json file in this module's folder")
+
+        # Read and parse the contents of the config file
+        with open(config_path) as config_file:
+            config = json.load(config_file)
+            return config["parameters"]
+
     def set(self, help=False, **kwargs):
         """Set attributes of class, e.g. class.set(key=value)
         see that can be changed by setting help to True
@@ -36,7 +51,7 @@ class inkycal_module(metaclass=abc.ABCMeta):
         options = [_ for _ in lst if not _.startswith('_')]
         if 'logger' in options: options.remove('logger')
 
-        if help == True:
+        if help:
             print('The following can be configured:')
             print(options)
 
@@ -52,41 +67,8 @@ class inkycal_module(metaclass=abc.ABCMeta):
                 print(f'{key} does not exist')
                 pass
 
-        # Check if validation has been implemented
-        try:
-            self._validate()
-        except AttributeError:
-            print('no validation implemented')
-
     @abc.abstractmethod
     def generate_image(self):
         # Generate image for this module with specified parameters
         raise NotImplementedError(
             'The developers were too lazy to implement this function')
-
-    @classmethod
-    def get_config(cls):
-        # Do not change
-        # Get the config of this module for the web-ui
-        try:
-
-            if hasattr(cls, 'requires'):
-                for each in cls.requires:
-                    if not "label" in cls.requires[each]:
-                        raise Exception(f"no label found for {each}")
-
-            if hasattr(cls, 'optional'):
-                for each in cls.optional:
-                    if not "label" in cls.optional[each]:
-                        raise Exception(f"no label found for {each}")
-
-            conf = {
-                "name": cls.__name__,
-                "name_str": cls.name,
-                "requires": cls.requires if hasattr(cls, 'requires') else {},
-                "optional": cls.optional if hasattr(cls, 'optional') else {},
-            }
-            return conf
-        except:
-            raise Exception(
-                'Ohoh, something went wrong while trying to get the config of this module')
