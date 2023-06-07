@@ -1,12 +1,13 @@
 """
 Inkycal ePaper driving functions
-Copyright by aceinnolab
+Copyright by aceisace
 """
-import asyncio
 import os
 from importlib import import_module
-
 from PIL import Image
+
+from inkycal.custom import top_level
+import glob
 
 
 class Display:
@@ -23,12 +24,16 @@ class Display:
     def __init__(self, epaper_model):
         """Load the drivers for this epaper model"""
 
+        if 'colour' in epaper_model:
+            self.supports_colour = True
+        else:
+            self.supports_colour = False
+
         try:
             driver_path = f'inkycal.display.drivers.{epaper_model}'
             driver = import_module(driver_path)
             self._epaper = driver.EPD()
             self.model_name = epaper_model
-            self.supported_colours = self._epaper.supported_colours
 
         except ImportError:
             raise Exception('This module is not supported. Check your spellings?')
@@ -75,24 +80,23 @@ class Display:
 
         epaper = self._epaper
 
+        if not self.supports_colour:
+            print('Initialising..', end='')
+            epaper.init()
+            print('Updating display......', end='')
+            epaper.display(epaper.getbuffer(im_black))
+            print('Done')
 
-        print('[Display] init..', end='')
-        epaper.init()
-        print('[Display] updating...', end='')
+        elif self.supports_colour:
+            if not im_colour:
+                raise Exception('im_colour is required for coloured epaper displays')
+            print('Initialising..', end='')
+            epaper.init()
+            print('Updating display......', end='')
+            epaper.display(epaper.getbuffer(im_black), epaper.getbuffer(im_colour))
+            print('Done')
 
-        try:
-            loop = asyncio.get_event_loop()
-            if len(self.supported_colours == 2):
-                loop.run_until_complete(asyncio.wait_for(epaper.display(epaper.getbuffer(im_black)), timeout=60))
-            else:
-                loop.run_until_complete(asyncio.wait_for(epaper.display(epaper.getbuffer(im_black), epaper.getbuffer(im_colour)), timeout=60))
-        except asyncio.TimeoutError:
-            raise AssertionError("Failed to display an image on the display. This may be due to the following:"
-                                 "- Incorrectly selected driver"
-                                 "- Incorrect wiring (especially when not using the driver hat"
-                                 "- Incorrectly inserted display cable. The display needs to face up when connecting the driver board")
-
-        print('[Display] sleep mode', end='')
+        print('Sending E-Paper to deep sleep...', end='')
         epaper.sleep()
         print('Done')
 
@@ -118,13 +122,13 @@ class Display:
         epaper = self._epaper
         epaper.init()
 
-        display_size = epaper.get_display_size()
+        display_size = self.get_display_size(self.model_name)
 
         white = Image.new('1', display_size, 'white')
         black = Image.new('1', display_size, 'black')
 
         print('----------Started calibration of ePaper display----------')
-        for colour in epaper.supported_colours:
+        if self.supports_colour:
             for _ in range(cycles):
                 print('Calibrating...', end=' ')
                 print('black...', end=' ')
@@ -135,11 +139,24 @@ class Display:
                 epaper.display(epaper.getbuffer(white), epaper.getbuffer(white))
                 print(f'Cycle {_ + 1} of {cycles} complete')
 
+        if not self.supports_colour:
+            for _ in range(cycles):
+                print('Calibrating...', end=' ')
+                print('black...', end=' ')
+                epaper.display(epaper.getbuffer(black))
+                print('white...')
+                epaper.display(epaper.getbuffer(white)),
+                print(f'Cycle {_ + 1} of {cycles} complete')
+
             print('-----------Calibration complete----------')
             epaper.sleep()
 
-    def get_display_size(self) -> tuple:
+    @classmethod
+    def get_display_size(cls, model_name):
         """Returns the size of the display as a tuple -> (width, height)
+
+        Looks inside "drivers" folder for the given model name, then returns it's
+        size.
 
         Args:
           - model_name: str -> The name of the E-Paper display to get it's size.
@@ -151,7 +168,26 @@ class Display:
 
         >>> Display.get_display_size('model_name')
         """
-        return self._epaper.EPD_WIDTH, self._epaper.EPD_HEIGHT
+        if not isinstance(model_name, str):
+            print('model_name should be a string')
+            return
+        else:
+            driver_files = top_level + '/inkycal/display/drivers/*.py'
+            drivers = glob.glob(driver_files)
+            drivers = [i.split('/')[-1].split('.')[0] for i in drivers]
+            drivers.remove('__init__')
+            drivers.remove('epdconfig')
+            if model_name not in drivers:
+                print('This model name was not found. Please double check your spellings')
+                return
+            else:
+                with open(top_level + '/inkycal/display/drivers/' + model_name + '.py') as file:
+                    for line in file:
+                        if 'EPD_WIDTH=' in line.replace(" ", ""):
+                            width = int(line.rstrip().replace(" ", "").split('=')[-1])
+                        if 'EPD_HEIGHT=' in line.replace(" ", ""):
+                            height = int(line.rstrip().replace(" ", "").split('=')[-1])
+                return width, height
 
     @classmethod
     def get_display_names(cls) -> list:
@@ -169,14 +205,10 @@ class Display:
 
         >>> Display.get_display_names()
         """
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-
-        driver_files = f"{current_dir}/drivers"
-        drivers = [i for i in os.listdir(driver_files) if i.endswith(".py") and i.startswith("inkycal") and "_" in i]
+        driver_files = top_level + '/inkycal/display/drivers/'
+        drivers = [i for i in os.listdir(driver_files) if i.endswith(".py") and not i.startswith("__") and "_" in i]
         return drivers
 
 
 if __name__ == '__main__':
     print("Running Display class in standalone mode")
-    a = Display.get_display_names()
-    b = 1

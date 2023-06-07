@@ -93,6 +93,8 @@ jobs:
     name: Publish Docs
     needs: generate-docs
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Restore Workspace
