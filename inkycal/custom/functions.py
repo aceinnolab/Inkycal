@@ -1,10 +1,12 @@
-#!/usr/bin/python3
+#!python3
 """
 Inkycal custom-functions for ease-of-use
 
 Copyright by aceinnolab
 """
 import logging
+import socket
+
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 from urllib.request import urlopen
 import os
@@ -232,26 +234,32 @@ def text_wrap(text, font=None, max_width=None):
 
 
 def internet_available():
-    """checks if the internet is available.
-
-    Attempts to connect to google.com with a timeout of 5 seconds to check
-    if the network can be reached.
+    """Checks if the internet is available.
 
     Returns:
       - True if connection could be established.
       - False if the internet could not be reached.
 
-    Returned output can be used to add a check for internet availability:
-
     >>> if internet_available():
-    >>> #...do something that requires internet connectivity
+    >>>     print("Hooray, we're online!")
     """
 
-    try:
-        urlopen('https://google.com', timeout=5)
-        return True
-    except:
-        return False
+    dns_servers = ['8.8.8.8', '8.8.4.4']
+
+    for dns_server in dns_servers:
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(2)  # timeout
+            result = sock.connect_ex((dns_server, 53))
+
+            if result == 0:
+                return True
+        except socket.error:
+            pass
+        finally:
+            sock.close()
+
+    return False
 
 
 def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
@@ -312,3 +320,21 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
         draw.arc((c3, c4), 270, 360, fill=colour, width=thickness)
         draw.arc((c5, c6), 0, 90, fill=colour, width=thickness)
         draw.arc((c7, c8), 90, 180, fill=colour, width=thickness)
+
+
+def split_text_into_lines(text:str, font:ImageFont, max_width:int):
+    words = text.split()
+    lines = []
+    current_line = words[0]
+
+    for word in words[1:]:
+        line_width = font.getbbox(current_line + ' ' + word)[2] - font.getbbox(current_line)[0] #font.getsize(current_line + ' ' + word)[0]
+
+        if line_width <= max_width:
+            current_line += ' ' + word
+        else:
+            lines.append(current_line)
+            current_line = word
+
+    lines.append(current_line)
+    return lines

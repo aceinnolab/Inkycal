@@ -5,60 +5,58 @@ inkycal_feeds unittest
 import logging
 import sys
 import unittest
-from inkycal.modules import Feeds as Module
+
 from inkycal.custom.inky_image import CustomImage
-from inkycal.tests import Config
+from inkycal.modules import Feeds as Module
 
 preview = CustomImage.preview
 merge = CustomImage.merge
 
 tests = [
     {
-        "name": "Feeds",
-        "config": {
-            "size": [400, 200],
-            "feed_urls": "http://feeds.bbci.co.uk/news/world/rss.xml#",
-            "shuffle_feeds": True,
-            "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
-        }
-    },
-    {
-        "name": "Feeds",
         "config": {
             "size": [400, 800],
-            "feed_urls": "https://www.foodandco.fi/modules/MenuRss/MenuRss/CurrentDay?costNumber=3003&language=en",
+            "padding_x": 10,
+            "padding_y": 10,
+            "fontsize": 14,
+            "language": "en"
+        },
+        "module_config": {
+            "feed_urls": ["https://rss.nytimes.com/services/xml/rss/nyt/World.xml"],
             "shuffle_feeds": False,
-            "padding_x": 10, "padding_y": 10, "fontsize": 14, "language": "en"
         }
     },
     {
-        "name": "Feeds",
         "config": {
-            "size": [400, 100],
-            "feed_urls": "https://www.anekdot.ru/rss/export_top.xml",
-            "shuffle_feeds": False,
-            "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
+            "size": [400, 200],
+            "padding_x": 10,
+            "padding_y": 10,
+            "fontsize": 12,
+            "language": "en"
+        },
+        "module_config": {
+            "feed_urls": ["http://feeds.bbci.co.uk/news/world/rss.xml#"],
+            "shuffle_feeds": True,
         }
-    },
+    }
 ]
 
 
 class module_test(unittest.TestCase):
     def test_get_config(self):
-        print('getting data for web-ui...', end="")
-        Module.get_config()
-        print('OK')
+        module_config = Module.get_config()
+        assert (len(module_config) == 2)
+        assert (isinstance(module_config, list))
 
     def test_generate_image(self):
-        for test in tests:
-            print(f'test {tests.index(test) + 1} generating image..')
-            module = Module(test)
-            im_black, im_colour = module.generate_image()
+        for test_count, test in enumerate(tests, start=1):
+            print(f'Test {test_count}\n:generating image...')
+            config = test["config"]
+            module_config = test["module_config"]
+            module = Module(config=config, feed_urls=module_config["feed_urls"],
+                            shuffle_feeds=module_config["shuffle_feeds"])
+            image = module.generate_image()
             print('OK')
-            if Config.USE_PREVIEW:
-                preview(merge(im_black, im_colour))
-            im = merge(im_black, im_colour)
-            im.show()
 
 
 if __name__ == '__main__':

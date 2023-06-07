@@ -1,0 +1,16 @@
+{
+  "parameters": [
+    {
+      "name": "feed_urls",
+      "description": "Please enter ATOM or RSS feed URL/s, separated by a comma",
+      "type": "str",
+      "required": true
+    },
+    {
+      "name": "shuffle_feeds",
+      "description": "Should the parsed RSS feeds be shuffled?",
+      "type": "bool",
+      "required": false
+    }
+  ]
+}
