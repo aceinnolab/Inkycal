@@ -4,11 +4,12 @@
 Inkycal Calendar Module
 Copyright by aceinnolab
 """
-from inkycal.modules.template import inkycal_module
-from inkycal.custom import *
 
-import calendar as cal
 import arrow
+
+from inkycal.custom import *
+from inkycal.custom.layout_generator import LayoutGenerator
+from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
 
@@ -18,68 +19,18 @@ class Calendar(inkycal_module):
     Create monthly calendar and show events from given icalendars
     """
 
-    name = "Calendar - Show monthly calendar with events from iCalendars"
-
-    optional = {
-
-        "week_starts_on": {
-            "label": "When does your week start? (default=Monday)",
-            "options": ["Monday", "Sunday"],
-            "default": "Monday"
-        },
-
-        "show_events": {
-            "label": "Show parsed events? (default = True)",
-            "options": [True, False],
-            "default": True
-        },
-
-        "ical_urls": {
-            "label": "iCalendar URL/s, separate multiple ones with a comma",
-        },
-
-        "ical_files": {
-            "label": "iCalendar filepaths, separated with a comma",
-        },
-
-        "date_format": {
-            "label": "Use an arrow-supported token for custom date formatting " +
-                     "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. D MMM",
-            "default": "D MMM",
-        },
-
-        "time_format": {
-            "label": "Use an arrow-supported token for custom time formatting " +
-                     "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm",
-            "default": "HH:mm"
-        },
-
-    }
-
-    def __init__(self, config):
+    def __init__(self, config, week_start: str = "Monday", show_events: bool = True, date_format: str = "D MMM",
+                 time_format="HH:mm",):
         """Initialize inkycal_calendar module"""
 
         super().__init__(config)
-        config = config['config']
+        self.week_start = week_start
+        self.show_events = show_events
+        self.date_format = date_format
+        self.time_format = time_format
+        self.language = config["language"]
 
-        # optional parameters
-        self.weekstart = config['week_starts_on']
-        self.show_events = config['show_events']
-        self.date_format = config["date_format"]
-        self.time_format = config['time_format']
-        self.language = config['language']
-
-        if config['ical_urls'] and isinstance(config['ical_urls'], str):
-            self.ical_urls = config['ical_urls'].split(',')
-        else:
-            self.ical_urls = config['ical_urls']
-
-        if config['ical_files'] and isinstance(config['ical_files'], str):
-            self.ical_files = config['ical_files'].split(',')
-        else:
-            self.ical_files = config['ical_files']
-
-        # additional configuration
+        # Additional config
         self.timezone = get_system_tz()
         self.num_font = ImageFont.truetype(
             fonts['NotoSans-SemiCondensed'], size=self.fontsize)
@@ -89,6 +40,60 @@ class Calendar(inkycal_module):
 
     def generate_image(self):
         """Generate image for this module"""
+        now = arrow.now(tz=self.timezone)
+        line_height = self.font.getbbox("hg")[-1]
+
+        weekdays_height = 30
+        calendar_height = self.height - weekdays_height
+
+        # allocate 40% of space for events below the calendar if height is bigger than 500px
+        # allocate 20% of space for events below the calendar if height is smaller than 500px
+        # if events should not be shown, allocate the entire space for the calendar
+        if self.show_events:
+            if self.height >= 500:
+                calendar_height = int(self.height * 0.4) - weekdays_height
+            else:
+                calendar_height = int(self.height * 0.2) - weekdays_height
+
+        # 7x1 grid for names of weekdays
+        canvas_weekdays = LayoutGenerator(
+            width=self.width,
+            height=weekdays_height,
+            padding=1,
+            num_rows=1,
+            num_cols=7,
+            font_size=12,
+            font_path=self.font.path,
+            border_radius=1,
+            show_border=False
+        )
+
+        # create a list of weekday-name abbreviations for the full week, starting from the specified week-start
+        start_date = arrow.get(self.week_start, "dddd")
+        weekday_names = [start_date.shift(days=i).format("ddd", locale=self.language) for i in range(7)]
+
+        for weekday_pos, weekday in enumerate(weekday_names, start=1):
+            canvas_weekdays.add_text(col=weekday_pos, row=1, text=weekday)
+
+        # dynamic column calendar
+        canvas_calendar = LayoutGenerator(
+            width=self.width,
+            height=calendar_height,
+            padding=1,
+            num_rows=7,
+            num_cols=calendar_height // 50,
+            font_size=12,
+            font_path=self.font.path,
+            border_radius=1,
+            show_border=False
+        )
+
+
+        cal = arrow.Arrow.span_range('day', arrow.now().floor("day").shift(days=-21).datetime, arrow.now().floor("day").shift(days=+21).datetime)
+        wip = "here"
+
+
+
 
         # Define new image size with respect to padding
         im_width = int(self.width - (2 * self.padding_left))
@@ -144,7 +149,7 @@ class Calendar(inkycal_module):
         now = arrow.now(tz=self.timezone)
 
         # Set weekstart of calendar to specified weekstart
-        if self.weekstart == "Monday":
+        if self.week_start == "Monday":
             cal.setfirstweekday(cal.MONDAY)
             weekstart = now.shift(days=- now.weekday())
         else:

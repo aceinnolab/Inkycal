@@ -9,7 +9,7 @@ from subprocess import run
 from PIL import Image
 
 from inkycal.custom import image_folder
-from inkycal.display.inkycal_colours import InkycalColours
+from inkycal.custom.inkycal_colours import InkycalColours
 
 # Please insert VCOM of your display. The Minus sign before is not required
 VCOM = "2.0"

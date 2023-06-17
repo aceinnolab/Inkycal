@@ -30,9 +30,8 @@
 
 import logging
 from inkycal.display.drivers import epdconfig
-import RPi.GPIO as GPIO
 
-from inkycal.display.inkycal_colours import InkycalColours
+from inkycal.custom.inkycal_colours import InkycalColours
 
 GRAY1 = 0xff  # white
 GRAY2 = 0xC0

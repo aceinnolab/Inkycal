@@ -6,4 +6,5 @@ from inkycal.modules.builtin.todoist.inkycal_todoist import Todoist
 from inkycal.modules.builtin.image.inkycal_image import Inkyimage
 from inkycal.modules.builtin.jokes.inkycal_jokes import Jokes
 from inkycal.modules.builtin.slideshow.inkycal_slideshow import Slideshow
+from inkycal.modules.builtin.catsu import InkycalCatsu
 from inkycal.modules.builtin.text.inkycal_textfile_to_display import TextToDisplay

@@ -29,7 +29,7 @@
 import time
 
 from inkycal.display.drivers import epdconfig_12_in_48 as epdconfig
-from inkycal.display.inkycal_colours import InkycalColours
+from inkycal.custom.inkycal_colours import InkycalColours
 
 
 class EPD:

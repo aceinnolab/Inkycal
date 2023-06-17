@@ -29,7 +29,7 @@
 
 import logging
 from inkycal.display.drivers import epdconfig
-from inkycal.display.inkycal_colours import InkycalColours
+from inkycal.custom.inkycal_colours import InkycalColours
 
 
 class EPD:
