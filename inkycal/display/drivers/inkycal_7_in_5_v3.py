@@ -33,7 +33,7 @@ import logging
 from PIL import Image
 
 from . import epdconfig
-from ..inkycal_colours import InkycalColours
+from inkycal.custom.inkycal_colours import InkycalColours
 
 
 class EPD:

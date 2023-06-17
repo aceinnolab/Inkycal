@@ -1,0 +1,1 @@
+from .inkycal_catsu import InkycalCatsu
