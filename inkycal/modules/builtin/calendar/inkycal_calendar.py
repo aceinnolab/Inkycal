@@ -4,11 +4,14 @@
 Inkycal Calendar Module
 Copyright by aceinnolab
 """
+import calendar
+import locale
 
 import arrow
 
 from inkycal.custom import *
-from inkycal.custom.layout_generator import LayoutGenerator
+from inkycal.custom.canvas import Canvas
+from inkycal.custom.flexbox import Flexbox
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
@@ -38,8 +41,76 @@ class Calendar(inkycal_module):
         # give an OK message
         print(f'{__name__} loaded')
 
+    def generate_month_name_canvas(self, month_name:str, row_height:int) -> Image:
+        flexbox = Flexbox(
+            width=self.width,
+            height=row_height,
+            padding=1, num_rows=1, num_cols=1,
+            font_size=12, font_path=self.font.path, border_radius=1, show_border=True
+        )
+        flexbox.add_text(text=month_name, row=1, col=1)
+
+        return flexbox.image
+
+    def generate_seven_col_row(self, content:list, row_height:int) -> Image:
+        flexbox = Flexbox(
+            width=self.width,
+            height=row_height,
+            padding=1, num_rows=1, num_cols=len(content),
+            font_size=12, font_path=self.num_font.path, border_radius=1, show_border=True
+        )
+        for index, item in enumerate(content, start=1):
+            flexbox.add_text(text=str(item) if item != 0 else "", row=1, col=index)
+
+        return flexbox.image
+
+    @staticmethod
+    def generate_monthly_calendar(year, month):
+        # Create a Calendar object
+        cal = calendar.Calendar()
+        cal.setfirstweekday(0)
+
+        month_cal = cal.monthdayscalendar(year, month)
+        current_date = int(arrow.now().format("D"))
+        month_calendar = []
+        found = False
+        for week in month_cal:
+            if current_date not in week and not found:
+                found = True
+                continue
+            else:
+                month_calendar.append(week)
+
+        month_calendar.insert(0, arrow.now().format("MMMM"))
+        next_month = cal.monthdayscalendar(year, month + 1 if month + 1 <= 12 else 0)
+        next_month.insert(0, arrow.now().shift(months=1).format("MMMM"))
+
+        month_calendar.extend(next_month)
+
+        return month_calendar
+
+    @staticmethod
+    def get_weekday_names(language, week_start_day=0):
+        # Set the desired locale using the ISO two-letter language/country code
+        locale_name = f"{language}_{language.upper()}"
+        locale.setlocale(locale.LC_TIME, locale_name)
+
+        # Get the weekday names based on the specified week start day
+        weekday_names = []
+        for i in range(7):
+            weekday = (week_start_day + i) % 7
+            weekday_names.append(locale.nl_langinfo(locale.DAY_1 + weekday))
+
+        return weekday_names
+
     def generate_image(self):
         """Generate image for this module"""
+
+        canvas = Canvas(width=self.width, height=self.height)
+
+        weekday_names = [arrow.now().shift(days=i).format("dddd", locale=self.language) for i in range(7)]
+        weekday_to_int = {weekday: index for index, weekday in enumerate(weekday_names)}
+
         now = arrow.now(tz=self.timezone)
         line_height = self.font.getbbox("hg")[-1]
 
@@ -55,41 +126,32 @@ class Calendar(inkycal_module):
             else:
                 calendar_height = int(self.height * 0.2) - weekdays_height
 
-        # 7x1 grid for names of weekdays
-        canvas_weekdays = LayoutGenerator(
-            width=self.width,
-            height=weekdays_height,
-            padding=1,
-            num_rows=1,
-            num_cols=7,
-            font_size=12,
-            font_path=self.font.path,
-            border_radius=1,
-            show_border=False
-        )
-
-        # create a list of weekday-name abbreviations for the full week, starting from the specified week-start
         start_date = arrow.get(self.week_start, "dddd")
         weekday_names = [start_date.shift(days=i).format("ddd", locale=self.language) for i in range(7)]
+        weekday_im = self.generate_seven_col_row(weekday_names, weekdays_height)
+        canvas.paste_image(weekday_im)
 
-        for weekday_pos, weekday in enumerate(weekday_names, start=1):
-            canvas_weekdays.add_text(col=weekday_pos, row=1, text=weekday)
-
-        # dynamic column calendar
-        canvas_calendar = LayoutGenerator(
-            width=self.width,
-            height=calendar_height,
-            padding=1,
-            num_rows=7,
-            num_cols=calendar_height // 50,
-            font_size=12,
-            font_path=self.font.path,
-            border_radius=1,
-            show_border=False
+        # dynamic row calendar
+        canvas_calendar = Flexbox(
+            width=self.width, height=calendar_height,
+            padding=1, num_rows=calendar_height // 50,
+            num_cols=1, font_size=12, font_path=self.font.path,
+            border_radius=1, show_border=True
         )
 
+        if canvas_calendar.num_rows <= 1:
+            raise AssertionError("calendar space is too small. Please increase the height of this module")
 
-        cal = arrow.Arrow.span_range('day', arrow.now().floor("day").shift(days=-21).datetime, arrow.now().floor("day").shift(days=+21).datetime)
+
+        monthly = self.generate_monthly_calendar(arrow.now().year, int(arrow.now().format("M")))[:canvas_calendar.num_rows]
+
+        for item in monthly:
+            if isinstance(item, str):
+                im = self.generate_month_name_canvas(item, canvas_calendar.row_height)
+            else:
+                im = self.generate_seven_col_row(item, canvas_calendar.row_height)
+            canvas.paste_image(image=im)
+
         wip = "here"
 
 

@@ -26,7 +26,7 @@ tests = [
         },
         "module_config": {
             "week_start": "Monday",
-            "show_events": True,
+            "show_events": False,
             "ical_urls": sample_url,
             "ical_files": None,
             "date_format": "D MMM",

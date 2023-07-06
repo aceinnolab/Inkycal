@@ -11,7 +11,7 @@ from random import shuffle
 import feedparser
 
 from inkycal.custom import *
-from inkycal.custom.layout_generator import LayoutGenerator, TextAlignment
+from inkycal.custom.flexbox import Flexbox, TextAlignment
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
@@ -53,7 +53,7 @@ class Feeds(inkycal_module):
         line_height = self.font.getbbox("hg")[-1]
         max_rows = self.height // line_height
 
-        canvas = LayoutGenerator(
+        canvas = Flexbox(
             width=self.width, height=self.height,
             padding=1,
             num_rows=max_rows, num_cols=1,
