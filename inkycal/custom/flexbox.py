@@ -1,11 +1,7 @@
 from enum import Enum
 
-import math
-
-import cv2
 import numpy
-import numpy as np
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont
 
 from inkycal.custom.inkycal_colours import InkycalColours
 
@@ -18,10 +14,10 @@ class TextAlignment(Enum):
     BOTTOM = 5
 
 
-class LayoutGenerator:
+class Flexbox:
 
     def __init__(self, num_rows: int, num_cols: int, width: int, height: int, font_path: str,
-                 font_size: int = 1, padding: int = 10, border_radius:int=10, show_border:bool=True) -> None:
+                 font_size: int = 1, padding: int = 10, border_radius: int = 10, show_border: bool = True) -> None:
         """Layout-Generator Class. Used to create a layout on an Image object.
 
         Args:
@@ -76,6 +72,15 @@ class LayoutGenerator:
         self.image = image
         return image
 
+    def get_cell_coordinates(self, row_number:int, col_number:int):
+        """Returns the specified cell's coordinates"""
+        x0 = (col_number - 1) * (self.col_width + self.padding)
+        y0 = (row_number - 1) * (self.row_height + self.padding)
+        x1 = x0 + self.col_width
+        y1 = y0 + self.row_height
+
+        return [x0, y0, x1,y1]
+
     def set_font_size(self, font_size: int):
         self.font = ImageFont.truetype(self.font_path, size=font_size)
 
@@ -93,14 +98,12 @@ class LayoutGenerator:
         x1 = x0 + self.col_width
         y1 = y0 + self.row_height
 
-        # Update the font size
         self.set_font_size(self.font_size)
 
         text_bbox = self.font.getbbox(text)
         text_width = text_bbox[2] - text_bbox[0]
         text_height = text_bbox[3] - text_bbox[1]
 
-        # Text needs to be wrapped to multiple lines
         lines = []
         words = text.split()
         current_line = words[0]
@@ -133,7 +136,7 @@ class LayoutGenerator:
             y_start += text_height + self.line_spacing
 
     def add_text(self, text: str, row: int, col: int, alignment: TextAlignment = TextAlignment.CENTER,
-                color:InkycalColours=InkycalColours.BLACK):
+                 color: InkycalColours = InkycalColours.BLACK):
         """
         Add text to the specified cell in the layout
         """
@@ -167,8 +170,7 @@ class LayoutGenerator:
         else:  # TextAlignment.CENTER
             x0 = self.x + (col - 1) * (self.col_width + self.padding) + (self.col_width - text_width) / 2
             y0 = self.y + (row - 1) * (self.row_height + self.padding) + (self.row_height - text_height) / 2
-        self.draw.text((x0, y0), text, fill=color.value, stroke_fill=color.value )
-
+        self.draw.text((x0, y0), text, fill=color.value, stroke_fill=color.value)
 
 
 # Works well (7/10)
@@ -205,6 +207,4 @@ def optimize_im(image, threshold=220):
     buffer[numpy.logical_and(red <= threshold, green <= threshold)] = [0, 0, 0]
     image = Image.fromarray(buffer)
     return image
-
-
 

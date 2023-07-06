@@ -9,7 +9,7 @@ import arrow
 
 from inkycal.custom import *
 from inkycal.custom.ical_parser import iCalendar
-from inkycal.custom.layout_generator import LayoutGenerator
+from inkycal.custom.flexbox import Flexbox
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)

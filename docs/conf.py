@@ -18,8 +18,8 @@ master_doc = 'index'
 # -- Project information -----------------------------------------------------
 
 project = 'inkycal'
-copyright = '2018-2020, Ace Isace'
-author = 'Ace Isace'
+copyright = '2018-2023, aceinnolab'
+author = 'Aceinnolab'
 
 # The full version, including alpha/beta/rc tags
 release = '2.0.0'
