@@ -66,11 +66,13 @@ jobs:
           commands: |
             apt-get update -y
             apt-get install -y python3-pip
+            sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev
             cd /Inkycal
             . venv/bin/activate
             python -m pip install --upgrade pip
             pip install wheel
             pip install -e ./
+            pip install RPi.GPIO==0.7.1 spidev==3.5
             cd inkycal/tests
             echo $PWD
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
