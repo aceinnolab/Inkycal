@@ -41,8 +41,8 @@ jobs:
           name: workspace
           path: artefacts/workspace.tar.gz
 
-  test:
-    name: Run Tests
+  test-on-arm:
+    name: Run Tests on Raspberry Pi OS
     needs: clone-setup-install
     runs-on: ubuntu-latest
 
@@ -56,17 +56,24 @@ jobs:
         run: |
           tar -xzf workspace.tar.gz
 
-      - name: Run Tests
-        env:
-          OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
-          SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
-          TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
-          TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
-        run: |
-          source venv/bin/activate
-          cd inkycal/tests
-          wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
-          for f in *.py; do python3 "$f"; done
+      - name: Run Tests on Raspberry Pi OS
+        uses: pguyot/arm-runner-action@v2
+        with:
+          # Set the base_image to the desired Raspberry Pi OS version
+          base_image: raspios_lite:latest
+          # Set the commands to run the tests
+          commands: |
+            source venv/bin/activate
+            cd inkycal/tests
+            wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
+            for f in *.py; do python3 "$f"; done
+
+      - name: Upload Raspberry Pi OS Image
+        if: success()  # Only upload the image if the tests were successful
+        uses: actions/upload-artifact@v2
+        with:
+          name: raspberrypi_image
+          path: my-release-image.img.xz
 
   generate-docs:
     name: Generate Docs
