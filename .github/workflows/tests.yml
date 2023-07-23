@@ -103,7 +103,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.version }}
-          files: inkycal_os.img
+          files: inkycal_os.img.xz
 
   generate-docs:
     name: Generate Docs
