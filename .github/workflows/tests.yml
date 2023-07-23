@@ -117,9 +117,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: workspace
-
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+          
+      - name: Extract Workspace Archive
+        run: |
+          tar -xzf workspace.tar.gz
 
       - name: Generate Docs
         run: |
@@ -130,12 +131,15 @@ jobs:
           make html && make github && cd ..
           echo "$PWD"
           ls
+          git status
 
       - name: use checkout actions
         uses: actions/checkout@v3
 
       - name: publish
         run: |
+          echo "$PWD"
+          ls
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add docs
