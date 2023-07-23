@@ -105,11 +105,13 @@ jobs:
           tag_name: ${{ env.version }}
           files: inkycal_os.img.xz
 
-  generate-docs:
-    name: Generate Docs
+  generate-and-publish-docs:
+    name: Generate and publish docs
     needs: clone-setup-install
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
+    
     steps:
       - name: Restore Workspace
         uses: actions/download-artifact@v2
@@ -126,36 +128,17 @@ jobs:
           source venv/bin/activate
           pip install sphinxemoji sphinx_rtd_theme recommonmark
           cd docsource
-          make html
-
-  publish-docs:
-    name: Publish Docs
-    needs: generate-docs
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - name: Restore Workspace
-        uses: actions/download-artifact@v2
-        with:
-          name: workspace
-
-      - name: Extract Workspace Archive
-        run: |
-          tar -xzf workspace.tar.gz
-
-      - name: Publish Docs to Github Pages
-        run: |
+          make html && make github && cd ..
           echo "$PWD"
           ls
-          source venv/bin/activate
-          cd docsource && make html && make github && cd ..
-          echo "$PWD"
-          ls
+          
+      - name: Publish Docs
+        run: |
+          sudo apt-get install python3-sphinx
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
           git add docs
-          git commit -m "Update documentation"
+          git commit -m "github actions - updated docs"
           git push --force --quiet
+
