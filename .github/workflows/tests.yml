@@ -124,7 +124,7 @@ jobs:
         run: |
           sudo apt-get install python3-sphinx
           source venv/bin/activate
-          pip install sphinxemoji sphinx_rtd_theme
+          pip install sphinxemoji sphinx_rtd_theme recommonmark
           cd docsource
           make html
 
