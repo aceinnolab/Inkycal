@@ -45,6 +45,8 @@ jobs:
     name: Run Tests on Raspberry Pi OS
     needs: clone-setup-install
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Restore Workspace
@@ -101,7 +103,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.version }}
-          files: inkycal_os.img/inkycal_os.img
+          files: inkycal_os.img
 
   generate-docs:
     name: Generate Docs
