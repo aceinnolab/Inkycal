@@ -114,7 +114,10 @@ jobs:
     
     steps:
       - name: Restore Workspace
-        uses: actions/download-artifact@v2
+        uses: |
+          actions/download-artifact@v2
+          actions/checkout@v3
+        
         with:
           name: workspace
 
@@ -135,10 +138,9 @@ jobs:
       - name: Publish Docs
         run: |
           sudo apt-get install python3-sphinx
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'actions@github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
           git add docs
-          git commit -m "github actions - updated docs"
-          git push --force --quiet
+          git commit -m "update docs"
+          git push
 
