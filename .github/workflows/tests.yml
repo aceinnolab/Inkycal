@@ -114,9 +114,7 @@ jobs:
     
     steps:
       - name: Restore Workspace
-      - uses: actions/download-artifact@v2
-      - uses: actions/checkout@v3
-        
+        uses: actions/download-artifact@v2
         with:
           name: workspace
 
@@ -134,11 +132,11 @@ jobs:
           echo "$PWD"
           ls
           
-      - name: Publish Docs
-        run: |
+      - uses: actions/checkout@v3
+      - run: |
+          echo "publishing docs"
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add docs
           git commit -m "update docs"
           git push
-
