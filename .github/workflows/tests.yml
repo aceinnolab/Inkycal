@@ -93,6 +93,7 @@ jobs:
         if: success()  # Only upload the image if the tests were successful
         uses: softprops/action-gh-release@v1
         with:
+          tag: 2.0.2
           files: inkycal_os.img
 
   generate-docs:
