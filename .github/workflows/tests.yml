@@ -58,6 +58,7 @@ jobs:
 
       - name: Run Tests on Raspberry Pi OS
         uses: pguyot/arm-runner-action@v2
+        id: build_image
         env:
           OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
           SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
@@ -81,13 +82,18 @@ jobs:
             echo $PWD
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             for f in *.py; do python3 "$f"; done
+            
+      - name: Compress the release image
+        run: |
+          mv ${{ steps.build_image.outputs.image }} inkycal_os.img
+          xz -0 -T 0 -v inkycal_os.img
+          ls
 
       - name: Upload Raspberry Pi OS Image
         if: success()  # Only upload the image if the tests were successful
-        uses: actions/upload-artifact@v2
+        uses: softprops/action-gh-release@v1
         with:
-          name: raspberrypi_image
-          path: my-release-image.img.xz
+          files: inkycal_os.img
 
   generate-docs:
     name: Generate Docs
