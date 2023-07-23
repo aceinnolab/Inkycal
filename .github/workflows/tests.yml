@@ -61,6 +61,7 @@ jobs:
         with:
           # Set the base_image to the desired Raspberry Pi OS version
           base_image: raspios_lite:latest
+          image_additional_mb: 2000 # enlarge free space to 2 GB
           # Set the commands to run the tests
           commands: |
             source venv/bin/activate
