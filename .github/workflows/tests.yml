@@ -64,11 +64,9 @@ jobs:
           image_additional_mb: 2000 # enlarge free space to 2 GB
           # Set the commands to run the tests
           commands: |
-            echo $PWD
-            ls
             cd /Inkycal
-            ls
             . venv/bin/activate
+            pip3 install dotenv
             cd inkycal/tests
             echo $PWD
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
