@@ -124,6 +124,7 @@ jobs:
         run: |
           sudo apt-get install python3-sphinx
           source venv/bin/activate
+          pip install sphinxemoji
           cd docsource
           make html
 
