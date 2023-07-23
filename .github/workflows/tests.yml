@@ -122,6 +122,7 @@ jobs:
 
       - name: Generate Docs
         run: |
+          apt-get install python3-sphinx
           source venv/bin/activate
           cd docsource
           make html
