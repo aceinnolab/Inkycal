@@ -113,17 +113,14 @@ jobs:
       contents: write
     
     steps:
-      - name: Restore Workspace
-        uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v2
         with:
           name: workspace
-          
+
       - name: Extract Workspace Archive
         run: |
           tar -xzf workspace.tar.gz
-
-      - name: use checkout actions
-        uses: actions/checkout@v3
 
       - name: Generate Docs
         run: |
@@ -134,6 +131,7 @@ jobs:
           make html && make github && cd ..
           echo "$PWD"
           ls
+          git add docs/*
           git status
 
       - name: publish
