@@ -72,7 +72,6 @@ jobs:
             python -m pip install --upgrade pip
             pip install wheel
             pip install -e ./
-            pip install RPi.GPIO==0.7.1 spidev==3.5
             cd inkycal/tests
             echo $PWD
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
