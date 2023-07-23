@@ -58,6 +58,11 @@ jobs:
 
       - name: Run Tests on Raspberry Pi OS
         uses: pguyot/arm-runner-action@v2
+        env:
+          OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
+          SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
+          TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
+          TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
         with:
           # Set the base_image to the desired Raspberry Pi OS version
           base_image: raspios_lite:latest
