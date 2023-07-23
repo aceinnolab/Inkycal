@@ -29,7 +29,7 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 
 ## Preview
 <p align="center">
-        <img src="https://github.com/aceisace/Inkycal/blob/assets/Repo/inkycal-featured-gif.gif?raw=true" width="900">
+        <img src="https://github.com/aceinnolab/Inkycal/blob/assets/Repo/inkycal-featured-gif.gif?raw=true" width="900">
 </p>
 
 ## Hardware required
@@ -37,7 +37,7 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 * Any Raspberry Pi with 40 pins and Wi-Fi. (Raspberry Pi 4/3/3B/3B+/3A/0W/0WH - Inkycal runs just fine on the Zero W/Zero WH model!)
 * MicroSD card (min. 4GB) for flashing Raspberry Pi OS
 * MicroUSB cable (for power)
-* Optional, a [3D-printable case](https://github.com/aceisace/Inkycal/wiki/3D-printable-files)
+* Optional, a [3D-printable case](https://github.com/aceinnolab/Inkycal/wiki/3D-printable-files)
 
 (!) -> These displays are parallel displays, featuring 16 greyscales, much faster refreshs, but are more expensive and require a bigger driver board
 
