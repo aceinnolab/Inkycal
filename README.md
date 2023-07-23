@@ -29,7 +29,7 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 
 ## Preview
 <p align="center">
-        <img src="https://github.com/aceinnolab/Inkycal/blob/assets/Repo/inkycal-featured-gif.gif?raw=true" width="900">
+        <img src="https://github.com/aceinnolab/Inkycal/blob/c1c274878ba81ddaee6186561e6ea892da54cd6a/Repo/inkycal-featured-gif.gif" width="900">
 </p>
 
 ## Hardware required
