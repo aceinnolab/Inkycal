@@ -122,6 +122,9 @@ jobs:
         run: |
           tar -xzf workspace.tar.gz
 
+      - name: use checkout actions
+        uses: actions/checkout@v3
+
       - name: Generate Docs
         run: |
           sudo apt-get install python3-sphinx
@@ -132,9 +135,6 @@ jobs:
           echo "$PWD"
           ls
           git status
-
-      - name: use checkout actions
-        uses: actions/checkout@v3
 
       - name: publish
         run: |
