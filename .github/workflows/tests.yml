@@ -68,7 +68,7 @@ jobs:
             apt-get install -y python3-pip
             cd /Inkycal
             . venv/bin/activate
-            pip3 install --upgrade dotenv
+            pip3 install python-dotenv
             cd inkycal/tests
             echo $PWD
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
