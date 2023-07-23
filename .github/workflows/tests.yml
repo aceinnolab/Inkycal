@@ -64,8 +64,13 @@ jobs:
           image_additional_mb: 2000 # enlarge free space to 2 GB
           # Set the commands to run the tests
           commands: |
-            source venv/bin/activate
+            echo $PWD
+            ls
+            cd /Inkycal
+            ls
+            . venv/bin/activate
             cd inkycal/tests
+            echo $PWD
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             for f in *.py; do python3 "$f"; done
 
