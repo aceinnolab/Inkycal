@@ -64,6 +64,8 @@ jobs:
           image_additional_mb: 2000 # enlarge free space to 2 GB
           # Set the commands to run the tests
           commands: |
+            apt-get update -y
+            apt-get install -y python3-pip
             cd /Inkycal
             . venv/bin/activate
             pip3 install dotenv
