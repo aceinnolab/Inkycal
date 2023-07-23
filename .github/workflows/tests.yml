@@ -66,7 +66,7 @@ jobs:
           commands: |
             apt-get update -y
             apt-get install -y python3-pip
-            sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev
+            sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev -y
             cd /Inkycal
             . venv/bin/activate
             python -m pip install --upgrade pip
