@@ -68,7 +68,9 @@ jobs:
             apt-get install -y python3-pip
             cd /Inkycal
             . venv/bin/activate
-            pip3 install -r requirements.txt
+            python -m pip install --upgrade pip
+            pip install wheel
+            pip install -e ./
             cd inkycal/tests
             echo $PWD
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
