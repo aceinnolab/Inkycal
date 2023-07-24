@@ -113,6 +113,9 @@ jobs:
       contents: write
     
     steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: main
       - uses: actions/download-artifact@v2
         with:
           name: workspace
