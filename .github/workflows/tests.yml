@@ -10,12 +10,12 @@ jobs:
     name: Clone, Setup, and Install
     runs-on: ubuntu-latest
     
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
           ref: main
+          persist-credentials: true
 
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
@@ -114,10 +114,6 @@ jobs:
       contents: write
     
     steps:    
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          ref: main
   
       - uses: actions/download-artifact@v2
         with:
@@ -135,11 +131,17 @@ jobs:
           cd docsource
           make html && make github && cd ..
           git status
+          
+      - name: Commit files
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "github-actions[bot]"
+          git add docs/*
+          git commit -m "update docs"
 
-      - uses: EndBug/add-and-commit@v9
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
-          default_author: github_actions
-          message: update docs
-          committer_name: GitHub Actions
-          committer_email: actions@github.com
-          add: 'docs/*'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          force: true
