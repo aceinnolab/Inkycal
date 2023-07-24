@@ -113,9 +113,6 @@ jobs:
       contents: write
     
     steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: main
       - uses: actions/download-artifact@v2
         with:
           name: workspace
@@ -137,11 +134,9 @@ jobs:
       - name: publish
         run: |
           git status
-          echo "$PWD"
-          ls
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git remote set-url origin https://x-access-token:${{ secrets.ACTIONS_TOKEN_INKYCAL_DOCS }}@github.com/$GITHUB_REPOSITORY
           git add docs/*
           git commit -m "update docs"
           git push --force
