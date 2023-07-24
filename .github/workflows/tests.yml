@@ -15,7 +15,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
-          persist-credentials: true
 
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
@@ -30,6 +29,22 @@ jobs:
           pip install wheel
           pip install -e .
           cd ..
+          
+      - name: Generate Docs
+        run: |
+          sudo apt-get install python3-sphinx
+          pip install sphinxemoji sphinx_rtd_theme recommonmark
+          cd docsource
+          make html && make github && cd ..
+          git status
+          
+      - name: push docs
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add docs/*
+          git commit -m "update docs"
+          git push
 
       - name: Create Archive
         run: |
@@ -106,42 +121,4 @@ jobs:
           tag_name: ${{ env.version }}
           files: inkycal_os.img.xz
 
-  generate-and-publish-docs:
-    name: Generate and publish docs
-    needs: clone-setup-install
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    
-    steps:    
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: workspace
-
-      - name: Extract Workspace Archive
-        run: |
-          tar -xzf workspace.tar.gz
-
-      - name: Generate Docs
-        run: |
-          sudo apt-get install python3-sphinx
-          source venv/bin/activate
-          pip install sphinxemoji sphinx_rtd_theme recommonmark
-          cd docsource
-          make html && make github && cd ..
-          git status
-          
-      - name: Commit files
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "github-actions[bot]"
-          git add docs/*
-          git commit -m "update docs"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-          force: true
+      
