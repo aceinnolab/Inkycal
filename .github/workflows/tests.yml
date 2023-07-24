@@ -36,14 +36,19 @@ jobs:
           pip install sphinxemoji sphinx_rtd_theme recommonmark
           cd docsource
           make html && make github && cd ..
-          git status
-          
+      
+      - name: Check if there are any changes
+        id: verify_diff
+        run: |
+          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+      
       - name: push docs
+        if: steps.verify_diff.outputs.changed == 'true'
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add docs/*
-          git commit -m "update docs"
+          git commit -m "update docs [bot]"
           git push
 
       - name: Create artifact
