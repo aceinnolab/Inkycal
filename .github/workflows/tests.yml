@@ -117,6 +117,8 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: workspace
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract Workspace Archive
         run: |
