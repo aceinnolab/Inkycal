@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  clone-setup-install:
-    name: Clone, Setup, and Install
+  update-docs:
+    name: update docs
     runs-on: ubuntu-latest
     
     steps:
@@ -40,13 +40,13 @@ jobs:
           
       - name: push docs
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
           git add docs/*
           git commit -m "update docs"
           git push
 
-      - name: Create Archive
+      - name: Create artifact
         run: |
           mkdir artefacts
           tar -czf artefacts/workspace.tar.gz --exclude=./artefacts .
@@ -59,7 +59,7 @@ jobs:
 
   test-on-arm:
     name: Run Tests on Raspberry Pi OS
-    needs: clone-setup-install
+    needs: update-docs
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -85,7 +85,7 @@ jobs:
         with:
           # Set the base_image to the desired Raspberry Pi OS version
           base_image: raspios_lite:latest
-          image_additional_mb: 2000 # enlarge free space to 2 GB
+          image_additional_mb: 1000 # enlarge free space to 2 GB
           # Set the commands to run the tests
           commands: |
             apt-get update -y
@@ -105,7 +105,6 @@ jobs:
         run: |
           mv ${{ steps.build_image.outputs.image }} inkycal_os.img
           xz -0 -T 0 -v inkycal_os.img
-          ls
       
       - name: Get latest release version
         run: |
