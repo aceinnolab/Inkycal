@@ -138,7 +138,7 @@ jobs:
           ls
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git remote set-url origin https://x-access-token:${{ secrets.ACTIONS_SECRET }}@github.com/$GITHUB_REPOSITORY
           git add docs/*
           git commit -m "update docs"
-          git push
+          git push --force
