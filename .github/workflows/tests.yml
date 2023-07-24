@@ -117,8 +117,6 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: workspace
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract Workspace Archive
         run: |
@@ -131,8 +129,6 @@ jobs:
           pip install sphinxemoji sphinx_rtd_theme recommonmark
           cd docsource
           make html && make github && cd ..
-          echo "$PWD"
-          ls
           git add docs/*
           git status
 
@@ -142,7 +138,7 @@ jobs:
           ls
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git remote set-url origin https://x-access-token:${{ secrets.ACTIONS_SECRET }}@github.com/$GITHUB_REPOSITORY
           git add docs/*
           git commit -m "update docs"
           git push
