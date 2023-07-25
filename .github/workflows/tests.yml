@@ -89,7 +89,7 @@ jobs:
           TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
         with:
           # Set the base_image to the desired Raspberry Pi OS version
-          base_image: raspios_lite:latest
+          base_image: https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz
           image_additional_mb: 1500 # enlarge free space to 1.5 GB
           # Set the commands to run the tests
           commands: |
