@@ -1,5 +1,5 @@
 arrow==1.2.3
-certifi==2023.5.7
+certifi==2023.7.22
 cycler==0.11.0
 feedparser==6.0.10
 fonttools==4.40.0
