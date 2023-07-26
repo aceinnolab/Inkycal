@@ -101,8 +101,8 @@ jobs:
             
       - name: Compress the release image
         run: |
-          mv ${{ steps.build_image.outputs.image }} inkycal_os.img
-          xz -0 -T 0 -v inkycal_os.img
+          mv ${{ steps.build_image.outputs.image }} inkycal_os_lite.img
+          xz -0 -T 0 -v inkycal_os_lite.img
       
       - name: Get latest release version
         run: |
@@ -116,6 +116,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.version }}
-          files: inkycal_os.img.xz
+          files: inkycal_os_lite.img.xz
 
       
