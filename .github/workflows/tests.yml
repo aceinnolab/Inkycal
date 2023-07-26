@@ -97,6 +97,7 @@ jobs:
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             for f in *.py; do python3 "$f"; done
             sudo chown -R inky:inky /home/inky/Inkycal
+            sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
             
       - name: Compress the release image
         run: |
