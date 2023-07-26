@@ -73,7 +73,7 @@ jobs:
           image_additional_mb: 1500 # enlarge free space to 1.5 GB
           optimize_image: true
           commands: |
-            sudo adduser inky
+            sudo useradd -p ${{ secrets.INKY_INITAL_PASSWORD }} inky
             sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi inky
             su - inky
             sudo apt-get update -y
