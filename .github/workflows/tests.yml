@@ -73,7 +73,6 @@ jobs:
           optimize_image: true
           user: inky
           commands: |
-            whoami
             cd /home
             echo $PWD && ls
             sudo useradd -m -p ${{ secrets.INKY_INITAL_PASSWORD }} inky
@@ -81,16 +80,14 @@ jobs:
             su inky
             cd /home/inky
             sudo apt-get update -y
-            sudo apt-get install python3.9 -y
             python --version
-            which python
-            which python3
             sudo apt-get install -y python3-pip
             sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev -y
             echo $PWD && ls
             
       - name: Install Inkycal and run tests
         run: |
+          python --version
           git clone --branch main --single-branch https://github.com/aceinnolab/Inkycal
           cd Inkycal
           python3 -m venv venv
