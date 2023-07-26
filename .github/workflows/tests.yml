@@ -53,13 +53,12 @@ jobs:
 
   test-on-arm:
     name: Run Tests on Raspberry Pi OS
-    needs: update-docs
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
-      - name: Run Tests on Raspberry Pi OS
+      - name: Build Raspberry Pi OS
         uses: pguyot/arm-runner-action@v2
         id: build_image
         env:
@@ -79,9 +78,8 @@ jobs:
             echo $PWD && ls
             sudo useradd -m -p ${{ secrets.INKY_INITAL_PASSWORD }} inky
             sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi inky
-            su - inky
+            su -c inky
             whoami
-            cat /etc/login.defs
             cd /home/inky
             sudo apt-get update -y
             sudo apt-get install python3.9 -y
