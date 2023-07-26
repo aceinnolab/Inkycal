@@ -89,12 +89,12 @@ jobs:
         run: |
           git clone --branch main --single-branch https://github.com/aceinnolab/Inkycal
           cd Inkycal
-          . venv/bin/activate
+          python3 -m venv venv
+          source venv/bin/activate
           python -m pip install --upgrade pip
           pip install wheel
           pip install -e ./
           cd inkycal/tests
-          echo $PWD
           wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
           for f in *.py; do python3 "$f"; done
             
