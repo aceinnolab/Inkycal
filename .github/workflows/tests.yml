@@ -60,7 +60,7 @@ jobs:
 
     steps:
       - name: Run Tests on Raspberry Pi OS
-        uses: aceisace/arm-runner-action@v2
+        uses: pguyot/arm-runner-action@v2
         id: build_image
         env:
           OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
@@ -69,16 +69,19 @@ jobs:
           TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
         with:
           # Set the base_image to the desired Raspberry Pi OS version
-          base_image: raspbian_lite:latest
+          base_image: https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz
           image_additional_mb: 1500 # enlarge free space to 1.5 GB
           optimize_image: true
+          user: inky
           commands: |
+            echo $PWD && ls
             sudo useradd -p ${{ secrets.INKY_INITAL_PASSWORD }} inky
             sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi inky
             su - inky
             sudo apt-get update -y
             sudo apt-get install -y python3-pip
             sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev -y
+            echo $PWD && ls
             cd /home/inky
             
       - name: Clone Inkycal repo
