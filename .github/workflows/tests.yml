@@ -51,17 +51,6 @@ jobs:
           git commit -m "update docs [bot]"
           git push
 
-      - name: Create artifact
-        run: |
-          mkdir artefacts
-          tar -czf artefacts/workspace.tar.gz --exclude=./artefacts .
-
-      - name: Save Workspace Archive
-        uses: actions/upload-artifact@v2
-        with:
-          name: workspace
-          path: artefacts/workspace.tar.gz
-
   test-on-arm:
     name: Run Tests on Raspberry Pi OS
     needs: update-docs
@@ -70,15 +59,6 @@ jobs:
       contents: write
 
     steps:
-      - name: Restore Workspace
-        uses: actions/download-artifact@v2
-        with:
-          name: workspace
-
-      - name: Extract Workspace Archive
-        run: |
-          tar -xzf workspace.tar.gz
-
       - name: Run Tests on Raspberry Pi OS
         uses: pguyot/arm-runner-action@v2
         id: build_image
@@ -92,23 +72,32 @@ jobs:
           base_image: https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz
           image_additional_mb: 1500 # enlarge free space to 1.5 GB
           optimize_image: true
-          user: inky
           commands: |
             sudo adduser inky
             sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi inky
+            su - inky
             sudo apt-get update -y
             sudo apt-get install -y python3-pip
             sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev -y
-            ls
-            cd /Inkycal
-            . venv/bin/activate
-            python -m pip install --upgrade pip
-            pip install wheel
-            pip install -e ./
-            cd inkycal/tests
-            echo $PWD
-            wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
-            for f in *.py; do python3 "$f"; done
+            cd ~/home/$USER
+            
+      - name: Clone Inkycal repo
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          
+      - name: install requirements and run tests
+        run: |
+          ls
+          cd ~/home/$USER/Inkycal
+          . venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install wheel
+          pip install -e ./
+          cd inkycal/tests
+          echo $PWD
+          wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
+          for f in *.py; do python3 "$f"; done
             
       - name: Compress the release image
         run: |
