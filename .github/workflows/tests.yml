@@ -60,7 +60,7 @@ jobs:
 
     steps:
       - name: Run Tests on Raspberry Pi OS
-        uses: pguyot/arm-runner-action@v2
+        uses: aceisace/arm-runner-action@v2
         id: build_image
         env:
           OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
@@ -69,7 +69,7 @@ jobs:
           TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
         with:
           # Set the base_image to the desired Raspberry Pi OS version
-          base_image: https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz
+          base_image: raspbian_lite:latest
           image_additional_mb: 1500 # enlarge free space to 1.5 GB
           optimize_image: true
           commands: |
