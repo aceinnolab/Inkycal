@@ -74,8 +74,9 @@ jobs:
           optimize_image: true
           user: inky
           commands: |
+            cd /home
             echo $PWD && ls
-            sudo useradd -p ${{ secrets.INKY_INITAL_PASSWORD }} inky
+            sudo useradd -m -p ${{ secrets.INKY_INITAL_PASSWORD }} inky
             sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi inky
             su - inky
             sudo apt-get update -y
