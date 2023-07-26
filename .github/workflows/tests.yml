@@ -62,6 +62,7 @@ jobs:
         uses: pguyot/arm-runner-action@v2
         id: build_image
         env:
+          INKY_INITAL_PASSWORD: ${{ secrets.INKY_INITAL_PASSWORD }}
           OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
           SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
           TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
@@ -74,8 +75,9 @@ jobs:
           user: inky
           commands: |
             cd /home
-            echo $PWD && ls
-            sudo useradd -m -p ${{ secrets.INKY_INITAL_PASSWORD }} inky
+            sudo deluser -remove-home pi
+            echo 'ALL   ALL=(ALL:ALL) PASSWD: ALL' | sudo tee -a /etc/sudoers.d/010_require_sudo_password
+            sudo useradd -m -p "$(openssl passwd -1 $INKY_INITAL_PASSWORD)" inky
             sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi inky
             su inky
             cd /home/inky
@@ -85,6 +87,7 @@ jobs:
             sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev -y
             echo $PWD && ls
             git clone --branch main --single-branch https://github.com/aceinnolab/Inkycal
+            sudo chown -R inky:inky Inkycal
             cd Inkycal
             python3 -m venv venv
             . venv/bin/activate
