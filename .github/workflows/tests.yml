@@ -75,7 +75,6 @@ jobs:
           user: inky
           commands: |
             cd /home
-            sudo deluser -remove-home pi
             echo 'ALL   ALL=(ALL:ALL) PASSWD: ALL' | sudo tee -a /etc/sudoers.d/010_require_sudo_password
             sudo useradd -m -p "$(openssl passwd -1 $INKY_INITAL_PASSWORD)" inky
             sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi inky
