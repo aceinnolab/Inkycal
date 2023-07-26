@@ -81,6 +81,7 @@ jobs:
             sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi inky
             su - inky
             whoami
+            cat /etc/login.defs
             cd /home/inky
             sudo apt-get update -y
             sudo apt-get install python3.9 -y
@@ -92,8 +93,9 @@ jobs:
         run: |
           git clone --branch main --single-branch https://github.com/aceinnolab/Inkycal
           cd Inkycal
-          python3.9 -m venv venv
+          python3 -m venv venv
           source venv/bin/activate
+          python --version
           python -m pip install --upgrade pip
           pip install wheel
           pip install -e ./
