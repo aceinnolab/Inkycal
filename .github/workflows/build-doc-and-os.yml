@@ -36,12 +36,12 @@ jobs:
           pip install sphinxemoji sphinx_rtd_theme recommonmark
           cd docsource
           make html && make github && cd ..
-      
+
       - name: Check if there are any changes
         id: verify_diff
         run: |
           git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
-      
+
       - name: push docs
         if: steps.verify_diff.outputs.changed == 'true'
         run: |
@@ -75,10 +75,11 @@ jobs:
           user: inky
           commands: |
             cd /home
-            echo 'ALL   ALL=(ALL:ALL) PASSWD: ALL' | sudo tee -a /etc/sudoers.d/010_require_sudo_password
             sudo useradd -m -p "$(openssl passwd -1 $INKY_INITAL_PASSWORD)" inky
             sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi inky
-            su - inky
+            sudo su inky
+            echo $HOME
+            whoami
             cd /home/inky
             sudo apt-get update -y
             python --version
@@ -96,14 +97,29 @@ jobs:
             cd inkycal/tests
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             for f in *.py; do python3 "$f"; done
-            sudo chown -R inky:inky /home/inky/Inkycal
+
+            # enable SPI
             sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
-            
+
+            # enable inkycal start at boot
+            sudo -u inky bash -c 'echo "@reboot sleep 60 && cd /home/inky/Inkycal && venv/bin/python inky_run.py &" | crontab -'
+            sudo chown inky:crontab /var/spool/cron/crontabs/inky
+
+            # fix permissions of Inkycal folder recursively
+            sudo chown -R inky:inky /home/inky/Inkycal
+
+            # set hostname to inkycal-lite
+            sudo sh -c 'echo "inkycal-lite" > /etc/hostname; hostnamectl set-hostname inkycal-lite; sed -i "s/127.0.1.1.*/127.0.1.1\tinkycal/g" /etc/hosts'
+
+            # make all users require a password for sudo commands (improves security)
+            echo 'ALL   ALL=(ALL:ALL) PASSWD: ALL' | sudo tee -a /etc/sudoers.d/010_require_sudo_password
+            history -cw
+
       - name: Compress the release image
         run: |
           mv ${{ steps.build_image.outputs.image }} inkycal_os_lite.img
           xz -0 -T 0 -v inkycal_os_lite.img
-      
+
       - name: Get latest release version
         run: |
           export tag="$(curl -s https://api.github.com/repos/aceinnolab/Inkycal/releases/latest | jq -r '.tag_name')"
@@ -117,5 +133,3 @@ jobs:
         with:
           tag_name: ${{ env.version }}
           files: inkycal_os_lite.img.xz
-
-      
