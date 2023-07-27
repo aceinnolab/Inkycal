@@ -110,7 +110,6 @@ jobs:
 
             # make all users require a password for sudo commands (improves security)
             echo 'ALL   ALL=(ALL:ALL) PASSWD: ALL' | sudo tee -a /etc/sudoers.d/010_require_sudo_password
-            history -cw
 
       - name: Compress the release image
         run: |
