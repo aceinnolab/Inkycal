@@ -73,8 +73,14 @@ These commands expand the filesystem, enable SPI and set up the correct timezone
 Do note that these are made on demand and not always available, best to keep checking :wink:
 
 ## Installing Inkycal
-The previous installer has been deprecated to give more transparency about the installation of Inkycal.
+⚠️ Please note that although the developers try to keep the installation as simple as possible, the full installation can sometimes take hours on the Raspberry Pi Zero W and is not guaranteed to go smoothly each time. This is because installing dependencies on the zero w takes a long time and is prone to copy-paste-, permission- and configuration errors.
 
+🤫 **Here's a secret:** We know about this problem and have spent a signifcant amount of time to prepare a pre-configured image with the latest version of Inkycal for the Raspberry Pi Zero. It comes with the latest version of Inkycal, is fully tested and uses the Raspberry Pi OS Lite as it's base image. You only need to copy your settings.json file, we already took care of the rest! 
+
+Become a sponsor to get access to Inkycal OS Lite! This will help keep this project growing and cover the ongoing expenses too! Win-win for everyone! 🎊
+
+
+### Manual installation
 Run the following steps to install Inkycal. Do **not** use sudo for this, except where explicitly specified.
 ```bash
 # the next line is for the Raspberry Pi only
