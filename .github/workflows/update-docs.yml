@@ -1,0 +1,52 @@
+name: update docs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-docs:
+    name: update docs
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install Dependencies
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install wheel
+          pip install -e .
+          cd ..
+          
+      - name: Generate Docs
+        run: |
+          sudo apt-get install python3-sphinx
+          pip install sphinxemoji sphinx_rtd_theme recommonmark
+          cd docsource
+          make html && make github && cd ..
+
+      - name: Check if there are any changes
+        id: verify_diff
+        run: |
+          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: push docs
+        if: steps.verify_diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add docs/*
+          git commit -m "update docs [bot]"
+          git push
