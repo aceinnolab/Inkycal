@@ -1,6 +1,9 @@
 # Welcome to inkycal v2.0.2!
 <p align="center">
-        <img src="https://raw.githubusercontent.com/aceisace/Inkycal/assets/Repo/logo.png" width="800">
+        <img src="https://raw.githubusercontent.com/aceisace/Inkycal/assets/Repo/logo.png" width="900">
+</p>
+<p align="center">
+        <img src="https://github.com/aceinnolab/Inkycal/blob/c1c274878ba81ddaee6186561e6ea892da54cd6a/Repo/inkycal-featured-gif.gif" width="900">
 </p>
 
 <p align="center">
@@ -27,19 +30,31 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 * Todoist - Synchronise with Todoist app or website to show todos.
 * iCanHazDad - Display a random joke from [iCanHazDad.com](iCanhazdad.com).
 
-## Preview
-<p align="center">
-        <img src="https://github.com/aceinnolab/Inkycal/blob/c1c274878ba81ddaee6186561e6ea892da54cd6a/Repo/inkycal-featured-gif.gif" width="900">
-</p>
 
-## Hardware required
-* One of the supported ePaper displays from waveshare: 4.2", 5.83", 7.5", 7.8"(!), 9.7"(!), 10.3"(!)
-* Any Raspberry Pi with 40 pins and Wi-Fi. (Raspberry Pi 4/3/3B/3B+/3A/0W/0WH - Inkycal runs just fine on the Zero W/Zero WH model!)
-* MicroSD card (min. 4GB) for flashing Raspberry Pi OS
-* MicroUSB cable (for power)
-* Optional, a [3D-printable case](https://github.com/aceinnolab/Inkycal/wiki/3D-printable-files)
+## Hardware guide
+Before you can start, please ensure you have one of the supported displays and of the supported Raspberry Pi: `|4|3A|3B|3B+|0W|0WH|`. We personally recommend the Raspberry Pi Zero W as this is relatively cheaper, uses less power and is perfect to fit in a small photo frame once you have assembled everything.
 
-(!) -> These displays are parallel displays, featuring 16 greyscales, much faster refreshs, but are more expensive and require a bigger driver board
+**Serial** displays are usually cheaper, but slower. Their main advantage is ease of use, like being able to communicate via SPI. A single update will cause flickering (fully normal on e-paper displays) ranging from a few seconds to half an minute. We recommend these for users who want to get started quickly and for more compact setups, e.g. fitting inside a photo frame. The resolution of these displays ranges from low to medium. Usually, these displays support 2-3 colours, but no colours in between, e.g. fully black, fully red/yellow and fully-white.
+
+**Parallel** displays on the other hand do not understand SPI and require their own dedicated driver boards individually configured for these displays. Flickering also takes place here, but an update only takes about one to a few seconds. The resolution is much better than serial e-paper displays, but the cost is also higher. These also have 16 different grayscale levels, which does not compare to the 256 grayscales of LCDs, but far better than serial displays.
+
+**❗️Important note: e-paper displays cannot be simply connected to the Raspberry Pi, but require a driver board. The links below may or may not contain the required driver board. Please ensure you get the correct driver board for the display!**
+
+| type  | vendor | affiliate links to product |
+| -- | -- | -- |
+| 7.5" Inkycal (plug-and-play) | Author of Inkycal | [Buy on Tindie](https://www.tindie.com/products/aceisace4444/inkycal-build-v1/)  Pre-configured version of Inkycal with custom frame and a web-ui. You do not need to buy anything extra. Includes Raspberry Pi Zero W, 7.5" e-paper, microSD card, driver board, custom packaging and 1m of cable. Comes pre-assembled for plug-and-play. |
+| Inkycal frame | Author of Inkycal | coming soon (ultraslim frame with custom-made front and backcover inkl. ultraslim driver board). You will need a Raspberry Pi and a 7.5" e-paper display |
+| `[serial]`  12.48" (1304×984px) display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=7e08c6110a1a5b3511ead10db2fd909a&camp=1638&creative=6742&index=computers&keywords=Waveshare 12.48 Inch E-Paper">Waveshare 12.48 Inch E-Paper</a>
+| `[serial]` 7.5" (640x384px) -> v1 display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=1bf1a6338786c0a4e7b877335afa0683&camp=1638&creative=6742&index=computers&keywords=Waveshare 7.5 Inch E-Paper">Waveshare 7.5 Inch E-Paper</a> |
+| `[serial]` 7.5" (800x400px) -> v2 display| waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=1bf1a6338786c0a4e7b877335afa0683&camp=1638&creative=6742&index=computers&keywords=Waveshare 7.5 Inch E-Paper">Waveshare 7.5 Inch E-Paper</a> |
+| `[serial]` 7.5" (880x528px) -> v3 display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=1bf1a6338786c0a4e7b877335afa0683&camp=1638&creative=6742&index=computers&keywords=Waveshare 7.5 Inch E-Paper">Waveshare 7.5 Inch E-Paper</a> |
+| `[serial]`  5.83" (400x300px) display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=a4239753343f5fbbdb8f5be2f6b5e2b1&camp=1638&creative=6742&index=computers&keywords=Waveshare 5.83 Inch E-Paper">Waveshare 5.83 Inch E-Paper</a> |
+| `[serial]`  4.2" (400x300px)display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=7575de79f1728ab9f2bfb6a46d2238ee&camp=1638&creative=6742&index=computers&keywords=Waveshare 4.2 Inch E-Paper">Waveshare 4.2 Inch E-Paper</a> |
+| `[parallel]` 10.3" (1872×1404px) display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=b453e16c373b0d86e4828b22edecc206&camp=1638&creative=6742&index=computers&keywords=Waveshare 10.3 Inch E-Paper">Waveshare 10.3 Inch E-Paper</a> |
+| `[parallel]` 9.7" (1200×825px) display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=eef2be91cc3f850943109276a63a7162&camp=1638&creative=6742&index=computers&keywords=Waveshare 9.7 Inch E-Paper">Waveshare 9.7 Inch E-Paper</a> |
+| `[parallel]` 7.8" (1872×1404px) display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=f1863f9686b0eeeb04ce147791ba3789&camp=1638&creative=6742&index=computers&keywords=Waveshare 7.8 Inch E-Paper">Waveshare 7.8" E-Paper</a> |
+| Raspberry Pi Zero W | Raspberry Pi | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=8f9c223197e1ab91b0372b1fe56ed508&camp=1638&creative=6742&index=computers&keywords=Raspberry Pi Zero W">Raspberry Pi Zero W</a> |
+| MicroSD card | Sandisk | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=530a2b371c40bfeca48e875fb735a4a1&camp=1638&creative=6742&index=computers&keywords=Sandisk microSD 16GB U1 A1">MicroSD card (8GB)</a> |
 
 ## Important note for Raspberry Pi OS!
 Please note that with the latest version of Raspberry Pi OS, there no longer is the default user pi, as it is (now) considered a security risk. You will now have to set both, a new username and password. While the fix in the software is in progress, please use the Raspberry Pi flashing tool and set the username via the gear button to `pi`. Special thanks to LakesideMiners from the [Discord] for the note. Here is a GIF showing how to set a username this way!
@@ -66,18 +81,10 @@ These commands expand the filesystem, enable SPI and set up the correct timezone
 10. Change the password for the user pi by entering `passwd` in the Terminal, enter your current password, hit enter, then type your new password and press enter. Please note you will have to remember this password to access your Raspberry Pi.
 11. Follow the steps in `Installation` (see below) on how to install Inkycal.
 
-*Sounds too complicated or cannot source the parts yourself? We've got you covered, you can now purchase a fully configured Inkycal on Tindie. These work as simple as plug-and-play. All the hard work is done in advance for you :100:*
- 
-[<a href="https://www.tindie.com/stores/aceisace4444/?ref=offsite_badges&utm_source=sellers_aceisace4444&utm_medium=badges&utm_campaign=badge_large"><img src="https://d2ss6ovg47m0r5.cloudfront.net/badges/tindie-larges.png" alt="I sell on Tindie" width="200" height="104"></a>](https://www.tindie.com/products/aceisace4444/inkycal-build-v1/)
-
-Do note that these are made on demand and not always available, best to keep checking :wink:
-
 ## Installing Inkycal
 ⚠️ Please note that although the developers try to keep the installation as simple as possible, the full installation can sometimes take hours on the Raspberry Pi Zero W and is not guaranteed to go smoothly each time. This is because installing dependencies on the zero w takes a long time and is prone to copy-paste-, permission- and configuration errors.
 
-🤫 **Here's a secret:** We know about this problem and have spent a signifcant amount of time to prepare a pre-configured image with the latest version of Inkycal for the Raspberry Pi Zero. It comes with the latest version of Inkycal, is fully tested and uses the Raspberry Pi OS Lite as it's base image. You only need to copy your settings.json file, we already took care of the rest! 
-
-Become a sponsor to get access to Inkycal OS Lite! This will help keep this project growing and cover the ongoing expenses too! Win-win for everyone! 🎊
+ℹ️ **Looking for a shortcut to safe a few hours?** We know about this problem and have spent a signifcant amount of time to prepare a pre-configured image with the latest version of Inkycal for the Raspberry Pi Zero. It comes with the latest version of Inkycal, is fully tested and uses the Raspberry Pi OS Lite as it's base image. You only need to copy your settings.json file, we already took care of the rest, including auto-start at boot, enabling spi and installing all dependencies in advance. Pretty neat right? Check the [sponsor button]() at the very top of the repo to get access to Inkycal-OS-Lite. This will help keep this project growing and cover the ongoing expenses too! Win-win for everyone! 🎊
 
 
 ### Manual installation
@@ -146,6 +153,10 @@ To deactivate the virtual environment, simply run:
 deactivate
 ```
 
+## 3D printed frames
+With your setup being complete at this stage, you may want to 3d-print a case. The following files were shared by our friendly community:
+[3D-printable case](https://github.com/aceinnolab/Inkycal/wiki/3D-printable-files)
+
 ## Contributing
 All sorts of contributions are most welcome and appreciated. To start contributing, please follow the [Contribution Guidelines](https://github.com/aceisace/Inkycal/blob/main/.github/CONTRIBUTING.md)
 
@@ -160,17 +171,11 @@ We're happy to help, to beginners and developers alike. In fact, you are more li
         <img src="https://github.com/aceisace/Inkycal/blob/assets/Repo/discord-logo.png?raw=true" alt="Inkycal chatroom Discord" width=200>
 </a>
 
-## Buy me a :coffee: please
-Yes please! I do drink and like my :coffee:, especially when developing Inkycal :laugh:
-Apart from coffee, I also invest in getting new hardware and displays for Inkycal as well as maintaining the servers
-Financial contributions will also be remembered on the contributors page, along with your first name.
-You can donate a coffee with these QR-Codes: (Paypal - left, bitcoin - right)
+## Sponsoring
+Inkycal relies on sponsors to keep up maintainance, development and bug-fixing. Please consider sponsoring Inkycal via the sponsor button if you are happy with Inkycal.
 
-
-<p align="center">
-        <img src="https://github.com/aceisace/Inkycal/blob/assets/Repo/coffee.png?raw=true" width=250>
-        <img src="https://github.com/aceisace/Inkycal/blob/assets/Repo/bitcoin_qr.png?raw=true" width=300>
-</p>
+We now offer perks depending on the amount contributed for sponsoring, ranging from pre-configured OS images for plug-and-play to development of user-suggested modules. Check out the sponsor page to find out more.
+If you have been a previous sponsor, please let us know on our Dicord server or by sending an email. We'll send you the perks after confirming 💯
 
 ## As featured on
 * [makeuseof - fantastic projects using an eink display](http://makeuseof.com/fantastic-projects-using-an-e-ink-display/)
