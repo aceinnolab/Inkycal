@@ -7,13 +7,12 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/aceinnolab/Inkycal/actions/workflows/build-doc-and-os.yml"><img src="https://github.com/aceisace/Inkycal/actions/workflows/build-doc-and-os.yml/badge.svg"></a>
-    <a href="https://github.com/aceinnolab/Inkycal/releases"><img alt="Version" src="https://img.shields.io/github/release/aceisace/Inkycal.svg" /></a>
+        <a href="https://github.com/aceinnolab/Inkycal/actions/workflows/test-on-rpi.yml"><img src="https://github.com/aceinnolab/Inkycal/actions/workflows/test-on-rpi.yml/badge.svg"></a>
+    <a href="https://github.com/aceinnolab/Inkycal/actions/workflows/update-docs.yml"><img src="https://github.com/aceinnolab/Inkycal/actions/workflows/update-docs.yml/badge.svg"></a>
+    <a href="https://github.com/aceinnolab/Inkycal/releases"><img alt="Version" src="https://img.shields.io/github/release/aceisace/Inkycal.svg"/></a>
    <a href="https://github.com/aceinnolab/Inkycal/blob/main/LICENSE"><img alt="Licence" src="https://img.shields.io/github/license/aceisace/Inkycal.svg" /></a>
-   <a href="https://github.com/aceinnolab/Inkycal/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/aceisace/Inkycal"></a>
-   <a href="https://github.com/aceinnolab/Inkycal/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aceisace/Inkycal?color=green"></a>
-   <a href="https://github.com/aceinnolab/Inkycal/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/aceisace/Inkycal?color=green"></a>
-   <a href="https://github.com/aceinnolab/Inkycal"><img alt="python" src="https://img.shields.io/badge/python-%3E3.8-lightgrey"></a>
+   <a href="https://github.com/aceinnolab/Inkycal/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aceisace/Inkycal?color=yellow"></a>
+   <a href="https://github.com/aceinnolab/Inkycal"><img alt="python" src="https://img.shields.io/badge/python-3.9-lightorange"></a>
 </p>
 
 Inkycal is a software written in python for selected E-Paper displays. It converts these displays into useful information dashboards. It's open-source, free for personal use, fully modular and user-friendly. Despite all this, Inkycal can run well even on the Raspberry Pi Zero. Oh, and it's open for third-party modules! Hooray!
@@ -167,6 +166,7 @@ The average response time for issues, PRs and emails is usually 24 hours. In som
 
 ## Join us on Discord!
 We're happy to help, to beginners and developers alike. In fact, you are more likely to get faster support on Discord than on Github.
+
 <a href="https://discord.gg/sHYKeSM">
         <img src="https://github.com/aceisace/Inkycal/blob/assets/Repo/discord-logo.png?raw=true" alt="Inkycal chatroom Discord" width=200>
 </a>
