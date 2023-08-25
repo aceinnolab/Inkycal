@@ -55,30 +55,35 @@ Before you can start, please ensure you have one of the supported displays and o
 | Raspberry Pi Zero W | Raspberry Pi | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=8f9c223197e1ab91b0372b1fe56ed508&camp=1638&creative=6742&index=computers&keywords=Raspberry Pi Zero W">Raspberry Pi Zero W</a> |
 | MicroSD card | Sandisk | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=530a2b371c40bfeca48e875fb735a4a1&camp=1638&creative=6742&index=computers&keywords=Sandisk microSD 16GB U1 A1">MicroSD card (8GB)</a> |
 
-## Important note for Raspberry Pi OS!
-Please note that with the latest version of Raspberry Pi OS, there no longer is the default user pi, as it is (now) considered a security risk. You will now have to set both, a new username and password. While the fix in the software is in progress, please use the Raspberry Pi flashing tool and set the username via the gear button to `pi`. Special thanks to LakesideMiners from the [Discord] for the note. Here is a GIF showing how to set a username this way!
-
-<img src="https://raw.githubusercontent.com/aceisace/Inkycal/assets/Wiki/inkycal-rpi-os-username.gif" alt="raspberry-pi-os-add-user" width="600">
 
 ## Configuring the Raspberry Pi
-1. Flash Raspberry Pi OS according to the [instructions](https://www.raspberrypi.org/software/). Leave the SD card plugged in your computer.
-2. Create and download `settings.json` file for Inkycal from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal-config-v2-0-0).
-3. Download the `ssh` text file from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/create_ssh).
-4. Create and download a WiFi-configuration file (`wpa_supplicant.conf`) from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/setup_wifi)
-5. Copy these three downloaded files (`settings.json`, `ssh`, `wpa_supplicant.conf`) to the flashed microSD card in the `/boot` folder of microSD card. On Windows, this is the only visible directory on the SD card. On Linux, copy these files to `/boot` of the microSD card.
-6. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
-7. Once the green LED has stopped blinking after ~3 minutes, use an SSH client to connect to the Raspberry Pi. On Windows, you can use PUTTY, but you can also use an SSH App.
-on your smartphone. Use the address: `raspberrypi.local` with `pi` as the username and `raspberry` as the password. For more detailed instructions, check out the page from the [Raspberry Pi website](https://www.raspberrypi.org/documentation/remote-access/ssh/)
-8. After connecting via SSH, run the following commands, line by line:
+1. Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://rptl.io/imager). Use the following settings:
+
+| option | value |
+| :-- | :--: |
+| hostname | inkycal |
+| enable ssh | yes |
+| set username and password | yes |
+| username | a username you like |
+| password | a password you can remember |
+| set Wi-Fi | yes |
+| Wi-Fi SSID | your Wi-Fi name |
+| Wi-Fi password | your Wi-Fi password |
+
+
+2. Create and download `settings.json` file for Inkycal from the [WEB-UI](https://aceinnolab.com/inkycal/ui). Add the modules you want with the add module button.
+3. Copy the `settings.json` to the flashed microSD card in the `/boot` folder of microSD card. On Windows, this is the only visible directory on the SD card. On Linux, copy these files to `/boot` of the microSD card. 
+4. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
+5. Once the green LED has stopped blinking after ~3 minutes, you can connect to your Raspberry Pi via SSH using a SSH Client. We suggest [Termius](https://termius.com/download/windows)
+on your smartphone. Use the address: `inkycal.local` with the username and password you set earlier. For more detailed instructions, check out the page from the [Raspberry Pi website](https://www.raspberrypi.org/documentation/remote-access/ssh/)
+6. After connecting via SSH, run the following commands, line by line:
 ```bash
 sudo raspi-config --expand-rootfs
 sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
 sudo dpkg-reconfigure tzdata
 ```
 These commands expand the filesystem, enable SPI and set up the correct timezone on the Raspberry Pi. When running the last command, please select the continent you live in, press enter and then select the capital of the country you live in. Lastly, press enter.
-
-10. Change the password for the user pi by entering `passwd` in the Terminal, enter your current password, hit enter, then type your new password and press enter. Please note you will have to remember this password to access your Raspberry Pi.
-11. Follow the steps in `Installation` (see below) on how to install Inkycal.
+7. Follow the steps in `Installation` (see below) on how to install Inkycal.
 
 ## Installing Inkycal
 ⚠️ Please note that although the developers try to keep the installation as simple as possible, the full installation can sometimes take hours on the Raspberry Pi Zero W and is not guaranteed to go smoothly each time. This is because installing dependencies on the zero w takes a long time and is prone to copy-paste-, permission- and configuration errors.
