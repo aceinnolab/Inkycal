@@ -81,6 +81,20 @@ on your smartphone. Use the address: `inkycal.local` with the username and passw
 sudo raspi-config --expand-rootfs
 sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
 sudo dpkg-reconfigure tzdata
+
+# If you have the 12.48" display, these steps are also required:
+wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.71.tar.gz
+tar zxvf bcm2835-1.71.tar.gz 
+cd bcm2835-1.71/
+sudo ./configure && sudo make && sudo make check && sudo make install
+wget https://project-downloads.drogon.net/wiringpi-latest.deb
+sudo dpkg -i wiringpi-latest.deb
+
+# If you are using the Raspberry Pi Zero models, you may need to increase the swapfile size to be able to install Inkycal:
+sudo dphys-swapfile swapoff
+sudo sed -i -E '/^CONF_SWAPSIZE=/s/=.*/=256/' /etc/dphys-swapfile
+sudo dphys-swapfile setup
+sudo dphys-swapfile swapon
 ```
 These commands expand the filesystem, enable SPI and set up the correct timezone on the Raspberry Pi. When running the last command, please select the continent you live in, press enter and then select the capital of the country you live in. Lastly, press enter.
 7. Follow the steps in `Installation` (see below) on how to install Inkycal.
