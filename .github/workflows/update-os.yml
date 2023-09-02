@@ -53,7 +53,7 @@ jobs:
 
             # install deps for 12.48" display
             wget https://github.com/aceinnolab/Inkycal/blob/assets/Repo/bcm2835-1.71.tar
-            tar –xvf bcm2835-1.71.tar
+            tar -xvf bcm2835-1.71.tar
             cd bcm2835-1.71/
             sudo ./configure && sudo make && sudo make check && sudo make install
             cd .. 
