@@ -51,6 +51,25 @@ jobs:
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             for f in *.py; do python3 "$f"; done
 
+            # install deps for 12.48" display
+            wget https://github.com/aceinnolab/Inkycal/blob/assets/Repo/bcm2835-1.71.tar
+            tar zxvf bcm2835-1.71.tar.gz
+            cd bcm2835-1.71/
+            sudo ./configure && sudo make && sudo make check && sudo make install
+            cd .. 
+            echo $CWD
+            wget https://github.com/aceinnolab/Inkycal/blob/assets/Repo/wiringpi-latest.deb
+            sudo dpkg -i wiringpi-latest.deb
+            cd ..
+            echo $CWD
+            gpio -v
+
+            # increase swap-size
+            sudo dphys-swapfile swapoff
+            sudo sed -i -E '/^CONF_SWAPSIZE=/s/=.*/=256/' /etc/dphys-swapfile
+            sudo dphys-swapfile setup
+            sudo dphys-swapfile swapon
+
             # enable SPI
             sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
 
