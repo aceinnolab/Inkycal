@@ -58,7 +58,7 @@ jobs:
             sudo ./configure && sudo make && sudo make check && sudo make install
             cd .. 
             echo $CWD
-            wget https://github.com/aceinnolab/Inkycal/blob/assets/Repo/wiringpi-latest.deb
+            wget https://project-downloads.drogon.net/wiringpi-latest.deb
             sudo dpkg -i wiringpi-latest.deb
             cd ..
             echo $CWD
