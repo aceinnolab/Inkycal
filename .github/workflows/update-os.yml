@@ -62,7 +62,6 @@ jobs:
             sudo dpkg -i wiringpi-latest.deb
             cd ..
             echo $CWD
-            gpio -v
 
             # increase swap-size
             sudo dphys-swapfile swapoff
