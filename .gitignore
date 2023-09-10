@@ -149,3 +149,6 @@ dmypy.json
 /inkycal/tests/tmp/
 !/inkycal/tests/*.py
 /docsource/._build/
+
+# generated files
+/image_folder/
