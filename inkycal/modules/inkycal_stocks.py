@@ -82,11 +82,11 @@ class Stocks(inkycal_module):
         tmpPath = '/tmp/inkycal_stocks/'
 
         try:
-            os.mkdir(tmpPath)
+            if not os.path.exists(tmpPath):
+                os.mkdir(tmpPath)
+                print(f"Successfully created tmp directory {tmpPath} ")
         except OSError:
             print(f"Creation of tmp directory {tmpPath} failed")
-        else:
-            print(f"Successfully created tmp directory {tmpPath} ")
 
         # Check if internet is available
         if internet_available() == True:
