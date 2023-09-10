@@ -3,12 +3,15 @@ Inkycal ePaper driving functions
 Copyright by aceisace
 """
 import os
+import logging
 from importlib import import_module
 from PIL import Image
 
 from inkycal.custom import top_level
 import glob
 
+def import_driver(model):
+    return import_module(f'inkycal.display.drivers.{model}')
 
 class Display:
     """Display class for inkycal
@@ -30,8 +33,7 @@ class Display:
             self.supports_colour = False
 
         try:
-            driver_path = f'inkycal.display.drivers.{epaper_model}'
-            driver = import_module(driver_path)
+            driver = import_driver(epaper_model)
             self._epaper = driver.EPD()
             self.model_name = epaper_model
 
@@ -168,26 +170,12 @@ class Display:
 
         >>> Display.get_display_size('model_name')
         """
-        if not isinstance(model_name, str):
-            print('model_name should be a string')
-            return
-        else:
-            driver_files = top_level + '/inkycal/display/drivers/*.py'
-            drivers = glob.glob(driver_files)
-            drivers = [i.split('/')[-1].split('.')[0] for i in drivers]
-            drivers.remove('__init__')
-            drivers.remove('epdconfig')
-            if model_name not in drivers:
-                print('This model name was not found. Please double check your spellings')
-                return
-            else:
-                with open(top_level + '/inkycal/display/drivers/' + model_name + '.py') as file:
-                    for line in file:
-                        if 'EPD_WIDTH=' in line.replace(" ", ""):
-                            width = int(line.rstrip().replace(" ", "").split('=')[-1])
-                        if 'EPD_HEIGHT=' in line.replace(" ", ""):
-                            height = int(line.rstrip().replace(" ", "").split('=')[-1])
-                return width, height
+        try:
+            driver = import_driver(model_name)
+            return driver.EPD_WIDTH, driver.EPD_HEIGHT
+        except Exception as e:
+            logging.error(f'Failed to load driver for ${model_name}. Check spelling?')
+            raise e;
 
     @classmethod
     def get_display_names(cls) -> list:
