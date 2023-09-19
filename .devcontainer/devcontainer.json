@@ -1,0 +1,21 @@
+// For format details, see https://aka.ms/devcontainer.json.
+{
+	"name": "Python 3",
+	"image": "python:3.9-bullseye",
+
+    // This is the settings.json mount
+	"mounts": ["source=/c/temp/settings_test.json,target=/boot/settings.json,type=bind,consistency=cached"],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "pip3 install --user -r requirements.txt",
+
+	// We want to connect as root. More info: https://aka.ms/dev-containers-non-root.
+	"remoteUser": "root",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python"
+			]
+		}
+	}
+}
