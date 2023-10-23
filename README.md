@@ -17,7 +17,7 @@
 
 Inkycal is a software written in python for selected E-Paper displays. It converts these displays into useful information dashboards. It's open-source, free for personal use, fully modular and user-friendly. Despite all this, Inkycal can run well even on the Raspberry Pi Zero. Oh, and it's open for third-party modules! Hooray!
 
-## Important info about debian bookworm
+## ⚠️ Important info about debian bookworm
 Starting october 2023, Raspberry Pi OS is now based on Debian bookworm. At this moment in time, there are several projects expierencing compatability issues because of this change, including Inkycal. Please either use the last [compatible version of Raspberry Pi OS](https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz) or get a ready-to-flash tested OS image (aka. Inkycal OS Lite) with Inkycal pre-installed when sponsoring this project. Please hold on until a fix has been found, tested and is published.
 
 
@@ -34,8 +34,13 @@ Inkycal is fully modular, you can mix and match any modules you like and configu
 * iCanHazDad - Display a random joke from [iCanHazDad.com](iCanhazdad.com).
 
 
+## Quickstart
+Watch the one-minute video on getting started with Inkycal:
+
+[![Inkycal quickstart](https://img.youtube.com/vi/IiIv_nWE5KI/0.jpg)](https://www.youtube.com/watch?v=IiIv_nWE5KI)
+
 ## Hardware guide
-Before you can start, please ensure you have one of the supported displays and of the supported Raspberry Pi: `|4|3A|3B|3B+|0W|0WH|`. We personally recommend the Raspberry Pi Zero W as this is relatively cheaper, uses less power and is perfect to fit in a small photo frame once you have assembled everything.
+Before you can start, please ensure you have one of the supported displays and of the supported Raspberry Pi: `|4|3A|3B|3B+|2B|0W|0WH|02W|`. We personally recommend the Raspberry Pi Zero W as this is relatively cheaper, uses less power and is perfect to fit in a small photo frame once you have assembled everything.
 
 **Serial** displays are usually cheaper, but slower. Their main advantage is ease of use, like being able to communicate via SPI. A single update will cause flickering (fully normal on e-paper displays) ranging from a few seconds to half an minute. We recommend these for users who want to get started quickly and for more compact setups, e.g. fitting inside a photo frame. The resolution of these displays ranges from low to medium. Usually, these displays support 2-3 colours, but no colours in between, e.g. fully black, fully red/yellow and fully-white.
 
