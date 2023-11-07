@@ -91,9 +91,11 @@ class Feeds(inkycal_module):
 
         # Set some parameters for formatting feeds
         line_spacing = 1
-        line_height = self.font.getsize('hg')[1] + line_spacing
+
         line_width = im_width
-        max_lines = (im_height // (self.font.getsize('hg')[1] + line_spacing))
+        text_bbox_height = self.font.getbbox("hg")
+        line_height = text_bbox_height[3] - text_bbox_height[1] + line_spacing
+        max_lines = (im_height // (line_height + line_spacing))
 
         # Calculate padding from top so the lines look centralised
         spacing_top = int(im_height % line_height / 2)

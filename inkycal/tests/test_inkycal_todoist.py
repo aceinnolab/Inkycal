@@ -46,7 +46,6 @@ class module_test(unittest.TestCase):
                 print('OK')
                 if Config.USE_PREVIEW:
                     preview(merge(im_black, im_colour))
-                merge(im_black, im_colour).show()
         else:
             print('No api key given, omitting test')
 

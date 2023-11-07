@@ -112,8 +112,6 @@ class TestTextToDisplay(unittest.TestCase):
             print('OK')
             if Config.USE_PREVIEW:
                 preview(merge(im_black, im_colour))
-            im = merge(im_black, im_colour)
-            im.show()
 
         if delete_file_after_parse:
             print("cleaning up temp file")
