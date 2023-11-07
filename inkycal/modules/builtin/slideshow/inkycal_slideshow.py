@@ -9,8 +9,7 @@ import glob
 from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
 
-# PIL has a class named Image, use alias for CustomImage -> Images
-from inkycal.custom.inky_image import CustomImage as Images
+from inkycal.custom.inky_image import CustomImage
 
 logger = logging.getLogger(__name__)
 
@@ -18,34 +17,6 @@ logger = logging.getLogger(__name__)
 class Slideshow(inkycal_module):
     """Cycles through images in a local image folder
     """
-    name = "Slideshow - cycle through images from a local folder"
-
-    requires = {
-
-        "path": {
-            "label": "Path to a local folder, e.g. /home/pi/Desktop/images. "
-                     "Only PNG and JPG/JPEG images are used for the slideshow."
-        },
-
-        "palette": {
-            "label": "Which palette should be used for converting images?",
-            "options": ["bw", "bwr", "bwy"]
-        }
-
-    }
-
-    optional = {
-
-        "autoflip": {
-            "label": "Should the image be flipped automatically? Default is False",
-            "options": [False, True]
-        },
-
-        "orientation": {
-            "label": "Please select the desired orientation",
-            "options": ["vertical", "horizontal"]
-        }
-    }
 
     def __init__(self, config):
         """Initialize module"""
@@ -54,15 +25,10 @@ class Slideshow(inkycal_module):
 
         config = config['config']
 
-        # required parameters
-        for param in self.requires:
-            if not param in config:
-                raise Exception(f'config is missing {param}')
-
         # optional parameters
         self.path = config['path']
         self.palette = config['palette']
-        self.autoflip = config['autoflip']
+        self.auto_flip = config['autoflip']
         self.orientation = config['orientation']
 
         # Get the full path of all png/jpg/jpeg images in the given folder
@@ -102,7 +68,7 @@ class Slideshow(inkycal_module):
             self.images = rotate(self.images)
 
         # initialize custom image class
-        im = Images()
+        im = CustomImage()
 
         # temporary print method, prints current filename
         print(f'slideshow - current image name: {self.images[0].split("/")[-1]}')
@@ -113,8 +79,8 @@ class Slideshow(inkycal_module):
         # Remove background if present
         im.remove_alpha()
 
-        # if autoflip was enabled, flip the image
-        if self.autoflip:
+        # if auto-flip was enabled, flip the image
+        if self.auto_flip:
             im.autoflip(self.orientation)
 
         # resize the image so it can fit on the epaper

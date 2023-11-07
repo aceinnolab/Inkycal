@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 class iCalendar:
-    """iCalendar parsing moudule for inkycal.
+    """iCalendar parsing module for inkycal.
     Parses events from given iCalendar URLs / paths"""
 
     def __init__(self):

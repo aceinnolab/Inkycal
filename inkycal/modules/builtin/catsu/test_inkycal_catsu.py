@@ -39,11 +39,7 @@ tests = [
 ]
 
 
-class module_test(unittest.TestCase):
-    def test_get_config(self):
-        module_config = Module.get_config()
-        assert (len(module_config) == 2)
-        assert (isinstance(module_config, list))
+class TestInkycalCatsu(unittest.TestCase):
 
     def test_generate_image(self):
         for test_count, test in enumerate(tests, start=1):

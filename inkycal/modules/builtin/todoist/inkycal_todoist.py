@@ -19,32 +19,12 @@ class Todoist(inkycal_module):
     parses todos from the todoist api.
     """
 
-    name = "Todoist API - show your todos from todoist"
-
-    requires = {
-        'api_key': {
-            "label": "Please enter your Todoist API-key",
-        },
-    }
-
-    optional = {
-        'project_filter': {
-            "label": "Show Todos only from following project (separated by a comma). Leave empty to show " +
-                     "todos from all projects",
-        }
-    }
-
     def __init__(self, config):
         """Initialize inkycal_rss module"""
 
         super().__init__(config)
 
         config = config['config']
-
-        # Check if all required parameters are present
-        for param in self.requires:
-            if param not in config:
-                raise Exception(f'config is missing {param}')
 
         # module specific parameters
         self.api_key = config['api_key']
@@ -60,10 +40,6 @@ class Todoist(inkycal_module):
         # give an OK message
         print(f'{__name__} loaded')
 
-    def _validate(self):
-        """Validate module-specific parameters"""
-        if not isinstance(self.api_key, str):
-            print('api_key has to be a string: "Yourtopsecretkey123" ')
 
     def generate_image(self):
         """Generate image for this module"""

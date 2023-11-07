@@ -30,23 +30,18 @@ tests = [
 ]
 
 
-class module_test(unittest.TestCase):
-
-    def test_get_config(self):
-        print('getting data for web-ui...', end="")
-        Module.get_config()
-        print('OK')
+class TestInkycalTodoist(unittest.TestCase):
 
     def test_generate_image(self):
         if api_key:
             for test in tests:
                 print(f'test {tests.index(test) + 1} generating image..')
-                module = Module(test)
+                module = Module(test["config"])
                 im_black, im_colour = module.generate_image()
+                merged = (merge(im_black, im_colour))
                 print('OK')
                 if Config.USE_PREVIEW:
-                    preview(merge(im_black, im_colour))
-                merge(im_black, im_colour).show()
+                    preview(merged)
         else:
             print('No api key given, omitting test')
 

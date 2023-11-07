@@ -78,12 +78,7 @@ tests = [
 ]
 
 
-class TestTextToDisplay(unittest.TestCase):
-
-    def test_get_config(self):
-        print('getting data for web-ui...', end="")
-        Module.get_config()
-        print('OK')
+class TestInkycalTextToDisplay(unittest.TestCase):
 
     def test_generate_image(self):
         delete_file_after_parse = False
@@ -107,13 +102,12 @@ class TestTextToDisplay(unittest.TestCase):
 
         for test in tests:
             print(f'test {tests.index(test) + 1} generating image..')
-            module = Module(test)
+            module = Module(test["config"])
             im_black, im_colour = module.generate_image()
+            merged = merge(im_black, im_colour)
             print('OK')
             if Config.USE_PREVIEW:
-                preview(merge(im_black, im_colour))
-            im = merge(im_black, im_colour)
-            im.show()
+                preview(merged)
 
         if delete_file_after_parse:
             print("cleaning up temp file")

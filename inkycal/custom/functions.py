@@ -5,12 +5,11 @@ Inkycal custom-functions for ease-of-use
 Copyright by aceinnolab
 """
 import logging
-import socket
-
-from PIL import Image, ImageDraw, ImageFont, ImageColor
-from urllib.request import urlopen
 import os
+import socket
 import time
+
+from PIL import Image, ImageDraw, ImageFont
 
 logs = logging.getLogger(__name__)
 logs.setLevel(level=logging.INFO)
@@ -108,7 +107,7 @@ def auto_fontsize(font, max_height):
 
 
 def write(image, xy, box_size, text, font=None, **kwargs):
-    """Writes text on a image.
+    """Writes text on an image.
 
     Writes given text at given position on the specified image.
 
@@ -127,10 +126,8 @@ def write(image, xy, box_size, text, font=None, **kwargs):
       - colour: black by default, do not change as it causes issues with rendering
         on e-Paper.
       - rotation: Rotate the text with the text-box by a given angle anti-clockwise.
-      - fill_width: Decimal representing a percentage e.g. 0.9 # 90%. Fill a
-        maximum of 90% of the size of the full width of text-box.
-      - fill_height: Decimal representing a percentage e.g. 0.9 # 90%. Fill a
-        maximum of 90% of the size of the full height of the text-box.
+      - fill_width: Decimal representing a percentage e.g. 0.9 # 90%. Fill maximum of 90% of the size of the full width of text-box.
+      - fill_height: Decimal representing a percentage e.g. 0.9 # 90%. Fill maximum of 90% of the size of the full height of the text-box.
     """
     allowed_kwargs = ['alignment', 'autofit', 'colour', 'rotation',
                       'fill_width', 'fill_height']
@@ -162,14 +159,14 @@ def write(image, xy, box_size, text, font=None, **kwargs):
             font = ImageFont.truetype(font.path, size)
             text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
 
-    text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
+    text_width, text_height = font.getbbox(text)[-2], font.getbbox('hg')[-1]
 
     # Truncate text if text is too long so it can fit inside the box
     if (text_width, text_height) > (box_width, box_height):
         logs.debug(('truncating {}'.format(text)))
         while (text_width, text_height) > (box_width, box_height):
             text = text[0:-1]
-            text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
+            text_width, text_height = font.getbbox(text)[-2], font.getbbox('hg')[-1]
         logs.debug(text)
 
     # Align text to desired position
@@ -296,7 +293,7 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
     # lenght of rectangle size
     a, b = (width - diameter), (height - diameter)
 
-    # Set coordinates for staright lines
+    # Set coordinates for straight lines
     p1, p2 = (x + radius, y), (x + radius + a, y)
     p3, p4 = (x + width, y + radius), (x + width, y + radius + b)
     p5, p6 = (p2[0], y + height), (p1[0], y + height)
@@ -322,13 +319,14 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
         draw.arc((c7, c8), 90, 180, fill=colour, width=thickness)
 
 
-def split_text_into_lines(text:str, font:ImageFont, max_width:int):
+def split_text_into_lines(text: str, font: ImageFont, max_width: int):
     words = text.split()
     lines = []
     current_line = words[0]
 
     for word in words[1:]:
-        line_width = font.getbbox(current_line + ' ' + word)[2] - font.getbbox(current_line)[0] #font.getsize(current_line + ' ' + word)[0]
+        line_width = font.getbbox(
+            current_line + ' ' + word)[2] - font.getbbox(current_line)[0]  # font.getsize(current_line + ' ' + word)[0]
 
         if line_width <= max_width:
             current_line += ' ' + word

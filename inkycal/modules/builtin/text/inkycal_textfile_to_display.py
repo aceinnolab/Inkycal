@@ -19,25 +19,12 @@ class TextToDisplay(inkycal_module):
     """TextToDisplay module
     """
 
-    name = "Text module - Display text from a local file on the display"
-
-    requires = {
-        "filepath": {
-            "label": "Please enter a filepath or URL pointing to a .txt file",
-        },
-    }
-
     def __init__(self, config):
         """Initialize inkycal_textfile_to_display module"""
 
         super().__init__(config)
 
         config = config['config']
-
-        # Check if all required parameters are present
-        for param in self.requires:
-            if param not in config:
-                raise Exception(f'config is missing {param}')
 
         # required parameters
         self.filepath = config["filepath"]
@@ -47,11 +34,6 @@ class TextToDisplay(inkycal_module):
 
         # give an OK message
         print(f'{__name__} loaded')
-
-    def _validate(self):
-        """Validate module-specific parameters"""
-        # ensure we only use a single file
-        assert (self.filepath and len(self.filepath) == 1)
 
     def generate_image(self):
         """Generate image for this module"""
