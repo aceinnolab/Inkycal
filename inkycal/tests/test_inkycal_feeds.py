@@ -57,8 +57,6 @@ class module_test(unittest.TestCase):
             print('OK')
             if Config.USE_PREVIEW:
                 preview(merge(im_black, im_colour))
-            im = merge(im_black, im_colour)
-            im.show()
 
 
 if __name__ == '__main__':

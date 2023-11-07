@@ -98,7 +98,9 @@ class Agenda(inkycal_module):
 
         # Calculate the max number of lines that can fit on the image
         line_spacing = 1
-        line_height = int(self.font.getsize('hg')[1]) + line_spacing
+
+        text_bbox_height = self.font.getbbox("hg")
+        line_height = text_bbox_height[3] - text_bbox_height[1] + line_spacing
         line_width = im_width
         max_lines = im_height // line_height
         logger.debug(f'max lines: {max_lines}')
@@ -133,8 +135,8 @@ class Agenda(inkycal_module):
         # parser.show_events()
 
         # Set the width for date, time and event titles
-        date_width = int(max([self.font.getsize(
-            dates['begin'].format(self.date_format, locale=self.language))[0]
+        date_width = int(max([self.font.getlength(
+            dates['begin'].format(self.date_format, locale=self.language))
                               for dates in agenda_events]) * 1.2)
         logger.debug(f'date_width: {date_width}')
 
@@ -147,8 +149,9 @@ class Agenda(inkycal_module):
             logger.info('Managed to parse events from urls')
 
             # Find out how much space the event times take
-            time_width = int(max([self.font.getsize(
-                events['begin'].format(self.time_format, locale=self.language))[0]
+
+            time_width = int(max([self.font.getlength(
+                events['begin'].format(self.time_format, locale=self.language))
                                   for events in upcoming_events]) * 1.2)
             logger.debug(f'time_width: {time_width}')
 

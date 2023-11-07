@@ -13,7 +13,7 @@ preview = Inkyimage.preview
 merge = Inkyimage.merge
 
 owm_api_key = Config.OPENWEATHERMAP_API_KEY
-location = 'Stuttgart, DE'
+location = '2825297'
 
 tests = [
     {
@@ -184,7 +184,8 @@ class module_test(unittest.TestCase):
             im_black, im_colour = module.generate_image()
             print('OK')
             if Config.USE_PREVIEW:
-                preview(merge(im_black, im_colour))
+                merged = merge(im_black, im_colour)
+                preview(merged)
 
 
 
