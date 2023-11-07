@@ -7,10 +7,10 @@ If the content is too long, it will be truncated from the back until it fits
 
 Copyright by aceinnolab
 """
-from inkycal.modules.template import inkycal_module
-from inkycal.custom import *
-
 from urllib.request import urlopen
+
+from inkycal.custom import *
+from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +43,6 @@ class TextToDisplay(inkycal_module):
         self.filepath = config["filepath"]
 
         self.make_request = True if self.filepath.startswith("https://") else False
-
 
         # give an OK message
         print(f'{__name__} loaded')
