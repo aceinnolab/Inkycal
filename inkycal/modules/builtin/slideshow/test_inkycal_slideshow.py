@@ -134,20 +134,17 @@ tests = [
 ]
 
 
-class module_test(unittest.TestCase):
-    def test_get_config(self):
-        print('getting data for web-ui...', end="")
-        Module.get_config()
-        print('OK')
+class TestInkycalSlideshow(unittest.TestCase):
 
     def test_generate_image(self):
         for test in tests:
             print(f'test {tests.index(test) + 1} generating image..')
-            module = Module(test)
+            module = Module(test["config"])
             im_black, im_colour = module.generate_image()
+            merged = merge(im_black, im_colour)
             print('OK')
             if Config.USE_PREVIEW:
-                preview(merge(im_black, im_colour))
+                preview(merged)
 
     def test_switch_to_next_image(self):
         print(f'testing switching to next images..')

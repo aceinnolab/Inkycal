@@ -41,6 +41,40 @@ class Calendar(inkycal_module):
         # give an OK message
         print(f'{__name__} loaded')
 
+
+
+    @staticmethod
+    def load_icalendar_from_url(ical_url:str, date_start:arrow.arrow, date_end:arrow.arrow, timezone:str) -> dict:
+
+        ical = iCalendar()
+
+        if not ical_url.startswith("http"):
+            raise AssertionError(f"The provided URL to iCalendar does not seem to be valid: {ical_url}")
+
+        ical.load_url(ical_url)
+
+        # Get events between date_start and date_end
+        events_in_timerange = ical.get_events(date_start, date_end, timezone)
+        ical.sort()
+        return events_in_timerange
+
+    @staticmethod
+    def load_icalendar_from_file(ical_file: str, date_start:arrow.arrow, date_end:arrow.arrow, timezone:str) -> dict:
+
+        ical = iCalendar()
+
+        if not os.path.exists(ical_file):
+            raise FileNotFoundError(f"No iCalendar file could be found in the provided location: {ical_file}")
+
+        ical.load_from_file(ical_file)
+
+        # Get events between date_start and date_end
+        events_in_timerange = ical.get_events(date_start, date_end, timezone)
+        ical.sort()
+        return events_in_timerange
+
+
+
     def generate_month_name_canvas(self, month_name:str, row_height:int) -> Image:
         flexbox = Flexbox(
             width=self.width,

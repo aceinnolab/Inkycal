@@ -71,8 +71,44 @@ class InkycalCatsu(inkycal_module):
 
         image = image.filter(ImageFilter.SHARPEN)
 
-        # ssl._create_default_https_context = ssl._create_unverified_context
+        def convert_to_limited_colors(image):
+            # Define the limited color palette
+            color_palette = {
+                (255, 0, 0): (255, 0, 0),  # Red
+                (255, 255, 0): (255, 255, 0),  # Yellow
+                (0, 255, 0): (0, 255, 0),  # Green
+                (0, 0, 255): (0, 0, 255),  # Blue
+                (0, 0, 0): (0, 0, 0),  # Black
+                (255, 255, 255): (255, 255, 255),  # White
+                (255, 165, 0): (255, 165, 0)  # Orange
+            }
 
+            # Convert image to RGB mode if it's not already
+            image = image.convert("RGB")
+
+            # Get the image dimensions
+            width, height = image.size
+
+            # Create a new image with the same dimensions
+            new_image = Image.new("RGB", (width, height))
+
+            # Iterate over each pixel in the image
+            for x in range(width):
+                for y in range(height):
+                    # Get the RGB values of the current pixel
+                    r, g, b = image.getpixel((x, y))
+
+                    # Find the closest color in the limited color palette
+                    closest_color = min(color_palette.keys(),
+                                        key=lambda c: abs(c[0] - r) + abs(c[1] - g) + abs(c[2] - b))
+
+                    # Set the pixel color in the new image to the closest color
+                    new_image.putpixel((x, y), color_palette[closest_color])
+
+            return new_image
+
+
+        image = convert_to_limited_colors(image)
 
         return image
 

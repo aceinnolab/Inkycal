@@ -57,14 +57,12 @@ class Feeds(inkycal_module):
             width=self.width, height=self.height,
             padding=1,
             num_rows=max_rows, num_cols=1,
-            rem_size=1,
+            font_size=self.fontsize,
             font_path=self.font.path,
             border_radius=1,
             show_border=False
         )
 
-        ssl._create_default_https_context = ssl._create_unverified_context
-        # Create list containing all feeds from all urls
         parsed_feeds = []
         for feeds in self.feed_urls:
             text = feedparser.parse(feeds)
@@ -73,7 +71,7 @@ class Feeds(inkycal_module):
                     parsed_feeds.append(f"•{posts.title}: {re.sub('<[^<]+?>', '', posts.summary)}")
 
         if not parsed_feeds:
-            canvas.add_text(text="No feeds found", row=1, col=1, alignment=TextAlignment.LEFT, wrap_text=False)
+            canvas.add_wrapped_text(text="No feeds found", row=1, col=1, alignment=TextAlignment.LEFT)
             return canvas
 
         # Shuffle the list to prevent showing the same content
@@ -87,7 +85,7 @@ class Feeds(inkycal_module):
             # only add feeds if the full feed can fit in the remaining space
             if len(feed_lines) + line_count <= canvas.num_rows:
                 for feed_line in feed_lines:
-                    canvas.add_text(text=feed_line, row=line_count, col=1, alignment=TextAlignment.LEFT, wrap_text=True)
+                    canvas.add_wrapped_text(text=feed_line, row=line_count, col=1, alignment=TextAlignment.LEFT)
                     line_count += 1
             else:
                 continue
