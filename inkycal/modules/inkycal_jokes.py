@@ -54,10 +54,11 @@ class Jokes(inkycal_module):
             raise NetworkNotReachableError
 
         # Set some parameters for formatting feeds
-        line_spacing = 1
-        line_height = self.font.getsize('hg')[1] + line_spacing
+        line_spacing = 5
+        text_bbox = self.font.getbbox("hg")
+        line_height = text_bbox[3] - text_bbox[1] + line_spacing
         line_width = im_width
-        max_lines = (im_height // (self.font.getsize('hg')[1] + line_spacing))
+        max_lines = (im_height // (line_height + line_spacing))
 
         logger.debug(f"max_lines: {max_lines}")
 

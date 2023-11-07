@@ -96,9 +96,10 @@ class Stocks(inkycal_module):
 
         # Set some parameters for formatting feeds
         line_spacing = 1
-        line_height = self.font.getsize('hg')[1] + line_spacing
+        text_bbox_height = self.font.getbbox("hg")
+        line_height = text_bbox_height[3] - text_bbox_height[1] + line_spacing
         line_width = im_width
-        max_lines = (im_height // (self.font.getsize('hg')[1] + line_spacing))
+        max_lines = (im_height // line_height)
 
         logger.debug(f"max_lines: {max_lines}")
 

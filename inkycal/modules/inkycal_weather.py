@@ -12,7 +12,7 @@ import math
 import decimal
 import arrow
 
-from pyowm.owm import OWM
+from inkycal.custom import OpenWeatherMap
 
 logger = logging.getLogger(__name__)
 
@@ -95,7 +95,7 @@ class Weather(inkycal_module):
         self.use_beaufort = config['use_beaufort']
 
         # additional configuration
-        self.owm = OWM(self.api_key).weather_manager()
+        self.owm =  OpenWeatherMap(api_key=self.api_key, city_id=self.location, units=config['units'])
         self.timezone = get_system_tz()
         self.locale = config['language']
         self.weatherfont = ImageFont.truetype(
@@ -103,6 +103,42 @@ class Weather(inkycal_module):
 
         # give an OK message
         print(f"{__name__} loaded")
+
+
+    @staticmethod
+    def mps_to_beaufort(meters_per_second:float) -> int:
+        """Map meters per second to the beaufort scale.
+
+        Args:
+            meters_per_second:
+                float representing meters per seconds
+
+        Returns:
+            an integer of the beaufort scale mapping the input
+        """
+        thresholds = [0.3, 1.6, 3.4, 5.5, 8.0, 10.8, 13.9, 17.2, 20.7, 24.5, 28.4]
+        return next((i for i, threshold in enumerate(thresholds) if meters_per_second < threshold), 11)
+
+    @staticmethod
+    def mps_to_mph(meters_per_second:float) -> float:
+        """Map meters per second to miles per hour, rounded to one decimal place.
+
+        Args:
+            meters_per_second:
+                float representing meters per seconds.
+
+        Returns:
+            float representing the input value in miles per hour.
+        """
+        # 1 m/s is approximately equal to 2.23694 mph
+        miles_per_hour = meters_per_second * 2.23694
+        return round(miles_per_hour, 1)
+
+    @staticmethod
+    def celsius_to_fahrenheit(celsius:int or float):
+        """Converts the given temperate from degrees Celsius to Fahrenheit."""
+        fahrenheit = (celsius * 9 / 5) + 32
+        return fahrenheit
 
     def generate_image(self):
         """Generate image for this module"""
@@ -124,7 +160,11 @@ class Weather(inkycal_module):
             raise NetworkNotReachableError
 
         def get_moon_phase():
-            """Calculate the current (approximate) moon phase"""
+            """Calculate the current (approximate) moon phase
+
+            Returns:
+                The corresponding moonphase-icon.
+            """
 
             dec = decimal.Decimal
             diff = now - arrow.get(2001, 1, 1)
@@ -154,7 +194,7 @@ class Weather(inkycal_module):
             return answer
 
         # Lookup-table for weather icons and weather codes
-        weathericons = {
+        weather_icons = {
             '01d': '\uf00d',
             '02d': '\uf002',
             '03d': '\uf013',
@@ -227,26 +267,26 @@ class Weather(inkycal_module):
             # Increase fontsize to fit specified height and width of text box
             size = 8
             font = ImageFont.truetype(font.path, size)
-            text_width, text_height = font.getsize(text)
+            text_width, text_height = font.getbbox(text)[2:]
 
             while (text_width < int(box_width * 0.9) and
                    text_height < int(box_height * 0.9)):
                 size += 1
                 font = ImageFont.truetype(font.path, size)
-                text_width, text_height = font.getsize(text)
+                text_width, text_height = font.getbbox(text)[2:]
 
-            text_width, text_height = font.getsize(text)
+            text_width, text_height = font.getbbox(text)[2:]
 
             # Align text to desired position
             x = int((box_width / 2) - (text_width / 2))
-            y = int((box_height / 2) - (text_height / 2) - (icon_size_correction[icon] * size) / 2)
+            y = int((box_height / 2) - (text_height / 2))
 
             # Draw the text in the text-box
             draw = ImageDraw.Draw(image)
             space = Image.new('RGBA', (box_width, box_height))
             ImageDraw.Draw(space).text((x, y), text, fill='black', font=font)
 
-            if rotation != None:
+            if rotation:
                 space.rotate(rotation, expand=True)
 
             # Update only region with text (add text with transparent background)
@@ -350,14 +390,9 @@ class Weather(inkycal_module):
         temp_fc4 = (col7, row3)
 
         # Create current-weather and weather-forecast objects
-        if self.location.isdigit():
-            logging.debug('looking up location by ID')
-            weather = self.owm.weather_at_id(int(self.location)).weather
-            forecast = self.owm.forecast_at_id(int(self.location), '3h')
-        else:
-            logging.debug('looking up location by string')
-            weather = self.owm.weather_at_place(self.location).weather
-            forecast = self.owm.forecast_at_place(self.location, '3h')
+        logging.debug('looking up location by ID')
+        weather = self.owm.get_current_weather()
+        forecast = self.owm.get_weather_forecast()
 
         # Set decimals
         dec_temp = None if self.round_temperature == True else 1
@@ -369,11 +404,13 @@ class Weather(inkycal_module):
         elif self.units == 'imperial':
             temp_unit = 'fahrenheit'
 
-        logging.debug(f'temperature unit: {temp_unit}')
+        logging.debug(f'temperature unit: {self.units}')
         logging.debug(f'decimals temperature: {dec_temp} | decimals wind: {dec_wind}')
 
         # Get current time
         now = arrow.utcnow()
+
+        fc_data = {}
 
         if self.forecast_interval == 'hourly':
 
@@ -386,21 +423,22 @@ class Weather(inkycal_module):
             else:
                 hour_gap = 3
 
-            # Create timings for hourly forcasts
+            # Create timings for hourly forecasts
             forecast_timings = [now.shift(hours=+ hour_gap + _).floor('hour')
                                 for _ in range(0, 12, 3)]
 
             # Create forecast objects for given timings
-            forecasts = [forecast.get_weather_at(forecast_time.datetime) for
-                         forecast_time in forecast_timings]
+            forecasts = [_ for _ in forecast if arrow.get(_["dt"]) in forecast_timings]
 
             # Add forecast-data to fc_data dictionary
             fc_data = {}
             for forecast in forecasts:
-                temp = '{}°'.format(round(
-                    forecast.temperature(unit=temp_unit)['temp'], ndigits=dec_temp))
+                if self.units == "metric":
+                    temp = f"{round(weather['main']['temp'], ndigits=dec_temp)}°C"
+                else:
+                    temp = f"{round(self.celsius_to_fahrenheit(weather['weather']['main']['temp']), ndigits=dec_temp)}°F"
 
-                icon = forecast.weather_icon_name
+                icon = forecast["weather"][0]["icon"]
                 fc_data['fc' + str(forecasts.index(forecast) + 1)] = {
                     'temp': temp,
                     'icon': icon,
@@ -412,38 +450,35 @@ class Weather(inkycal_module):
 
             logger.debug("getting daily forecasts")
 
-            def calculate_forecast(days_from_today):
+            def calculate_forecast(days_from_today) -> dict:
                 """Get temperature range and most frequent icon code for forecast
                 days_from_today should be int from 1-4: e.g. 2 -> 2 days from today
                 """
 
                 # Create a list containing time-objects for every 3rd hour of the day
-                time_range = list(arrow.Arrow.range('hour',
-                                                    now.shift(days=days_from_today).floor('day'),
-                                                    now.shift(days=days_from_today).ceil('day')
-                                                    ))[::3]
+                time_range = list(
+                    arrow.Arrow.range('hour',
+                    now.shift(days=days_from_today).floor('day'),now.shift(days=days_from_today).ceil('day')
+                    ))[::3]
 
                 # Get forecasts for each time-object
-                forecasts = [forecast.get_weather_at(_.datetime) for _ in time_range]
+                forecasts = [_ for _ in forecast if arrow.get(_["dt"]) in time_range]
 
                 # Get all temperatures for this day
-                daily_temp = [round(_.temperature(unit=temp_unit)['temp'],
-                                    ndigits=dec_temp) for _ in forecasts]
+                daily_temp = [round(_["main"]["temp"]) for _ in forecasts]
                 # Calculate min. and max. temp for this day
-                temp_range = f'{max(daily_temp)}°/{min(daily_temp)}°'
+                temp_range = f'{min(daily_temp)}°/{max(daily_temp)}°'
 
                 # Get all weather icon codes for this day
-                daily_icons = [_.weather_icon_name for _ in forecasts]
+                daily_icons = [_["weather"][0]["icon"] for _ in forecasts]
                 # Find most common element from all weather icon codes
                 status = max(set(daily_icons), key=daily_icons.count)
 
-                weekday = now.shift(days=days_from_today).format('ddd', locale=
-                self.locale)
+                weekday = now.shift(days=days_from_today).format('ddd', locale=self.locale)
                 return {'temp': temp_range, 'icon': status, 'stamp': weekday}
 
             forecasts = [calculate_forecast(days) for days in range(1, 5)]
 
-            fc_data = {}
             for forecast in forecasts:
                 fc_data['fc' + str(forecasts.index(forecast) + 1)] = {
                     'temp': forecast['temp'],
@@ -455,13 +490,15 @@ class Weather(inkycal_module):
             logger.debug((key, val))
 
         # Get some current weather details
-        temperature = '{}°'.format(round(
-            weather.temperature(unit=temp_unit)['temp'], ndigits=dec_temp))
+        if dec_temp != 0:
+            temperature = f"{round(weather['main']['temp'])}°"
+        else:
+            temperature = f"{round(weather['main']['temp'],ndigits=dec_temp)}°"
 
-        weather_icon = weather.weather_icon_name
-        humidity = str(weather.humidity)
-        sunrise_raw = arrow.get(weather.sunrise_time()).to(self.timezone)
-        sunset_raw = arrow.get(weather.sunset_time()).to(self.timezone)
+        weather_icon = weather["weather"][0]["icon"]
+        humidity = str(weather["main"]["humidity"])
+        sunrise_raw = arrow.get(weather["sys"]["sunrise"]).to(self.timezone)
+        sunset_raw = arrow.get(weather["sys"]["sunset"]).to(self.timezone)
 
         logger.debug(f'weather_icon: {weather_icon}')
 
@@ -469,33 +506,29 @@ class Weather(inkycal_module):
             logger.debug('using 12 hour format for sunrise/sunset')
             sunrise = sunrise_raw.format('h:mm a')
             sunset = sunset_raw.format('h:mm a')
-
-        elif self.hour_format == 24:
+        else:
+            # 24 hours format
             logger.debug('using 24 hour format for sunrise/sunset')
             sunrise = sunrise_raw.format('H:mm')
             sunset = sunset_raw.format('H:mm')
 
-        # Format the windspeed to user preference
+        # Format the wind-speed to user preference
         if self.use_beaufort:
             logger.debug("using beaufort for wind")
-            wind = str(weather.wind(unit='beaufort')['speed'])
-
+            wind = str(self.mps_to_beaufort(weather["wind"]["speed"]))
         else:
-
             if self.units == 'metric':
-                logging.debug('getting windspeed in metric unit')
-                wind = str(weather.wind(unit='meters_sec')['speed']) + 'm/s'
+                logging.debug('getting wind speed in meters per second')
+                wind = f"{weather['wind']['speed']} m/s"
+            else:
+                logging.debug('getting wind speed in imperial unit')
+                wind = f"{self.mps_to_mph(weather['wind']['speed'])} miles/h"
 
-            elif self.units == 'imperial':
-                logging.debug('getting windspeed in imperial unit')
-                wind = str(weather.wind(unit='miles_hour')['speed']) + 'miles/h'
-
-        dec = decimal.Decimal
-        moonphase = get_moon_phase()
+        moon_phase = get_moon_phase()
 
         # Fill weather details in col 1 (current weather icon)
         draw_icon(im_colour, weather_icon_pos, (col_width, im_height),
-                  weathericons[weather_icon])
+                  weather_icons[weather_icon])
 
         # Fill weather details in col 2 (temp, humidity, wind)
         draw_icon(im_colour, temperature_icon_pos, (icon_small, row_height),
@@ -521,7 +554,7 @@ class Weather(inkycal_module):
               wind, font=self.font)
 
         # Fill weather details in col 3 (moonphase, sunrise, sunset)
-        draw_icon(im_colour, moonphase_pos, (col_width, row_height), moonphase)
+        draw_icon(im_colour, moonphase_pos, (col_width, row_height), moon_phase)
 
         draw_icon(im_colour, sunrise_icon_pos, (icon_small, icon_small), '\uf051')
         write(im_black, sunrise_time_pos, (col_width - icon_small, row_height),
@@ -535,7 +568,7 @@ class Weather(inkycal_module):
         for pos in range(1, len(fc_data) + 1):
             stamp = fc_data[f'fc{pos}']['stamp']
 
-            icon = weathericons[fc_data[f'fc{pos}']['icon']]
+            icon = weather_icons[fc_data[f'fc{pos}']['icon']]
             temp = fc_data[f'fc{pos}']['temp']
 
             write(im_black, eval(f'stamp_fc{pos}'), (col_width, row_height),
@@ -548,7 +581,7 @@ class Weather(inkycal_module):
         border_h = row3 + row_height
         border_w = col_width - 3  # leave 3 pixels gap
 
-        # Add borders around each sub-section
+        # Add borders around each subsection
         draw_border(im_black, (col1, row1), (col_width * 3 - 3, border_h),
                     shrinkage=(0, 0))
 
