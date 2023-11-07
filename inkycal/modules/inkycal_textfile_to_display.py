@@ -7,10 +7,10 @@ If the content is too long, it will be truncated from the back until it fits
 
 Copyright by aceinnolab
 """
-from inkycal.modules.template import inkycal_module
-from inkycal.custom import *
-
 from urllib.request import urlopen
+
+from inkycal.custom import *
+from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +44,6 @@ class TextToDisplay(inkycal_module):
 
         self.make_request = True if self.filepath.startswith("https://") else False
 
-
         # give an OK message
         print(f'{__name__} loaded')
 
@@ -73,10 +72,11 @@ class TextToDisplay(inkycal_module):
             raise NetworkNotReachableError
 
         # Set some parameters for formatting feeds
-        line_spacing = 1
-        line_height = self.font.getsize('hg')[1] + line_spacing
+        line_spacing = 4
+        text_bbox_height = self.font.getbbox("hg")
+        line_height = text_bbox_height[3] - text_bbox_height[1] + line_spacing
         line_width = im_width
-        max_lines = (im_height // (self.font.getsize('hg')[1] + line_spacing))
+        max_lines = im_height // line_height
 
         # Calculate padding from top so the lines look centralised
         spacing_top = int(im_height % line_height / 2)

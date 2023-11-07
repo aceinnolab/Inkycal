@@ -6,8 +6,10 @@ Inkycal custom-functions for ease-of-use
 Copyright by aceinnolab
 """
 import logging
+import traceback
+
 from PIL import Image, ImageDraw, ImageFont, ImageColor
-from urllib.request import urlopen
+import requests
 import os
 import time
 
@@ -98,11 +100,13 @@ def auto_fontsize(font, max_height):
       Returns:
           A PIL font object with modified height.
       """
-
-    fontsize = font.getsize('hg')[1]
-    while font.getsize('hg')[1] <= (max_height * 0.80):
+    text_bbox = font.getbbox("hg")
+    text_height = text_bbox[3] - text_bbox[1]
+    fontsize = text_height
+    while text_height <= (max_height * 0.80):
         fontsize += 1
         font = ImageFont.truetype(font.path, fontsize)
+        text_height = text_bbox[3] - text_bbox[1]
     return font
 
 
@@ -154,21 +158,34 @@ def write(image, xy, box_size, text, font=None, **kwargs):
     if autofit or (fill_width != 1.0) or (fill_height != 0.8):
         size = 8
         font = ImageFont.truetype(font.path, size)
-        text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
+        text_bbox = font.getbbox(text)
+        text_width = text_bbox[2] - text_bbox[0]
+        text_bbox_height = font.getbbox("hg")
+        text_height = text_bbox_height[3] - text_bbox_height[1]
+
         while (text_width < int(box_width * fill_width) and
                text_height < int(box_height * fill_height)):
             size += 1
             font = ImageFont.truetype(font.path, size)
-            text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
+            text_bbox = font.getbbox(text)
+            text_width = text_bbox[2] - text_bbox[0]
+            text_bbox_height = font.getbbox("hg")
+            text_height = text_bbox_height[3] - text_bbox_height[1]
 
-    text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
+    text_bbox = font.getbbox(text)
+    text_width = text_bbox[2] - text_bbox[0]
+    text_bbox_height = font.getbbox("hg")
+    text_height = text_bbox_height[3] - text_bbox_height[1]
 
     # Truncate text if text is too long so it can fit inside the box
     if (text_width, text_height) > (box_width, box_height):
         logs.debug(('truncating {}'.format(text)))
         while (text_width, text_height) > (box_width, box_height):
             text = text[0:-1]
-            text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
+            text_bbox = font.getbbox(text)
+            text_width = text_bbox[2] - text_bbox[0]
+            text_bbox_height = font.getbbox("hg")
+            text_height = text_bbox_height[3] - text_bbox_height[1]
         logs.debug(text)
 
     # Align text to desired position
@@ -215,14 +232,17 @@ def text_wrap(text, font=None, max_width=None):
       A list containing chunked strings of the full text.
     """
     lines = []
-    if font.getsize(text)[0] < max_width:
+
+    text_width = font.getlength(text)
+
+    if text_width < max_width:
         lines.append(text)
     else:
         words = text.split(' ')
         i = 0
         while i < len(words):
             line = ''
-            while i < len(words) and font.getsize(line + words[i])[0] <= max_width:
+            while i < len(words) and font.getlength(line + words[i]) <= max_width:
                 line = line + words[i] + " "
                 i += 1
             if not line:
@@ -249,9 +269,10 @@ def internet_available():
     """
 
     try:
-        urlopen('https://google.com', timeout=5)
+        requests.get('https://google.com', timeout=5)
         return True
     except:
+        print(f"Network could not be reached: {traceback.print_exc()}")
         return False
 
 
