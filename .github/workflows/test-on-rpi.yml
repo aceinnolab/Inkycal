@@ -3,7 +3,10 @@ name: Run tests on Raspberry Pi OS
 on:
   push:
     branches:
-      - feature/#275
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   test-on-rpi-os:
