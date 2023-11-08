@@ -42,7 +42,7 @@ jobs:
             sudo apt-get update -y
             python --version
             sudo apt-get install -y python3-pip
-            sudo apt-get install python3-numpy zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev -y
+            sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev -y
             echo $PWD && ls
             git clone --branch main --single-branch https://github.com/aceinnolab/Inkycal
             cd Inkycal
@@ -51,7 +51,6 @@ jobs:
             python -m pip install --upgrade pip
             pip install wheel
             pip install -e ./
-            pip uninstall numpy -y
             pip install RPi.GPIO==0.7.1 spidev==3.5
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             cd inkycal/tests
