@@ -6,12 +6,12 @@ Inkycal custom-functions for ease-of-use
 Copyright by aceinnolab
 """
 import logging
-import traceback
-
-from PIL import Image, ImageDraw, ImageFont, ImageColor
-import requests
 import os
 import time
+import traceback
+
+import requests
+from PIL import Image, ImageDraw, ImageFont
 
 logs = logging.getLogger(__name__)
 logs.setLevel(level=logging.INFO)
@@ -267,13 +267,14 @@ def internet_available():
     >>> if internet_available():
     >>> #...do something that requires internet connectivity
     """
-
-    try:
-        requests.get('https://google.com', timeout=5)
-        return True
-    except:
-        print(f"Network could not be reached: {traceback.print_exc()}")
-        return False
+    for attempt in range(3):
+        try:
+            requests.get('https://google.com', timeout=5)
+            return True
+        except:
+            print(f"Network could not be reached: {traceback.print_exc()}")
+            time.sleep(5)
+    return False
 
 
 def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):

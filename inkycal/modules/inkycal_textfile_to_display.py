@@ -65,12 +65,6 @@ class TextToDisplay(inkycal_module):
         im_black = Image.new('RGB', size=im_size, color='white')
         im_colour = Image.new('RGB', size=im_size, color='white')
 
-        # Check if internet is available
-        if internet_available():
-            logger.info('Connection test passed')
-        else:
-            raise NetworkNotReachableError
-
         # Set some parameters for formatting feeds
         line_spacing = 4
         text_bbox_height = self.font.getbbox("hg")
@@ -87,6 +81,11 @@ class TextToDisplay(inkycal_module):
 
         if self.make_request:
             logger.info("Detected http path, making request")
+            # Check if internet is available
+            if internet_available():
+                logger.info('Connection test passed')
+            else:
+                raise NetworkNotReachableError
             file_content = urlopen(self.filepath).read().decode('utf-8')
         else:
             # Create list containing all lines
