@@ -14,7 +14,7 @@ with open('requirements.txt') as f:
 required = [i.split(' ')[0] for i in required]
 
 __project__ = "inkycal"
-__version__ = "2.0.2"
+__version__ = "2.0.3"
 __description__ = "Inkycal is a python3 software for syncing icalendar events, weather and news on selected E-Paper displays"
 __packages__ = ["inkycal"]
 __author__ = "aceisace"
