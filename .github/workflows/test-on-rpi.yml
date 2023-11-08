@@ -54,6 +54,6 @@ jobs:
             pip uninstall numpy -y
             pip install RPi.GPIO==0.7.1 spidev==3.5
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
-            cd tests
+            cd inkycal/tests
             pip install pytest
             python -m pytest
