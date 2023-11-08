@@ -74,7 +74,7 @@ class Inkycal:
     def __init__(self, settings_path=None, render=True):
         """Initialise Inkycal"""
 
-        self._release = '2.0.2'
+        self._release = '2.0.3'
 
         # Check if render was set correctly
         if render not in [True, False]:
