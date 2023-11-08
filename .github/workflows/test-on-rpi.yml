@@ -51,7 +51,7 @@ jobs:
             python -m pip install --upgrade pip
             pip install wheel
             pip install -e ./
-            pip uninstall numpy
+            pip uninstall numpy -y
             pip install RPi.GPIO==0.7.1 spidev==3.5
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             cd tests
