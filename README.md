@@ -17,8 +17,8 @@
 
 Inkycal is a software written in python for selected E-Paper displays. It converts these displays into useful information dashboards. It's open-source, free for personal use, fully modular and user-friendly. Despite all this, Inkycal can run well even on the Raspberry Pi Zero. Oh, and it's open for third-party modules! Hooray!
 
-## ⚠️ Important info about debian bookworm
-Starting october 2023, Raspberry Pi OS is now based on Debian bookworm. At this moment in time, there are several projects expierencing compatability issues because of this change, including Inkycal. Please either use the last [compatible version of Raspberry Pi OS](https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz) or get a ready-to-flash tested OS image (aka. Inkycal OS Lite) with Inkycal pre-installed when sponsoring this project. Please hold on until a fix has been found, tested and is published.
+## ⚠️ Warning: long installation time expected!
+Starting october 2023, Raspberry Pi OS is now based on Debian bookworm and uses python 3.11 instead of 3.9 as the default version. Inkycal has been updated to work with python3.11, but the installation of numpy can take a very long time, in some cases even hours. If you do not want to wait this long to install Inkycal, you can also get a ready-to-flash version of Inkycal called InkycalOS-Lite with everything pre-installed for you by sponsoring via [Github Sponsors](https://github.com/sponsors/aceisace). This helps keep up maintenance costs, implement new features and fixing bugs.
 
 
 ## Main features
