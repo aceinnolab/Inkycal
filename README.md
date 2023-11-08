@@ -1,4 +1,4 @@
-# Welcome to inkycal v2.0.2!
+# Welcome to inkycal v2.0.3!
 <p align="center">
         <img src="https://raw.githubusercontent.com/aceisace/Inkycal/assets/Repo/logo.png" width="900">
 </p>
