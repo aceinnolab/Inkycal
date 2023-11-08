@@ -52,7 +52,7 @@ jobs:
             pip install wheel
             pip install -e ./
             pip install RPi.GPIO==0.7.1 spidev==3.5
-            pip install numpy==1.24.4 -y
+            pip install numpy==1.24.4
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             cd inkycal/tests
             pip install pytest
