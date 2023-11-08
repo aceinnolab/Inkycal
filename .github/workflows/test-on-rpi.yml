@@ -52,6 +52,6 @@ jobs:
             pip install wheel
             pip install -e ./
             pip install RPi.GPIO==0.7.1 spidev==3.5
-            cd inkycal/tests
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
-            for f in *.py; do python3 "$f"; done
+            pip install pytest
+            python -m pytest
