@@ -355,7 +355,13 @@ class Calendar(inkycal_module):
                 cursor = 0
                 for event in upcoming_events:
                     if cursor < len(event_lines):
-                        the_name = event['title']
+                        event_duration = (event['end'] - event['begin']).days
+                        if event_duration > 1:
+                            # Format the duration using Arrow's localization
+                            days_translation = arrow.get().shift(days=event_duration).humanize(only_distance=True, locale=lang)
+                            the_name = f"{event['title']} ({days_translation})"
+                        else:
+                            the_name = event['title']
                         the_date = event['begin'].format(self.date_format, locale=lang)
                         the_time = event['begin'].format(self.time_format, locale=lang)
                         # logger.debug(f"name:{the_name}   date:{the_date} time:{the_time}")
