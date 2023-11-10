@@ -296,14 +296,27 @@ class Calendar(inkycal_module):
             month_events = parser.get_events(month_start, month_end, self.timezone)
             parser.sort()
             self.month_events = month_events
+            
+            # Initialize days_with_events as an empty list
+            days_with_events = []
 
-            # find out on which days of this month events are taking place
-            days_with_events = [
-                int(events['begin'].format('D')) for events in month_events
-            ]
+            # Handle multi-day events by adding all days between start and end
+            for event in month_events:
+                start_date = event['begin'].date()
+                end_date = event['end'].date()
+
+                # Convert start and end dates to arrow objects with timezone
+                start = arrow.get(event['begin'].date(), tzinfo=self.timezone)
+                end = arrow.get(event['end'].date(), tzinfo=self.timezone)
+
+                # Use arrow's range function for generating dates
+                for day in arrow.Arrow.range('day', start, end):
+                    day_num = int(day.format('D'))  # get day number using arrow's format method
+                    if day_num not in days_with_events:
+                        days_with_events.append(day_num)
 
             # remove duplicates (more than one event in a single day)
-            list(set(days_with_events)).sort()
+            days_with_events = sorted(set(days_with_events))
             self._days_with_events = days_with_events
 
             # Draw a border with specified parameters around days with events
