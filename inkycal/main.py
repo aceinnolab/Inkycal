@@ -7,52 +7,46 @@ Copyright by aceinnolab
 import glob
 import hashlib
 import json
+import logging
+import os
 import traceback
 from logging.handlers import RotatingFileHandler
 
 import arrow
 import numpy
 
-from inkycal.custom import *
+from inkycal import Config
+from inkycal.custom import SettingsFileNotFoundError, get_system_tz, write
 from inkycal.display import Display
 from inkycal.custom.inky_image import CustomImage as Images
 
-from PIL import Image
+from PIL import Image, ImageFont
 
 # On the console, set a logger to show only important logs
 # (level ERROR or higher)
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.ERROR)
 
-on_rtd = os.environ.get('READTHEDOCS') == 'True'
-if on_rtd:
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s | %(name)s |  %(levelname)s: %(message)s',
-        datefmt='%d-%m-%Y %H:%M:%S',
-        handlers=[stream_handler])
 
-else:
 
-    if not os.path.exists(f'{top_level}/logs'):
-        os.mkdir(f'{top_level}/logs')
+if not os.path.exists(Config.LOG_DIRECTORY):
+    os.mkdir(Config.LOG_DIRECTORY)
 
-    # Save all logs to a file, which contains more detailed output
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s | %(name)s |  %(levelname)s: %(message)s',
-        datefmt='%d-%m-%Y %H:%M:%S',
-        handlers=[
+# Save all logs to a file, which contains more detailed output
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s | %(name)s |  %(levelname)s: %(message)s',
+    datefmt='%d-%m-%Y %H:%M:%S',
+    handlers=[
 
-            stream_handler,  # add stream handler from above
+        stream_handler,  # add stream handler from above
 
-            RotatingFileHandler(  # log to a file too
-                f'{top_level}/logs/inkycal.log',  # file to log
-                maxBytes=2097152,  # 2MB max filesize
-                backupCount=5  # create max 5 log files
-            )
-        ]
-    )
+        RotatingFileHandler(  # log to a file too
+            f"{Config.LOG_DIRECTORY}/inkycal.log",  # file to log
+            maxBytes=2097152,  # 2MB max filesize
+            backupCount=5  # create max 5 log files
+        )
+    ])
 
 # Show less logging for PIL module
 logging.getLogger("PIL").setLevel(logging.WARNING)
@@ -103,8 +97,8 @@ class Inkycal:
             except FileNotFoundError:
                 raise SettingsFileNotFoundError
 
-        if not os.path.exists(image_folder):
-            os.mkdir(image_folder)
+        if not os.path.exists(Config.IMAGE_FOLDER):
+            os.mkdir(Config.IMAGE_FOLDER)
 
         # Option to use epaper image optimisation, reduces colours
         self.optimize = True
@@ -154,7 +148,7 @@ class Inkycal:
                 print(str(e))
 
         # Path to store images
-        self.image_folder = image_folder
+        self.image_folder = Config.IMAGE_FOLDER
 
         # Remove old hashes
         self._remove_hashes(self.image_folder)
@@ -379,7 +373,7 @@ class Inkycal:
         returns the merged image
         """
 
-        im1_path, im2_path = image_folder + 'canvas.png', image_folder + 'canvas_colour.png'
+        im1_path, im2_path = Config.IMAGE_FOLDER + 'canvas.png', Config.IMAGE_FOLDER + 'canvas_colour.png'
 
         # If there is an image for black and colour, merge them
         if os.path.exists(im1_path) and os.path.exists(im2_path):
@@ -476,12 +470,10 @@ class Inkycal:
         if self.settings['info_section']:
             info_height = self.settings["info_section_height"]
             info_width = width
-            font = self.font = ImageFont.truetype(
-                fonts['NotoSansUI-Regular'], size=14)
+            font = self.font = ImageFont.truetype(Config.FONT_NOTOSANS_UI_PATH, size=14)
 
             info_x = im_black.size[1] - info_height
-            write(im_black, (0, info_x), (info_width, info_height),
-                  self.info, font=font)
+            write(im_black, (0, info_x), (info_width, info_height),self.info, font=font)
 
         # optimize the image by mapping colours to pure black and white
         if self.optimize:
@@ -518,7 +510,7 @@ class Inkycal:
         im_colour = black_to_colour(im_colour)
 
         im_colour.paste(im_black, (0, 0), im_black)
-        im_colour.save(image_folder + 'full-screen.png', 'PNG')
+        im_colour.save(Config.IMAGE_FOLDER + 'full-screen.png', 'PNG')
 
     @staticmethod
     def _optimize_im(image, threshold=220):

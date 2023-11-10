@@ -14,12 +14,12 @@ with open('requirements.txt') as f:
 required = [i.split(' ')[0] for i in required]
 
 __project__ = "inkycal"
-__version__ = "2.0.0"
-__description__ = "Inkycal is a python3 software for syncing icalendar events, weather and news on selected E-Paper displays"
+__version__ = "2.0.4"
+__description__ = "Inkycal is a python3 software for syncing icalendar events, current weather, weather_forecast, rss on selected E-Paper displays"
 __packages__ = ["inkycal"]
 __author__ = "aceisace"
-__author_email__ = "aceisace63@yahoo.com"
-__url__ = "https://github.com/aceisace/Inkycal"
+__author_email__ = "inkycal@aceinnolab.com"
+__url__ = "https://github.com/aceinnolab/Inkycal"
 
 __install_requires__ = required
 

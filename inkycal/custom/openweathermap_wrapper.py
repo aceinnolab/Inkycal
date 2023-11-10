@@ -6,13 +6,9 @@ import json
 
 logger = logging.getLogger(__name__)
 
-class WEATHER_OPTIONS(Enum):
-    CURRENT_WEATHER = "weather"
-
 class FORECAST_INTERVAL(Enum):
     THREE_HOURS = "3h"
     FIVE_DAYS = "5d"
-
 
 
 class OpenWeatherMap:
@@ -29,7 +25,7 @@ class OpenWeatherMap:
         current_weather_url = f"{self._base_url}/weather?id={self.city_id}&appid={self.api_key}&units={self.units}"
         response = requests.get(current_weather_url)
         if not response.ok:
-            raise AssertionError(f"Failure getting the current weather: code {response.status_code}")
+            raise AssertionError(f"Failure getting the current weather_forecast: code {response.status_code}. Reason:{response.text}")
         data = json.loads(response.text)
         return data
 
@@ -37,7 +33,7 @@ class OpenWeatherMap:
         forecast_url = f"{self._base_url}/forecast?id={self.city_id}&appid={self.api_key}&units={self.units}"
         response = requests.get(forecast_url)
         if not response.ok:
-            raise AssertionError(f"Failure getting the current weather: code {response.status_code}")
+            raise AssertionError(f"Failure getting the current weather_forecast: code {response.status_code}. Reason:{response.text}")
         data = json.loads(response.text)["list"]
         return data
 

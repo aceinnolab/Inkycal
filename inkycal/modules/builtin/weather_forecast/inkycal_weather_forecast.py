@@ -1,7 +1,7 @@
 #!python3
 
 """
-Inkycal weather module
+Inkycal weather_forecast module
 Copyright by aceinnolab
 """
 
@@ -12,73 +12,21 @@ import math
 import decimal
 import arrow
 
-from .openweathermap_wrapper import OpenWeatherMap
+from inkycal.custom.openweathermap_wrapper import OpenWeatherMap
 
 logger = logging.getLogger(__name__)
 
 
-class Weather(inkycal_module):
-    """Weather class
-    parses weather details from openweathermap
+class WeatherForecast(inkycal_module):
+    """WeatherForecast class
+    parses weather_forecast details from openweathermap
     """
-    name = "Weather (openweathermap) - Get weather forecasts from openweathermap"
-
-    requires = {
-
-        "api_key": {
-            "label": "Please enter openweathermap api-key. You can create one for free on openweathermap",
-        },
-
-        "location": {
-            "label": "Please enter your location in the following format: City, Country-Code. " +
-                     "You can also enter the location ID found in the url " +
-                     "e.g. https://openweathermap.org/city/4893171 -> ID is 4893171"
-        }
-    }
-
-    optional = {
-
-        "round_temperature": {
-            "label": "Round temperature to the nearest degree?",
-            "options": [True, False],
-        },
-
-        "round_windspeed": {
-            "label": "Round windspeed?",
-            "options": [True, False],
-        },
-
-        "forecast_interval": {
-            "label": "Please select the forecast interval",
-            "options": ["daily", "hourly"],
-        },
-
-        "units": {
-            "label": "Which units should be used?",
-            "options": ["metric", "imperial"],
-        },
-
-        "hour_format": {
-            "label": "Which hour format do you prefer?",
-            "options": [24, 12],
-        },
-
-        "use_beaufort": {
-            "label": "Use beaufort scale for windspeed?",
-            "options": [True, False],
-        },
-
-    }
+    name = "WeatherForecast (openweathermap) - Get weather_forecast forecasts from openweathermap"
 
     def __init__(self, config):
         """Initialize inkycal_weather module"""
 
         super().__init__(config)
-
-        # Check if all required parameters are present
-        for param in self.requires:
-            if not param in config:
-                raise Exception(f'config is missing {param}')
 
         # required parameters
         self.api_key = config['api_key']
@@ -96,8 +44,7 @@ class Weather(inkycal_module):
         self.owm =  OpenWeatherMap(api_key=self.api_key, city_id=self.location, units=config['units'])
         self.timezone = get_system_tz()
         self.locale = config['language']
-        self.weatherfont = ImageFont.truetype(
-            fonts['weathericons-regular-webfont'], size=self.fontsize)
+        self.weather_font = ImageFont.truetype(fonts['weathericons-regular-webfont'], size=self.fontsize)
 
         # give an OK message
         print(f"{__name__} loaded")
@@ -184,7 +131,7 @@ class Weather(inkycal_module):
                 answer = True
             return answer
 
-        # Lookup-table for weather icons and weather codes
+        # Lookup-table for weather_forecast icons and weather_forecast codes
         weather_icons = {
             '01d': '\uf00d', '02d': '\uf002', '03d': '\uf013',
             '04d': '\uf012', '09d': '\uf01a ', '10d': '\uf019',
@@ -195,7 +142,7 @@ class Weather(inkycal_module):
         }
 
         def draw_icon(image, xy, box_size, icon, rotation=None):
-            """Custom function to add icons of weather font on image.
+            """Custom function to add icons of weather_forecast font on image.
 
             Args:
                 - image:
@@ -205,12 +152,12 @@ class Weather(inkycal_module):
                 - box_size:
                     size of text-box -> (width,height)
                 - icon:
-                    icon-unicode, looks this up in weather-icons dictionary
+                    icon-unicode, looks this up in weather_forecast-icons dictionary
             """
             x, y = xy
             box_width, box_height = box_size
             text = icon
-            font = self.weatherfont
+            font = self.weather_font
 
             # Increase fontsize to fit specified height and width of text box
             size = 8
@@ -243,7 +190,7 @@ class Weather(inkycal_module):
         # |----------|-------------|-----------|-------------|------------|------------|------------|
         # |  time    | temperature | moon phase|  forecast1  |  forecast2 |  forecast3 |  forecast4 |
         # | current  |-------------|-----------|-------------|------------|------------|------------|
-        # | weather  |  humidity   |  sunrise  |     icon1   |    icon2   |    icon3   |    icon4   |
+        # | weather_forecast  |  humidity   |  sunrise  |     icon1   |    icon2   |    icon3   |    icon4   |
         # |  icon    |-------------|-----------|-------------|------------|------------|------------|
         # |          | wind speed  |  sunset   | temperature | temperature| temperature| temperature|
         # |----------|-------------|-----------|-------------|------------|------------|------------|
@@ -266,7 +213,7 @@ class Weather(inkycal_module):
         spacing_top = int((im_width % col_width) / 2)
         spacing_left = int((im_height % row_height) / 2)
 
-        # Define sizes for weather icons
+        # Define sizes for weather_forecast icons
         icon_small = int(col_width / 3)
         icon_medium = icon_small * 2
         icon_large = icon_small * 3
@@ -287,7 +234,7 @@ class Weather(inkycal_module):
         row2 = row1 + line_gap + row_height
         row3 = row2 + line_gap + row_height
 
-        # Positions for current weather details
+        # Positions for current weather_forecast details
         weather_icon_pos = (col1, 0)
         temperature_icon_pos = (col2, row1)
         temperature_pos = (col2 + icon_small, row1)
@@ -323,7 +270,7 @@ class Weather(inkycal_module):
         icon_fc4 = (col7, row1 + row_height)
         temp_fc4 = (col7, row3)
 
-        # Create current-weather and weather-forecast objects
+        # Create current-weather_forecast and weather_forecast-forecast objects
         logging.debug('looking up location by ID')
         weather = self.owm.get_current_weather()
         forecast = self.owm.get_weather_forecast()
@@ -369,9 +316,9 @@ class Weather(inkycal_module):
                 if self.units == "metric":
                     temp = f"{round(weather['main']['temp'], ndigits=dec_temp)}°C"
                 else:
-                    temp = f"{round(self.celsius_to_fahrenheit(weather['weather']['main']['temp']), ndigits=dec_temp)}°F"
+                    temp = f"{round(self.celsius_to_fahrenheit(weather['weather_forecast']['main']['temp']), ndigits=dec_temp)}°F"
 
-                icon = forecast["weather"][0]["icon"]
+                icon = forecast["weather_forecast"][0]["icon"]
                 fc_data['fc' + str(forecasts.index(forecast) + 1)] = {
                     'temp': temp,
                     'icon': icon,
@@ -403,9 +350,9 @@ class Weather(inkycal_module):
                 # Calculate min. and max. temp for this day
                 temp_range = f'{min(daily_temp)}°/{max(daily_temp)}°'
 
-                # Get all weather icon codes for this day
-                daily_icons = [_["weather"][0]["icon"] for _ in forecasts]
-                # Find most common element from all weather icon codes
+                # Get all weather_forecast icon codes for this day
+                daily_icons = [_["weather_forecast"][0]["icon"] for _ in forecasts]
+                # Find most common element from all weather_forecast icon codes
                 status = max(set(daily_icons), key=daily_icons.count)
 
                 weekday = now.shift(days=days_from_today).format('ddd', locale=self.locale)
@@ -423,13 +370,13 @@ class Weather(inkycal_module):
         for key, val in fc_data.items():
             logger.debug((key, val))
 
-        # Get some current weather details
+        # Get some current weather_forecast details
         if dec_temp != 0:
             temperature = f"{round(weather['main']['temp'])}°"
         else:
             temperature = f"{round(weather['main']['temp'],ndigits=dec_temp)}°"
 
-        weather_icon = weather["weather"][0]["icon"]
+        weather_icon = weather["weather_forecast"][0]["icon"]
         humidity = str(weather["main"]["humidity"])
         sunrise_raw = arrow.get(weather["sys"]["sunrise"]).to(self.timezone)
         sunset_raw = arrow.get(weather["sys"]["sunset"]).to(self.timezone)
@@ -460,11 +407,11 @@ class Weather(inkycal_module):
 
         moon_phase = get_moon_phase()
 
-        # Fill weather details in col 1 (current weather icon)
+        # Fill weather_forecast details in col 1 (current weather_forecast icon)
         draw_icon(im_colour, weather_icon_pos, (col_width, im_height),
                   weather_icons[weather_icon])
 
-        # Fill weather details in col 2 (temp, humidity, wind)
+        # Fill weather_forecast details in col 2 (temp, humidity, wind)
         draw_icon(im_colour, temperature_icon_pos, (icon_small, row_height),
                   '\uf053')
 
@@ -487,7 +434,7 @@ class Weather(inkycal_module):
         write(im_black, windspeed_pos, (col_width - icon_small, row_height),
               wind, font=self.font)
 
-        # Fill weather details in col 3 (moonphase, sunrise, sunset)
+        # Fill weather_forecast details in col 3 (moonphase, sunrise, sunset)
         draw_icon(im_colour, moonphase_pos, (col_width, row_height), moon_phase)
 
         draw_icon(im_colour, sunrise_icon_pos, (icon_small, icon_small), '\uf051')

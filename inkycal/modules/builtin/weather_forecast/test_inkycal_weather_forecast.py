@@ -5,7 +5,7 @@ inkycal_weather unittest
 import logging
 import sys
 import unittest
-from inkycal.modules import Weather as Module
+from inkycal.modules import WeatherForecast as Module
 
 from inkycal.custom.inky_image import CustomImage
 from inkycal.tests import Config
@@ -18,7 +18,7 @@ location = '2825297'
 tests = [
     {
         "position": 1,
-        "name": "Weather",
+        "name": "WeatherForecast",
         "config": {
             "size": [500, 100],
             "api_key": owm_api_key,
@@ -37,7 +37,7 @@ tests = [
     },
     {
         "position": 1,
-        "name": "Weather",
+        "name": "WeatherForecast",
         "config": {
             "size": [500, 150],
             "api_key": owm_api_key,
@@ -56,7 +56,7 @@ tests = [
     },
     {
         "position": 1,
-        "name": "Weather",
+        "name": "WeatherForecast",
         "config": {
             "size": [500, 200],
             "api_key": owm_api_key,
@@ -75,7 +75,7 @@ tests = [
     },
     {
         "position": 1,
-        "name": "Weather",
+        "name": "WeatherForecast",
         "config": {
             "size": [500, 100],
             "api_key": owm_api_key,
@@ -94,7 +94,7 @@ tests = [
     },
     {
         "position": 1,
-        "name": "Weather",
+        "name": "WeatherForecast",
         "config": {
             "size": [500, 150],
             "api_key": owm_api_key,
@@ -113,7 +113,7 @@ tests = [
     },
     {
         "position": 1,
-        "name": "Weather",
+        "name": "WeatherForecast",
         "config": {
             "size": [500, 150],
             "api_key": owm_api_key,
@@ -132,7 +132,7 @@ tests = [
     },
     {
         "position": 1,
-        "name": "Weather",
+        "name": "WeatherForecast",
         "config": {
             "size": [500, 100],
             "api_key": owm_api_key,
@@ -151,7 +151,7 @@ tests = [
     },
     {
         "position": 1,
-        "name": "Weather",
+        "name": "WeatherForecast",
         "config": {
             "size": [500, 100],
             "api_key": owm_api_key,

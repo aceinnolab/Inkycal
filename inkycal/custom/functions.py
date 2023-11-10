@@ -5,59 +5,12 @@ Inkycal custom-functions for ease-of-use
 Copyright by aceinnolab
 """
 import logging
-import os
 import socket
 import time
 
 from PIL import Image, ImageDraw, ImageFont
 
-logs = logging.getLogger(__name__)
-logs.setLevel(level=logging.INFO)
-
-# Get the path to the Inkycal folder
-top_level = os.path.dirname(
-    os.path.abspath(os.path.dirname(__file__))).split('/inkycal')[0]
-
-# Get path of 'fonts' and 'images' folders within Inkycal folder
-fonts_location = top_level + '/fonts/'
-image_folder = top_level + '/image_folder/'
-
-# Get available fonts within fonts folder
-fonts = {}
-
-for path, dirs, files in os.walk(fonts_location):
-    for _ in files:
-        if _.endswith('.otf'):
-            name = _.split('.otf')[0]
-            fonts[name] = os.path.join(path, _)
-
-        if _.endswith('.ttf'):
-            name = _.split('.ttf')[0]
-            fonts[name] = os.path.join(path, _)
-
-available_fonts = [key for key, values in fonts.items()]
-
-
-def get_fonts():
-    """Print all available fonts by name.
-
-    Searches the /font folder in Inkycal and displays all fonts found in
-    there.
-
-    Returns:
-      printed output of all available fonts. To access a fontfile, use the
-      fonts dictionary to access it.
-
-      >>> fonts['fontname']
-
-    To use a font, use the following sytax, where fontname is one of the
-    printed fonts of this function:
-
-    >>> ImageFont.truetype(fonts['fontname'], size = 10)
-    """
-    for fonts in available_fonts:
-        print(fonts)
-
+logger = logging.getLogger(__name__)
 
 def get_system_tz():
     """Gets the system-timezone
@@ -163,11 +116,11 @@ def write(image, xy, box_size, text, font=None, **kwargs):
 
     # Truncate text if text is too long so it can fit inside the box
     if (text_width, text_height) > (box_width, box_height):
-        logs.debug(('truncating {}'.format(text)))
+        logger.debug(('truncating {}'.format(text)))
         while (text_width, text_height) > (box_width, box_height):
             text = text[0:-1]
             text_width, text_height = font.getbbox(text)[-2], font.getbbox('hg')[-1]
-        logs.debug(text)
+        logger.debug(text)
 
     # Align text to desired position
     if alignment == "center" or None:
