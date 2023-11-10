@@ -3,7 +3,7 @@
 Tests config
 """
 import os
-from enum import Enum
+
 from dotenv import load_dotenv
 
 # relative import
@@ -28,8 +28,3 @@ class Config:
 
     # inkycal_todoist_test
     TODOIST_API_KEY = get("TODOIST_API_KEY")
-
-
-
-
-

@@ -3,14 +3,14 @@
 Inkycal e-Paper driving functions
 Copyright by aceinnolab
 """
+import glob
 import json
 from importlib import import_module
 
 import requests
 from PIL import Image
 
-from inkycal.custom import top_level
-import glob
+from inkycal import Config
 
 
 class Display:
@@ -104,7 +104,6 @@ class Display:
         epaper.sleep()
         print('Done')
 
-
     def test_display(self):
         splashscreen_url = "https://aceinnolab.com/inkycal/splashscreen"
         data = {"display": self.model_name}
@@ -191,7 +190,7 @@ class Display:
             print('model_name should be a string')
             return
         else:
-            driver_files = top_level + '/inkycal/display/drivers/*.py'
+            driver_files = f"{Config.DISPlAY_DRIVERS_PATH}/*.py"
             drivers = glob.glob(driver_files)
             drivers = [i.split('/')[-1].split('.')[0] for i in drivers]
             drivers.remove('__init__')
@@ -200,7 +199,7 @@ class Display:
                 print('This model name was not found. Please double check your spellings')
                 return
             else:
-                with open(top_level + '/inkycal/display/drivers/' + model_name + '.py') as file:
+                with open(f"{Config.DISPlAY_DRIVERS_PATH}/{model_name}.py") as file:
                     for line in file:
                         if 'EPD_WIDTH=' in line.replace(" ", ""):
                             width = int(line.rstrip().replace(" ", "").split('=')[-1])
@@ -224,7 +223,7 @@ class Display:
 
         >>> Display.get_display_names()
         """
-        driver_files = top_level + '/inkycal/display/drivers/*.py'
+        driver_files = f"{Config.DISPlAY_DRIVERS_PATH}/*.py"
         drivers = glob.glob(driver_files)
         drivers = [i.split('/')[-1].split('.')[0] for i in drivers]
         drivers.remove('__init__')

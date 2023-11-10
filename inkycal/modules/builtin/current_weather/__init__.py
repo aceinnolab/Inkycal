@@ -1,0 +1,1 @@
+from .inkycal_current_weather import CurrentWeather
