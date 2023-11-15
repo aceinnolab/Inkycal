@@ -27,7 +27,7 @@ class inkycal_module(metaclass=abc.ABCMeta):
         self.padding_top = self.padding_bottom = self.config['padding_y']
 
         self.fontsize = self.config["fontsize"]
-        self.font = ImageFont.truetype(Config.FONT_NOTOSANS_UI_PATH, size=self.fontsize)
+        self.font = ImageFont.truetype(Config.FONT_NOTOSANS_UI_REGULAR_PATH, size=self.fontsize)
 
     @abc.abstractmethod
     def generate_image(self):

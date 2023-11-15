@@ -470,7 +470,7 @@ class Inkycal:
         if self.settings['info_section']:
             info_height = self.settings["info_section_height"]
             info_width = width
-            font = self.font = ImageFont.truetype(Config.FONT_NOTOSANS_UI_PATH, size=14)
+            font = self.font = ImageFont.truetype(Config.FONT_NOTOSANS_UI_REGULAR_PATH, size=14)
 
             info_x = im_black.size[1] - info_height
             write(im_black, (0, info_x), (info_width, info_height),self.info, font=font)

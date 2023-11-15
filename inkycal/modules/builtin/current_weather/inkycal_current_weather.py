@@ -1,5 +1,3 @@
-#!python3
-
 """
 Inkycal current weather module
 Copyright by aceinnolab
@@ -9,23 +7,21 @@ import logging
 
 import arrow
 import math
-from PIL import ImageFont, Image, ImageDraw, ImageOps
+from PIL import ImageFont, ImageOps
 
 from inkycal import Config
-from inkycal.custom import get_system_tz
+from inkycal.custom import get_system_tz, Widget
 from inkycal.custom.openweathermap_wrapper import OpenWeatherMap
 from inkycal.modules.template import inkycal_module
-from inkycal.utils.font_converter import write_text_using_char_coordinates
+from inkycal.utils.icons import weather_icons
 
 logger = logging.getLogger(__name__)
 
-# Lookup-table for weather_forecast icons and weather_forecast codes
-weather_icons = {
-    '01d': '\uf00d', '02d': '\uf002', '03d': '\uf013', '04d': '\uf012', '09d': '\uf01a ', '10d': '\uf019',
-    '11d': '\uf01e', '13d': '\uf01b', '50d': '\uf014', '01n': '\uf02e', '02n': '\uf013', '03n': '\uf013',
-    '04n': '\uf013', '09n': '\uf037', '10n': '\uf036', '11n': '\uf03b', '13n': '\uf038', '50n': '\uf023'
-}
 
+wind_speed_beaufort_icons = {
+    1: 0xF0B7, 2: 0xF0B8, 3: 0xF0B9, 4: 0xF0BB, 5: 0xF0BC, 6: 0xF0BD,
+    7: 0xF0BE, 8: 0xF0BF, 9:0xF0C0, 10: 0xF0C1, 11: 0xF0C2, 12: 0xF0C3
+}
 
 class CurrentWeather(inkycal_module):
     """WeatherForecast class
@@ -98,9 +94,8 @@ class CurrentWeather(inkycal_module):
         """Calculate the current (approximate) moon phase
 
         Returns:
-            The corresponding moonphase-icon.
+            The corresponding moon-phase-icon.
         """
-
         dec = decimal.Decimal
         diff = arrow.utcnow() - arrow.get(2001, 1, 1)
         days = dec(diff.days) + (dec(diff.seconds) / dec(86400))
@@ -126,63 +121,47 @@ class CurrentWeather(inkycal_module):
     def generate_image(self):
         """Generate image for this module"""
 
-        # Create the background image
-        canvas = Image.new('L', size=(self.width, self.height), color='black')
+        canvas = Widget(width=self.width, height=self.height, padding=self.padding_left, font_path=self.font.path,
+                        font_size=self.fontsize, style="border")
 
-        # Create a widget
-        widget_width = int(self.width - (2 * self.padding_left))
-        widget_height = int(self.height - (2 * self.padding_top))
-        logger.info(f'Image size: {widget_width}x{widget_height}px')
-
-        draw_black = ImageDraw.Draw(canvas)
-
-        widget_x0, widget_y0 = self.padding_left, self.padding_top
-        widget_x1, widget_y1 = self.width-self.padding_left, self.height - self.padding_top
-        widget_dimensions = (widget_x0, widget_y0, widget_x1, widget_y1)
-
-        draw_black.rounded_rectangle(widget_dimensions, outline="white", fill="white", width=1, radius=widget_width//10)
-
-        cursor_x, cursor_y = widget_x0,widget_y0
-        rows = 4
-        row_height = widget_height//rows
-        rows = [(cursor_x, cursor_y+row_height*_) for _ in range(0, rows)]
+        canvas_width, canvas_height = canvas.image.size
+        canvas_half_width = int(canvas_width / 2)
+        rows = 5
+        row_height = canvas.image.height // rows
+        layout = {
+            "city_name": (0, 0, canvas_width, row_height),
+            "temperature": (0, row_height, canvas_half_width, row_height * 3),
+            "weather_icon": (canvas_half_width, row_height, canvas_width, row_height * 3),
+            "weather_summary": (0, row_height * 3, canvas_width, row_height * 4),
+            "temp_range": (0, row_height * 4, canvas_half_width, row_height * 5),
+            "wind": (canvas_half_width, row_height * 4, canvas_width, row_height * 5),
+        }
 
         weather = self.owm.get_current_weather()
 
-        city_name = write_text_using_char_coordinates(weather["name"], font_path=Config.FONT_PROFONT_PATH, font_size=self.fontsize)
-        canvas.paste(city_name, box=rows[0])
+        city_name = weather["name"]
+        canvas.write(city_name, layout["city_name"])
 
-        current_temp = str(round(weather["main"]["temp"]))
-        current_temp_im = write_text_using_char_coordinates(current_temp, font_path=Config.FONT_PROFONT_PATH, font_size=self.fontsize*2)
-        canvas.paste(current_temp_im, box=rows[1])
+        current_temperature = str(round(weather["main"]["temp"])) + "°"
+        canvas.write(current_temperature, layout["temperature"], use_maximum_font_size=True)
 
-        weather_icon_coords = int(rows[1][0] + widget_width / 2), rows[1][1]
-        weather_icon = weather_icons[weather["weather"][0]["icon"]]
-        weather_icon_image  = write_text_using_char_coordinates(weather_icon, font_path=Config.FONT_WEATHER_ICONS_PATH, font_size=self.fontsize*2)
-        canvas.paste(weather_icon_image, box=weather_icon_coords)
-
-        temp_min = str(round(weather["main"]["temp_min"]))
-        temp_max = str(round(weather["main"]["temp_max"]))
-        min_max_temperature = write_text_using_char_coordinates(f"{temp_min}° / {temp_max}°", font_path=Config.FONT_PROFONT_PATH,font_size=self.fontsize)
-        canvas.paste(min_max_temperature, box=rows[-1])
+        temp_min, temp_max = str(round(weather["main"]["temp_min"])), str(round(weather["main"]["temp_max"]))
+        canvas.write(f"{temp_min}°/{temp_max}°", layout["temp_range"], align_x="left")
 
         short_description = weather["weather"][0]["main"]
-        short_description_im = write_text_using_char_coordinates(
-            short_description,font_path=Config.FONT_PROFONT_PATH, font_size=self.fontsize)
-        canvas.paste(short_description_im, box=rows[-2])
+        canvas.write(short_description, layout["weather_summary"])
 
-        wind_speed_coord = int(rows[-1][0] + widget_width / 2), rows[-1][1]
-        wind_speed_beaufort = str(self.mps_to_beaufort(weather["wind"]["speed"]))
-        wind_speed_im = write_text_using_char_coordinates(
-            wind_speed_beaufort, font_path=Config.FONT_PROFONT_PATH, font_size=self.fontsize)
-        canvas.paste(wind_speed_im, box=wind_speed_coord)
+        weather_icon = weather_icons[weather["weather"][0]["icon"]]
+        canvas.set_font(Config.FONT_WEATHER_ICONS_PATH)
+        canvas.write(weather_icon, layout["weather_icon"], use_maximum_font_size=True)
 
-        canvas = ImageOps.invert(canvas)
+        wind_speed_beaufort = self.mps_to_beaufort(weather["wind"]["speed"])
+        canvas.write(chr(wind_speed_beaufort_icons[wind_speed_beaufort]), layout["wind"], use_maximum_font_size=True)
+
+        im = canvas.get_image()
+
+        canvas = ImageOps.invert(im)
         canvas.show()
 
         # return the images ready for the display
         return canvas
-
-
-if __name__ == '__main__':
-    print(f'running {__name__} in standalone mode')
