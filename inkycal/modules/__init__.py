@@ -1,11 +1,11 @@
-from inkycal.modules.builtin.agenda.inkycal_agenda import Agenda
-from inkycal.modules.builtin.calendar.inkycal_calendar import Calendar
-from inkycal.modules.builtin.weather_forecast.inkycal_weather_forecast import WeatherForecast
-from inkycal.modules.builtin.current_weather.inkycal_current_weather import CurrentWeather
-from inkycal.modules.builtin.feeds.inkycal_feeds import Feeds
-from inkycal.modules.builtin.todoist.inkycal_todoist import Todoist
-from inkycal.modules.builtin.image.inkycal_image import Inkyimage
-from inkycal.modules.builtin.jokes.inkycal_jokes import Jokes
-from inkycal.modules.builtin.slideshow.inkycal_slideshow import Slideshow
-from inkycal.modules.builtin.catsu import InkycalCatsu
-from inkycal.modules.builtin.text.inkycal_textfile_to_display import TextToDisplay
+# from inkycal.modules.builtin.agenda.inkycal_agenda import Agenda
+# from inkycal.modules.builtin.calendar.inkycal_calendar import Calendar
+# from inkycal.modules.builtin.weather_forecast.inkycal_weather_forecast import WeatherForecast
+# from inkycal.modules.builtin.current_weather.inkycal_current_weather import CurrentWeather
+# from inkycal.modules.builtin.feeds.inkycal_feeds import Feeds
+# from inkycal.modules.builtin.todoist.inkycal_todoist import Todoist
+# from inkycal.modules.builtin.image.inkycal_image import Inkyimage
+# from inkycal.modules.builtin.jokes.inkycal_jokes import Jokes
+# from inkycal.modules.builtin.slideshow.inkycal_slideshow import Slideshow
+# from inkycal.modules.builtin.catsu import InkycalCatsu
+# from inkycal.modules.builtin.text.inkycal_textfile_to_display import TextToDisplay
