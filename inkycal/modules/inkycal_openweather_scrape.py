@@ -64,7 +64,7 @@ def get_scraped_weatherforecast_image() -> Image:
     driver.execute_script("arguments[0].style.fontSize = '16px';", html_element)
 
     # Save as a screenshot
-    image_filename = "openweather_scraped.png"
+    image_filename = "/tmp/openweather_scraped.png"
     driver.save_screenshot(image_filename)
 
     # Close the WebDriver when done
@@ -75,7 +75,7 @@ def get_scraped_weatherforecast_image() -> Image:
     im = im.crop((0, 50, my_width, my_height))
     #im = im.resize((800, 480), Image.Resampling.LANCZOS)
     #im = im.rotate(90, Image.NEAREST, expand = 1)
-    #im = ImageEnhance.Contrast(im).enhance(1.3)
+    im = ImageEnhance.Contrast(im).enhance(1.3)
     im.save(image_filename)
     return im, im
 
