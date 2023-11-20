@@ -6,7 +6,6 @@ Copyright by aceinnolab
 """
 
 from inkycal.modules.template import inkycal_module
-from inkycal.modules.inkycal_openweather_scrape import get_scraped_weatherforecast_image
 from inkycal.custom import *
 
 from inkycal.modules.inky_image import Inkyimage as Images
@@ -69,9 +68,6 @@ class Inkyimage(inkycal_module):
         print(f'{__name__} loaded')
 
     def generate_image(self):
-        """Call the openweather scraper"""
-        _,_ = get_scraped_weatherforecast_image()
-        
         """Generate image for this module"""
 
         # Define new image size with respect to padding
