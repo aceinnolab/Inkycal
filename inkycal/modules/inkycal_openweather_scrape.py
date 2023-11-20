@@ -1,12 +1,13 @@
 from PIL import Image
 from PIL import ImageEnhance
 from selenium import webdriver
-from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.common.exceptions import ElementClickInterceptedException, TimeoutException, NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
+import sys
 import time
 
 def get_scraped_weatherforecast_image() -> Image:
@@ -47,7 +48,14 @@ def get_scraped_weatherforecast_image() -> Image:
             time.sleep(10)
 
     # hacky wait statement for all the page elements to load
-    WebDriverWait(driver, timeout=20).until(lambda d: d.find_element(By.XPATH, '//*[@id="weather-widget"]/div[2]/div[1]/div[1]/div[1]/h2').text != "")
+    page_loaded = False
+    while(page_loaded == False):
+        try:
+            WebDriverWait(driver, timeout=45).until(lambda d: d.find_element(By.XPATH, '//*[@id="weather-widget"]/div[2]/div[1]/div[1]/div[1]/h2').text != "")
+            page_loaded = True
+        except TimeoutException:
+            print("Couldn't get the page to load, retrying...")
+            time.sleep(60)
 
     # Scroll to the start of the forecast
     forecast_element = driver.find_element(By.XPATH, '//*[@id="weather-widget"]/div[2]/div[1]/div[1]/div[1]')
@@ -57,8 +65,12 @@ def get_scraped_weatherforecast_image() -> Image:
     map_element = driver.find_element(By.XPATH, '//*[@id="weather-widget"]/div[2]/div[1]/div[2]')
     driver.execute_script("arguments[0].remove();", map_element)
 
+    # remove the hourly forecast
+    #map_element = driver.find_element(By.XPATH, '//*[@id="weather-widget"]/div[2]/div[2]/div[1]')
+    #driver.execute_script("arguments[0].remove();", map_element)
+
     # zoom in a little - not now
-    #driver.execute_script("document.body.style.zoom='110%'");
+    driver.execute_script("document.body.style.zoom='110%'");
 
     html_element = driver.find_element(By.TAG_NAME, "html")
     driver.execute_script("arguments[0].style.fontSize = '16px';", html_element)
@@ -72,10 +84,10 @@ def get_scraped_weatherforecast_image() -> Image:
 
     # crop, resize, enhance & rotate the image for inky display
     im = Image.open(image_filename, mode='r', formats=None)
-    im = im.crop((0, 50, my_width, my_height))
-    #im = im.resize((800, 480), Image.Resampling.LANCZOS)
+    im = im.crop((0, 100, (my_width-50), (my_height-50)))
+    im = im.resize((480, 800), resample=Image.LANCZOS)
     #im = im.rotate(90, Image.NEAREST, expand = 1)
-    im = ImageEnhance.Contrast(im).enhance(1.3)
+    im = ImageEnhance.Contrast(im).enhance(1.0)
     im.save(image_filename)
     return im, im
 
@@ -83,5 +95,6 @@ def main():
     _, _ = get_scraped_weatherforecast_image()
 
 if __name__ == '__main__':
-    print(f'running {__name__} in standalone/debug mode')
+    now = time.asctime()
+    print(f"It's {now} - running {__name__} in standalone/debug mode")
     main()
