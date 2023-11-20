@@ -2,7 +2,8 @@
 {
 	"name": "Inkycal-dev",
     "build": {
-        "dockerfile": "Dockerfile"
+        "dockerfile": "Dockerfile",
+        "target": "development"
     },
 
     // This is the settings.json mount
