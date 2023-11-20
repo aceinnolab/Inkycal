@@ -75,7 +75,7 @@ def get_scraped_weatherforecast_image() -> Image:
     im = im.crop((0, 50, my_width, my_height))
     #im = im.resize((800, 480), Image.Resampling.LANCZOS)
     #im = im.rotate(90, Image.NEAREST, expand = 1)
-    im = ImageEnhance.Contrast(im).enhance(1.3)
+    #im = ImageEnhance.Contrast(im).enhance(1.3)
     im.save(image_filename)
     return im, im
 
