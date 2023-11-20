@@ -78,3 +78,10 @@ def get_scraped_weatherforecast_image() -> Image:
     im = ImageEnhance.Contrast(im).enhance(1.3)
     im.save(image_filename)
     return im, im
+
+def main():
+    _, _ = get_scraped_weatherforecast_image()
+
+if __name__ == '__main__':
+    print(f'running {__name__} in standalone/debug mode')
+    main()
