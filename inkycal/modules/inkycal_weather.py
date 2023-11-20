@@ -243,6 +243,8 @@ class Weather(inkycal_module):
 
             # Draw the text in the text-box
             draw = ImageDraw.Draw(image)
+            print(f"Box width: {box_width}, Box height: {box_height}")
+            # TODO: fix ValueError: Width and height must be >= 0
             space = Image.new('RGBA', (box_width, box_height))
             ImageDraw.Draw(space).text((x, y), text, fill='black', font=font)
 
@@ -272,7 +274,9 @@ class Weather(inkycal_module):
         else:
             logger.info('Please consider decreasing the height.')
             row_height = int((im_height * (1 - im_height / im_width)) / 3)
-
+        
+        _, text_height = self.font.getsize("Text")
+        row_height = max(row_height, text_height)
         logger.debug(f"row_height: {row_height} | col_width: {col_width}")
 
         # Calculate spacings for better centering
@@ -374,6 +378,7 @@ class Weather(inkycal_module):
 
         # Get current time
         now = arrow.utcnow()
+        now = now.to("local")
 
         if self.forecast_interval == 'hourly':
 
