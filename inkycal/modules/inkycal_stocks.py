@@ -1,4 +1,5 @@
-#!python3
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 """
 Stocks Module for Inkycal Project
 
@@ -10,13 +11,13 @@ Version 0.1: Migration to Inkycal 2.0.0b
 
 by https://github.com/worstface
 """
-import os
 import logging
-
-from inkycal.modules.template import inkycal_module
-from inkycal.custom import write, internet_available
+import os
 
 from PIL import Image
+
+from inkycal.custom import write, internet_available
+from inkycal.modules.template import inkycal_module
 
 try:
     import yfinance as yf
@@ -82,11 +83,11 @@ class Stocks(inkycal_module):
         tmpPath = '/tmp/inkycal_stocks/'
 
         try:
-            if not os.path.exists(tmpPath):
-                os.mkdir(tmpPath)
-                print(f"Successfully created tmp directory {tmpPath} ")
+            os.mkdir(tmpPath)
         except OSError:
             print(f"Creation of tmp directory {tmpPath} failed")
+        else:
+            print(f"Successfully created tmp directory {tmpPath} ")
 
         # Check if internet is available
         if internet_available() == True:
@@ -96,10 +97,9 @@ class Stocks(inkycal_module):
 
         # Set some parameters for formatting feeds
         line_spacing = 1
-        text_bbox_height = self.font.getbbox("hg")
-        line_height = text_bbox_height[3] - text_bbox_height[1] + line_spacing
+        line_height = self.font.getsize('hg')[1] + line_spacing
         line_width = im_width
-        max_lines = (im_height // line_height)
+        max_lines = (im_height // (self.font.getsize('hg')[1] + line_spacing))
 
         logger.debug(f"max_lines: {max_lines}")
 
