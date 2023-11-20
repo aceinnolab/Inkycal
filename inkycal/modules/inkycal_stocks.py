@@ -19,18 +19,9 @@ from PIL import Image
 from inkycal.custom import write, internet_available
 from inkycal.modules.template import inkycal_module
 
-try:
-    import yfinance as yf
-except ImportError:
-    print('yfinance is not installed! Please install with:')
-    print('pip3 install yfinance')
-
-try:
-    import matplotlib.pyplot as plt
-    import matplotlib.image as mpimg
-except ImportError:
-    print('matplotlib is not installed! Please install with:')
-    print('pip3 install matplotlib')
+import yfinance as yf
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 
 logger = logging.getLogger(__name__)
 
@@ -97,9 +88,10 @@ class Stocks(inkycal_module):
 
         # Set some parameters for formatting feeds
         line_spacing = 1
-        line_height = self.font.getsize('hg')[1] + line_spacing
+        text_bbox = self.font.getbbox("hg")
+        line_height = text_bbox[3] - text_bbox[1] + line_spacing
         line_width = im_width
-        max_lines = (im_height // (self.font.getsize('hg')[1] + line_spacing))
+        max_lines = (im_height // (line_height + line_spacing))
 
         logger.debug(f"max_lines: {max_lines}")
 
