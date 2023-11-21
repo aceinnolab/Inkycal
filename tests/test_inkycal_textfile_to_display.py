@@ -13,10 +13,10 @@ from tests import Config
 preview = Inkyimage.preview
 merge = Inkyimage.merge
 
-temp_path = f"{Config.TEMP_PATH}/temp.txt"
-
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
+
+temp_path = f"{Config.TEMP_PATH}/temp.txt"
 
 dummy_data = [
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', ' Donec feugiat facilisis neque vel blandit.',
@@ -88,7 +88,7 @@ class TestTextToDisplay(unittest.TestCase):
 
     def setUp(self):
         self.temp_path = temp_path
-        if not os.path.exists(self.temp_path):
+        if not os.path.exists(Config.TEMP_PATH):
             logger.info("could not find temporary file, creating now.")
             with open(self.temp_path, encoding="utf-8", mode="w") as file:
                 file.writelines(dummy_data)
