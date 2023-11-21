@@ -89,6 +89,7 @@ class TestTextToDisplay(unittest.TestCase):
     def setUp(self):
         self.temp_path = temp_path
         if not os.path.exists(Config.TEMP_PATH):
+            os.mkdir(Config.TEMP_PATH)
             logger.info("could not find temporary file, creating now.")
             with open(self.temp_path, encoding="utf-8", mode="w") as file:
                 file.writelines(dummy_data)
