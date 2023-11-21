@@ -23,7 +23,7 @@ jobs:
         with:
           # Set the base_image to the desired Raspberry Pi OS version
           base_image: https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz
-          image_additional_mb: 2000 # enlarge free space to 2 GB
+          image_additional_mb: 2560 # enlarge free space to 2 GB
           optimize_image: true
           user: inky
           commands: |

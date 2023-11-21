@@ -28,7 +28,7 @@ jobs:
         with:
           # Set the base_image to the desired Raspberry Pi OS version
           base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-10-10/2023-10-10-raspios-bookworm-armhf-lite.img.xz
-          image_additional_mb: 2000 # enlarge free space to 2 GB
+          image_additional_mb: 2560 # enlarge free space to 2.5 GB
           optimize_image: true
           user: inky
           commands: |
