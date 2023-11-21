@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
 """
 Stocks Module for Inkycal Project
 
@@ -15,6 +13,7 @@ import logging
 import os
 
 from PIL import Image
+from matplotlib import pyplot
 
 from inkycal.custom import write, internet_available
 from inkycal.modules.template import inkycal_module
@@ -71,17 +70,14 @@ class Stocks(inkycal_module):
         im_colour = Image.new('RGB', size=im_size, color='white')
 
         # Create tmp path
-        tmpPath = '/tmp/inkycal_stocks/'
+        tmpPath = 'temp/'
 
-        try:
+        if not os.path.exists(tmpPath):
+            print(f"Creating tmp directory {tmpPath}")
             os.mkdir(tmpPath)
-        except OSError:
-            print(f"Creation of tmp directory {tmpPath} failed")
-        else:
-            print(f"Successfully created tmp directory {tmpPath} ")
 
         # Check if internet is available
-        if internet_available() == True:
+        if internet_available():
             logger.info('Connection test passed')
         else:
             raise Exception('Network could not be reached :/')
@@ -89,7 +85,7 @@ class Stocks(inkycal_module):
         # Set some parameters for formatting feeds
         line_spacing = 1
         text_bbox = self.font.getbbox("hg")
-        line_height = text_bbox[3] - text_bbox[1] + line_spacing
+        line_height = text_bbox[3] + line_spacing
         line_width = im_width
         max_lines = (im_height // (line_height + line_spacing))
 
@@ -204,7 +200,7 @@ class Stocks(inkycal_module):
             else:
                 parsed_tickers_colour.append("")
 
-            if (_ < len(tickerCount)):
+            if _ < len(tickerCount):
                 parsed_tickers.append("")
                 parsed_tickers_colour.append("")
 
@@ -225,9 +221,10 @@ class Stocks(inkycal_module):
             logger.info(f'chartSpace is...{im_width} {im_height}')
             logger.info(f'open chart ...{chartPath}')
             chartImage = Image.open(chartPath)
-            chartImage.thumbnail((im_width / 4, line_height * 4), Image.BICUBIC)
+            chartImage.thumbnail((int(im_width / 4), int(line_height * 4)), Image.BICUBIC)
+            pyplot.close()
 
-            chartPasteX = im_width - (chartImage.width)
+            chartPasteX = im_width - chartImage.width
             chartPasteY = line_height * 5 * _
             logger.info(f'pasting chart image with index {_} to...{chartPasteX} {chartPasteY}')
 
@@ -258,6 +255,3 @@ class Stocks(inkycal_module):
         # Save image of black and colour channel in image-folder
         return im_black, im_colour
 
-
-if __name__ == '__main__':
-    print('running module in standalone/debug mode')
