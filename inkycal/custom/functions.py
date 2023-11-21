@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
 """
 Inkycal custom-functions for ease-of-use
 
@@ -11,7 +9,7 @@ import time
 import traceback
 
 import requests
-from PIL import Image, ImageDraw, ImageFont
+from PIL import ImageFont
 
 logs = logging.getLogger(__name__)
 logs.setLevel(level=logging.INFO)
@@ -101,12 +99,12 @@ def auto_fontsize(font, max_height):
           A PIL font object with modified height.
       """
     text_bbox = font.getbbox("hg")
-    text_height = text_bbox[3] - text_bbox[1]
+    text_height = text_bbox[3]
     fontsize = text_height
     while text_height <= (max_height * 0.80):
         fontsize += 1
         font = ImageFont.truetype(font.path, fontsize)
-        text_height = text_bbox[3] - text_bbox[1]
+        text_height = text_bbox[3]
     return font
 
 
@@ -279,6 +277,7 @@ def internet_available():
 
 from PIL import Image, ImageDraw
 
+
 def draw_dotted_line(draw, start, end, colour, thickness):
     """Draws a dotted line between start and end points using dots."""
     delta_x = end[0] - start[0]
@@ -292,7 +291,8 @@ def draw_dotted_line(draw, start, end, colour, thickness):
         # Drawing a circle at each dot position to create a dotted effect
         draw.ellipse([(dot_position[0] - thickness, dot_position[1] - thickness),
                       (dot_position[0] + thickness, dot_position[1] + thickness)],
-                      fill=colour)
+                     fill=colour)
+
 
 def draw_dashed_line(draw, start, end, colour, thickness):
     """Draws a dashed line between start and end points."""
@@ -308,6 +308,7 @@ def draw_dashed_line(draw, start, end, colour, thickness):
         segment_end = (segment_start[0] + (step_size * delta_x / distance),
                        segment_start[1] + (step_size * delta_y / distance))
         draw.line((segment_start, segment_end), fill=colour, width=thickness)
+
 
 def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1), style='solid'):
     """

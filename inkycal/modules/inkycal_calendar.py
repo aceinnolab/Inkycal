@@ -1,5 +1,3 @@
-#!python3
-
 """
 Inkycal Calendar Module
 Copyright by aceinnolab
@@ -267,7 +265,7 @@ class Calendar(inkycal_module):
             # find out how many lines can fit at max in the event section
             line_spacing = 2
             text_bbox_height = self.font.getbbox("hg")
-            line_height = text_bbox_height[3] - text_bbox_height[1] + line_spacing
+            line_height = text_bbox_height[3] + line_spacing
             max_event_lines = events_height // (line_height + line_spacing)
 
             # generate list of coordinates for each line
@@ -356,7 +354,7 @@ class Calendar(inkycal_module):
                 )
 
                 text_bbox_height = self.font.getbbox("hg")
-                line_height = text_bbox_height[3] - text_bbox_height[1] + line_spacing
+                line_height = text_bbox_height[3] + line_spacing
 
                 event_width_s = im_width - date_width - time_width
                 event_width_l = im_width - date_width
@@ -433,7 +431,3 @@ class Calendar(inkycal_module):
 
         # return the images ready for the display
         return im_black, im_colour
-
-
-if __name__ == '__main__':
-    print(f'running {__name__} in standalone mode')
