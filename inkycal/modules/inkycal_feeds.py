@@ -1,5 +1,3 @@
-#!python3
-
 """
 Feeds module for InkyCal Project
 Copyright by aceinnolab
@@ -94,7 +92,7 @@ class Feeds(inkycal_module):
 
         line_width = im_width
         text_bbox_height = self.font.getbbox("hg")
-        line_height = text_bbox_height[3] - text_bbox_height[1] + line_spacing
+        line_height = text_bbox_height[3] + line_spacing
         max_lines = (im_height // (line_height + line_spacing))
 
         # Calculate padding from top so the lines look centralised
@@ -151,7 +149,3 @@ class Feeds(inkycal_module):
 
         # return images
         return im_black, im_colour
-
-
-if __name__ == '__main__':
-    print(f'running {__name__} in standalone/debug mode')
