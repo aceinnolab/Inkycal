@@ -8,3 +8,4 @@ from .inkycal_jokes import Jokes
 from .inkycal_stocks import Stocks
 from .inkycal_slideshow import Slideshow
 from .inkycal_textfile_to_display import TextToDisplay
+from .inkycal_webshot import Webshot

@@ -1,9 +1,9 @@
 # Welcome to inkycal v2.0.3!
 <p align="center">
-        <img src="https://raw.githubusercontent.com/aceisace/Inkycal/assets/Repo/logo.png" width="900">
+        <img src="https://raw.githubusercontent.com/aceisace/Inkycal/assets/Repo/logo.png" width="900" alt="aceinnolab logo">
 </p>
 <p align="center">
-        <img src="https://github.com/aceinnolab/Inkycal/blob/c1c274878ba81ddaee6186561e6ea892da54cd6a/Repo/inkycal-featured-gif.gif" width="900">
+        <img src="https://github.com/aceinnolab/Inkycal/blob/c1c274878ba81ddaee6186561e6ea892da54cd6a/Repo/inkycal-featured-gif.gif" width="900" alt="featured-image">
 </p>
 
 <p align="center">
@@ -48,44 +48,44 @@ Before you can start, please ensure you have one of the supported displays and o
 
 **❗️Important note: e-paper displays cannot be simply connected to the Raspberry Pi, but require a driver board. The links below may or may not contain the required driver board. Please ensure you get the correct driver board for the display!**
 
-| type  | vendor | affiliate links to product |
-| -- | -- | -- |
-| 7.5" Inkycal (plug-and-play) | Author of Inkycal | [Buy on Tindie](https://www.tindie.com/products/aceisace4444/inkycal-build-v1/)  Pre-configured version of Inkycal with custom frame and a web-ui. You do not need to buy anything extra. Includes Raspberry Pi Zero W, 7.5" e-paper, microSD card, driver board, custom packaging and 1m of cable. Comes pre-assembled for plug-and-play. |
-| Inkycal frame | Author of Inkycal | coming soon (ultraslim frame with custom-made front and backcover inkl. ultraslim driver board). You will need a Raspberry Pi and a 7.5" e-paper display |
-| `[serial]`  12.48" (1304×984px) display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=7e08c6110a1a5b3511ead10db2fd909a&camp=1638&creative=6742&index=computers&keywords=Waveshare 12.48 Inch E-Paper">Waveshare 12.48 Inch E-Paper</a>
-| `[serial]` 7.5" (640x384px) -> v1 display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=1bf1a6338786c0a4e7b877335afa0683&camp=1638&creative=6742&index=computers&keywords=Waveshare 7.5 Inch E-Paper">Waveshare 7.5 Inch E-Paper</a> |
-| `[serial]` 7.5" (800x400px) -> v2 display| waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=1bf1a6338786c0a4e7b877335afa0683&camp=1638&creative=6742&index=computers&keywords=Waveshare 7.5 Inch E-Paper">Waveshare 7.5 Inch E-Paper</a> |
-| `[serial]` 7.5" (880x528px) -> v3 display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=1bf1a6338786c0a4e7b877335afa0683&camp=1638&creative=6742&index=computers&keywords=Waveshare 7.5 Inch E-Paper">Waveshare 7.5 Inch E-Paper</a> |
-| `[serial]`  5.83" (400x300px) display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=a4239753343f5fbbdb8f5be2f6b5e2b1&camp=1638&creative=6742&index=computers&keywords=Waveshare 5.83 Inch E-Paper">Waveshare 5.83 Inch E-Paper</a> |
-| `[serial]`  4.2" (400x300px)display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=7575de79f1728ab9f2bfb6a46d2238ee&camp=1638&creative=6742&index=computers&keywords=Waveshare 4.2 Inch E-Paper">Waveshare 4.2 Inch E-Paper</a> |
-| `[parallel]` 10.3" (1872×1404px) display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=b453e16c373b0d86e4828b22edecc206&camp=1638&creative=6742&index=computers&keywords=Waveshare 10.3 Inch E-Paper">Waveshare 10.3 Inch E-Paper</a> |
-| `[parallel]` 9.7" (1200×825px) display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=eef2be91cc3f850943109276a63a7162&camp=1638&creative=6742&index=computers&keywords=Waveshare 9.7 Inch E-Paper">Waveshare 9.7 Inch E-Paper</a> |
-| `[parallel]` 7.8" (1872×1404px) display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=f1863f9686b0eeeb04ce147791ba3789&camp=1638&creative=6742&index=computers&keywords=Waveshare 7.8 Inch E-Paper">Waveshare 7.8" E-Paper</a> |
-| Raspberry Pi Zero W | Raspberry Pi | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=8f9c223197e1ab91b0372b1fe56ed508&camp=1638&creative=6742&index=computers&keywords=Raspberry Pi Zero W">Raspberry Pi Zero W</a> |
-| MicroSD card | Sandisk | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=530a2b371c40bfeca48e875fb735a4a1&camp=1638&creative=6742&index=computers&keywords=Sandisk microSD 16GB U1 A1">MicroSD card (8GB)</a> |
+| type                                      | vendor                  | affiliate links to product                                                                                                                                                                                                                                                                                                                  |
+|-------------------------------------------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 7.5" Inkycal (plug-and-play)              | Author of Inkycal       |  [Buy on Tindie](https://www.tindie.com/products/aceisace4444/inkycal-build-v1/)  Pre-configured version of Inkycal with custom frame and a web-ui. You do not need to buy anything extra. Includes Raspberry Pi Zero W, 7.5" e-paper, microSD card, driver board, custom packaging and 1m of cable. Comes pre-assembled for plug-and-play. |
+| Inkycal frame                             | Author of Inkycal       | coming soon (ultraslim frame with custom-made front and backcover inkl. ultraslim driver board). You will need a Raspberry Pi and a 7.5" e-paper display                                                                                                                                                                                    |
+| `[serial]`  12.48" (1304×984px) display   | waveshare / gooddisplay |  <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=7e08c6110a1a5b3511ead10db2fd909a&camp=1638&creative=6742&index=computers&keywords=Waveshare 12.48 Inch E-Paper">Waveshare 12.48 Inch E-Paper</a>                                                                                      |
+| `[serial]` 7.5" (640x384px) -> v1 display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=1bf1a6338786c0a4e7b877335afa0683&camp=1638&creative=6742&index=computers&keywords=Waveshare 7.5 Inch E-Paper">Waveshare 7.5 Inch E-Paper</a>                                                                                           |
+| `[serial]` 7.5" (800x400px) -> v2 display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=1bf1a6338786c0a4e7b877335afa0683&camp=1638&creative=6742&index=computers&keywords=Waveshare 7.5 Inch E-Paper">Waveshare 7.5 Inch E-Paper</a>                                                                                           |
+| `[serial]` 7.5" (880x528px) -> v3 display | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=1bf1a6338786c0a4e7b877335afa0683&camp=1638&creative=6742&index=computers&keywords=Waveshare 7.5 Inch E-Paper">Waveshare 7.5 Inch E-Paper</a>                                                                                           |
+| `[serial]`  5.83" (400x300px) display     | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=a4239753343f5fbbdb8f5be2f6b5e2b1&camp=1638&creative=6742&index=computers&keywords=Waveshare 5.83 Inch E-Paper">Waveshare 5.83 Inch E-Paper</a>                                                                                         |
+| `[serial]`  4.2" (400x300px)display       | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=7575de79f1728ab9f2bfb6a46d2238ee&camp=1638&creative=6742&index=computers&keywords=Waveshare 4.2 Inch E-Paper">Waveshare 4.2 Inch E-Paper</a>                                                                                           |
+| `[parallel]` 10.3" (1872×1404px) display  | waveshare / gooddisplay |  <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=b453e16c373b0d86e4828b22edecc206&camp=1638&creative=6742&index=computers&keywords=Waveshare 10.3 Inch E-Paper">Waveshare 10.3 Inch E-Paper</a>                                                                                        |
+| `[parallel]` 9.7" (1200×825px) display    | waveshare / gooddisplay | <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=eef2be91cc3f850943109276a63a7162&camp=1638&creative=6742&index=computers&keywords=Waveshare 9.7 Inch E-Paper">Waveshare 9.7 Inch E-Paper</a>                                                                                           |
+| `[parallel]` 7.8" (1872×1404px) display   | waveshare / gooddisplay |  <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=f1863f9686b0eeeb04ce147791ba3789&camp=1638&creative=6742&index=computers&keywords=Waveshare 7.8 Inch E-Paper">Waveshare 7.8" E-Paper</a>                                                                                              |
+| Raspberry Pi Zero W                       | Raspberry Pi            |  <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=8f9c223197e1ab91b0372b1fe56ed508&camp=1638&creative=6742&index=computers&keywords=Raspberry Pi Zero W">Raspberry Pi Zero W</a>                                                                                                        |
+| MicroSD card                              | Sandisk                 |  <a target="_blank" href="https://www.amazon.de/gp/search?ie=UTF8&tag=aceisace-21&linkCode=ur2&linkId=530a2b371c40bfeca48e875fb735a4a1&camp=1638&creative=6742&index=computers&keywords=Sandisk microSD 16GB U1 A1">MicroSD card (8GB)</a>                                                                                                  |
 
 
 ## Configuring the Raspberry Pi
-1. Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://rptl.io/imager). Use the following settings:
+Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://rptl.io/imager). Use the following settings:
 
-| option | value |
-| :-- | :--: |
-| hostname | inkycal |
-| enable ssh | yes |
-| set username and password | yes |
-| username | a username you like |
-| password | a password you can remember |
-| set Wi-Fi | yes |
-| Wi-Fi SSID | your Wi-Fi name |
-| Wi-Fi password | your Wi-Fi password |
+| option                     |             value            |
+|:---------------------------|:----------------------------:|
+|  hostname                  |            inkycal           |
+|  enable ssh                |              yes             |
+|  set username and password |              yes             |
+|  username                  |      a username you like     |
+|  password                  |  a password you can remember |
+|  set Wi-Fi                 |              yes             |
+|  Wi-Fi SSID                |        your Wi-Fi name       |
+|  Wi-Fi password            |      your Wi-Fi password     |
 
 
-2. Create and download `settings.json` file for Inkycal from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal-config-v2-0-0). Add the modules you want with the add module button.
-3. Copy the `settings.json` to the flashed microSD card in the `/boot` folder of microSD card. On Windows, this is the only visible directory on the SD card. On Linux, copy these files to `/boot` of the microSD card. 
-4. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
-5. Once the green LED has stopped blinking after ~3 minutes, you can connect to your Raspberry Pi via SSH using a SSH Client. We suggest [Termius](https://termius.com/download/windows)
+1. Create and download `settings.json` file for Inkycal from the [WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal-config-v2-0-0). Add the modules you want with the add module button.
+2. Copy the `settings.json` to the flashed microSD card in the `/boot` folder of microSD card. On Windows, this is the only visible directory on the SD card. On Linux, copy these files to `/boot` of the microSD card. 
+3. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
+4. Once the green LED has stopped blinking after ~3 minutes, you can connect to your Raspberry Pi via SSH using a SSH Client. We suggest [Termius](https://termius.com/download/windows)
 on your smartphone. Use the address: `inkycal.local` with the username and password you set earlier. For more detailed instructions, check out the page from the [Raspberry Pi website](https://www.raspberrypi.org/documentation/remote-access/ssh/)
-6. After connecting via SSH, run the following commands, line by line:
+5. After connecting via SSH, run the following commands, line by line:
 ```bash
 sudo raspi-config --expand-rootfs
 sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
@@ -118,9 +118,9 @@ These commands expand the filesystem, enable SPI and set up the correct timezone
 Run the following steps to install Inkycal. Do **not** use sudo for this, except where explicitly specified.
 ```bash
 # the next line is for the Raspberry Pi only
-sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev
+sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf
 cd $HOME
-git clone --branch main --single-branch https://github.com/aceisace/Inkycal
+git clone --branch main --single-branch https://github.com/aceinnolab/Inkycal
 cd Inkycal
 python3 -m venv venv
 source venv/bin/activate
