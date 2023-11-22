@@ -4,6 +4,7 @@ Copyright by aceisace
 """
 import os
 import logging
+import traceback
 from importlib import import_module
 from PIL import Image
 
@@ -43,7 +44,7 @@ class Display:
         except FileNotFoundError:
             raise Exception('SPI could not be found. Please check if SPI is enabled')
 
-    def render(self, im_black: Image.Image, im_colour=Image.Image or None) -> None:
+    def render(self, im_black: Image, im_colour=Image or None) -> None:
         """Renders an image on the selected E-Paper display.
 
         Initlializes the E-Paper display, sends image data and executes command
@@ -66,7 +67,6 @@ class Display:
 
 
         Rendering black-white on coloured E-Paper displays:
-
         >>> sample_image = Image.open('path/to/file.png')
         >>> display = Display('my_coloured_display')
         >>> display.render(sample_image, sample_image)
@@ -82,20 +82,19 @@ class Display:
 
         epaper = self._epaper
 
-        if not self.supports_colour:
-            print('Initialising..', end='')
-            epaper.init()
-            print('Updating display......', end='')
-            epaper.display(epaper.getbuffer(im_black))
-            print('Done')
-
-        elif self.supports_colour:
+        if self.supports_colour:
             if not im_colour:
                 raise Exception('im_colour is required for coloured epaper displays')
             print('Initialising..', end='')
             epaper.init()
             print('Updating display......', end='')
             epaper.display(epaper.getbuffer(im_black), epaper.getbuffer(im_colour))
+            print('Done')
+        else:
+            print('Initialising..', end='')
+            epaper.init()
+            print('Updating display......', end='')
+            epaper.display(epaper.getbuffer(im_black))
             print('Done')
 
         print('Sending E-Paper to deep sleep...', end='')
@@ -173,9 +172,10 @@ class Display:
         try:
             driver = import_driver(model_name)
             return driver.EPD_WIDTH, driver.EPD_HEIGHT
-        except Exception as e:
+        except:
             logging.error(f'Failed to load driver for ${model_name}. Check spelling?')
-            raise e;
+            print(traceback.format_exc())
+            raise AssertionError("Could not import driver")
 
     @classmethod
     def get_display_names(cls) -> list:
