@@ -72,8 +72,8 @@ class Inkycal:
         # Get the release version from setup.py
         with open(f'{top_level}/setup.py') as setup_file:
             for line in setup_file:
-                if line.startswith('VERSION'):
-                    self._release = line.split('=')[1].strip().replace("'", "")
+                if line.startswith('__version__'):
+                    self._release = line.split("=")[-1].replace("'", "").replace('"', "").replace(" ", "")
                     break
 
         self.render = render
