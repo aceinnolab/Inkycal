@@ -26,3 +26,4 @@ setuptools==69.0.1
 html2text==2020.1.16
 yfinance==0.2.32
 htmlwebshot~=0.1.2
+xkcd==2.4.2
