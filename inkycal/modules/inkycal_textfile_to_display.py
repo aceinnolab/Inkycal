@@ -1,4 +1,3 @@
-#!python3
 """
 Textfile module for InkyCal Project
 
@@ -68,7 +67,7 @@ class TextToDisplay(inkycal_module):
         # Set some parameters for formatting feeds
         line_spacing = 4
         text_bbox_height = self.font.getbbox("hg")
-        line_height = text_bbox_height[3] - text_bbox_height[1] + line_spacing
+        line_height = text_bbox_height[3] + line_spacing
         line_width = im_width
         max_lines = im_height // line_height
 
@@ -110,7 +109,3 @@ class TextToDisplay(inkycal_module):
 
         # return images
         return im_black, im_colour
-
-
-if __name__ == '__main__':
-    print(f'running {__name__} in standalone/debug mode')

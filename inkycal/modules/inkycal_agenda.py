@@ -1,5 +1,3 @@
-#!python3
-
 """
 Inkycal Agenda Module
 Copyright by aceinnolab
@@ -100,7 +98,7 @@ class Agenda(inkycal_module):
         line_spacing = 1
 
         text_bbox_height = self.font.getbbox("hg")
-        line_height = text_bbox_height[3] - text_bbox_height[1] + line_spacing
+        line_height = text_bbox_height[3] + line_spacing
         line_width = im_width
         max_lines = im_height // line_height
         logger.debug(f'max lines: {max_lines}')
@@ -111,9 +109,11 @@ class Agenda(inkycal_module):
 
         # Create a list of dates for the next days
         agenda_events = [
-            {'begin': today.shift(days=+_),
-             'title': today.shift(days=+_).format(
-                 self.date_format, locale=self.language)}
+            {
+                'begin': today.shift(days=+_),
+                'title': today.shift(days=+_).format(
+                    self.date_format, locale=self.language)
+            }
             for _ in range(max_lines)]
 
         # Load icalendar from config
@@ -137,7 +137,7 @@ class Agenda(inkycal_module):
         # Set the width for date, time and event titles
         date_width = int(max([self.font.getlength(
             dates['begin'].format(self.date_format, locale=self.language))
-                              for dates in agenda_events]) * 1.2)
+            for dates in agenda_events]) * 1.2)
         logger.debug(f'date_width: {date_width}')
 
         # Calculate positions for each line
@@ -152,7 +152,7 @@ class Agenda(inkycal_module):
 
             time_width = int(max([self.font.getlength(
                 events['begin'].format(self.time_format, locale=self.language))
-                                  for events in upcoming_events]) * 1.2)
+                for events in upcoming_events]) * 1.2)
             logger.debug(f'time_width: {time_width}')
 
             # Calculate x-pos for time
@@ -227,7 +227,3 @@ class Agenda(inkycal_module):
 
         # return the images ready for the display
         return im_black, im_colour
-
-
-if __name__ == '__main__':
-    print(f'running {__name__} in standalone mode')

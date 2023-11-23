@@ -99,12 +99,12 @@ def auto_fontsize(font, max_height):
           A PIL font object with modified height.
       """
     text_bbox = font.getbbox("hg")
-    text_height = text_bbox[3] - text_bbox[1]
+    text_height = text_bbox[3]
     fontsize = text_height
     while text_height <= (max_height * 0.80):
         fontsize += 1
         font = ImageFont.truetype(font.path, fontsize)
-        text_height = text_bbox[3] - text_bbox[1]
+        text_height = text_bbox[3]
     return font
 
 
