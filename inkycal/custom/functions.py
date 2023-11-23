@@ -275,91 +275,60 @@ def internet_available():
     return False
 
 
-from PIL import Image, ImageDraw
-
-
-def draw_dotted_line(draw, start, end, colour, thickness):
-    """Draws a dotted line between start and end points using dots."""
-    delta_x = end[0] - start[0]
-    delta_y = end[1] - start[1]
-    distance = ((delta_x ** 2 + delta_y ** 2) ** 0.5)
-    dot_spacing = 6  # Distance between dots
-
-    for i in range(0, int(distance / dot_spacing), 1):
-        dot_position = (start[0] + (i * dot_spacing * delta_x / distance),
-                        start[1] + (i * dot_spacing * delta_y / distance))
-        # Drawing a circle at each dot position to create a dotted effect
-        draw.ellipse([(dot_position[0] - thickness, dot_position[1] - thickness),
-                      (dot_position[0] + thickness, dot_position[1] + thickness)],
-                     fill=colour)
-
-
-def draw_dashed_line(draw, start, end, colour, thickness):
-    """Draws a dashed line between start and end points."""
-    delta_x = end[0] - start[0]
-    delta_y = end[1] - start[1]
-    distance = ((delta_x ** 2 + delta_y ** 2) ** 0.5)
-    step_size = 10
-    gap_size = 5
-
-    for i in range(0, int(distance / (step_size + gap_size)), 1):
-        segment_start = (start[0] + (i * (step_size + gap_size) * delta_x / distance),
-                         start[1] + (i * (step_size + gap_size) * delta_y / distance))
-        segment_end = (segment_start[0] + (step_size * delta_x / distance),
-                       segment_start[1] + (step_size * delta_y / distance))
-        draw.line((segment_start, segment_end), fill=colour, width=thickness)
-
-
-def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1), style='solid'):
-    """
-    Draws a border at given coordinates with specified styles (solid, dotted, dashed).
+def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
+    """Draws a border at given coordinates.
 
     Args:
-        - image: Image on which the border should be drawn.
-        - xy: Tuple for the top-left corner of the border.
-        - size: Size of the border as a tuple (width, height).
-        - radius: Radius of the corners.
-        - thickness: Thickness of the border in pixels.
-        - shrinkage: Tuple for width and height shrinkage percentages.
-        - style: Style of the border ('solid', 'dotted', 'dashed').
+      - image: The image on which the border should be drawn (usually im_black or
+        im_colour.
+
+      - xy: Tuple representing the top-left corner of the border e.g. (32, 100)
+        where 32 is the x co-ordinate and 100 is the y-coordinate.
+
+      - size: Size of the border as a tuple -> (width, height).
+
+      - radius: Radius of the corners, where 0 = plain rectangle, 5 = round corners.
+
+      - thickness: Thickness of the border in pixels.
+
+      - shrinkage: A tuple containing decimals presenting a percentage of shrinking
+        -> (width_shrink_percentage, height_shrink_percentage).
+        e.g. (0.1, 0.2) ~ shrinks the width of border by 10%, shrinks height of
+        border by 20%
     """
 
     colour = 'black'
+
+    # size from function paramter
     width, height = int(size[0] * (1 - shrinkage[0])), int(size[1] * (1 - shrinkage[1]))
+
+    # shift cursor to move rectangle to center
     offset_x, offset_y = int((size[0] - width) / 2), int((size[1] - height) / 2)
 
     x, y, diameter = xy[0] + offset_x, xy[1] + offset_y, radius * 2
+    # lenght of rectangle size
     a, b = (width - diameter), (height - diameter)
 
+    # Set coordinates for staright lines
     p1, p2 = (x + radius, y), (x + radius + a, y)
     p3, p4 = (x + width, y + radius), (x + width, y + radius + b)
     p5, p6 = (p2[0], y + height), (p1[0], y + height)
     p7, p8 = (x, p4[1]), (x, p3[1])
-
-    draw = ImageDraw.Draw(image)
-
-    # Choose the appropriate line drawing function based on style
-    if style == 'solid':
-        line_drawer = draw.line
-    elif style == 'dotted':
-        line_drawer = lambda coords, fill, width: draw_dotted_line(draw, coords[0], coords[1], fill, width)
-    elif style == 'dashed':
-        line_drawer = lambda coords, fill, width: draw_dashed_line(draw, coords[0], coords[1], fill, width)
-    else:
-        raise ValueError(f"Unknown style: {style}")
-
-    # Draw lines according to the chosen style
-    line_drawer((p1, p2), fill=colour, width=thickness)
-    line_drawer((p3, p4), fill=colour, width=thickness)
-    line_drawer((p5, p6), fill=colour, width=thickness)
-    line_drawer((p7, p8), fill=colour, width=thickness)
-
     if radius != 0:
+        # Set coordinates for arcs
         c1, c2 = (x, y), (x + diameter, y + diameter)
         c3, c4 = ((x + width) - diameter, y), (x + width, y + diameter)
         c5, c6 = ((x + width) - diameter, (y + height) - diameter), (x + width, y + height)
         c7, c8 = (x, (y + height) - diameter), (x + diameter, y + height)
 
+    # Draw lines and arcs, creating a square with round corners
+    draw = ImageDraw.Draw(image)
+    draw.line((p1, p2), fill=colour, width=thickness)
+    draw.line((p3, p4), fill=colour, width=thickness)
+    draw.line((p5, p6), fill=colour, width=thickness)
+    draw.line((p7, p8), fill=colour, width=thickness)
+
+    if radius != 0:
         draw.arc((c1, c2), 180, 270, fill=colour, width=thickness)
         draw.arc((c3, c4), 270, 360, fill=colour, width=thickness)
         draw.arc((c5, c6), 0, 90, fill=colour, width=thickness)
