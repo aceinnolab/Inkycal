@@ -1,5 +1,5 @@
 {
-    "model": "epd_7_in_5_v3",
+    "model": "image_file",
     "update_interval": 60,
     "orientation": 0,
     "info_section": false,
@@ -19,7 +19,7 @@
                     92
                 ],
                 "api_key": "",
-                "location": "Stuttgart,DE",
+                "location": "2825297",
                 "round_temperature": true,
                 "round_windspeed": true,
                 "forecast_interval": "daily",
