@@ -106,7 +106,7 @@ following settings:
 | set timezone              |     your local timezone     |
 
 1. Create and download `settings.json` file for Inkycal from
-   the [WEB-UI](https://aceisace.eu.pythonanywhere.com/inkycal-config-v2-0-0). Add the modules you want with the add
+   the [WEB-UI](https://aceinnolab.com/inkycal/ui). Add the modules you want with the add
    module button.
 2. Copy the `settings.json` to the flashed microSD card in the `/boot` folder of microSD card. On Windows, this is the
    only visible directory on the SD card. On Linux, copy these files to `/boot` of the microSD card.
