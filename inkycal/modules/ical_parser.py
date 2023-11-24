@@ -1,5 +1,3 @@
-#!python3
-
 """
 Inkycal iCalendar parsing module
 Copyright by aceinnolab

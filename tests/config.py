@@ -27,7 +27,9 @@ class Config:
     # inkycal_todoist_test
     TODOIST_API_KEY = get("TODOIST_API_KEY")
 
-    TEMP_PATH = f"{basedir}/tmp"
+    TEMP_PATH = f"{basedir}/temp"
+
+    TEST_SETTINGS_PATH = f"{basedir}/settings.json"
 
 
 
