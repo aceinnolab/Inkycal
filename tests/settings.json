@@ -1,6 +1,6 @@
 
 {
-    "model": "epd_7_in_5_v3_colour",
+    "model": "image_file",
     "update_interval": 5,
     "orientation": 0,
     "info_section": true,
