@@ -16,8 +16,6 @@ merge = Inkyimage.merge
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
-temp_path = f"{Config.TEMP_PATH}/temp.txt"
-
 dummy_data = [
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', ' Donec feugiat facilisis neque vel blandit.',
     'Integer viverra dolor risus.', ' Etiam neque tellus, sollicitudin at nisi a, mollis ornare enim.',
@@ -56,6 +54,8 @@ dummy_data = [
     'Duis facilisis sapien est, a elementum lorem maximus ut.'
 ]
 
+temp_path = f"{Config.TEMP_PATH}/temp.txt"
+
 tests = [
     {
         "position": 1,
@@ -74,7 +74,7 @@ tests = [
         "name": "TextToFile",
         "config": {
             "size": [500, 400],
-            "filepath": "https://de.wikipedia.org/wiki/Nationale_Rotkreuz-_und_Rothalbmond-Gesellschaft",
+            "filepath": "https://raw.githubusercontent.com/aceinnolab/Inkycal/main/setup.py",
             "padding_x": 10,
             "padding_y": 10,
             "fontsize": 12,
@@ -90,9 +90,8 @@ class TestTextToDisplay(unittest.TestCase):
         self.temp_path = temp_path
         if not os.path.exists(Config.TEMP_PATH):
             os.mkdir(Config.TEMP_PATH)
-            logger.info("could not find temporary file, creating now.")
-            with open(self.temp_path, encoding="utf-8", mode="w") as file:
-                file.writelines(dummy_data)
+        with open(self.temp_path, encoding="utf-8", mode="w") as file:
+            file.writelines(dummy_data)
 
     def test_generate_image(self):
         for test in tests:

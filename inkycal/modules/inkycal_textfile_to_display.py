@@ -15,16 +15,8 @@ logger = logging.getLogger(__name__)
 
 
 class TextToDisplay(inkycal_module):
-    """TextToDisplay module
+    """TextToDisplay module - Display text from a local file on the display
     """
-
-    name = "Text module - Display text from a local file on the display"
-
-    requires = {
-        "filepath": {
-            "label": "Please enter a filepath or URL pointing to a .txt file",
-        },
-    }
 
     def __init__(self, config):
         """Initialize inkycal_textfile_to_display module"""
@@ -32,12 +24,6 @@ class TextToDisplay(inkycal_module):
         super().__init__(config)
 
         config = config['config']
-
-        # Check if all required parameters are present
-        for param in self.requires:
-            if param not in config:
-                raise Exception(f'config is missing {param}')
-
         # required parameters
         self.filepath = config["filepath"]
 

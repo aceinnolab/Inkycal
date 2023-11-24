@@ -104,6 +104,8 @@ class Inkycal:
         # Option to use epaper image optimisation, reduces colours
         self.optimize = True
 
+        self.show_border = self.settings.get('border_around_modules', False)
+
         # Load drivers if image should be rendered
         if self.render:
             # Init Display class with model in settings file
@@ -203,6 +205,8 @@ class Inkycal:
             print(f'generating image(s) for {name}...', end="")
             try:
                 black, colour = module.generate_image()
+                if self.show_border:
+                    draw_border_2(im=black, xy=(1, 1), size=(black.width - 2, black.height - 2), radius=5)
                 black.save(f"{self.image_folder}module{number}_black.png", "PNG")
                 colour.save(f"{self.image_folder}module{number}_colour.png", "PNG")
                 print('OK!')
@@ -298,6 +302,8 @@ class Inkycal:
 
                 try:
                     black, colour = module.generate_image()
+                    if self.show_border:
+                        draw_border_2(im=black, xy=(1, 1), size=(black.width - 2, black.height - 2), radius=5)
                     black.save(f"{self.image_folder}module{number}_black.png", "PNG")
                     colour.save(f"{self.image_folder}module{number}_colour.png", "PNG")
                     self.info += f"module {number}: OK  "
