@@ -55,7 +55,7 @@ class Inkyimage:
                 image = Image.open(path)
         except FileNotFoundError:
             logger.error('No image file found', exc_info=True)
-            raise Exception('Your file could not be found. Please check the filepath')
+            raise Exception(f'Your file could not be found. Please check the filepath: {path}')
 
         except OSError:
             logger.error('Invalid Image file provided', exc_info=True)
