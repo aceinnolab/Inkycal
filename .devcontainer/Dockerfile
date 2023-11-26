@@ -8,10 +8,3 @@ RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install --user virtualenv
 ENV TZ=Europe/Berlin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-FROM development
-COPY ../inkycal/modules/inkycal_openweather_scrape.py /app/
-COPY ./run_weather_scraper.sh /app/
-
-# Set the entrypoint to the shell script
-ENTRYPOINT ["run_weather_scraper.sh"]
