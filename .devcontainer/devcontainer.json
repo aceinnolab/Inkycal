@@ -1,17 +1,16 @@
 // For format details, see https://aka.ms/devcontainer.json.
 {
 	"name": "Inkycal-dev",
-   "build": {
-        "dockerfile": "Dockerfile",
-        "target": "development"
-   },
-
+    "build": {
+            "dockerfile": "Dockerfile",
+            "target": "development"
+    },
 
     // This is the settings.json mount
 	"mounts": ["source=/c/temp/settings_test.json,target=/boot/settings.json,type=bind,consistency=cached"],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "chmod +x ./.devcontainer/postCreate.sh && ./.devcontainer/postCreate.sh",
+	"postCreateCommand": "dos2unix ./.devcontainer/postCreate.sh && chmod +x ./.devcontainer/postCreate.sh && ./.devcontainer/postCreate.sh",
 
 	"customizations": {
 		"vscode": {

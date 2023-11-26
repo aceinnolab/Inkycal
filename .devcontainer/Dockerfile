@@ -1,4 +1,4 @@
-FROM python:3.9-slim-bullseye as development
+FROM python:3.11-slim-bookworm as development
 WORKDIR /app
 RUN apt-get -y update && apt-get install -yqq dos2unix chromium chromium-driver \
     libxi6 libgconf-2-4 python3-selenium \
