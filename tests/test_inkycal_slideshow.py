@@ -1,18 +1,16 @@
-#!python3
-
 """
 Slideshow test (inkycal_slideshow)
 """
 import logging
 import os
-import sys
 import unittest
+
 import requests
 from PIL import Image
 
-from inkycal.modules import Slideshow as Module
+from inkycal.modules import Slideshow
 from inkycal.modules.inky_image import Inkyimage
-from inkycal.tests import Config
+from tests import Config
 
 preview = Inkyimage.preview
 merge = Inkyimage.merge
@@ -30,6 +28,9 @@ for count, url in enumerate(im_urls):
     im.save(f"tmp/{count}.png", "PNG")
 
 test_path = "tmp"
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 tests = [
     {
@@ -134,24 +135,20 @@ tests = [
 ]
 
 
-class module_test(unittest.TestCase):
-    def test_get_config(self):
-        print('getting data for web-ui...', end="")
-        Module.get_config()
-        print('OK')
+class TestSlideshow(unittest.TestCase):
 
     def test_generate_image(self):
         for test in tests:
-            print(f'test {tests.index(test) + 1} generating image..')
-            module = Module(test)
+            logger.info(f'test {tests.index(test) + 1} generating image..')
+            module = Slideshow(test)
             im_black, im_colour = module.generate_image()
-            print('OK')
+            logger.info('OK')
             if Config.USE_PREVIEW:
                 preview(merge(im_black, im_colour))
 
     def test_switch_to_next_image(self):
-        print(f'testing switching to next images..')
-        module = Module(tests[0])
+        logger.info(f'testing switching to next images..')
+        module = Slideshow(tests[0])
         im_black, im_colour = module.generate_image()
         if Config.USE_PREVIEW:
             preview(merge(im_black, im_colour))
@@ -164,12 +161,4 @@ class module_test(unittest.TestCase):
         if Config.USE_PREVIEW:
             preview(merge(im_black, im_colour))
 
-        print('OK')
-
-
-if __name__ == '__main__':
-    logger = logging.getLogger()
-    logger.level = logging.DEBUG
-    logger.addHandler(logging.StreamHandler(sys.stdout))
-
-    unittest.main()
+        logger.info('OK')

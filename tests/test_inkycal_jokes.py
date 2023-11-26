@@ -1,16 +1,18 @@
-#!python3
 """
 inkycal_jokes unittest
 """
 import logging
-import sys
 import unittest
-from inkycal.modules import Jokes as Module
+
+from inkycal.modules import Jokes
 from inkycal.modules.inky_image import Inkyimage
-from inkycal.tests import Config
+from tests import Config
 
 preview = Inkyimage.preview
 merge = Inkyimage.merge
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 tests = [
     {
@@ -46,25 +48,13 @@ tests = [
 ]
 
 
-class module_test(unittest.TestCase):
-    def test_get_config(self):
-        print('getting data for web-ui...', end="")
-        Module.get_config()
-        print('OK')
+class TestJokes(unittest.TestCase):
 
     def test_generate_image(self):
         for test in tests:
-            print(f'test {tests.index(test) + 1} generating image..')
-            module = Module(test)
+            logger.info(f'test {tests.index(test) + 1} generating image..')
+            module = Jokes(test)
             im_black, im_colour = module.generate_image()
-            print('OK')
+            logger.info('OK')
             if Config.USE_PREVIEW:
                 preview(merge(im_black, im_colour))
-
-
-if __name__ == '__main__':
-    logger = logging.getLogger()
-    logger.level = logging.DEBUG
-    logger.addHandler(logging.StreamHandler(sys.stdout))
-
-    unittest.main()

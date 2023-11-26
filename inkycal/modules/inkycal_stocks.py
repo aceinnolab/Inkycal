@@ -1,4 +1,3 @@
-#!python3
 """
 Stocks Module for Inkycal Project
 
@@ -10,26 +9,18 @@ Version 0.1: Migration to Inkycal 2.0.0b
 
 by https://github.com/worstface
 """
-import os
 import logging
-
-from inkycal.modules.template import inkycal_module
-from inkycal.custom import write, internet_available
+import os
 
 from PIL import Image
+from matplotlib import pyplot
 
-try:
-    import yfinance as yf
-except ImportError:
-    print('yfinance is not installed! Please install with:')
-    print('pip3 install yfinance')
+from inkycal.custom import write, internet_available
+from inkycal.modules.template import inkycal_module
 
-try:
-    import matplotlib.pyplot as plt
-    import matplotlib.image as mpimg
-except ImportError:
-    print('matplotlib is not installed! Please install with:')
-    print('pip3 install matplotlib')
+import yfinance as yf
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 
 logger = logging.getLogger(__name__)
 
@@ -79,26 +70,24 @@ class Stocks(inkycal_module):
         im_colour = Image.new('RGB', size=im_size, color='white')
 
         # Create tmp path
-        tmpPath = '/tmp/inkycal_stocks/'
+        tmpPath = 'temp/'
 
-        try:
-            if not os.path.exists(tmpPath):
-                os.mkdir(tmpPath)
-                print(f"Successfully created tmp directory {tmpPath} ")
-        except OSError:
-            print(f"Creation of tmp directory {tmpPath} failed")
+        if not os.path.exists(tmpPath):
+            print(f"Creating tmp directory {tmpPath}")
+            os.mkdir(tmpPath)
 
         # Check if internet is available
-        if internet_available() == True:
+        if internet_available():
             logger.info('Connection test passed')
         else:
             raise Exception('Network could not be reached :/')
 
         # Set some parameters for formatting feeds
         line_spacing = 1
-        line_height = self.font.getsize('hg')[1] + line_spacing
+        text_bbox = self.font.getbbox("hg")
+        line_height = text_bbox[3] + line_spacing
         line_width = im_width
-        max_lines = (im_height // (self.font.getsize('hg')[1] + line_spacing))
+        max_lines = (im_height // (line_height + line_spacing))
 
         logger.debug(f"max_lines: {max_lines}")
 
@@ -211,7 +200,7 @@ class Stocks(inkycal_module):
             else:
                 parsed_tickers_colour.append("")
 
-            if (_ < len(tickerCount)):
+            if _ < len(tickerCount):
                 parsed_tickers.append("")
                 parsed_tickers_colour.append("")
 
@@ -232,9 +221,10 @@ class Stocks(inkycal_module):
             logger.info(f'chartSpace is...{im_width} {im_height}')
             logger.info(f'open chart ...{chartPath}')
             chartImage = Image.open(chartPath)
-            chartImage.thumbnail((im_width / 4, line_height * 4), Image.BICUBIC)
+            chartImage.thumbnail((int(im_width / 4), int(line_height * 4)), Image.BICUBIC)
+            pyplot.close()
 
-            chartPasteX = im_width - (chartImage.width)
+            chartPasteX = im_width - chartImage.width
             chartPasteY = line_height * 5 * _
             logger.info(f'pasting chart image with index {_} to...{chartPasteX} {chartPasteY}')
 
@@ -265,6 +255,3 @@ class Stocks(inkycal_module):
         # Save image of black and colour channel in image-folder
         return im_black, im_colour
 
-
-if __name__ == '__main__':
-    print('running module in standalone/debug mode')

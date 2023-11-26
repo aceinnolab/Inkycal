@@ -1,5 +1,3 @@
-#!python3
-
 """
 Inkycal iCalendar parsing module
 Copyright by aceinnolab
@@ -119,7 +117,7 @@ class iCalendar:
 
         events = (
             {
-                'title': events.get('SUMMARY').lstrip(),
+                'title': events.get('SUMMARY').lstrip() if events.get('SUMMARY') else "",
 
                 'begin': arrow.get(events.get('DTSTART').dt).to(timezone) if (
                         arrow.get(events.get('dtstart').dt).format('HH:mm') != '00:00')

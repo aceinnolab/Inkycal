@@ -1,5 +1,3 @@
-#!python3
-
 """
 Inkycal Calendar Module
 Copyright by aceinnolab
@@ -110,7 +108,8 @@ class Calendar(inkycal_module):
 
         # Allocate space for month-names, weekdays etc.
         month_name_height = int(im_height * 0.10)
-        weekdays_height = int(self.font.getsize('hg')[1] * 1.25)
+        text_bbox_height = self.font.getbbox("hg")
+        weekdays_height = int((text_bbox_height[3] - text_bbox_height[1])* 1.25)
         logger.debug(f"month_name_height: {month_name_height}")
         logger.debug(f"weekdays_height: {weekdays_height}")
 
@@ -182,15 +181,15 @@ class Calendar(inkycal_module):
         ]
         logger.debug(f'weekday names: {weekday_names}')
 
-        for idx, weekday in enumerate(weekday_pos):
+        for index, weekday in enumerate(weekday_pos):
             write(
                 im_black,
                 weekday,
                 (icon_width, weekdays_height),
-                weekday_names[idx],
+                weekday_names[index],
                 font=self.font,
                 autofit=True,
-                fill_height=1.0,
+                fill_height=0.9,
             )
 
         # Create a calendar template and flatten (remove nestings)
@@ -207,6 +206,10 @@ class Calendar(inkycal_module):
         # remove zeros from calendar since they are not required
         calendar_flat = [num for num in calendar_flat if num != 0]
 
+        # ensure all numbers have the same size
+        fontsize_numbers = int(min(icon_width, icon_height) * 0.5)
+        number_font = ImageFont.truetype(self.font.path, fontsize_numbers)
+
         # Add the numbers on the correct positions
         for number in calendar_flat:
             if number != int(now.day):
@@ -215,9 +218,7 @@ class Calendar(inkycal_module):
                     grid[number],
                     (icon_width, icon_height),
                     str(number),
-                    font=self.num_font,
-                    fill_height=0.5,
-                    fill_width=0.5,
+                    font=number_font,
                 )
 
         # Draw a red/black circle with the current day of month in white
@@ -262,10 +263,10 @@ class Calendar(inkycal_module):
             from inkycal.modules.ical_parser import iCalendar
 
             # find out how many lines can fit at max in the event section
-            line_spacing = 0
-            max_event_lines = events_height // (
-                self.font.getsize('hg')[1] + line_spacing
-            )
+            line_spacing = 2
+            text_bbox_height = self.font.getbbox("hg")
+            line_height = text_bbox_height[3] + line_spacing
+            max_event_lines = events_height // (line_height + line_spacing)
 
             # generate list of coordinates for each line
             events_offset = im_height - events_height
@@ -293,14 +294,27 @@ class Calendar(inkycal_module):
             month_events = parser.get_events(month_start, month_end, self.timezone)
             parser.sort()
             self.month_events = month_events
+            
+            # Initialize days_with_events as an empty list
+            days_with_events = []
 
-            # find out on which days of this month events are taking place
-            days_with_events = [
-                int(events['begin'].format('D')) for events in month_events
-            ]
+            # Handle multi-day events by adding all days between start and end
+            for event in month_events:
+                start_date = event['begin'].date()
+                end_date = event['end'].date()
+
+                # Convert start and end dates to arrow objects with timezone
+                start = arrow.get(event['begin'].date(), tzinfo=self.timezone)
+                end = arrow.get(event['end'].date(), tzinfo=self.timezone)
+
+                # Use arrow's range function for generating dates
+                for day in arrow.Arrow.range('day', start, end):
+                    day_num = int(day.format('D'))  # get day number using arrow's format method
+                    if day_num not in days_with_events:
+                        days_with_events.append(day_num)
 
             # remove duplicates (more than one event in a single day)
-            list(set(days_with_events)).sort()
+            days_with_events = sorted(set(days_with_events))
             self._days_with_events = days_with_events
 
             # Draw a border with specified parameters around days with events
@@ -329,31 +343,18 @@ class Calendar(inkycal_module):
                 # Find out how much space (width) the date format requires
                 lang = self.language
 
-                date_width = int(
-                    max(
-                        (
-                            self.font.getsize(
-                                events['begin'].format(self.date_format, locale=lang)
-                            )[0]
-                            for events in upcoming_events
-                        )
-                    )
-                    * 1.1
+                date_width = int(max((
+                    self.font.getlength(events['begin'].format(self.date_format, locale=lang))
+                    for events in upcoming_events))* 1.1
                 )
 
-                time_width = int(
-                    max(
-                        (
-                            self.font.getsize(
-                                events['begin'].format(self.time_format, locale=lang)
-                            )[0]
-                            for events in upcoming_events
-                        )
-                    )
-                    * 1.1
+                time_width = int(max((
+                    self.font.getlength(events['begin'].format(self.time_format, locale=lang))
+                    for events in upcoming_events))* 1.1
                 )
 
-                line_height = self.font.getsize('hg')[1] + line_spacing
+                text_bbox_height = self.font.getbbox("hg")
+                line_height = text_bbox_height[3] + line_spacing
 
                 event_width_s = im_width - date_width - time_width
                 event_width_l = im_width - date_width
@@ -365,7 +366,13 @@ class Calendar(inkycal_module):
                 cursor = 0
                 for event in upcoming_events:
                     if cursor < len(event_lines):
-                        the_name = event['title']
+                        event_duration = (event['end'] - event['begin']).days
+                        if event_duration > 1:
+                            # Format the duration using Arrow's localization
+                            days_translation = arrow.get().shift(days=event_duration).humanize(only_distance=True, locale=lang)
+                            the_name = f"{event['title']} ({days_translation})"
+                        else:
+                            the_name = event['title']
                         the_date = event['begin'].format(self.date_format, locale=lang)
                         the_time = event['begin'].format(self.time_format, locale=lang)
                         # logger.debug(f"name:{the_name}   date:{the_date} time:{the_time}")
@@ -411,19 +418,16 @@ class Calendar(inkycal_module):
                             cursor += 1
             else:
                 symbol = '- '
-                while self.font.getsize(symbol)[0] < im_width * 0.9:
+
+                while self.font.getlength(symbol) < im_width * 0.9:
                     symbol += ' -'
                 write(
                     im_black,
                     event_lines[0],
-                    (im_width, self.font.getsize(symbol)[1]),
+                    (im_width, line_height),
                     symbol,
                     font=self.font,
                 )
 
         # return the images ready for the display
         return im_black, im_colour
-
-
-if __name__ == '__main__':
-    print(f'running {__name__} in standalone mode')

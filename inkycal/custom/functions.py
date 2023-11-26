@@ -1,15 +1,15 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
 """
 Inkycal custom-functions for ease-of-use
 
 Copyright by aceinnolab
 """
 import logging
-from PIL import Image, ImageDraw, ImageFont, ImageColor
-from urllib.request import urlopen
 import os
 import time
+import traceback
+
+import requests
+from PIL import ImageFont, ImageDraw, Image
 
 logs = logging.getLogger(__name__)
 logs.setLevel(level=logging.INFO)
@@ -98,11 +98,13 @@ def auto_fontsize(font, max_height):
       Returns:
           A PIL font object with modified height.
       """
-
-    fontsize = font.getsize('hg')[1]
-    while font.getsize('hg')[1] <= (max_height * 0.80):
+    text_bbox = font.getbbox("hg")
+    text_height = text_bbox[3]
+    fontsize = text_height
+    while text_height <= (max_height * 0.80):
         fontsize += 1
         font = ImageFont.truetype(font.path, fontsize)
+        text_height = text_bbox[3]
     return font
 
 
@@ -154,21 +156,34 @@ def write(image, xy, box_size, text, font=None, **kwargs):
     if autofit or (fill_width != 1.0) or (fill_height != 0.8):
         size = 8
         font = ImageFont.truetype(font.path, size)
-        text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
+        text_bbox = font.getbbox(text)
+        text_width = text_bbox[2] - text_bbox[0]
+        text_bbox_height = font.getbbox("hg")
+        text_height = text_bbox_height[3] - text_bbox_height[1]
+
         while (text_width < int(box_width * fill_width) and
                text_height < int(box_height * fill_height)):
             size += 1
             font = ImageFont.truetype(font.path, size)
-            text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
+            text_bbox = font.getbbox(text)
+            text_width = text_bbox[2] - text_bbox[0]
+            text_bbox_height = font.getbbox("hg")
+            text_height = text_bbox_height[3] - text_bbox_height[1]
 
-    text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
+    text_bbox = font.getbbox(text)
+    text_width = text_bbox[2] - text_bbox[0]
+    text_bbox_height = font.getbbox("hg")
+    text_height = text_bbox_height[3] - text_bbox_height[1]
 
     # Truncate text if text is too long so it can fit inside the box
     if (text_width, text_height) > (box_width, box_height):
         logs.debug(('truncating {}'.format(text)))
         while (text_width, text_height) > (box_width, box_height):
             text = text[0:-1]
-            text_width, text_height = font.getsize(text)[0], font.getsize('hg')[1]
+            text_bbox = font.getbbox(text)
+            text_width = text_bbox[2] - text_bbox[0]
+            text_bbox_height = font.getbbox("hg")
+            text_height = text_bbox_height[3] - text_bbox_height[1]
         logs.debug(text)
 
     # Align text to desired position
@@ -215,14 +230,17 @@ def text_wrap(text, font=None, max_width=None):
       A list containing chunked strings of the full text.
     """
     lines = []
-    if font.getsize(text)[0] < max_width:
+
+    text_width = font.getlength(text)
+
+    if text_width < max_width:
         lines.append(text)
     else:
         words = text.split(' ')
         i = 0
         while i < len(words):
             line = ''
-            while i < len(words) and font.getsize(line + words[i])[0] <= max_width:
+            while i < len(words) and font.getlength(line + words[i]) <= max_width:
                 line = line + words[i] + " "
                 i += 1
             if not line:
@@ -247,12 +265,14 @@ def internet_available():
     >>> if internet_available():
     >>> #...do something that requires internet connectivity
     """
-
-    try:
-        urlopen('https://google.com', timeout=5)
-        return True
-    except:
-        return False
+    for attempt in range(3):
+        try:
+            requests.get('https://google.com', timeout=5)
+            return True
+        except:
+            print(f"Network could not be reached: {traceback.print_exc()}")
+            time.sleep(5)
+    return False
 
 
 def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
@@ -279,17 +299,17 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
 
     colour = 'black'
 
-    # size from function paramter
+    # size from function parameter
     width, height = int(size[0] * (1 - shrinkage[0])), int(size[1] * (1 - shrinkage[1]))
 
     # shift cursor to move rectangle to center
     offset_x, offset_y = int((size[0] - width) / 2), int((size[1] - height) / 2)
 
     x, y, diameter = xy[0] + offset_x, xy[1] + offset_y, radius * 2
-    # lenght of rectangle size
+    # length of rectangle size
     a, b = (width - diameter), (height - diameter)
 
-    # Set coordinates for staright lines
+    # Set coordinates for straight lines
     p1, p2 = (x + radius, y), (x + radius + a, y)
     p3, p4 = (x + width, y + radius), (x + width, y + radius + b)
     p5, p6 = (p2[0], y + height), (p1[0], y + height)
@@ -313,3 +333,12 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
         draw.arc((c3, c4), 270, 360, fill=colour, width=thickness)
         draw.arc((c5, c6), 0, 90, fill=colour, width=thickness)
         draw.arc((c7, c8), 90, 180, fill=colour, width=thickness)
+
+
+def draw_border_2(im: Image, xy: tuple, size: tuple, radius: int):
+    draw = ImageDraw.Draw(im)
+
+    x, y = xy
+    w, h = size
+
+    draw.rounded_rectangle(xy=(x, y, x + w, y + h), outline="black", radius=radius)

@@ -1,10 +1,11 @@
 // For format details, see https://aka.ms/devcontainer.json.
 {
 	"name": "Inkycal-dev",
-    "build": {
+   "build": {
         "dockerfile": "Dockerfile",
         "target": "development"
-    },
+   },
+
 
     // This is the settings.json mount
 	"mounts": ["source=/c/temp/settings_test.json,target=/boot/settings.json,type=bind,consistency=cached"],

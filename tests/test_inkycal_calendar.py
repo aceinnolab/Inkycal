@@ -1,19 +1,20 @@
-#!python3
 """
 inkycal_calendar unittest
 """
 import logging
-import sys
 import unittest
 
-from inkycal.modules import Calendar as Module
-
+from inkycal.modules import Calendar
 from inkycal.modules.inky_image import Inkyimage
-from inkycal.tests import Config
+from tests import Config
+
 preview = Inkyimage.preview
 merge = Inkyimage.merge
 
 sample_url = Config.SAMPLE_ICAL_URL
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 tests = [
     {
@@ -67,25 +68,13 @@ tests = [
 ]
 
 
-class module_test(unittest.TestCase):
-    def test_get_config(self):
-        print('getting data for web-ui...', end="")
-        Module.get_config()
-        print('OK')
+class TestCalendar(unittest.TestCase):
 
     def test_generate_image(self):
         for test in tests:
             print(f'test {tests.index(test) + 1} generating image..', end="")
-            module = Module(test)
+            module = Calendar(test)
             im_black, im_colour = module.generate_image()
             print('OK')
             if Config.USE_PREVIEW:
                 preview(merge(im_black, im_colour))
-
-
-if __name__ == '__main__':
-    logger = logging.getLogger()
-    logger.level = logging.DEBUG
-    logger.addHandler(logging.StreamHandler(sys.stdout))
-
-    unittest.main()

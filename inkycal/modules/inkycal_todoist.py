@@ -1,5 +1,3 @@
-#!python3
-
 """
 Inkycal Todoist Module
 Copyright by aceinnolab
@@ -86,9 +84,10 @@ class Todoist(inkycal_module):
 
         # Set some parameters for formatting todos
         line_spacing = 1
-        line_height = self.font.getsize('hg')[1] + line_spacing
+        text_bbox_height = self.font.getbbox("hg")
+        line_height = text_bbox_height[3] + line_spacing
         line_width = im_width
-        max_lines = (im_height // (self.font.getsize('hg')[1] + line_spacing))
+        max_lines = im_height // line_height
 
         # Calculate padding from top so the lines look centralised
         spacing_top = int(im_height % line_height / 2)
@@ -197,7 +196,3 @@ class Todoist(inkycal_module):
 
         # return the images ready for the display
         return im_black, im_colour
-
-
-if __name__ == '__main__':
-    print(f'running {__name__} in standalone/debug mode')
