@@ -1,11 +1,9 @@
-import sys
 import time
 
 from PIL import Image
 from PIL import ImageEnhance
 from selenium import webdriver
 from selenium.common.exceptions import ElementClickInterceptedException
-from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -16,7 +14,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 def get_scraped_weatherforecast_image() -> Image:
     # Set the desired viewport size (width, height)
     my_width = 480
-    my_height = 850
+    my_height = 850 # will later be cropped
     mobile_emulation = {
         "deviceMetrics": {"width": my_width, "height": my_height, "pixelRatio": 1.0},
         "userAgent": "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19",
@@ -26,14 +24,13 @@ def get_scraped_weatherforecast_image() -> Image:
     options = Options()
     options.add_argument("--no-sandbox")
     options.add_argument("--headless=new")
-    # options.add_argument("--disable-gpu")
     options.add_argument("--disable-dev-shm-usage")
     options.add_experimental_option("mobileEmulation", mobile_emulation)
     service = Service("/usr/bin/chromedriver")
     driver = webdriver.Chrome(service=service, options=options)
 
     # Navigate to webpage
-    driver.get("https://openweathermap.org/city/2867714")
+    driver.get("https://openweathermap.org/city/<your_city_id_here>")
 
     # Wait and find the Cookie Button
     login_button = driver.find_element(By.XPATH, '//*[@id="stick-footer-panel"]/div/div/div/div/div/button')
@@ -71,11 +68,11 @@ def get_scraped_weatherforecast_image() -> Image:
     map_element = driver.find_element(By.XPATH, '//*[@id="weather-widget"]/div[2]/div[1]/div[2]')
     driver.execute_script("arguments[0].remove();", map_element)
 
-    # remove the hourly forecast
+    # optional: remove the hourly forecast
     # map_element = driver.find_element(By.XPATH, '//*[@id="weather-widget"]/div[2]/div[2]/div[1]')
     # driver.execute_script("arguments[0].remove();", map_element)
 
-    # zoom in a little - not now
+    # zoom in a little
     driver.execute_script("document.body.style.zoom='110%'")
 
     html_element = driver.find_element(By.TAG_NAME, "html")
@@ -88,11 +85,10 @@ def get_scraped_weatherforecast_image() -> Image:
     # Close the WebDriver when done
     driver.quit()
 
-    # crop, resize, enhance & rotate the image for inky display
+    # crop, resize, enhance & rotate the image for inky 7in5 v2 colour display
     im = Image.open(image_filename, mode="r", formats=None)
     im = im.crop((0, 100, (my_width - 50), (my_height - 50)))
     im = im.resize((480, 800), resample=Image.LANCZOS)
-    # im = im.rotate(90, Image.NEAREST, expand = 1)
     im = ImageEnhance.Contrast(im).enhance(1.0)
     im.save(image_filename)
     return im, im
