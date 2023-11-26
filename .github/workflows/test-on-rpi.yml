@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   test-on-rpi-os:
@@ -24,8 +27,8 @@ jobs:
           TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
         with:
           # Set the base_image to the desired Raspberry Pi OS version
-          base_image: https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz
-          image_additional_mb: 1500 # enlarge free space to 1.5 GB
+          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-10-10/2023-10-10-raspios-bookworm-armhf-lite.img.xz
+          image_additional_mb: 2560 # enlarge free space to 2.5 GB
           optimize_image: true
           user: inky
           commands: |
@@ -39,7 +42,7 @@ jobs:
             sudo apt-get update -y
             python --version
             sudo apt-get install -y python3-pip
-            sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev -y
+            sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf -y
             echo $PWD && ls
             git clone --branch main --single-branch https://github.com/aceinnolab/Inkycal
             cd Inkycal
@@ -49,6 +52,6 @@ jobs:
             pip install wheel
             pip install -e ./
             pip install RPi.GPIO==0.7.1 spidev==3.5
-            cd inkycal/tests
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
-            for f in *.py; do python3 "$f"; done
+            pip install pytest
+            python -m pytest

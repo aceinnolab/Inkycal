@@ -1,18 +1,20 @@
-#!python3
 """
 inkycal_todoist unittest
 """
 import logging
 import sys
 import unittest
-from inkycal.modules import Todoist as Module
+from inkycal.modules import Todoist
 
 from inkycal.modules.inky_image import Inkyimage
-from inkycal.tests import Config
+from tests import Config
 preview = Inkyimage.preview
 merge = Inkyimage.merge
 
 api_key = Config.TODOIST_API_KEY
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 tests = [
     {
@@ -30,30 +32,16 @@ tests = [
 ]
 
 
-class module_test(unittest.TestCase):
-
-    def test_get_config(self):
-        print('getting data for web-ui...', end="")
-        Module.get_config()
-        print('OK')
+class TestTodoist(unittest.TestCase):
 
     def test_generate_image(self):
         if api_key:
             for test in tests:
                 print(f'test {tests.index(test) + 1} generating image..')
-                module = Module(test)
+                module = Todoist(test)
                 im_black, im_colour = module.generate_image()
                 print('OK')
                 if Config.USE_PREVIEW:
                     preview(merge(im_black, im_colour))
-                merge(im_black, im_colour).show()
         else:
             print('No api key given, omitting test')
-
-
-if __name__ == '__main__':
-    logger = logging.getLogger()
-    logger.level = logging.DEBUG
-    logger.addHandler(logging.StreamHandler(sys.stdout))
-
-    unittest.main()

@@ -1,4 +1,3 @@
-#!python3
 """
 Textfile module for InkyCal Project
 
@@ -7,25 +6,17 @@ If the content is too long, it will be truncated from the back until it fits
 
 Copyright by aceinnolab
 """
-from inkycal.modules.template import inkycal_module
-from inkycal.custom import *
-
 from urllib.request import urlopen
+
+from inkycal.custom import *
+from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
 
 
 class TextToDisplay(inkycal_module):
-    """TextToDisplay module
+    """TextToDisplay module - Display text from a local file on the display
     """
-
-    name = "Text module - Display text from a local file on the display"
-
-    requires = {
-        "filepath": {
-            "label": "Please enter a filepath or URL pointing to a .txt file",
-        },
-    }
 
     def __init__(self, config):
         """Initialize inkycal_textfile_to_display module"""
@@ -33,17 +24,10 @@ class TextToDisplay(inkycal_module):
         super().__init__(config)
 
         config = config['config']
-
-        # Check if all required parameters are present
-        for param in self.requires:
-            if param not in config:
-                raise Exception(f'config is missing {param}')
-
         # required parameters
         self.filepath = config["filepath"]
 
         self.make_request = True if self.filepath.startswith("https://") else False
-
 
         # give an OK message
         print(f'{__name__} loaded')
@@ -66,17 +50,12 @@ class TextToDisplay(inkycal_module):
         im_black = Image.new('RGB', size=im_size, color='white')
         im_colour = Image.new('RGB', size=im_size, color='white')
 
-        # Check if internet is available
-        if internet_available():
-            logger.info('Connection test passed')
-        else:
-            raise NetworkNotReachableError
-
         # Set some parameters for formatting feeds
-        line_spacing = 1
-        line_height = self.font.getsize('hg')[1] + line_spacing
+        line_spacing = 4
+        text_bbox_height = self.font.getbbox("hg")
+        line_height = text_bbox_height[3] + line_spacing
         line_width = im_width
-        max_lines = (im_height // (self.font.getsize('hg')[1] + line_spacing))
+        max_lines = im_height // line_height
 
         # Calculate padding from top so the lines look centralised
         spacing_top = int(im_height % line_height / 2)
@@ -87,6 +66,11 @@ class TextToDisplay(inkycal_module):
 
         if self.make_request:
             logger.info("Detected http path, making request")
+            # Check if internet is available
+            if internet_available():
+                logger.info('Connection test passed')
+            else:
+                raise NetworkNotReachableError
             file_content = urlopen(self.filepath).read().decode('utf-8')
         else:
             # Create list containing all lines
@@ -111,7 +95,3 @@ class TextToDisplay(inkycal_module):
 
         # return images
         return im_black, im_colour
-
-
-if __name__ == '__main__':
-    print(f'running {__name__} in standalone/debug mode')

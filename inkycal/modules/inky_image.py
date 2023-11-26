@@ -83,12 +83,11 @@ class Inkyimage:
 
     @staticmethod
     def preview(image):
-        """"Previews an image on gpicview (only works on Rapsbian with Desktop).
-        """
-        path = '/home/pi/Desktop/'
-        image.save(path + 'temp.png')
-        os.system("gpicview " + path + 'temp.png')
-        os.system('rm ' + path + 'temp.png')
+        """Previews an image on gpicview (only works on Rapsbian with Desktop)."""
+        path = '~/temp'
+        image.save(path + '/temp.png')
+        os.system("gpicview " + path + '/temp.png')
+        os.system('rm ' + path + '/temp.png')
 
     def _image_loaded(self):
         """returns True if image was loaded"""

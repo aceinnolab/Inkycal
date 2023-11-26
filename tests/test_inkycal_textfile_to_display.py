@@ -1,16 +1,20 @@
-#!python3
+"""
+Inkycal Text module
+"""
+
 import logging
 import os
-import sys
 import unittest
-from inkycal.modules import TextToDisplay as Module
 
+from inkycal.modules import TextToDisplay
 from inkycal.modules.inky_image import Inkyimage
-from inkycal.tests import Config
+from tests import Config
+
 preview = Inkyimage.preview
 merge = Inkyimage.merge
 
-file_path = None
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 dummy_data = [
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', ' Donec feugiat facilisis neque vel blandit.',
@@ -50,13 +54,15 @@ dummy_data = [
     'Duis facilisis sapien est, a elementum lorem maximus ut.'
 ]
 
+temp_path = f"{Config.TEMP_PATH}/temp.txt"
+
 tests = [
     {
         "position": 1,
         "name": "TextToFile",
         "config": {
             "size": [500, 100],
-            "filepath": file_path,
+            "filepath": temp_path,
             "padding_x": 10,
             "padding_y": 10,
             "fontsize": 12,
@@ -68,7 +74,7 @@ tests = [
         "name": "TextToFile",
         "config": {
             "size": [500, 400],
-            "filepath": file_path,
+            "filepath": "https://raw.githubusercontent.com/aceinnolab/Inkycal/main/setup.py",
             "padding_x": 10,
             "padding_y": 10,
             "fontsize": 12,
@@ -80,49 +86,23 @@ tests = [
 
 class TestTextToDisplay(unittest.TestCase):
 
-    def test_get_config(self):
-        print('getting data for web-ui...', end="")
-        Module.get_config()
-        print('OK')
+    def setUp(self):
+        self.temp_path = temp_path
+        if not os.path.exists(Config.TEMP_PATH):
+            os.mkdir(Config.TEMP_PATH)
+        with open(self.temp_path, encoding="utf-8", mode="w") as file:
+            file.writelines(dummy_data)
 
     def test_generate_image(self):
-        delete_file_after_parse = False
-
-        if not file_path:
-            delete_file_after_parse = True
-            print("Filepath does not exist. Creating dummy file")
-
-            tmp_path = "tmp.txt"
-            with open(tmp_path, mode="w", encoding="utf-8") as file:
-                file.writelines(dummy_data)
-
-            # update tests with new temp path
-            for test in tests:
-                test["config"]["filepath"] = tmp_path
-
-        else:
-            make_request = bool(file_path.startswith("https://"))
-            if not make_request and not os.path.exists(file_path):
-                raise FileNotFoundError("Your text file could not be found")
-
         for test in tests:
-            print(f'test {tests.index(test) + 1} generating image..')
-            module = Module(test)
+            logger.info(f'test {tests.index(test) + 1} generating image..')
+            module = TextToDisplay(test)
             im_black, im_colour = module.generate_image()
-            print('OK')
+            logger.info('OK')
             if Config.USE_PREVIEW:
                 preview(merge(im_black, im_colour))
-            im = merge(im_black, im_colour)
-            im.show()
 
-        if delete_file_after_parse:
-            print("cleaning up temp file")
-            os.remove("tmp.txt")
-
-
-if __name__ == '__main__':
-    logger = logging.getLogger()
-    logger.level = logging.DEBUG
-    logger.addHandler(logging.StreamHandler(sys.stdout))
-
-    unittest.main()
+    def tearDown(self):
+        if os.path.exists(self.temp_path):
+            logger.info("deleting temporary file.")
+            os.remove(self.temp_path)

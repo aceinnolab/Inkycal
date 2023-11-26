@@ -146,7 +146,7 @@ dmypy.json
 /logs
 
 # inkycal tests
-/inkycal/tests/tmp/
+/tests/tmp/
 !/inkycal/tests/*.py
 /docsource/._build/
 
