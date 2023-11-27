@@ -65,7 +65,7 @@ jobs:
 
             # increase swap-size
             sudo dphys-swapfile swapoff
-            sudo sed -i -E '/^CONF_SWAPSIZE=/s/=.*/=256/' /etc/dphys-swapfile
+            sudo sed -i -E '/^CONF_SWAPSIZE=/s/=.*/=512/' /etc/dphys-swapfile
             sudo dphys-swapfile setup
             sudo dphys-swapfile swapon
 
