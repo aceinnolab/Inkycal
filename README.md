@@ -108,8 +108,7 @@ following settings:
 1. Create and download `settings.json` file for Inkycal from
    the [WEB-UI](https://aceinnolab.com/inkycal/ui). Add the modules you want with the add
    module button.
-2. Copy the `settings.json` to the flashed microSD card in the `/boot` folder of microSD card. On Windows, this is the
-   only visible directory on the SD card. On Linux, copy these files to `/boot` of the microSD card.
+2. Copy the `settings.json` to the flashed microSD card.
 3. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
 4. Once the green LED has stopped blinking after ~3 minutes, you can connect to your Raspberry Pi via SSH using a SSH
    Client. We suggest [Termius](https://termius.com/download/windows)
