@@ -77,9 +77,9 @@ display!**
 | 7.5" Inkycal (plug-and-play)              | Aceinnolab (author)       |  [Buy on Tindie](https://www.tindie.com/products/aceisace4444/inkycal-build-v1/)  Pre-configured version of Inkycal with custom frame and a web-ui. You do not need to buy anything extra. Includes Raspberry Pi Zero W, 7.5" e-paper, microSD card, driver board, custom packaging and 1m of cable. Comes pre-assembled for plug-and-play. |
 | Inkycal frame (kit -> requires wires, 7.5" Display and Zero W with microSD card | Aceinnolab (author)       |  [Buy on Tindie](https://www.tindie.com/products/aceinnolab/inkycal-frame-custom-driver-board-only/) Ultraslim frame with custom-made front and backcover inkl. ultraslim driver board). You will need a Raspberry Pi, microSD card and a 7.5" e-paper display |
 | `[serial]`  12.48" (1304×984px) display   | waveshare / gooddisplay |  Search for `Waveshare 12.48" E-Paper 1304×984` on amazon or similar |
-| `[serial]` 7.5" (640x384px) -> v1 display | waveshare / gooddisplay |  Search for `Waveshare 7.5" E-Paper 640x384` on amazon or similar |
-| `[serial]` 7.5" (800x480px) -> v2 display | waveshare / gooddisplay |  Search for `Waveshare 7.5" E-Paper 800x480` on amazon or similar |
-| `[serial]` 7.5" (880x528px) -> v3 display | waveshare / gooddisplay |  Search for `Waveshare 7.5" E-Paper 800x528` on amazon or similar |
+| `[serial]` 7.5" (640x384px) -> v1 display (2/3-colour) | waveshare / gooddisplay |  Search for `Waveshare 7.5" E-Paper 640x384` on amazon or similar |
+| `[serial]` 7.5" (800x480px) -> v2 display (2/3-colour) | waveshare / gooddisplay |  Search for `Waveshare 7.5" E-Paper 800x480` on amazon or similar |
+| `[serial]` 7.5" (880x528px) -> v3 display (2/3-colour) | waveshare / gooddisplay |  Search for `Waveshare 7.5" E-Paper 800x528` on amazon or similar |
 | `[serial]`  5.83" (400x300px) display     | waveshare / gooddisplay | Search for `Waveshare 5.83" E-Paper 400x300` on amazon or similar |
 | `[serial]`  4.2" (400x300px)display       | waveshare / gooddisplay | Search for `Waveshare 4.2" E-Paper 400x300` on amazon or similar |                                                                                         |
 | `[parallel]` 10.3" (1872×1404px) display  | waveshare / gooddisplay |  Search for `Waveshare 10.3" E-Paper 1872×1404` on amazon or similar |
@@ -277,10 +277,11 @@ perks after confirming 💯
 
 ## As featured on
 
+* [raspberrypi.com](https://www.raspberrypi.com/news/ashleys-top-five-projects-for-raspberry-pi-first-timers/)
 * [makeuseof - fantastic projects using an eink display](http://makeuseof.com/fantastic-projects-using-an-e-ink-display/)
 * [magpi.de](https://www.magpi.de/news/maginkcal-ein-kalender-mit-epaper-display-und-raspberry-pi)
+* [goodreader.com](https://goodereader.com/blog/e-paper/five-of-the-most-innovative-e-ink-display-projects?doing_wp_cron=1701869793.2312469482421875000000)
 * [reddit - Inkycal](https://www.reddit.com/r/InkyCal/)
 * [schuemann.it](https://schuemann.it/2019/09/11/e-ink-calendar-with-a-raspberry-pi/)
 * [huernerfuerst.de](https://www.huenerfuerst.de/archives/e-ink-kalender-mit-einem-raspberry-pi-zero-teil-1-was-wird-benoetigt)
-* [raspberrypi.com](https://www.raspberrypi.com/news/ashleys-top-five-projects-for-raspberry-pi-first-timers/)
 * [canox.net](https://canox.net/2019/06/raspberry-pi-als-e-ink-kalender/)
