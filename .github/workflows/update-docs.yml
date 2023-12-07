@@ -16,10 +16,10 @@ jobs:
         with:
           ref: main
 
-      - name: Set up Python 3.9
+      - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.11
 
       - name: Install Dependencies
         run: |
@@ -34,8 +34,7 @@ jobs:
         run: |
           sudo apt-get install python3-sphinx
           pip install sphinxemoji sphinx_rtd_theme recommonmark
-          cd docsource
-          make html && make github && cd ..
+          cd docsource && make github
 
       - name: Check if there are any changes
         id: verify_diff
