@@ -44,7 +44,7 @@ class Display:
         except FileNotFoundError:
             raise Exception('SPI could not be found. Please check if SPI is enabled')
 
-    def render(self, im_black: Image, im_colour=Image or None) -> None:
+    def render(self, im_black: Image, im_colour:Image or None) -> None:
         """Renders an image on the selected E-Paper display.
 
         Initlializes the E-Paper display, sends image data and executes command
@@ -153,7 +153,7 @@ class Display:
             epaper.sleep()
 
     @classmethod
-    def get_display_size(cls, model_name):
+    def get_display_size(cls, model_name) -> (int, int):
         """Returns the size of the display as a tuple -> (width, height)
 
         Looks inside "drivers" folder for the given model name, then returns it's
