@@ -16,10 +16,12 @@ Display
 Modules
 ===========================
 - Agenda
+
 .. automodule:: inkycal.modules.inkycal_agenda.Agenda
   :members:
 
 - Calendar
+
 .. automodule:: inkycal.modules.inkycal_calendar.Calendar
   :members:
 
