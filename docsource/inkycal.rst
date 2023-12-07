@@ -9,8 +9,20 @@ Inkycal
 
 Display
 ===========================
-.. automodule:: inkycal.display.display
+.. automodule:: inkycal.display.Display
   :members:
+
+
+Modules
+===========================
+Agenda
+.. automodule:: inkycal.modules.inkycal_agenda.Agenda
+  :members:
+
+Calendar
+.. automodule:: inkycal.modules.inkycal_calendar.Calendar
+  :members:
+
 
 Custom functions
 ===========================
