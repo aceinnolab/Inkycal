@@ -27,6 +27,7 @@ jobs:
           source venv/bin/activate
           python -m pip install --upgrade pip
           pip install wheel
+          pip install -r requirements.txt
           pip install -e .
           cd ..
           
@@ -34,7 +35,7 @@ jobs:
         run: |
           sudo apt-get install python3-sphinx
           pip install sphinxemoji sphinx_rtd_theme recommonmark
-          cd docsource && make github
+          cd docsource && make github && cd ..
 
       - name: Check if there are any changes
         id: verify_diff
