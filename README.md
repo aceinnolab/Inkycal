@@ -29,6 +29,7 @@ ready-to-flash version of Inkycal called InkycalOS-Lite with everything pre-inst
 via [Github Sponsors](https://github.com/sponsors/aceisace). This helps keep up maintenance costs, implement new
 features and fixing bugs. Please choose the one-time sponsor option and select the one with the plug-and-play version of
 Inkycal. Then, send your email-address to which InkycalOS-Lite should be sent.
+Alternatively, you can also use the paypal.me link and send the same amount as Github sponsors to get access to InkycalOS-Lite!
 
 ## Main features
 
@@ -155,8 +156,8 @@ to prepare a pre-configured image with the latest version of Inkycal for the Ras
 version of Inkycal, is fully tested and uses the Raspberry Pi OS Lite as it's base image. You only need to copy your
 settings.json file, we already took care of the rest, including auto-start at boot, enabling spi and installing all
 dependencies in advance. Pretty neat right? Check the [sponsor button](https://github.com/sponsors/aceisace) at the very
-top of the repo to get access to Inkycal-OS-Lite. This will help keep this project growing and cover the ongoing
-expenses too! Win-win for everyone! 🎊
+top of the repo to get access to Inkycal-OS-Lite. Alternatively, you can also use the paypal.me link and send the same amount as Github sponsors to get access to InkycalOS-Lite! 
+This will help keep this project growing and cover the ongoing expenses too! Win-win for everyone! 🎊 
 
 ### Manual installation
 
