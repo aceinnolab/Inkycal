@@ -279,6 +279,7 @@ perks after confirming 💯
 ## As featured on
 
 * [raspberrypi.com](https://www.raspberrypi.com/news/ashleys-top-five-projects-for-raspberry-pi-first-timers/)
+* [hackster.io](https://www.hackster.io/news/ace-innovation-lab-s-inkycal-v3-puts-a-raspberry-pi-powered-modular-epaper-dashboard-on-your-desk-b55a83cc0f46)
 * [makeuseof - fantastic projects using an eink display](http://makeuseof.com/fantastic-projects-using-an-e-ink-display/)
 * [magpi.de](https://www.magpi.de/news/maginkcal-ein-kalender-mit-epaper-display-und-raspberry-pi)
 * [goodreader.com](https://goodereader.com/blog/e-paper/five-of-the-most-innovative-e-ink-display-projects?doing_wp_cron=1701869793.2312469482421875000000)
