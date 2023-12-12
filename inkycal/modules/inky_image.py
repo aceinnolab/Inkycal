@@ -19,11 +19,11 @@ logger = logging.getLogger(__name__)
 
 
 class Inkyimage:
-    """Custom Imge class written for commonly used image operations.
+    """Custom Imgae class written for commonly used image operations.
     """
 
     def __init__(self, image=None):
-        """Initialize Inkyimage module"""
+        """Initialize InkyImage module"""
 
         # no image initially
         self.image = image
@@ -114,7 +114,7 @@ class Inkyimage:
             self.image = image
             logger.info(f'flipped image by {angle} degrees')
 
-    def autoflip(self, layout):
+    def autoflip(self, layout:str) -> None:
         """flips the image automatically to the given layout.
 
         Args:
@@ -215,7 +215,7 @@ class Inkyimage:
 
         return image1
 
-    def to_palette(self, palette, dither=True):
+    def to_palette(self, palette, dither=True) -> (Image, Image):
         """Maps an image to a given colour palette.
 
         Maps each pixel from the image to a colour from the palette.
@@ -320,7 +320,7 @@ class Inkyimage:
 
         else:
             im_black = image.convert('1', dither=dither)
-            im_colour = Image.new(mode='RGB', size=im_black.size, color='white')
+            im_colour = Image.new(mode='1', size=im_black.size, color='white')
 
         logger.info('mapped image to specified palette')
 
@@ -329,3 +329,4 @@ class Inkyimage:
 
 if __name__ == '__main__':
     print(f'running {__name__} in standalone/debug mode')
+
