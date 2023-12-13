@@ -63,6 +63,9 @@ class Inkyimage(inkycal_module):
         self.palette = config['palette']
         self.autoflip = config['autoflip']
         self.orientation = config['orientation']
+        self.dither = True
+        if 'dither' in config and config["dither"] == False:
+            self.dither = False
 
         # give an OK message
         print(f'{__name__} loaded')
@@ -94,7 +97,7 @@ class Inkyimage(inkycal_module):
         im.resize(width=im_width, height=im_height)
 
         # convert images according to specified palette
-        im_black, im_colour = im.to_palette(self.palette)
+        im_black, im_colour = im.to_palette(self.palette, self.dither)
 
         # with the images now send, clear the current image
         im.clear()
