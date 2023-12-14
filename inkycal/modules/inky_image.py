@@ -10,6 +10,8 @@ Copyright by aceinnolab
 """
 import logging
 import os
+
+import PIL
 import numpy
 import requests
 
@@ -215,7 +217,7 @@ class Inkyimage:
 
         return image1
 
-    def to_palette(self, palette, dither=True) -> (Image, Image):
+    def to_palette(self, palette, dither=True) -> (PIL.Image, PIL.Image):
         """Maps an image to a given colour palette.
 
         Maps each pixel from the image to a colour from the palette.
@@ -235,6 +237,7 @@ class Inkyimage:
         >>> 'bwr' # black-white-red
         >>> 'bwy' # black-white-yellow
         >>> 'bw'  # black-white
+        >>> '16gray' # 16 shades of gray
         """
         # Check if an image is loaded
         if self._image_loaded():
@@ -252,6 +255,9 @@ class Inkyimage:
 
         elif palette == 'bw':
             pal = None
+        elif palette == '16gray':
+            pal = [x for x in range(0, 256, 16)] * 3
+            pal.sort()
 
         else:
             logger.error('The given palette is unsupported.')
