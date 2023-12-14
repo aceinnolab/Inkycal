@@ -8,6 +8,7 @@ import os
 import time
 import traceback
 
+import PIL
 import requests
 from PIL import ImageFont, ImageDraw, Image
 
@@ -335,7 +336,7 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
         draw.arc((c7, c8), 90, 180, fill=colour, width=thickness)
 
 
-def draw_border_2(im: Image, xy: tuple, size: tuple, radius: int):
+def draw_border_2(im: PIL.Image, xy: tuple, size: tuple, radius: int):
     draw = ImageDraw.Draw(im)
 
     x, y = xy
