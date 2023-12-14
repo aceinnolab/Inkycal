@@ -98,6 +98,8 @@ class Inkycal:
             except FileNotFoundError:
                 raise SettingsFileNotFoundError
 
+        self.disable_calibration = self.settings.get('disable_calibration', False)
+
         if not os.path.exists(image_folder):
             os.mkdir(image_folder)
 
@@ -541,11 +543,16 @@ class Inkycal:
 
     def _calibration_check(self):
         """Calibration scheduler
-        uses calibration hours from settings file to check if calibration is due"""
+        uses calibration hours from settings file to check if calibration is due.
+        If no calibration hours are set, calibration is skipped."""
+
+        # Check if calibration hours are not set or the list is empty
+        if not self._calibration_hours:
+            print("No calibration hours set. Skipping calibration.")
+            return
+
         now = arrow.now()
-        # print('hour:', now.hour, 'hours:', self._calibration_hours)
-        # print('state:', self._calibration_state)
-        if now.hour in self._calibration_hours and self._calibration_state == False:
+        if now.hour in self._calibration_hours and not self._calibration_state:
             self.calibrate()
             self._calibration_state = True
         else:
