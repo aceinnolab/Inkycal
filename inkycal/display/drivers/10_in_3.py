@@ -4,9 +4,10 @@
 Copyright by aceinnolab
 """
 from subprocess import run
-from inkycal.custom import image_folder, top_level
-from os.path import exists
+
 from PIL import Image
+
+from inkycal.custom import image_folder, top_level
 
 # Display resolution
 EPD_WIDTH = 1872
@@ -18,6 +19,7 @@ VCOM = "2.0"
 driver_dir = top_level + '/inkycal/display/drivers/parallel_drivers/'
 
 command = f'sudo {driver_dir}epd -{VCOM} 0 {image_folder + "canvas.bmp"}'
+
 
 class EPD:
 
@@ -38,7 +40,7 @@ class EPD:
 
     def getbuffer(self, image):
         """ad-hoc"""
-        image = image.rotate(90, expand=True)
+        image = image.rotate(90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
         image.convert('RGB').save(image_folder + 'canvas.bmp', 'BMP')
         command = f'sudo {driver_dir}epd -{VCOM} 0 {image_folder + "canvas.bmp"}'
         print(command)
