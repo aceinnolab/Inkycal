@@ -2,7 +2,6 @@
 
 """
 Inkycal WallCalendar Module
-Copyright by aceinnolab
 """
 
 # pylint: disable=logging-fstring-interpolation
