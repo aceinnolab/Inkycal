@@ -194,17 +194,38 @@ class WallCalendar(inkycal_module):
                 event['lines_required'] = wrapped_lines(event['title'], max_width + time_width)
             else:
                 event['lines_required'] = wrapped_lines(event['title'], max_width)
-    
+
     def mark_all_day_events(self, events):
-        for event in events:
+        for event in events.copy():  # Create a copy for iteration
             start_time = event['begin']
             end_time = event['end']
             
-            # Check if the event starts at midnight and ends at midnight the next day
-            if start_time.hour == 0 and start_time.minute == 0 and \
-               end_time.hour == 0 and end_time.minute == 0 and \
-               end_time.day == start_time.shift(days=1).day:
-                event['is_all_day'] = True
+            print(f"mark_all_day_events: Processing event '{event['title']}' from {start_time} to {end_time}")
+
+            # Events spanning more than one day will be converted to all-day events including the first and last days
+
+            # Check if the event spans more than one day
+            if end_time.date() > start_time.date():
+                # Check if the event ends exactly at the start of the next day - 
+                # because "all-day" events actually end at the start of the next day
+                if end_time.hour == 0 and end_time.minute == 0 and \
+                   end_time.day == start_time.shift(days=1).day:
+                    # Adjust the end time to the end of the current day
+                    end_time = end_time.shift(days=-1).ceil('day')
+                    event['end'] = end_time
+                    event['is_all_day'] = True
+                    print(f"Adjusted end time for all-day event '{event['title']}' to {end_time}")
+                else:
+                    events.remove(event)  # Remove the original event
+                    current_time = start_time
+                    while current_time.date() <= end_time.date():
+                        new_event = event.copy()  # Copy the original event
+                        new_event['begin'] = current_time.floor('day')  # Start at midnight of the current day
+                        new_event['end'] = current_time.ceil('day')  # End at midnight of the next day
+                        new_event['is_all_day'] = True  # Mark as an all-day event
+                        events.append(new_event)
+                        print(f"Created new all-day event '{new_event['title']}' from {new_event['begin']} to {new_event['end']}")
+                        current_time = current_time.shift(days=1)  # Move to the next day
             else:
                 event['is_all_day'] = False
     
@@ -511,14 +532,17 @@ class WallCalendar(inkycal_module):
             
         month_events = parser.get_events(current_dates[0], current_dates[-1], self.timezone)
         parser.sort()
+
+        # Mark all-day events before processing individual days
+        self.mark_all_day_events(month_events)
+
         self.month_events = month_events
-        
+
         combined_data = []
         for index, date in enumerate(current_dates):
             origin = day_origins[index]
             # Find events starting on this date
             events_on_this_day = [event for event in self.month_events if event['begin'].format('YYYY-MM-DD') == date.format('YYYY-MM-DD')]
-            self.mark_all_day_events(events_on_this_day)
             self.calculate_lines_for_events(events_on_this_day, width_for_event_title, time_width)
             self.allocate_lines(events_on_this_day, max_number_of_lines)
             # Add the combined data to the array
@@ -528,6 +552,10 @@ class WallCalendar(inkycal_module):
             print(f"Date: {data['date']}, Origin: {data['origin']}, Events: {data['events']}")
             space_above_event = date_height
             data['future_skipped_count'] = 0
+            
+            # Sort the events list
+            data['events'] = sorted(data['events'], key=lambda e: (not e['is_all_day'], e['begin'] if not e['is_all_day'] else e['title']))
+
             for event in data['events']:
                 if event['is_all_day']:
                     self.write_allday_event_title(
