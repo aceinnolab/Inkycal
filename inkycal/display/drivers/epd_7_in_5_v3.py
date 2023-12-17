@@ -79,60 +79,60 @@ class EPD:
         # EPD hardware init start
         self.reset()
 
-        self.ReadBusy();
-        self.send_command(0x12);  # SWRESET
-        self.ReadBusy();
+        self.ReadBusy()
+        self.send_command(0x12)  # SWRESET
+        self.ReadBusy()
 
-        self.send_command(0x46);  # Auto Write Red RAM
-        self.send_data(0xf7);
-        self.ReadBusy();
-        self.send_command(0x47);  # Auto Write  B/W RAM
-        self.send_data(0xf7);
-        self.ReadBusy();
+        self.send_command(0x46)  # Auto Write Red RAM
+        self.send_data(0xf7)
+        self.ReadBusy()
+        self.send_command(0x47)  # Auto Write  B/W RAM
+        self.send_data(0xf7)
+        self.ReadBusy()
 
-        self.send_command(0x0C);  # Soft start setting
-        self.send_data(0xAE);
-        self.send_data(0xC7);
-        self.send_data(0xC3);
-        self.send_data(0xC0);
-        self.send_data(0x40);
+        self.send_command(0x0C)  # Soft start setting
+        self.send_data(0xAE)
+        self.send_data(0xC7)
+        self.send_data(0xC3)
+        self.send_data(0xC0)
+        self.send_data(0x40)
 
-        self.send_command(0x01);  # Set MUX as 527
-        self.send_data(0xAF);
-        self.send_data(0x02);
-        self.send_data(0x01);  # 0x01
+        self.send_command(0x01)  # Set MUX as 527
+        self.send_data(0xAF)
+        self.send_data(0x02)
+        self.send_data(0x01)  # 0x01
 
-        self.send_command(0x11);  # Data entry mode      
-        self.send_data(0x01);
+        self.send_command(0x11)  # Data entry mode      
+        self.send_data(0x01)
 
-        self.send_command(0x44);
-        self.send_data(0x00);  # RAM x address start at 0
-        self.send_data(0x00);
-        self.send_data(0x6F);
-        self.send_data(0x03);
-        self.send_command(0x45);
-        self.send_data(0xAF);
-        self.send_data(0x02);
-        self.send_data(0x00);
-        self.send_data(0x00);
+        self.send_command(0x44)
+        self.send_data(0x00)  # RAM x address start at 0
+        self.send_data(0x00)
+        self.send_data(0x6F)
+        self.send_data(0x03)
+        self.send_command(0x45)
+        self.send_data(0xAF)
+        self.send_data(0x02)
+        self.send_data(0x00)
+        self.send_data(0x00)
 
-        self.send_command(0x3C);  # VBD
-        self.send_data(0x05);  # LUT1, for white
+        self.send_command(0x3C)  # VBD
+        self.send_data(0x05)  # LUT1, for white
 
-        self.send_command(0x18);
-        self.send_data(0X80);
+        self.send_command(0x18)
+        self.send_data(0X80)
 
-        self.send_command(0x22);
-        self.send_data(0XB1);  # Load Temperature and waveform setting.
-        self.send_command(0x20);
-        self.ReadBusy();
+        self.send_command(0x22)
+        self.send_data(0XB1)  # Load Temperature and waveform setting.
+        self.send_command(0x20)
+        self.ReadBusy()
 
-        self.send_command(0x4E);  # set RAM x address count to 0;
-        self.send_data(0x00);
-        self.send_data(0x00);
-        self.send_command(0x4F);
-        self.send_data(0x00);
-        self.send_data(0x00);
+        self.send_command(0x4E)  # set RAM x address count to 0
+        self.send_data(0x00)
+        self.send_data(0x00)
+        self.send_command(0x4F)
+        self.send_data(0x00)
+        self.send_data(0x00)
         # EPD hardware init end
         return 0
 
@@ -161,23 +161,23 @@ class EPD:
         return buf
 
     def display(self, image):
-        self.send_command(0x4F);
-        self.send_data(0x00);
-        self.send_data(0x00);
-        self.send_command(0x24);
+        self.send_command(0x4F)
+        self.send_data(0x00)
+        self.send_data(0x00)
+        self.send_command(0x24)
         for i in range(0, int(self.width * self.height / 8)):
-            self.send_data(image[i]);
+            self.send_data(image[i])
 
-        self.send_command(0x22);
-        self.send_data(0xF7);  # Load LUT from MCU(0x32)
-        self.send_command(0x20);
-        epdconfig.delay_ms(10);
-        self.ReadBusy();
+        self.send_command(0x22)
+        self.send_data(0xF7)  # Load LUT from MCU(0x32)
+        self.send_command(0x20)
+        epdconfig.delay_ms(10)
+        self.ReadBusy()
 
     def Clear(self):
-        self.send_command(0x4F);
-        self.send_data(0x00);
-        self.send_data(0x00);
+        self.send_command(0x4F)
+        self.send_data(0x00)
+        self.send_data(0x00)
         self.send_command(0x24)
         for i in range(0, int(self.width * self.height / 8)):
             self.send_data(0xff)
@@ -186,15 +186,15 @@ class EPD:
         for i in range(0, int(self.width * self.height / 8)):
             self.send_data(0xff)
 
-        self.send_command(0x22);
-        self.send_data(0xF7);  # Load LUT from MCU(0x32)
-        self.send_command(0x20);
-        epdconfig.delay_ms(10);
-        self.ReadBusy();
+        self.send_command(0x22)
+        self.send_data(0xF7)  # Load LUT from MCU(0x32)
+        self.send_command(0x20)
+        epdconfig.delay_ms(10)
+        self.ReadBusy()
 
     def sleep(self):
-        self.send_command(0x10);
-        self.send_data(0x01);
+        self.send_command(0x10)
+        self.send_data(0x01)
 
         epdconfig.module_exit()
 ### END OF FILE ###
