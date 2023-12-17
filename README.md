@@ -285,6 +285,7 @@ perks after confirming 💯
 * [makeuseof - fantastic projects using an eink display](http://makeuseof.com/fantastic-projects-using-an-e-ink-display/)
 * [notebookcheck.com](https://www.notebookcheck.com/Inkycal-V3-Smartes-Display-auf-Grundlage-des-Raspberry-Pi-mit-elektronischem-Papier-und-vielen-Moeglichkeiten.783012.0.html?ref=ittagesschau.de)
 * [Waveshare - additional resources](https://www.waveshare.com/wiki/7.5inch_HD_e-Paper_HAT)
+* [ereaderpro.co.uk](https://www.ereaderpro.co.uk/blogs/news/e-ink-product-made-in-germany-inkycal-v3)
 * [cnx-software.com](https://www.cnx-software.com/2023/12/13/inkycal-v3-is-a-raspberry-pi-powered-epaper-dashboard-for-your-desk/)
 * [magpi.de](https://www.magpi.de/news/maginkcal-ein-kalender-mit-epaper-display-und-raspberry-pi)
 * [goodreader.com](https://goodereader.com/blog/e-paper/inkycal-v3-is-a-raspberry-pi-powered-e-paper-marvel-for-your-desk)
