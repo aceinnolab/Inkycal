@@ -1,16 +1,13 @@
-#!python3
-
 """
 Inkycal Slideshow Module
 Copyright by aceinnolab
 """
 import glob
 
-from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
-
 # PIL has a class named Image, use alias for Inkyimage -> Images
 from inkycal.modules.inky_image import Inkyimage as Images
+from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
 

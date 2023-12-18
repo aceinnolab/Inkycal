@@ -1,5 +1,3 @@
-#!python3
-
 """
 Third party module template (inkycal-compatible module)
 

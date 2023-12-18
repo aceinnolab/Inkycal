@@ -1,18 +1,16 @@
-#!python3
-
 """
 Inkycal weather module
 Copyright by aceinnolab
 """
 
-from inkycal.modules.template import inkycal_module
-from inkycal.custom import *
-
-import math
 import decimal
+import math
+
 import arrow
 
+from inkycal.custom import *
 from inkycal.custom import OpenWeatherMap
+from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
 
@@ -95,7 +93,7 @@ class Weather(inkycal_module):
         self.use_beaufort = config['use_beaufort']
 
         # additional configuration
-        self.owm =  OpenWeatherMap(api_key=self.api_key, city_id=self.location, units=config['units'])
+        self.owm = OpenWeatherMap(api_key=self.api_key, city_id=self.location, units=config['units'])
         self.timezone = get_system_tz()
         self.locale = config['language']
         self.weatherfont = ImageFont.truetype(
@@ -104,9 +102,8 @@ class Weather(inkycal_module):
         # give an OK message
         print(f"{__name__} loaded")
 
-
     @staticmethod
-    def mps_to_beaufort(meters_per_second:float) -> int:
+    def mps_to_beaufort(meters_per_second: float) -> int:
         """Map meters per second to the beaufort scale.
 
         Args:
@@ -120,7 +117,7 @@ class Weather(inkycal_module):
         return next((i for i, threshold in enumerate(thresholds) if meters_per_second < threshold), 11)
 
     @staticmethod
-    def mps_to_mph(meters_per_second:float) -> float:
+    def mps_to_mph(meters_per_second: float) -> float:
         """Map meters per second to miles per hour, rounded to one decimal place.
 
         Args:
@@ -135,7 +132,7 @@ class Weather(inkycal_module):
         return round(miles_per_hour, 1)
 
     @staticmethod
-    def celsius_to_fahrenheit(celsius:int or float):
+    def celsius_to_fahrenheit(celsius: int or float):
         """Converts the given temperate from degrees Celsius to Fahrenheit."""
         fahrenheit = (celsius * 9 / 5) + 32
         return fahrenheit
@@ -180,7 +177,8 @@ class Weather(inkycal_module):
                 4: '\uf0a3',
                 5: '\uf0a7',
                 6: '\uf0aa',
-                7: '\uf0ae'}[int(index) & 7]
+                7: '\uf0ae'
+            }[int(index) & 7]
 
         def is_negative(temp):
             """Check if temp is below freezing point of water (0°C/30°F)
@@ -458,8 +456,9 @@ class Weather(inkycal_module):
                 # Create a list containing time-objects for every 3rd hour of the day
                 time_range = list(
                     arrow.Arrow.range('hour',
-                    now.shift(days=days_from_today).floor('day'),now.shift(days=days_from_today).ceil('day')
-                    ))[::3]
+                                      now.shift(days=days_from_today).floor('day'),
+                                      now.shift(days=days_from_today).ceil('day')
+                                      ))[::3]
 
                 # Get forecasts for each time-object
                 forecasts = [_ for _ in forecast if arrow.get(_["dt"]) in time_range]
@@ -493,7 +492,7 @@ class Weather(inkycal_module):
         if dec_temp != 0:
             temperature = f"{round(weather['main']['temp'])}°"
         else:
-            temperature = f"{round(weather['main']['temp'],ndigits=dec_temp)}°"
+            temperature = f"{round(weather['main']['temp'], ndigits=dec_temp)}°"
 
         weather_icon = weather["weather"][0]["icon"]
         humidity = str(weather["main"]["humidity"])

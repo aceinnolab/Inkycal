@@ -1,6 +1,3 @@
-#!python3
-
-
 """
 Custom image class for Inkycal Project
 Takes care of handling images. Made to be used by other modules to handle
@@ -14,7 +11,6 @@ import os
 import PIL
 import numpy
 import requests
-
 from PIL import Image
 
 logger = logging.getLogger(__name__)
@@ -116,7 +112,7 @@ class Inkyimage:
             self.image = image
             logger.info(f'flipped image by {angle} degrees')
 
-    def autoflip(self, layout:str) -> None:
+    def autoflip(self, layout: str) -> None:
         """flips the image automatically to the given layout.
 
         Args:
@@ -335,4 +331,3 @@ class Inkyimage:
 
 if __name__ == '__main__':
     print(f'running {__name__} in standalone/debug mode')
-
