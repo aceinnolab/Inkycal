@@ -1,6 +1,6 @@
-#!python3
-
+"""Inkycal module template"""
 import abc
+
 from inkycal.custom import *
 
 

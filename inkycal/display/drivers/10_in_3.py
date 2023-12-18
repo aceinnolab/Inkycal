@@ -1,4 +1,3 @@
-#!python3
 """
 10.3" driver class
 Copyright by aceinnolab

@@ -1,14 +1,11 @@
-#!python3
-
 """
 Inkycal Image Module
 Copyright by aceinnolab
 """
 
-from inkycal.modules.template import inkycal_module
 from inkycal.custom import *
-
 from inkycal.modules.inky_image import Inkyimage as Images
+from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
 
