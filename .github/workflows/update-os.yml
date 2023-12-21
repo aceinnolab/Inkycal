@@ -9,13 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    env:
-      CURRENT_DATE: "$(date +%Y%m%d%H%M)"
 
     steps:
-      - name: Set Date
-        id: set_date
-        run: echo "date=$(date +'%y%m%d')" >> $GITHUB_ENV
       - name: Build Raspberry Pi OS
         uses: pguyot/arm-runner-action@v2
         id: build_image
@@ -89,8 +84,8 @@ jobs:
 
       - name: Compress the release image
         run: |
-          mv ${{ steps.build_image.outputs.image }} "InkycalOS_Lite_${CURRENT_DATE}.img"
-          xz -0 -T 0 -v "InkycalOS_Lite_${CURRENT_DATE}.img"
+          mv ${{ steps.build_image.outputs.image }} InkycalOS_Lite.img
+          xz -0 -T 0 -v InkycalOS_Lite.img
 
       - name: Get latest release version
         run: |
@@ -102,7 +97,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILES: "InkycalOS_Lite_${CURRENT_DATE}.img.xz"
         with:
           tag_name: ${{ env.version }}
-          files: ${{ env.FILES }}
+          files: InkycalOS_Lite.img
