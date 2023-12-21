@@ -10,8 +10,7 @@ jobs:
     permissions:
       contents: write
     env:
-     CURRENT_DATE: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.date ? github.event.inputs.date : (env.DATE_OVERRIDE ? env.DATE_OVERRIDE : '') }}
-
+      CURRENT_DATE: "$(date +%Y%m%d%H%M)"
 
     steps:
       - name: Set Date
