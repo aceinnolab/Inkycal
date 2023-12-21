@@ -99,4 +99,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.version }}
-          files: InkycalOS_Lite.img
+          files: InkycalOS_Lite.img.xz
