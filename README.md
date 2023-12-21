@@ -176,7 +176,7 @@ pip install wheel
 pip install -e ./
 
 # If you are running on the Raspberry Pi, please install the following too to allow rendering on the display
-pip install RPi.GPIO==0.7.1 spidev==3.5
+pip install RPi.GPIO==0.7.1 spidev==3.5 gpiozero==2.0
 ```
 
 ## Running Inkycal
