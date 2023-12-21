@@ -84,8 +84,9 @@ jobs:
 
       - name: Compress the release image
         run: |
-          mv ${{ steps.build_image.outputs.image }} InkycalOS_Lite_$(date +'%y%m%d').img
-          xz -0 -T 0 -v InkycalOS_Lite_$(date +'%y%m%d').img
+          current_date=$(date +'%y%m%d')
+          mv ${{ steps.build_image.outputs.image }} "InkycalOS_Lite_${current_date}.img"
+          xz -0 -T 0 -v "InkycalOS_Lite_${current_date}.img"
 
       - name: Get latest release version
         run: |
@@ -99,4 +100,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.version }}
-          files: InkycalOS_Lite_$(date +'%y%m%d').img.xz
+          files: "InkycalOS_Lite_${current_date}.img.xz"
