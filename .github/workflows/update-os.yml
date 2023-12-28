@@ -46,7 +46,7 @@ jobs:
             python -m pip install --upgrade pip
             pip install wheel
             pip install -e ./
-            pip install RPi.GPIO==0.7.1 spidev==3.5
+            pip install RPi.GPIO==0.7.1 spidev==3.5 gpiozero==2.0
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             pip install pytest
             python -m pytest
@@ -84,8 +84,8 @@ jobs:
 
       - name: Compress the release image
         run: |
-          mv ${{ steps.build_image.outputs.image }} inkycal_os_lite.img
-          xz -0 -T 0 -v inkycal_os_lite.img
+          mv ${{ steps.build_image.outputs.image }} InkycalOS_Lite.img
+          xz -0 -T 0 -v InkycalOS_Lite.img
 
       - name: Get latest release version
         run: |
@@ -99,4 +99,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.version }}
-          files: inkycal_os_lite.img.xz
+          files: InkycalOS_Lite.img.xz

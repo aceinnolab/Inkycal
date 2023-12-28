@@ -1,12 +1,10 @@
-#!python3
 """
 7.8" parallel driver class
 Copyright by aceinnolab
 """
 from subprocess import run
+
 from inkycal.custom import image_folder, top_level
-from os.path import exists
-from PIL import Image
 
 # Display resolution
 EPD_WIDTH = 1872

@@ -1,6 +1,3 @@
-#!python3
-
-
 """
 Custom image class for Inkycal Project
 Takes care of handling images. Made to be used by other modules to handle
@@ -10,9 +7,10 @@ Copyright by aceinnolab
 """
 import logging
 import os
+
+import PIL
 import numpy
 import requests
-
 from PIL import Image
 
 logger = logging.getLogger(__name__)
@@ -114,7 +112,7 @@ class Inkyimage:
             self.image = image
             logger.info(f'flipped image by {angle} degrees')
 
-    def autoflip(self, layout:str) -> None:
+    def autoflip(self, layout: str) -> None:
         """flips the image automatically to the given layout.
 
         Args:
@@ -215,7 +213,7 @@ class Inkyimage:
 
         return image1
 
-    def to_palette(self, palette, dither=True) -> (Image, Image):
+    def to_palette(self, palette, dither=True) -> (PIL.Image, PIL.Image):
         """Maps an image to a given colour palette.
 
         Maps each pixel from the image to a colour from the palette.
@@ -235,6 +233,7 @@ class Inkyimage:
         >>> 'bwr' # black-white-red
         >>> 'bwy' # black-white-yellow
         >>> 'bw'  # black-white
+        >>> '16gray' # 16 shades of gray
         """
         # Check if an image is loaded
         if self._image_loaded():
@@ -252,6 +251,9 @@ class Inkyimage:
 
         elif palette == 'bw':
             pal = None
+        elif palette == '16gray':
+            pal = [x for x in range(0, 256, 16)] * 3
+            pal.sort()
 
         else:
             logger.error('The given palette is unsupported.')
@@ -329,4 +331,3 @@ class Inkyimage:
 
 if __name__ == '__main__':
     print(f'running {__name__} in standalone/debug mode')
-
