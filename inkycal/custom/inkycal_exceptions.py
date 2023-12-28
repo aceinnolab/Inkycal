@@ -1,4 +1,3 @@
-#!python3
 """
 Inkycal custom Exceptions
 """

@@ -14,7 +14,7 @@ from tests import Config
 preview = Inkyimage.preview
 merge = Inkyimage.merge
 
-url = "https://github.com/aceinnolab/Inkycal/raw/assets/Repo/coffee.png"
+url ="https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/mark-harpur-unsplash.jpg"
 
 im = Image.open(requests.get(url, stream=True).raw)
 im.save("test.png", "PNG")
@@ -27,9 +27,9 @@ tests = [
     {
         "name": "Inkyimage",
         "config": {
-            "size": [400, 200],
+            "size": [800, 600],
             "path": test_path,
-            "palette": "bwr",
+            "palette": "16gray",
             "autoflip": True,
             "orientation": "vertical",
             "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"

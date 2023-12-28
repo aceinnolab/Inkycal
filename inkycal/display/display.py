@@ -2,17 +2,20 @@
 Inkycal ePaper driving functions
 Copyright by aceisace
 """
-import os
 import logging
+import os
 import traceback
 from importlib import import_module
+
+import PIL
 from PIL import Image
 
 from inkycal.custom import top_level
-import glob
+
 
 def import_driver(model):
     return import_module(f'inkycal.display.drivers.{model}')
+
 
 class Display:
     """Display class for inkycal
@@ -44,7 +47,14 @@ class Display:
         except FileNotFoundError:
             raise Exception('SPI could not be found. Please check if SPI is enabled')
 
-    def render(self, im_black: Image, im_colour:Image or None=None) -> None:
+
+    def test(self) -> None:
+        """Test the display by showing a test image"""
+        # TODO implement test image
+        raise NotImplementedError("Devs were too lazy again, sorry, please try again later")
+
+
+    def render(self, im_black: PIL.Image, im_colour: PIL.Image or None=None) -> None:
         """Renders an image on the selected E-Paper display.
 
         Initlializes the E-Paper display, sends image data and executes command
