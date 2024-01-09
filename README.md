@@ -151,7 +151,7 @@ can sometimes take hours on the Raspberry Pi Zero W and is not guaranteed to go 
 installing dependencies on the zero w takes a long time and is prone to copy-paste-, permission- and configuration
 errors.
 
-ℹ️ **Looking for a shortcut to safe a few hours?** We know about this problem and have spent a signifcant amount of time
+ℹ️ **Looking for a shortcut to save a few hours?** We know about this problem and have spent a signifcant amount of time
 to prepare a pre-configured image with the latest version of Inkycal for the Raspberry Pi Zero. It comes with the latest
 version of Inkycal, is fully tested and uses the Raspberry Pi OS Lite as it's base image. You only need to copy your
 settings.json file, we already took care of the rest, including auto-start at boot, enabling spi and installing all
