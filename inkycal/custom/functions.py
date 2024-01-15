@@ -35,7 +35,7 @@ for path, dirs, files in os.walk(fonts_location):
         if _.endswith('.ttf'):
             name = _.split('.ttf')[0]
             fonts[name] = os.path.join(path, _)
-
+logs.debug(f"Found fonts: {json.dumps(fonts, indent=4, sort_keys=True)}")
 available_fonts = [key for key, values in fonts.items()]
 
 

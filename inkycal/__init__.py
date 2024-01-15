@@ -13,6 +13,7 @@ import inkycal.modules.inkycal_slideshow
 import inkycal.modules.inkycal_stocks
 import inkycal.modules.inkycal_webshot
 import inkycal.modules.inkycal_xkcd
+import inkycal.modules.inkycal_fullweather
 
 # Main file
 from inkycal.main import Inkycal
