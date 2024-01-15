@@ -18,9 +18,7 @@ def get_weather_icon(icon_name, size) -> Image:
     iconpath = os.path.join(weatherdir, "owm_icons_cache", f"{icon_name}.png")
 
     if not os.path.exists(iconpath):
-        urllib.request.urlretrieve(
-            url=f"https://openweathermap.org/img/wn/{icon_name}@2x.png", filename=f"{iconpath}"
-        )
+        urllib.request.urlretrieve(url=f"https://openweathermap.org/img/wn/{icon_name}@2x.png", filename=f"{iconpath}")
     icon = Image.open(iconpath)
 
     icon = icon.resize((size, size))
