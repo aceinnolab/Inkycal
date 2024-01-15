@@ -20,6 +20,7 @@ from PIL import ImageOps
 from icons.weather_icons.weather_icons import get_weather_icon
 from inkycal.custom import owm_forecasts
 from inkycal.custom.functions import fonts
+from inkycal.custom.functions import get_image_from_plot
 from inkycal.custom.functions import internet_available
 from inkycal.custom.functions import top_level
 from inkycal.custom.inkycal_exceptions import NetworkNotReachableError
@@ -288,7 +289,7 @@ class Fullweather(inkycal_module):
 
             # Humidity
             humidityString = f"{self.current_weather.humidity} %"
-            humidityFont = self.get_font(self.font_family, "Bold", 28)
+            humidityFont = self.get_font(self.font_family, "Bold", self.font_size + 8)
             image_draw.text((65, humidity_y), humidityString, font=humidityFont, fill=(255, 255, 255))
 
             # Add icon for uv
@@ -299,7 +300,7 @@ class Fullweather(inkycal_module):
 
             # uvindex
             uvString = f"{self.current_weather.uvi if self.current_weather.uvi else '0'}"
-            uvFont = self.get_font(self.font_family, "Bold", 28)
+            uvFont = self.get_font(self.font_family, "Bold", self.font_size + 8)
             image_draw.text((65, ux_y), uvString, font=uvFont, fill=(255, 255, 255))
 
     def addCurrentWeather(self):
@@ -357,7 +358,7 @@ class Fullweather(inkycal_module):
         # Amount of precipitation within next 3h
         rain = self.hourly_forecasts[0]["precip_3h_mm"]
         precipString = f"{rain:.1g} mm" if rain > 0.0 else "0 mm"
-        precipFont = self.get_font(self.font_family, "Bold", 28)
+        precipFont = self.get_font(self.font_family, "Bold", self.font_size + 8)
         image_draw.text((65, rain_y), precipString, font=precipFont, fill=(255, 255, 255))
 
         # Add icon for wind speed
@@ -377,8 +378,89 @@ class Fullweather(inkycal_module):
         else:
             windString = f"{wind} {self.windDispUnit}"
 
-        windFont = self.get_font(self.font_family, "Bold", 28)
+        windFont = self.get_font(self.font_family, "Bold", self.font_size + 8)
         image_draw.text((65, wind_y), windString, font=windFont, fill=(255, 255, 255))
+
+    def addHourlyForecast(self):
+        """
+        Adds a plot for temperature and amount of rain for the upcoming hours
+        """
+        ## Create drawing object for image
+        image_draw = ImageDraw.Draw(self.image)
+
+        ## Draw hourly chart title
+        title_x = self.left_section_width + 20  # X-coordinate of the title
+        title_y = 5
+        chartTitleFont = self.get_font(self.font_family, "ExtraBold", self.font_size)
+        image_draw.text((title_x, title_y), self.chart_title, font=chartTitleFont, fill=0)
+
+        ## Plot the data
+        # Define the chart parameters
+        w, h = int(0.75 * self.width), int(0.45 * self.height)  # Width and height of the graph
+
+        # Length of our time axis
+        num_ticks_x = 22  # ticks*3 hours
+        timestamps = [item["datetime"] for item in self.hourly_forecasts][:num_ticks_x]
+        temperatures = np.array([item["temp"] for item in self.hourly_forecasts])[:num_ticks_x]
+        precipitation = np.array([item["precip_3h_mm"] for item in self.hourly_forecasts])[:num_ticks_x]
+
+        # Create the figure
+        fig, ax1 = plt.subplots(figsize=(w / self.dpi, h / self.dpi), dpi=self.dpi)
+
+        # Plot Temperature as line plot in red
+        ax1.plot(timestamps, temperatures, marker=".", linestyle="-", color="r")
+        temp_base = 3 if self.temp_units == "celsius" else 5
+        fig.gca().yaxis.set_major_locator(ticker.MultipleLocator(base=temp_base))
+        ax1.tick_params(axis="y", colors="red")
+        ax1.set_yticks(ax1.get_yticks())
+        ax1.set_yticklabels([f"{int(value)}{self.tempDispUnit}" for value in ax1.get_yticks()])
+        ax1.grid(visible=True, axis="both")  # Adding grid
+
+        if self.min_max_annotations == True:
+            # Calculate min_temp and max_temp values based on the minimum and maximum temperatures in the hourly data
+            min_temp = np.min(temperatures)
+            max_temp = np.max(temperatures)
+            # Find positions of min and max values
+            min_temp_index = np.argmin(temperatures)
+            max_temp_index = np.argmax(temperatures)
+            ax1.text(
+                timestamps[min_temp_index],
+                min_temp,
+                f"Min: {min_temp:.1f}{self.tempDispUnit}",
+                ha="left",
+                va="top",
+                color="blue",
+                fontsize=12,
+            )
+            ax1.text(
+                timestamps[max_temp_index],
+                max_temp,
+                f"Max: {max_temp:.1f}{self.tempDispUnit}",
+                ha="left",
+                va="bottom",
+                color="red",
+                fontsize=12,
+            )
+
+        # Create the second part of the plot as a bar chart for amount of precipitation
+        ax2 = ax1.twinx()
+        width = np.min(np.diff(mdates.date2num(timestamps)))
+        ax2.bar(timestamps, precipitation, color="blue", width=width, alpha=0.2)
+        ax2.tick_params(axis="y", colors="blue")
+        ax2.set_ylim([0, 10])
+        ax2.set_yticks(ax2.get_yticks())
+        ax2.set_yticklabels([f"{value:.0f}" for value in ax2.get_yticks()])
+
+        fig.gca().xaxis.set_major_locator(mdates.DayLocator(interval=1))
+        fig.gca().xaxis.set_major_formatter(mdates.DateFormatter("%a"))
+        fig.gca().xaxis.set_minor_locator(mdates.HourLocator(interval=3))
+        fig.tight_layout()  # Adjust layout to prevent clipping of labels
+
+        # Get image from plot and add it to the image
+        hourly_forecast_plot = get_image_from_plot(plt)
+        plot_x = self.left_section_width + 5
+        plot_y = title_y + 30
+        self.image.paste(hourly_forecast_plot, (plot_x, plot_y))
 
     def generate_image(self):
         """Generate image for this module"""
@@ -414,7 +496,7 @@ class Fullweather(inkycal_module):
         self.addUserSection()
 
         ## Add Hourly Forecast
-        # my_image = addHourlyForecast(display=display, image=my_image, hourly_forecasts=hourly_forecasts)
+        self.addHourlyForecast()
 
         ## Add Daily Forecast
         # my_image = addDailyForecast(display=display, image=my_image, hourly_forecasts=hourly_forecasts)
@@ -431,7 +513,7 @@ class Fullweather(inkycal_module):
         # Returns the TrueType font object with the given characteristics
         if family == "Roboto" and style == "ExtraBold":
             style = "Black"
-        elif family == "Ubuntu" and style in ["ExtraBold", "Black"]:
+        elif family in ["Ubuntu", "NotoSansUI"] and style in ["ExtraBold", "Black"]:
             style = "Bold"
         elif family == "OpenSans" and style == "Black":
             style = "ExtraBold"
