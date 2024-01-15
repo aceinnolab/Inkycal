@@ -19,7 +19,7 @@ def is_timestamp_within_range(timestamp, start_time, end_time):
     return start_time <= timestamp <= end_time
 
 
-def get_owm_data(city_id: int, token: str, temp_units: str, wind_units: str, language: str="en"):
+def get_owm_data(city_id: int, token: str, temp_units: str, wind_units: str, language: str = "en"):
     config_dict = get_default_config()
     config_dict["language"] = language
 
@@ -126,4 +126,3 @@ def get_forecast_for_day(days_from_today: int, hourly_forecasts: list) -> dict:
     }
 
     return day_data
-
