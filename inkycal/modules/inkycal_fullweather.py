@@ -383,7 +383,7 @@ class Fullweather(inkycal_module):
 
     def addHourlyForecast(self):
         """
-        Adds a plot for temperature and amount of rain for the upcoming hours
+        Adds a plot for temperature and amount of rain for the upcoming hours to the upper right section
         """
         ## Create drawing object for image
         image_draw = ImageDraw.Draw(self.image)
@@ -462,6 +462,117 @@ class Fullweather(inkycal_module):
         plot_y = title_y + 30
         self.image.paste(hourly_forecast_plot, (plot_x, plot_y))
 
+    def addDailyForecast(self):
+        """
+        Adds daily weather forecasts to the lower right section
+        """
+        ## Create drawing object for image
+        image_draw = ImageDraw.Draw(self.image)
+
+        ## Draw daily chart title
+        title_y = int(self.height / 2)  # Y-coordinate of the title
+        chartTitleFont = self.get_font(self.font_family, "Bold", self.font_size)
+        image_draw.text((self.left_section_width + 20, title_y), self.weekly_title, font=chartTitleFont, fill=0)
+
+        # Define the parameters
+        number_of_forecast_days = 5  # including today
+        # Spread evenly, starting from title width
+        rectangle_width = int((self.width - (self.left_section_width + 40)) / number_of_forecast_days)
+        # Maximum height for each rectangle (avoid overlapping with title)
+        rectangle_height = int(self.height / 2 - 20)
+
+        # Rain icon is static
+        rainIcon = Image.open(os.path.join(icons_dir, "rain-chance.bmp"))
+        rainIcon.convert("L")
+        rainIcon = ImageOps.invert(rainIcon)
+        weeklyRainIcon = rainIcon.resize((20, 20))
+
+        # Loop through the upcoming days' data and create rectangles
+        for i in range(number_of_forecast_days):
+            x_rect = self.left_section_width + 20 + i * rectangle_width  # Start from the title width
+            y_rect = int(self.height / 2 + 30)
+
+            day_data = owm_forecasts.get_forecast_for_day(days_from_today=i, hourly_forecasts=self.hourly_forecasts)
+            rect = Image.new("RGBA", (int(rectangle_width), int(rectangle_height)), (255, 255, 255))
+            rect_draw = ImageDraw.Draw(rect)
+
+            # Date string: Day of week on line 1, date on line 2
+            short_day_font = self.get_font(self.font_family, "ExtraBold", self.font_size + 4)
+            short_month_day_font = self.get_font(self.font_family, "Bold", self.font_size - 4)
+            short_day_name = datetime.fromtimestamp(day_data["datetime"]).strftime("%a")
+            short_month_day = datetime.fromtimestamp(day_data["datetime"]).strftime("%b %d")
+            short_day_name_text = rect_draw.textbbox((0, 0), short_day_name, font=short_day_font)
+            short_month_day_text = rect_draw.textbbox((0, 0), short_month_day, font=short_month_day_font)
+            day_name_x = (rectangle_width - short_day_name_text[2] + short_day_name_text[0]) / 2
+            short_month_day_x = (rectangle_width - short_month_day_text[2] + short_month_day_text[0]) / 2
+            rect_draw.text((day_name_x, 0), short_day_name, fill=0, font=short_day_font)
+            rect_draw.text(
+                (short_month_day_x, 30),
+                short_month_day,
+                fill=0,
+                font=short_month_day_font,
+            )
+
+            ## Min and max temperature split into diagonal placement
+            min_temp = day_data["temp_min"]
+            max_temp = day_data["temp_max"]
+            temp_text_min = f"{min_temp:.0f}{self.tempDispUnit}"
+            temp_text_max = f"{max_temp:.0f}{self.tempDispUnit}"
+            rect_temp_font = self.get_font(self.font_family, "ExtraBold", self.font_size + 4)
+            temp_x_offset = 20
+            # this is upper left: max temperature
+            temp_text_max_x = temp_x_offset
+            temp_text_max_y = int(rectangle_height * 0.25)
+            # this is lower right: min temperature
+            temp_text_min_bbox = rect_draw.textbbox((0, 0), temp_text_min, font=rect_temp_font)
+            temp_text_min_x = (
+                int((rectangle_width - temp_text_min_bbox[2] + temp_text_min_bbox[0]) / 2) + temp_x_offset + 7
+            )
+            temp_text_min_y = int(rectangle_height * 0.33)
+            rect_draw.text((temp_text_min_x, temp_text_min_y), temp_text_min, fill=0, font=rect_temp_font)
+            rect_draw.text(
+                (temp_text_max_x, temp_text_max_y),
+                temp_text_max,
+                fill=0,
+                font=rect_temp_font,
+            )
+
+            # Weather icon for the day
+            icon_code = day_data["icon"]
+            icon = get_weather_icon(icon_name=icon_code, size=90)
+            if self.icon_outline:
+                icon = outline(image=icon, size=8, color=(0, 0, 0, 255))
+            icon_x = int((rectangle_width - icon.width) / 2)
+            icon_y = int(rectangle_height * 0.4)
+            # Create a mask from the alpha channel of the weather icon
+            if len(icon.split()) == 4:
+                mask = icon.split()[-1]
+            else:
+                mask = None
+            # Paste the foreground of the icon onto the background with the help of the mask
+            rect.paste(icon, (int(icon_x), icon_y), mask)
+
+            ## Precipitation icon and text
+            rain = day_data["precip_mm"]
+            if rain:
+                rain_text = f"{rain:.0f} mm"
+                rain_font = self.get_font(self.font_family, "ExtraBold", self.font_size)
+                # Icon
+                rain_icon_x = int((rectangle_width - icon.width) / 2)
+                rain_icon_y = int(rectangle_height * 0.82)
+                rect.paste(weeklyRainIcon, (rain_icon_x, rain_icon_y))
+                # Text
+                rain_text_y = int(rectangle_height * 0.8)
+                rect_draw.text(
+                    (rain_icon_x + weeklyRainIcon.width + 10, rain_text_y),
+                    rain_text,
+                    fill=0,
+                    font=rain_font,
+                    align="right",
+                )
+
+            self.image.paste(rect, (int(x_rect), int(y_rect)))
+
     def generate_image(self):
         """Generate image for this module"""
 
@@ -495,11 +606,11 @@ class Fullweather(inkycal_module):
         ## Add user-configurable section to the bottom left corner
         self.addUserSection()
 
-        ## Add Hourly Forecast
+        ## Add Hourly Forecast to the top right section
         self.addHourlyForecast()
 
-        ## Add Daily Forecast
-        # my_image = addDailyForecast(display=display, image=my_image, hourly_forecasts=hourly_forecasts)
+        ## Add Daily Forecast to the bottom right section
+        self.addDailyForecast()
 
         self.image.save("./openweather_full.png")
 
