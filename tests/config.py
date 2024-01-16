@@ -31,6 +31,10 @@ class Config:
 
     TEST_SETTINGS_PATH = f"{basedir}/settings.json"
 
+    # inkycal_tindie_test
+    TINDIE_API_KEY = get("TINDIE_API_KEY")
+    TINDIE_USERNAME = get("TINDIE_USERNAME")
+
 
 
 
