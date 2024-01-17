@@ -212,14 +212,14 @@ class Inkycal:
                 black.save(f"{self.image_folder}module{number}_black.png", "PNG")
                 colour.save(f"{self.image_folder}module{number}_colour.png", "PNG")
                 print('OK!')
-            except:
+            except Exception as e:
                 errors.append(number)
                 self.info += f"module {number}: Error!  "
-                print('Error!')
-                print(traceback.format_exc())
+                logger.error('Error!')
+                logger.error(f"Exception: {e}.")
 
         if errors:
-            print('Error/s in modules:', *errors)
+            logger.error('Error/s in modules:', *errors)
         del errors
 
         self._assemble()
