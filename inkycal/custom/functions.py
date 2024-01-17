@@ -3,6 +3,7 @@ Inkycal custom-functions for ease-of-use
 
 Copyright by aceinnolab
 """
+import arrow
 import logging
 import os
 import time
@@ -10,7 +11,7 @@ import traceback
 
 import PIL
 import requests
-from PIL import ImageFont, ImageDraw, Image
+import tzlocal
 
 logs = logging.getLogger(__name__)
 logs.setLevel(level=logging.INFO)
@@ -60,14 +61,14 @@ def get_fonts():
         print(fonts)
 
 
-def get_system_tz():
+def get_system_tz()->str:
     """Gets the system-timezone
 
     Gets the timezone set by the system.
 
     Returns:
       - A timezone if a system timezone was found.
-      - None if no timezone was found.
+      - UTC if no timezone was found.
 
     The extracted timezone can be used to show the local time instead of UTC. e.g.
 
@@ -76,11 +77,13 @@ def get_system_tz():
       >>> print(arrow.now(tz=get_system_tz()) # prints timezone aware time.
     """
     try:
-        local_tz = time.tzname[1]
+        local_tz = tzlocal.get_localzone().key
+        logs.debug(f"Local system timezone is {local_tz}.")
     except:
-        print('System timezone could not be parsed!')
-        print('Please set timezone manually!. Setting timezone to None...')
-        local_tz = None
+        logs.error("System timezone could not be parsed!")
+        logs.error("Please set timezone manually!. Falling back to UTC...")
+        local_tz = "UTC"
+    logs.debug(f"The time is {arrow.now(tz=local_tz).format('YYYY-MM-DD HH:mm:ss ZZ')}.")
     return local_tz
 
 
