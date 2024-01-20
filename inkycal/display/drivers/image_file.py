@@ -1,8 +1,8 @@
 """Image file driver for testing"""
 
 # Display resolution
-EPD_WIDTH = 480
-EPD_HEIGHT = 800
+EPD_WIDTH = 800
+EPD_HEIGHT = 480
 
 
 class EPD:
