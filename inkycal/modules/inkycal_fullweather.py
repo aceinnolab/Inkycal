@@ -628,7 +628,7 @@ class Fullweather(inkycal_module):
         self.addDailyForecast()
 
         if self.orientation == "horizontal":
-            self.image.rotate(90, expand=True)
+            self.image = self.image.rotate(90, expand=True)
 
         # TODO: only for debugging, remove this:
         # self.image.save("./openweather_full.png")
