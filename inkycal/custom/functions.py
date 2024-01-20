@@ -3,38 +3,41 @@ Inkycal custom-functions for ease-of-use
 
 Copyright by aceinnolab
 """
-import arrow
+import json
 import logging
 import os
 import time
 import traceback
 
+import arrow
 import PIL
 import requests
 import tzlocal
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 
 logs = logging.getLogger(__name__)
 logs.setLevel(level=logging.INFO)
 
 # Get the path to the Inkycal folder
-top_level = os.path.dirname(
-    os.path.abspath(os.path.dirname(__file__))).split('/inkycal')[0]
+top_level = os.path.dirname(os.path.abspath(os.path.dirname(__file__))).split("/inkycal")[0]
 
 # Get path of 'fonts' and 'images' folders within Inkycal folder
-fonts_location = top_level + '/fonts/'
-image_folder = top_level + '/image_folder/'
+fonts_location = os.path.join(top_level, "fonts")
+image_folder = os.path.join(top_level, "image_folder")
 
 # Get available fonts within fonts folder
 fonts = {}
 
 for path, dirs, files in os.walk(fonts_location):
     for _ in files:
-        if _.endswith('.otf'):
-            name = _.split('.otf')[0]
+        if _.endswith(".otf"):
+            name = _.split(".otf")[0]
             fonts[name] = os.path.join(path, _)
 
-        if _.endswith('.ttf'):
-            name = _.split('.ttf')[0]
+        if _.endswith(".ttf"):
+            name = _.split(".ttf")[0]
             fonts[name] = os.path.join(path, _)
 logs.debug(f"Found fonts: {json.dumps(fonts, indent=4, sort_keys=True)}")
 available_fonts = [key for key, values in fonts.items()]
@@ -61,7 +64,7 @@ def get_fonts():
         print(fonts)
 
 
-def get_system_tz()->str:
+def get_system_tz() -> str:
     """Gets the system-timezone
 
     Gets the timezone set by the system.
@@ -90,18 +93,18 @@ def get_system_tz()->str:
 def auto_fontsize(font, max_height):
     """Scales a given font to 80% of max_height.
 
-      Gets the height of a font and scales it until 80% of the max_height
-      is filled.
+    Gets the height of a font and scales it until 80% of the max_height
+    is filled.
 
 
-      Args:
-          - font: A PIL Font object.
-          - max_height: An integer representing the height to adjust the font to
-            which the given font should be scaled to.
+    Args:
+        - font: A PIL Font object.
+        - max_height: An integer representing the height to adjust the font to
+          which the given font should be scaled to.
 
-      Returns:
-          A PIL font object with modified height.
-      """
+    Returns:
+        A PIL font object with modified height.
+    """
     text_bbox = font.getbbox("hg")
     text_height = text_bbox[3]
     fontsize = text_height
@@ -137,21 +140,20 @@ def write(image, xy, box_size, text, font=None, **kwargs):
       - fill_height: Decimal representing a percentage e.g. 0.9 # 90%. Fill a
         maximum of 90% of the size of the full height of the text-box.
     """
-    allowed_kwargs = ['alignment', 'autofit', 'colour', 'rotation',
-                      'fill_width', 'fill_height']
+    allowed_kwargs = ["alignment", "autofit", "colour", "rotation", "fill_width", "fill_height"]
 
     # Validate kwargs
     for key, value in kwargs.items():
         if key not in allowed_kwargs:
-            print('{0} does not exist'.format(key))
+            print("{0} does not exist".format(key))
 
     # Set kwargs if given, it not, use defaults
-    alignment = kwargs['alignment'] if 'alignment' in kwargs else 'center'
-    autofit = kwargs['autofit'] if 'autofit' in kwargs else False
-    fill_width = kwargs['fill_width'] if 'fill_width' in kwargs else 1.0
-    fill_height = kwargs['fill_height'] if 'fill_height' in kwargs else 0.8
-    colour = kwargs['colour'] if 'colour' in kwargs else 'black'
-    rotation = kwargs['rotation'] if 'rotation' in kwargs else None
+    alignment = kwargs["alignment"] if "alignment" in kwargs else "center"
+    autofit = kwargs["autofit"] if "autofit" in kwargs else False
+    fill_width = kwargs["fill_width"] if "fill_width" in kwargs else 1.0
+    fill_height = kwargs["fill_height"] if "fill_height" in kwargs else 0.8
+    colour = kwargs["colour"] if "colour" in kwargs else "black"
+    rotation = kwargs["rotation"] if "rotation" in kwargs else None
 
     x, y = xy
     box_width, box_height = box_size
@@ -165,8 +167,7 @@ def write(image, xy, box_size, text, font=None, **kwargs):
         text_bbox_height = font.getbbox("hg")
         text_height = text_bbox_height[3] - text_bbox_height[1]
 
-        while (text_width < int(box_width * fill_width) and
-               text_height < int(box_height * fill_height)):
+        while text_width < int(box_width * fill_width) and text_height < int(box_height * fill_height):
             size += 1
             font = ImageFont.truetype(font.path, size)
             text_bbox = font.getbbox(text)
@@ -181,7 +182,7 @@ def write(image, xy, box_size, text, font=None, **kwargs):
 
     # Truncate text if text is too long so it can fit inside the box
     if (text_width, text_height) > (box_width, box_height):
-        logs.debug(('truncating {}'.format(text)))
+        logs.debug(("truncating {}".format(text)))
         while (text_width, text_height) > (box_width, box_height):
             text = text[0:-1]
             text_bbox = font.getbbox(text)
@@ -193,16 +194,15 @@ def write(image, xy, box_size, text, font=None, **kwargs):
     # Align text to desired position
     if alignment == "center" or None:
         x = int((box_width / 2) - (text_width / 2))
-    elif alignment == 'left':
+    elif alignment == "left":
         x = 0
-    elif alignment == 'right':
+    elif alignment == "right":
         x = int(box_width - text_width)
 
     y = int((box_height / 2) - (text_height / 2))
 
     # Draw the text in the text-box
-    draw = ImageDraw.Draw(image)
-    space = Image.new('RGBA', (box_width, box_height))
+    space = Image.new("RGBA", (box_width, box_height))
     ImageDraw.Draw(space).text((x, y), text, fill=colour, font=font)
 
     # Uncomment following two lines, comment out above two lines to show
@@ -240,10 +240,10 @@ def text_wrap(text, font=None, max_width=None):
     if text_width < max_width:
         lines.append(text)
     else:
-        words = text.split(' ')
+        words = text.split(" ")
         i = 0
         while i < len(words):
-            line = ''
+            line = ""
             while i < len(words) and font.getlength(line + words[i]) <= max_width:
                 line = line + words[i] + " "
                 i += 1
@@ -271,7 +271,7 @@ def internet_available():
     """
     for attempt in range(3):
         try:
-            requests.get('https://google.com', timeout=5)
+            requests.get("https://google.com", timeout=5)
             return True
         except:
             print(f"Network could not be reached: {traceback.print_exc()}")
@@ -301,7 +301,7 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
         border by 20%
     """
 
-    colour = 'black'
+    colour = "black"
 
     # size from function parameter
     width, height = int(size[0] * (1 - shrinkage[0])), int(size[1] * (1 - shrinkage[1]))
