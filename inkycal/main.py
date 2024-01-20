@@ -532,14 +532,14 @@ class Inkycal:
         image = Image.fromarray(buffer)
         return image
 
-    def calibrate(self):
+    def calibrate(self, cycles=3):
         """Calibrate the E-Paper display
 
         Uses the Display class to calibrate the display with the default of 3
         cycles. After a refresh cycle, a new image is generated and shown.
         """
 
-        self.Display.calibrate()
+        self.Display.calibrate(cycles=cycles)
 
     def _calibration_check(self):
         """Calibration scheduler
