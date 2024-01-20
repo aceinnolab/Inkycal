@@ -24,8 +24,8 @@ logs.setLevel(level=logging.INFO)
 top_level = os.path.dirname(os.path.abspath(os.path.dirname(__file__))).split("/inkycal")[0]
 
 # Get path of 'fonts' and 'images' folders within Inkycal folder
-fonts_location = os.path.join(top_level, "fonts")
-image_folder = os.path.join(top_level, "image_folder")
+fonts_location = os.path.join(top_level, "fonts/")
+image_folder = os.path.join(top_level, "image_folder/")
 
 # Get available fonts within fonts folder
 fonts = {}
