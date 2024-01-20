@@ -2,6 +2,7 @@
 Inkycal fullscreen weather module
 Copyright by mrbwburns
 """
+import io
 import locale
 import logging
 import math
@@ -20,7 +21,6 @@ from PIL import ImageOps
 from icons.weather_icons.weather_icons import get_weather_icon
 from inkycal.custom import owm_forecasts
 from inkycal.custom.functions import fonts
-from inkycal.custom.functions import get_image_from_plot
 from inkycal.custom.functions import internet_available
 from inkycal.custom.functions import top_level
 from inkycal.custom.inkycal_exceptions import NetworkNotReachableError
@@ -55,6 +55,13 @@ def outline(image: Image, size: int, color: tuple) -> Image:
     return outlined
 
 
+def get_image_from_plot(fig: plt) -> Image:
+    buf = io.BytesIO()
+    fig.savefig(buf)
+    buf.seek(0)
+    return Image.open(buf)
+
+
 class Fullweather(inkycal_module):
     """Fullscreen Weather class
     gets weather details from openweathermap and plots a nice fullscreen forecast picture
@@ -73,6 +80,7 @@ class Fullweather(inkycal_module):
     }
 
     optional = {
+        "orientation": {"label": "Please select the desired orientation", "options": ["vertical", "horizontal"]},
         "temp_units": {
             "label": "Which temperature unit should be used?",
             "options": ["celsius", "fahrenheit"],
@@ -101,7 +109,7 @@ class Fullweather(inkycal_module):
             "label": "Your timezone",
             "options": ["Europe/Berlin", "UTC"],
         },
-        "font_family": {
+        "font": {
             "label": "Font family to use for the entire screen",
             "options": ["Roboto", "NotoSans", "Poppins"],
         },
@@ -137,6 +145,11 @@ class Fullweather(inkycal_module):
         self.font_size = int(config["fontsize"])
 
         # optional parameters
+        if "orientation" in config:
+            self.orientation = config["orientation"]
+            assert self.orientation in ["horizontal", "vertical"]
+        else:
+            self.orientation = "horizontal"
         if "wind_units" in config:
             self.wind_units = config["wind_units"]
         else:
@@ -203,13 +216,15 @@ class Fullweather(inkycal_module):
         else:
             self.icon_outline = True
 
-        if "font_family" in config:
-            self.font_family = config["font_family"]
+        if "font" in config:
+            self.font = config["font"]
         else:
-            self.font_family = "Roboto"
+            self.font = "Roboto"
 
         # some calculations for scalability
         # TODO: make this work for all sizes
+        if self.orientation == "horizontal":
+            self.width, self.height = self.height, self.width
         self.screen_width_in = 163 / 25.4  # 163 mm for 7in5
         self.screen_height_in = 98 / 25.4  # 98 mm for 7in5
         self.dpi = math.sqrt(
@@ -236,7 +251,7 @@ class Fullweather(inkycal_module):
         # Add text with current date
         now = datetime.now()
         dateString = now.strftime("%d. %B")
-        dateFont = self.get_font(family=self.font_family, style="Bold", size=self.font_size)
+        dateFont = self.get_font(style="Bold", size=self.font_size)
         # Get the width of the text
         dateStringbbox = dateFont.getbbox(dateString)
         dateW = dateStringbbox[2] - dateStringbbox[0]
@@ -289,7 +304,7 @@ class Fullweather(inkycal_module):
 
             # Humidity
             humidityString = f"{self.current_weather.humidity} %"
-            humidityFont = self.get_font(self.font_family, "Bold", self.font_size + 8)
+            humidityFont = self.get_font("Bold", self.font_size + 8)
             image_draw.text((65, humidity_y), humidityString, font=humidityFont, fill=(255, 255, 255))
 
             # Add icon for uv
@@ -300,7 +315,7 @@ class Fullweather(inkycal_module):
 
             # uvindex
             uvString = f"{self.current_weather.uvi if self.current_weather.uvi else '0'}"
-            uvFont = self.get_font(self.font_family, "Bold", self.font_size + 8)
+            uvFont = self.get_font("Bold", self.font_size + 8)
             image_draw.text((65, ux_y), uvString, font=uvFont, fill=(255, 255, 255))
 
     def addCurrentWeather(self):
@@ -312,7 +327,7 @@ class Fullweather(inkycal_module):
 
         ## Add detailed weather status text to the image
         sumString = self.current_weather.detailed_status.replace(" ", "\n ")
-        sumFont = self.get_font(self.font_family, "Regular", self.font_size + 8)
+        sumFont = self.get_font("Regular", self.font_size + 8)
         maxW = 0
         totalH = 0
         for word in sumString.split("\n "):
@@ -340,7 +355,7 @@ class Fullweather(inkycal_module):
 
         ## Add current temperature to the image
         tempString = f"{self.current_weather.temperature(self.temp_units)['feels_like']:.0f}{self.tempDispUnit}"
-        tempFont = self.get_font(self.font_family, "Bold", 68)
+        tempFont = self.get_font("Bold", 68)
         # Get the width of the text
         tempStringbbox = tempFont.getbbox(tempString)
         tempW = tempStringbbox[2] - tempStringbbox[0]
@@ -358,7 +373,7 @@ class Fullweather(inkycal_module):
         # Amount of precipitation within next 3h
         rain = self.hourly_forecasts[0]["precip_3h_mm"]
         precipString = f"{rain:.1g} mm" if rain > 0.0 else "0 mm"
-        precipFont = self.get_font(self.font_family, "Bold", self.font_size + 8)
+        precipFont = self.get_font("Bold", self.font_size + 8)
         image_draw.text((65, rain_y), precipString, font=precipFont, fill=(255, 255, 255))
 
         # Add icon for wind speed
@@ -378,7 +393,7 @@ class Fullweather(inkycal_module):
         else:
             windString = f"{wind} {self.windDispUnit}"
 
-        windFont = self.get_font(self.font_family, "Bold", self.font_size + 8)
+        windFont = self.get_font("Bold", self.font_size + 8)
         image_draw.text((65, wind_y), windString, font=windFont, fill=(255, 255, 255))
 
     def addHourlyForecast(self):
@@ -391,7 +406,7 @@ class Fullweather(inkycal_module):
         ## Draw hourly chart title
         title_x = self.left_section_width + 20  # X-coordinate of the title
         title_y = 5
-        chartTitleFont = self.get_font(self.font_family, "ExtraBold", self.font_size)
+        chartTitleFont = self.get_font("ExtraBold", self.font_size)
         image_draw.text((title_x, title_y), self.chart_title, font=chartTitleFont, fill=0)
 
         ## Plot the data
@@ -471,7 +486,7 @@ class Fullweather(inkycal_module):
 
         ## Draw daily chart title
         title_y = int(self.height / 2)  # Y-coordinate of the title
-        chartTitleFont = self.get_font(self.font_family, "Bold", self.font_size)
+        chartTitleFont = self.get_font("Bold", self.font_size)
         image_draw.text((self.left_section_width + 20, title_y), self.weekly_title, font=chartTitleFont, fill=0)
 
         # Define the parameters
@@ -497,8 +512,8 @@ class Fullweather(inkycal_module):
             rect_draw = ImageDraw.Draw(rect)
 
             # Date string: Day of week on line 1, date on line 2
-            short_day_font = self.get_font(self.font_family, "ExtraBold", self.font_size + 4)
-            short_month_day_font = self.get_font(self.font_family, "Bold", self.font_size - 4)
+            short_day_font = self.get_font("ExtraBold", self.font_size + 4)
+            short_month_day_font = self.get_font("Bold", self.font_size - 4)
             short_day_name = datetime.fromtimestamp(day_data["datetime"]).strftime("%a")
             short_month_day = datetime.fromtimestamp(day_data["datetime"]).strftime("%b %d")
             short_day_name_text = rect_draw.textbbox((0, 0), short_day_name, font=short_day_font)
@@ -518,7 +533,7 @@ class Fullweather(inkycal_module):
             max_temp = day_data["temp_max"]
             temp_text_min = f"{min_temp:.0f}{self.tempDispUnit}"
             temp_text_max = f"{max_temp:.0f}{self.tempDispUnit}"
-            rect_temp_font = self.get_font(self.font_family, "ExtraBold", self.font_size + 4)
+            rect_temp_font = self.get_font("ExtraBold", self.font_size + 4)
             temp_x_offset = 20
             # this is upper left: max temperature
             temp_text_max_x = temp_x_offset
@@ -556,7 +571,7 @@ class Fullweather(inkycal_module):
             rain = day_data["precip_mm"]
             if rain:
                 rain_text = f"{rain:.0f} mm"
-                rain_font = self.get_font(self.font_family, "ExtraBold", self.font_size)
+                rain_font = self.get_font("ExtraBold", self.font_size)
                 # Icon
                 rain_icon_x = int((rectangle_width - icon.width) / 2)
                 rain_icon_y = int(rectangle_height * 0.82)
@@ -612,23 +627,26 @@ class Fullweather(inkycal_module):
         ## Add Daily Forecast to the bottom right section
         self.addDailyForecast()
 
-        self.image.save("./openweather_full.png")
+        if self.orientation == "horizontal":
+            self.image.rotate(90, expand=True)
+
+        # TODO: only for debugging, remove this:
+        # self.image.save("./openweather_full.png")
 
         logger.info("Fullscreen weather forecast generated successfully.")
         # Return the images ready for the display
         # tbh, I have no idea why I need to return two separate images here
         return self.image, self.image
 
-    @staticmethod
-    def get_font(family, style, size):
+    def get_font(self, style, size):
         # Returns the TrueType font object with the given characteristics
-        if family == "Roboto" and style == "ExtraBold":
+        if self.font == "Roboto" and style == "ExtraBold":
             style = "Black"
-        elif family in ["Ubuntu", "NotoSansUI"] and style in ["ExtraBold", "Black"]:
+        elif self.font in ["Ubuntu", "NotoSansUI"] and style in ["ExtraBold", "Black"]:
             style = "Bold"
-        elif family == "OpenSans" and style == "Black":
+        elif self.font == "OpenSans" and style == "Black":
             style = "ExtraBold"
-        return ImageFont.truetype(fonts[f"{family}-{style}"], size=size)
+        return ImageFont.truetype(fonts[f"{self.font}-{style}"], size=size)
 
 
 if __name__ == "__main__":
