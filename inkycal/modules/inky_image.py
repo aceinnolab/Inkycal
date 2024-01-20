@@ -29,7 +29,7 @@ class Inkyimage:
         # give an OK message
         logger.info(f'{__name__} loaded')
 
-    def load(self, path):
+    def load(self, path:str) -> None:
         """loads an image from a URL or filepath.
 
         Args:
