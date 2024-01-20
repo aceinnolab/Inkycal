@@ -25,6 +25,8 @@ jobs:
           SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
           TEST_ICAL_URL: ${{ secrets.TEST_ICAL_URL }}
           TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
+          TINDIE_API_KEY: ${{ secrets.TINDIE_API_KEY }}
+          TINDIE_USERNAME: ${{ secrets.TINDIE_USERNAME }}
         with:
           # Set the base_image to the desired Raspberry Pi OS version
           base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-10-10/2023-10-10-raspios-bookworm-armhf-lite.img.xz
@@ -54,3 +56,4 @@ jobs:
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             pip install pytest
             python -m pytest
+            
