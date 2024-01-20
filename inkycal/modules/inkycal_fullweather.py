@@ -24,6 +24,7 @@ from inkycal.custom.functions import fonts
 from inkycal.custom.functions import internet_available
 from inkycal.custom.functions import top_level
 from inkycal.custom.inkycal_exceptions import NetworkNotReachableError
+from inkycal.modules.inky_image import image_to_palette
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
@@ -631,12 +632,14 @@ class Fullweather(inkycal_module):
             self.image = self.image.rotate(90, expand=True)
 
         # TODO: only for debugging, remove this:
-        # self.image.save("./openweather_full.png")
+        self.image.save("./openweather_full.png")
 
         logger.info("Fullscreen weather forecast generated successfully.")
+        # Convert images according to specified palette
+        im_black, im_colour = image_to_palette(image=self.image, palette="bwr", dither=True)
+
         # Return the images ready for the display
-        # tbh, I have no idea why I need to return two separate images here
-        return self.image, self.image
+        return im_black, im_colour
 
     def get_font(self, style, size):
         # Returns the TrueType font object with the given characteristics
