@@ -19,7 +19,7 @@ from PIL import ImageFont
 from PIL import ImageOps
 
 from icons.weather_icons.weather_icons import get_weather_icon
-from inkycal.custom import owm_forecasts
+from inkycal.custom import openweathermap_wrapper
 from inkycal.custom.functions import fonts
 from inkycal.custom.functions import internet_available
 from inkycal.custom.functions import top_level
@@ -82,11 +82,11 @@ class Fullweather(inkycal_module):
 
     optional = {
         "orientation": {"label": "Please select the desired orientation", "options": ["vertical", "horizontal"]},
-        "temp_units": {
+        "temp_unit": {
             "label": "Which temperature unit should be used?",
             "options": ["celsius", "fahrenheit"],
         },
-        "wind_units": {
+        "wind_unit": {
             "label": "Which wind speed unit should be used?",
             "options": ["beaufort", "knots", "miles_hour", "km_hour", "meters_sec"],
         },
@@ -112,7 +112,7 @@ class Fullweather(inkycal_module):
         },
         "font": {
             "label": "Font family to use for the entire screen",
-            "options": ["Roboto", "NotoSans", "Poppins"],
+            "options": ["NotoSans", "Roboto", "Poppins"],
         },
         "chart_title": {
             "label": "Title of the temperature and precipitation plot",
@@ -151,17 +151,17 @@ class Fullweather(inkycal_module):
             assert self.orientation in ["horizontal", "vertical"]
         else:
             self.orientation = "horizontal"
-        if "wind_units" in config:
-            self.wind_units = config["wind_units"]
+        if "wind_unit" in config:
+            self.wind_unit = config["wind_unit"]
         else:
-            self.wind_units = "meters_sec"
-        if self.wind_units == "beaufort":
+            self.wind_unit = "meters_sec"
+        if self.wind_unit == "beaufort":
             self.windDispUnit = "bft"
-        elif self.wind_units == "knots":
+        elif self.wind_unit == "knots":
             self.windDispUnit = "kn"
-        elif self.wind_units == "km_hour":
+        elif self.wind_unit == "km_hour":
             self.windDispUnit = "km/h"
-        elif self.wind_units == "miles_hour":
+        elif self.wind_unit == "miles_hour":
             self.windDispUnit = "mph"
         else:
             self.windDispUnit = "m/s"
@@ -171,13 +171,13 @@ class Fullweather(inkycal_module):
         else:
             self.wind_gusts = True
 
-        if "temp_units" in config:
-            self.temp_units = config["temp_units"]
+        if "temp_unit" in config:
+            self.temp_unit = config["temp_unit"]
         else:
-            self.temp_units = "celsius"
-        if self.temp_units == "fahrenheit":
+            self.temp_unit = "celsius"
+        if self.temp_unit == "fahrenheit":
             self.tempDispUnit = "F"
-        elif self.temp_units == "celsius":
+        elif self.temp_unit == "celsius":
             self.tempDispUnit = "°"
 
         if "weekly_title" in config:
@@ -304,7 +304,7 @@ class Fullweather(inkycal_module):
             self.image.paste(humidityIcon, (15, humidity_y))
 
             # Humidity
-            humidityString = f"{self.current_weather.humidity} %"
+            humidityString = f"{self.current_weather['humidity']} %"
             humidityFont = self.get_font("Bold", self.font_size + 8)
             image_draw.text((65, humidity_y), humidityString, font=humidityFont, fill=(255, 255, 255))
 
@@ -315,7 +315,7 @@ class Fullweather(inkycal_module):
             self.image.paste(uvIcon, (15, ux_y))
 
             # uvindex
-            uvString = f"{self.current_weather.uvi if self.current_weather.uvi else '0'}"
+            uvString = f"{self.current_weather['uvi'] if self.current_weather['uvi'] else '0'}"
             uvFont = self.get_font("Bold", self.font_size + 8)
             image_draw.text((65, ux_y), uvString, font=uvFont, fill=(255, 255, 255))
 
@@ -327,7 +327,7 @@ class Fullweather(inkycal_module):
         image_draw = ImageDraw.Draw(self.image)
 
         ## Add detailed weather status text to the image
-        sumString = self.current_weather.detailed_status.replace(" ", "\n ")
+        sumString = self.current_weather["detailed_status"].replace(" ", "\n ")
         sumFont = self.get_font("Regular", self.font_size + 8)
         maxW = 0
         totalH = 0
@@ -343,7 +343,7 @@ class Fullweather(inkycal_module):
         logger.debug(f"Added current weather detailed status text: {sumString} at x:{sumtext_x}/y:{sumtext_y}.")
 
         ## Add current weather icon to the image
-        icon = get_weather_icon(icon_name=self.current_weather.weather_icon_name, size=150)
+        icon = get_weather_icon(icon_name=self.current_weather["weather_icon_name"], size=150)
         # Create a mask from the alpha channel of the weather icon
         if len(icon.split()) == 4:
             mask = icon.split()[-1]
@@ -355,7 +355,7 @@ class Fullweather(inkycal_module):
         self.image.paste(icon, (icon_x, icon_y), mask)
 
         ## Add current temperature to the image
-        tempString = f"{self.current_weather.temperature(self.temp_units)['feels_like']:.0f}{self.tempDispUnit}"
+        tempString = f"{self.current_weather['temp_feels_like']:.0f}{self.tempDispUnit}"
         tempFont = self.get_font("Bold", 68)
         # Get the width of the text
         tempStringbbox = tempFont.getbbox(tempString)
@@ -425,7 +425,7 @@ class Fullweather(inkycal_module):
 
         # Plot Temperature as line plot in red
         ax1.plot(timestamps, temperatures, marker=".", linestyle="-", color="r")
-        temp_base = 3 if self.temp_units == "celsius" else 5
+        temp_base = 3 if self.temp_unit == "celsius" else 5
         fig.gca().yaxis.set_major_locator(ticker.MultipleLocator(base=temp_base))
         ax1.tick_params(axis="y", colors="red")
         ax1.set_yticks(ax1.get_yticks())
@@ -508,7 +508,7 @@ class Fullweather(inkycal_module):
             x_rect = self.left_section_width + 20 + i * rectangle_width  # Start from the title width
             y_rect = int(self.height / 2 + 30)
 
-            day_data = owm_forecasts.get_forecast_for_day(days_from_today=i, hourly_forecasts=self.hourly_forecasts)
+            day_data = self.my_owm.get_forecast_for_day(days_from_today=i)
             rect = Image.new("RGBA", (int(rectangle_width), int(rectangle_height)), (255, 255, 255))
             rect_draw = ImageDraw.Draw(rect)
 
@@ -605,13 +605,22 @@ class Fullweather(inkycal_module):
             raise NetworkNotReachableError
 
         # Get the weather
-        (self.current_weather, self.hourly_forecasts) = owm_forecasts.get_owm_data(
-            token=self.api_key,
+        self.my_owm = openweathermap_wrapper.OpenWeatherMap(
+            api_key=self.api_key,
             city_id=self.location,
-            temp_units=self.temp_units,
-            wind_units=self.wind_units,
+            temp_unit=self.temp_unit,
+            wind_unit=self.wind_unit,
             language=self.language,
         )
+        self.current_weather = self.my_owm.get_current_weather()
+        self.hourly_forecasts = self.my_owm.get_weather_forecast()
+        # (self.current_weather, self.hourly_forecasts) = owm_forecasts.get_owm_data(
+        #    token=self.api_key,
+        #    city_id=self.location,
+        #    temp_unit=self.temp_unit,
+        #    wind_unit=self.wind_unit,
+        #    language=self.language,
+        # )
 
         ## Create Base Image
         self.createBaseImage()
