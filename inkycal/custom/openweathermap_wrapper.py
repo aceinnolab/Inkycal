@@ -73,6 +73,8 @@ class OpenWeatherMap:
         )  # OWM Unit Default: meter/sec, Metric: meter/sec
         current_weather["wind_gust"] = self.get_converted_windspeed(current_data["wind"]["gust"])
         current_weather["uvi"] = None  # TODO: this is no longer supported with 2.5 API, find alternative
+        current_weather["sunrise"] = current_data["sys"]["sunrise"]  # unix timestamp
+        current_weather["sunset"] = current_data["sys"]["sunset"]
 
         self.current_weather = current_weather
         
