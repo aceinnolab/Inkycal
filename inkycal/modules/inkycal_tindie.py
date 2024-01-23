@@ -75,7 +75,8 @@ class Tindie(inkycal_module):
         header = {"accept": "text/json"}
         response = requests.get(url, headers=header, params={"shipped": "false", "limit": "50"})
         if response.status_code != 200:
-            logger.error(f"Failed to get orders, status code: {response.status_code}, reason: {response.reason}")
+            logger.error(f"Failed to get orders, status code: {response.status_code}, reason: {response.reason}.")
+            logger.error(f"response: {response.text}")
             raise AssertionError("Failed to get orders")
         else:
             logger.info("Orders received")
