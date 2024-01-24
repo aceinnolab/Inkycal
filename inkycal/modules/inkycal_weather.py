@@ -447,7 +447,7 @@ class Weather(inkycal_module):
                 my_forecasts = [_ for _ in weather_forecasts if arrow.get(_["datetime"]) in time_range]
 
                 # Get all temperatures for this day
-                daily_temp = [round(_["temp"]) for _ in my_forecasts]
+                daily_temp = [round(_["temp"], ndigits=dec_temp) for _ in my_forecasts]
                 # Calculate min. and max. temp for this day
                 temp_range = f'{min(daily_temp)}°/{max(daily_temp)}°'
 
