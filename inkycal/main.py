@@ -143,11 +143,11 @@ class Inkycal:
 
             # If a module was not found, print an error message
             except ImportError:
-                print(f'Could not find module: "{module}". Please try to import manually')
+                logger.exception(f'Could not find module: "{module}". Please try to import manually')
 
             # If something unexpected happened, show the error message
             except Exception as e:
-                print(str(e))
+                logger.exception(f"Exception: {traceback.format_exc()}.")
 
         # Path to store images
         self.image_folder = image_folder
@@ -192,8 +192,8 @@ class Inkycal:
         Generated images can be found in the /images folder of Inkycal.
         """
 
-        print(f'Inkycal version: v{self._release}')
-        print(f'Selected E-paper display: {self.settings["model"]}')
+        logger.info(f"Inkycal version: v{self._release}")
+        logger.info(f'Selected E-paper display: {self.settings["model"]}')
 
         # store module numbers in here
         errors = []
@@ -211,12 +211,12 @@ class Inkycal:
                     draw_border_2(im=black, xy=(1, 1), size=(black.width - 2, black.height - 2), radius=5)
                 black.save(f"{self.image_folder}module{number}_black.png", "PNG")
                 colour.save(f"{self.image_folder}module{number}_colour.png", "PNG")
-                print('OK!')
-            except Exception as e:
+                print("OK!")
+            except Exception:
                 errors.append(number)
                 self.info += f"module {number}: Error!  "
-                logger.error('Error!')
-                logger.error(f"Exception: {e}.")
+                logger.exception("Error!")
+                logger.exception(f"Exception: {traceback.format_exc()}.")
 
         if errors:
             logger.error('Error/s in modules:', *errors)
@@ -309,19 +309,18 @@ class Inkycal:
                     black.save(f"{self.image_folder}module{number}_black.png", "PNG")
                     colour.save(f"{self.image_folder}module{number}_colour.png", "PNG")
                     self.info += f"module {number}: OK  "
-                except:
+                except Exception as e:
                     errors.append(number)
-                    print('error!')
-                    print(traceback.format_exc())
-                    self.info += f"module {number}: error!  "
-                    logger.exception(f'Exception in module {number}')
+                    self.info += f"module {number}: Error!  "
+                    logger.exception("Error!")
+                    logger.exception(f"Exception: {traceback.format_exc()}.")
 
             if errors:
-                print('error/s in modules:', *errors)
+                logger.error("Error/s in modules:", *errors)
                 counter = 0
             else:
                 counter += 1
-                print('successful')
+                logger.info("successful")
             del errors
 
             # Assemble image from each module - add info section if specified
