@@ -28,7 +28,7 @@ from inkycal.modules.inky_image import image_to_palette
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
-logger.setLevel("DEBUG")
+logger.setLevel("INFO")
 
 icons_dir = os.path.join(top_level, "icons", "ui-icons")
 
