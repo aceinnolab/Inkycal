@@ -172,14 +172,14 @@ class Weather(inkycal_module):
                 7: '\uf0ae'
             }[int(index) & 7]
 
-        def is_negative(temp):
+        def is_negative(temp:str):
             """Check if temp is below freezing point of water (0°C/32°F)
             returns True if temp below freezing point, else False"""
             answer = False
 
-            if self.temp_unit == 'celsius' and round(float(temp.split('°')[0])) <= 0:
+            if self.temp_unit == 'celsius' and round(float(temp.split(self.tempDispUnit)[0])) <= 0:
                 answer = True
-            elif self.temp_unit == 'fahrenheit' and round(float(temp.split('°')[0])) <= 32:
+            elif self.temp_unit == 'fahrenheit' and round(float(temp.split(self.tempDispUnit)[0])) <= 32:
                 answer = True
             return answer
 
@@ -449,7 +449,7 @@ class Weather(inkycal_module):
                 # Get all temperatures for this day
                 daily_temp = [round(_["temp"], ndigits=dec_temp) for _ in my_forecasts]
                 # Calculate min. and max. temp for this day
-                temp_range = f'{min(daily_temp)}°/{max(daily_temp)}°'
+                temp_range = f'{min(daily_temp)}{self.tempDispUnit}/{max(daily_temp)}{self.tempDispUnit}'
 
                 # Get all weather icon codes for this day
                 daily_icons = [_["icon"] for _ in my_forecasts]
