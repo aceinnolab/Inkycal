@@ -472,10 +472,8 @@ class Weather(inkycal_module):
             logger.debug((key, val))
 
         # Get some current weather details
-        if dec_temp != 0:
-            temperature = f"{round(current_weather['temp'])}°"
-        else:
-            temperature = f"{round(current_weather['temp'], ndigits=dec_temp)}°"
+
+        temperature = f"{current_weather['temp']:.{dec_temp}f}{self.tempDispUnit}"
 
         weather_icon = current_weather["weather_icon_name"]
         humidity = str(current_weather["humidity"])
