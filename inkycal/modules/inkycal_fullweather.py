@@ -13,22 +13,24 @@ import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
+from dateutil import tz
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 from PIL import ImageOps
 
 from icons.weather_icons.weather_icons import get_weather_icon
-from inkycal.custom import openweathermap_wrapper
 from inkycal.custom.functions import fonts
+from inkycal.custom.functions import get_system_tz
 from inkycal.custom.functions import internet_available
 from inkycal.custom.functions import top_level
 from inkycal.custom.inkycal_exceptions import NetworkNotReachableError
+from inkycal.custom.openweathermap_wrapper import OpenWeatherMap
 from inkycal.modules.inky_image import image_to_palette
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
-logger.setLevel("INFO")
+logger.setLevel(logging.INFO)
 
 icons_dir = os.path.join(top_level, "icons", "ui-icons")
 
@@ -106,10 +108,6 @@ class Fullweather(inkycal_module):
             "label": "Your locale",
             "options": ["de_DE.UTF-8", "en_GB.UTF-8"],
         },
-        "tz": {
-            "label": "Your timezone",
-            "options": ["Europe/Berlin", "UTC"],
-        },
         "font": {
             "label": "Font family to use for the entire screen",
             "options": ["NotoSans", "Roboto", "Poppins"],
@@ -134,6 +132,8 @@ class Fullweather(inkycal_module):
         super().__init__(config)
 
         config = config["config"]
+
+        self.tz = get_system_tz()
 
         # Check if all required parameters are present
         for param in self.requires:
@@ -207,11 +207,6 @@ class Fullweather(inkycal_module):
         locale.setlocale(locale.LC_TIME, self.locale)
         self.language = self.locale.split("_")[0]
 
-        if "tz" in config:
-            self.tz = config["tz"]
-        else:
-            self.tz = "UTC"
-
         if "icon_outline" in config:
             self.icon_outline = config["icon_outline"]
         else:
@@ -250,8 +245,8 @@ class Fullweather(inkycal_module):
         image_draw.rectangle((0, 0, rect_width, self.height), fill=0)
 
         # Add text with current date
-        now = datetime.now()
-        dateString = now.strftime("%d. %B")
+        tz_info = tz.gettz(self.tz)
+        dateString = datetime.now(tz=tz_info).strftime("%d. %B")
         dateFont = self.get_font(style="Bold", size=self.font_size)
         # Get the width of the text
         dateStringbbox = dateFont.getbbox(dateString)
@@ -467,9 +462,9 @@ class Fullweather(inkycal_module):
         ax2.set_yticks(ax2.get_yticks())
         ax2.set_yticklabels([f"{value:.0f}" for value in ax2.get_yticks()])
 
-        fig.gca().xaxis.set_major_locator(mdates.DayLocator(interval=1))
-        fig.gca().xaxis.set_major_formatter(mdates.DateFormatter("%a"))
-        fig.gca().xaxis.set_minor_locator(mdates.HourLocator(interval=3))
+        fig.gca().xaxis.set_major_locator(mdates.DayLocator(interval=1, tz=self.tz))
+        fig.gca().xaxis.set_major_formatter(mdates.DateFormatter(fmt="%a", tz=self.tz))
+        fig.gca().xaxis.set_minor_locator(mdates.HourLocator(interval=3, tz=self.tz))
         fig.tight_layout()  # Adjust layout to prevent clipping of labels
 
         # Get image from plot and add it to the image
@@ -515,8 +510,8 @@ class Fullweather(inkycal_module):
             # Date string: Day of week on line 1, date on line 2
             short_day_font = self.get_font("ExtraBold", self.font_size + 4)
             short_month_day_font = self.get_font("Bold", self.font_size - 4)
-            short_day_name = datetime.fromtimestamp(day_data["datetime"]).strftime("%a")
-            short_month_day = datetime.fromtimestamp(day_data["datetime"]).strftime("%b %d")
+            short_day_name = day_data["datetime"].strftime("%a")
+            short_month_day = day_data["datetime"].strftime("%b %d")
             short_day_name_text = rect_draw.textbbox((0, 0), short_day_name, font=short_day_font)
             short_month_day_text = rect_draw.textbbox((0, 0), short_month_day, font=short_month_day_font)
             day_name_x = (rectangle_width - short_day_name_text[2] + short_day_name_text[0]) / 2
@@ -605,22 +600,16 @@ class Fullweather(inkycal_module):
             raise NetworkNotReachableError
 
         # Get the weather
-        self.my_owm = openweathermap_wrapper.OpenWeatherMap(
+        self.my_owm = OpenWeatherMap(
             api_key=self.api_key,
             city_id=self.location,
             temp_unit=self.temp_unit,
             wind_unit=self.wind_unit,
             language=self.language,
+            tz_name=self.tz,
         )
         self.current_weather = self.my_owm.get_current_weather()
         self.hourly_forecasts = self.my_owm.get_weather_forecast()
-        # (self.current_weather, self.hourly_forecasts) = owm_forecasts.get_owm_data(
-        #    token=self.api_key,
-        #    city_id=self.location,
-        #    temp_unit=self.temp_unit,
-        #    wind_unit=self.wind_unit,
-        #    language=self.language,
-        # )
 
         ## Create Base Image
         self.createBaseImage()
@@ -640,9 +629,6 @@ class Fullweather(inkycal_module):
         if self.orientation == "horizontal":
             self.image = self.image.rotate(90, expand=True)
 
-        # TODO: only for debugging, remove this:
-        self.image.save("./openweather_full.png")
-
         logger.info("Fullscreen weather forecast generated successfully.")
         # Convert images according to specified palette
         im_black, im_colour = image_to_palette(image=self.image, palette="bwr", dither=True)
@@ -652,6 +638,7 @@ class Fullweather(inkycal_module):
 
     def get_font(self, style, size):
         # Returns the TrueType font object with the given characteristics
+        # Some workarounds for typefaces that do not exist in some fonts out there
         if self.font == "Roboto" and style == "ExtraBold":
             style = "Black"
         elif self.font in ["Ubuntu", "NotoSansUI"] and style in ["ExtraBold", "Black"]:
