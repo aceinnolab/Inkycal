@@ -3,16 +3,27 @@ Inkycal weather module
 Copyright by aceinnolab
 """
 
+import datetime
+import arrow
 import decimal
+import logging
 import math
 
-import arrow
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 
-from inkycal.custom import *
+from inkycal.custom.functions import draw_border
+from inkycal.custom.functions import fonts
+from inkycal.custom.functions import get_system_tz
+from inkycal.custom.functions import internet_available
+from inkycal.custom.functions import write
+from inkycal.custom.inkycal_exceptions import NetworkNotReachableError
 from inkycal.custom.openweathermap_wrapper import OpenWeatherMap
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
+logger.setLevel(level=logging.DEBUG)
 
 
 class Weather(inkycal_module):
@@ -75,6 +86,8 @@ class Weather(inkycal_module):
 
         config = config['config']
 
+        self.timezone = get_system_tz()
+
         # Check if all required parameters are present
         for param in self.requires:
             if not param in config:
@@ -103,8 +116,14 @@ class Weather(inkycal_module):
         self.locale = config['language']
         # additional configuration
 
-        self.owm = OpenWeatherMap(api_key=self.api_key, city_id=self.location, wind_unit=self.wind_unit, temp_unit=self.temp_unit,language=self.locale)
-        self.timezone = get_system_tz()
+        self.owm = OpenWeatherMap(
+            api_key=self.api_key, 
+            city_id=self.location, 
+            wind_unit=self.wind_unit, 
+            temp_unit=self.temp_unit,
+            language=self.locale, 
+            tz_name=self.timezone
+            )
         
         self.weatherfont = ImageFont.truetype(
             fonts['weathericons-regular-webfont'], size=self.fontsize)
@@ -392,7 +411,7 @@ class Weather(inkycal_module):
         logging.debug(f'decimals temperature: {dec_temp} | decimals wind: {dec_wind}')
 
         # Get current time
-        now = arrow.utcnow()
+        now = arrow.utcnow().to(self.timezone)
 
         fc_data = {}
 
@@ -400,73 +419,28 @@ class Weather(inkycal_module):
 
             logger.debug("getting hourly forecasts")
 
-            # Forecasts are provided for every 3rd full hour
-            # find out how many hours there are until the next 3rd full hour
-            if (now.hour % 3) != 0:
-                hour_gap = 3 - (now.hour % 3)
-            else:
-                hour_gap = 3
-
-            # Create timings for hourly forecasts
-            forecast_timings = [now.shift(hours=+ hour_gap + _).floor('hour')
-                                for _ in range(0, 12, 3)]
-
-            # Create forecast objects for given timings
-            hourly_forecasts = [_ for _ in weather_forecasts if arrow.get(_["datetime"]) in forecast_timings]
-
-            # Add forecast-data to fc_data dictionary
+            # Add next 4 forecasts to fc_data dictionary, since we only have
             fc_data = {}
-            for index, forecast in enumerate(hourly_forecasts):
-                temp = f"{forecast['temp']:.{dec_temp}f}{self.tempDispUnit}"
-
-                icon = forecast["icon"]
+            for index, forecast in enumerate(weather_forecasts[0:4]):
                 fc_data['fc' + str(index + 1)] = {
-                    'temp': temp,
-                    'icon': icon,
-                    'stamp': forecast_timings[index].to(
-                        get_system_tz()).format('H.00' if self.hour_format == 24 else 'h a')
-                }
+                    'temp': f"{forecast['temp']:.{dec_temp}f}{self.tempDispUnit}",
+                    'icon': forecast["icon"],
+                    'stamp': forecast["datetime"].strftime("%I %p" if self.hour_format == 12 else "%H:%M")}
 
         elif self.forecast_interval == 'daily':
 
             logger.debug("getting daily forecasts")
 
-            def calculate_forecast(days_from_today) -> dict:
-                """Get temperature range and most frequent icon code for forecast
-                days_from_today should be int from 1-4: e.g. 2 -> 2 days from today
-                """
-
-                # Create a list containing time-objects for every 3rd hour of the day
-                time_range = list(
-                    arrow.Arrow.range('hour',
-                                      now.shift(days=days_from_today).floor('day'),
-                                      now.shift(days=days_from_today).ceil('day')
-                                      ))[::3]
-
-                # Get forecasts for each time-object
-                my_forecasts = [_ for _ in weather_forecasts if arrow.get(_["datetime"]) in time_range]
-
-                # Get all temperatures for this day
-                daily_temp = [round(_["temp"], ndigits=dec_temp) for _ in my_forecasts]
-                # Calculate min. and max. temp for this day
-                temp_range = f'{min(daily_temp)}{self.tempDispUnit}/{max(daily_temp)}{self.tempDispUnit}'
-
-                # Get all weather icon codes for this day
-                daily_icons = [_["icon"] for _ in my_forecasts]
-                # Find most common element from all weather icon codes
-                status = max(set(daily_icons), key=daily_icons.count)
-
-                weekday = now.shift(days=days_from_today).format('ddd', locale=self.locale)
-                return {'temp': temp_range, 'icon': status, 'stamp': weekday}
-
-            daily_forecasts = [calculate_forecast(days) for days in range(1, 5)]
+            daily_forecasts = [self.owm.get_forecast_for_day(days) for days in range(1, 5)]
 
             for index, forecast in enumerate(daily_forecasts):
                 fc_data['fc' + str(index +1)] = {
-                    'temp': forecast['temp'],
+                    'temp': f'{forecast["temp_min"]:.{dec_temp}f}{self.tempDispUnit}/{forecast["temp_max"]:.{dec_temp}f}{self.tempDispUnit}',
                     'icon': forecast['icon'],
-                    'stamp': forecast['stamp']
+                    'stamp': forecast['datetime'].strftime("%A")
                 }
+        else:
+            logger.error(f"Invalid forecast interval specified: {self.forecast_interval}. Check your settings!")
 
         for key, val in fc_data.items():
             logger.debug((key, val))
@@ -477,6 +451,7 @@ class Weather(inkycal_module):
 
         weather_icon = current_weather["weather_icon_name"]
         humidity = str(current_weather["humidity"])
+
         sunrise_raw = arrow.get(current_weather["sunrise"]).to(self.timezone)
         sunset_raw = arrow.get(current_weather["sunset"]).to(self.timezone)
 

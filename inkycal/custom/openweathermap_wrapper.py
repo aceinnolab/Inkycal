@@ -1,3 +1,9 @@
+"""
+Inkycal opwenweather API abstraction
+- retrieves free weather data from OWM 2.5 API endpoints (given provided API key)
+- handles unit, language and timezone conversions
+- provides ready-to-use current weather, hourly and daily forecasts
+"""
 import json
 import logging
 from datetime import datetime
@@ -9,13 +15,11 @@ from typing import Literal
 import requests
 from dateutil import tz
 
-from inkycal.custom.functions import get_system_tz
-
 TEMP_UNITS = Literal["celsius", "fahrenheit"]
 WIND_UNITS = Literal["meters_sec", "km_hour", "miles_hour", "knots", "beaufort"]
 
 logger = logging.getLogger(__name__)
-logger.setLevel("DEBUG")
+logger.setLevel(level=logging.INFO)
 
 
 def is_timestamp_within_range(timestamp: datetime, start_time: datetime, end_time: datetime) -> bool:
@@ -31,6 +35,7 @@ class OpenWeatherMap:
         temp_unit: TEMP_UNITS = "celsius",
         wind_unit: WIND_UNITS = "meters_sec",
         language: str = "en",
+        tz_name: str = "UTC"
     ) -> None:
         self.api_key = api_key
         self.city_id = city_id
@@ -39,7 +44,8 @@ class OpenWeatherMap:
         self.language = language
         self._api_version = "2.5"
         self._base_url = f"https://api.openweathermap.org/data/{self._api_version}"
-        self.tz_zone = tz.gettz(get_system_tz())
+        self.tz_zone = tz.gettz(tz_name)
+        logger.info(f"OWM wrapper initialized for city id {self.city_id}, language {self.language} and timezone {tz_name}.")
 
     def get_current_weather(self) -> Dict:
         """
@@ -57,7 +63,7 @@ class OpenWeatherMap:
                 f"Failure getting the current weather: code {response.status_code}. Reason: {response.text}"
             )
         current_data = json.loads(response.text)
-
+        
         current_weather = {}
         current_weather["detailed_status"] = current_data["weather"][0]["description"]
         current_weather["weather_icon_name"] = current_data["weather"][0]["icon"]
@@ -71,13 +77,17 @@ class OpenWeatherMap:
         current_weather["wind"] = self.get_converted_windspeed(
             current_data["wind"]["speed"]
         )  # OWM Unit Default: meter/sec, Metric: meter/sec
-        current_weather["wind_gust"] = self.get_converted_windspeed(current_data["wind"]["gust"])
+        if "gust" in current_data["wind"]:
+            current_weather["wind_gust"] = self.get_converted_windspeed(current_data["wind"]["gust"])
+        else:
+            logger.info(f"OpenWeatherMap response did not contain a wind gust speed. Using base wind: {current_weather['wind']} m/s.")
+            current_weather["wind_gust"] = current_weather["wind"]
         current_weather["uvi"] = None  # TODO: this is no longer supported with 2.5 API, find alternative
-        current_weather["sunrise"] = current_data["sys"]["sunrise"]  # unix timestamp
-        current_weather["sunset"] = current_data["sys"]["sunset"]
+        current_weather["sunrise"] = datetime.fromtimestamp(current_data["sys"]["sunrise"], tz=self.tz_zone)  # unix timestamp -> to our timezone
+        current_weather["sunset"] = datetime.fromtimestamp(current_data["sys"]["sunset"], tz=self.tz_zone)
 
         self.current_weather = current_weather
-        
+
         return current_weather
 
     def get_weather_forecast(self) -> List[Dict]:
@@ -136,7 +146,8 @@ class OpenWeatherMap:
     def get_forecast_for_day(self, days_from_today: int) -> Dict:
         """
         Get temperature range, rain and most frequent icon code
-        for the day that is days_from_today away
+        for the day that is days_from_today away.
+        "Today" is based on our local system timezone.
         :param days_from_today:
             should be int from 0-4: e.g. 2 -> 2 days from today
         :return:
@@ -146,7 +157,7 @@ class OpenWeatherMap:
         _ = self.get_weather_forecast()
         
         # Calculate the start and end times for the specified number of days from now
-        current_time = datetime.now()
+        current_time = datetime.now(tz=self.tz_zone)
         start_time = (
             (current_time + timedelta(days=days_from_today))
             .replace(hour=0, minute=0, second=0, microsecond=0)
@@ -178,7 +189,7 @@ class OpenWeatherMap:
 
         # Return a dict with that day's data
         day_data = {
-            "datetime": start_time.timestamp(),
+            "datetime": start_time,
             "icon": icon,
             "temp_min": min(temps),
             "temp_max": max(temps),
@@ -277,7 +288,7 @@ def main():
     key = ""
     city = 2643743
     lang = "de"
-    owm = OpenWeatherMap(api_key=key, city_id=city, language=lang)
+    owm = OpenWeatherMap(api_key=key, city_id=city, language=lang, tz="Europe/Berlin")
 
     current_weather = owm.get_current_weather()
     print(current_weather)
