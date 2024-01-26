@@ -3,7 +3,6 @@ Inkycal weather module
 Copyright by aceinnolab
 """
 
-import datetime
 import arrow
 import decimal
 import logging
@@ -23,7 +22,7 @@ from inkycal.custom.openweathermap_wrapper import OpenWeatherMap
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
-logger.setLevel(level=logging.DEBUG)
+logger.setLevel(level=logging.INFO)
 
 
 class Weather(inkycal_module):
