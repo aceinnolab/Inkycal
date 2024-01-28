@@ -434,7 +434,7 @@ class Weather(inkycal_module):
                 if self.units == "metric":
                     temp = f"{round(weather['main']['temp'], ndigits=dec_temp)}°C"
                 else:
-                    temp = f"{round(self.celsius_to_fahrenheit(weather['weather']['main']['temp']), ndigits=dec_temp)}°F"
+                    temp = f"{round(self.celsius_to_fahrenheit(weather['main']['temp']), ndigits=dec_temp)}°F"
 
                 icon = forecast["weather"][0]["icon"]
                 fc_data['fc' + str(forecasts.index(forecast) + 1)] = {
