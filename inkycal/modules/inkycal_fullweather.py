@@ -76,13 +76,15 @@ class Fullweather(inkycal_module):
         "api_key": {
             "label": "Please enter openweathermap api-key. You can create one for free on openweathermap",
         },
-        "location": {
-            "label": "Please enter your location ID found in the url "
-            + "e.g. https://openweathermap.org/city/4893171 -> ID is 4893171"
-        },
+        "latitude": {"label": "Please enter your location' geographical latitude. E.g. 51.51 for London."},
+        "longitude": {"label": "Please enter your location' geographical longitude. E.g. -0.13 for London."},
     }
 
     optional = {
+        "api_version": {
+            "label": "Please enter openweathermap api version. Default is '2.5'.",
+            "options": ["2.5", "3.0"],
+        },
         "orientation": {"label": "Please select the desired orientation", "options": ["vertical", "horizontal"]},
         "temp_unit": {
             "label": "Which temperature unit should be used?",
@@ -142,10 +144,15 @@ class Fullweather(inkycal_module):
 
         # required parameters
         self.api_key = config["api_key"]
-        self.location = int(config["location"])
+        self.location_lat = float(config["latitude"])
+        self.location_lon = float(config["longitude"])
         self.font_size = int(config["fontsize"])
 
         # optional parameters
+        if "api_version" in config and config["api_version"] == "3.0":
+            self.owm_api_version = "3.0"
+        else:
+            self.owm_api_version = "2.5"
         if "orientation" in config:
             self.orientation = config["orientation"]
             assert self.orientation in ["horizontal", "vertical"]
@@ -310,7 +317,8 @@ class Fullweather(inkycal_module):
             self.image.paste(uvIcon, (15, ux_y))
 
             # uvindex
-            uvString = f"{self.current_weather['uvi'] if self.current_weather['uvi'] else '0'}"
+            uvi = self.current_weather["uvi"] if self.current_weather["uvi"] else 0.0
+            uvString = f"{uvi:.1f}"
             uvFont = self.get_font("Bold", self.font_size + 8)
             image_draw.text((65, ux_y), uvString, font=uvFont, fill=(255, 255, 255))
 
@@ -602,7 +610,9 @@ class Fullweather(inkycal_module):
         # Get the weather
         self.my_owm = OpenWeatherMap(
             api_key=self.api_key,
-            city_id=self.location,
+            api_version=self.owm_api_version,
+            lat=self.location_lat,
+            lon=self.location_lon,
             temp_unit=self.temp_unit,
             wind_unit=self.wind_unit,
             language=self.language,
