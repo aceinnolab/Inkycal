@@ -14,7 +14,7 @@ from tests import Config
 preview = Inkyimage.preview
 merge = Inkyimage.merge
 
-url ="https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/mark-harpur-unsplash.jpg"
+url ="https://github.com/aceinnolab/Inkycal/blob/assets/tests/Inkycal_cover.png"
 
 im = Image.open(requests.get(url, stream=True).raw)
 im.save("test.png", "PNG")
