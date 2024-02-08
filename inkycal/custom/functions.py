@@ -110,7 +110,7 @@ def auto_fontsize(font, max_height):
 
 
 def write(image, xy, box_size, text, font=None, **kwargs):
-    """Writes text on a image.
+    """Writes text on an image.
 
     Writes given text at given position on the specified image.
 
@@ -129,9 +129,9 @@ def write(image, xy, box_size, text, font=None, **kwargs):
       - colour: black by default, do not change as it causes issues with rendering
         on e-Paper.
       - rotation: Rotate the text with the text-box by a given angle anti-clockwise.
-      - fill_width: Decimal representing a percentage e.g. 0.9 # 90%. Fill a
+      - fill_width: Decimal representing a percentage e.g. 0.9 # 90%. Fill
         maximum of 90% of the size of the full width of text-box.
-      - fill_height: Decimal representing a percentage e.g. 0.9 # 90%. Fill a
+      - fill_height: Decimal representing a percentage e.g. 0.9 # 90%. Fill
         maximum of 90% of the size of the full height of the text-box.
     """
     allowed_kwargs = ['alignment', 'autofit', 'colour', 'rotation',
@@ -140,7 +140,7 @@ def write(image, xy, box_size, text, font=None, **kwargs):
     # Validate kwargs
     for key, value in kwargs.items():
         if key not in allowed_kwargs:
-            print('{0} does not exist'.format(key))
+            print(f'{key} does not exist')
 
     # Set kwargs if given, it not, use defaults
     alignment = kwargs['alignment'] if 'alignment' in kwargs else 'center'
@@ -176,7 +176,7 @@ def write(image, xy, box_size, text, font=None, **kwargs):
     text_bbox_height = font.getbbox("hg")
     text_height = text_bbox_height[3] - text_bbox_height[1]
 
-    # Truncate text if text is too long so it can fit inside the box
+    # Truncate text if text is too long, so it can fit inside the box
     if (text_width, text_height) > (box_width, box_height):
         logs.debug(('truncating {}'.format(text)))
         while (text_width, text_height) > (box_width, box_height):
@@ -195,18 +195,16 @@ def write(image, xy, box_size, text, font=None, **kwargs):
     elif alignment == 'right':
         x = int(box_width - text_width)
 
-    y = int((box_height / 2) - (text_height / 2))
-
     # Draw the text in the text-box
     draw = ImageDraw.Draw(image)
     space = Image.new('RGBA', (box_width, box_height))
-    ImageDraw.Draw(space).text((x, y), text, fill=colour, font=font)
+    ImageDraw.Draw(space).text((x, 0), text, fill=colour, font=font)
 
     # Uncomment following two lines, comment out above two lines to show
     # red text-box with white text (debugging purposes)
 
     # space = Image.new('RGBA', (box_width, box_height), color= 'red')
-    # ImageDraw.Draw(space).text((x, y), text, fill='white', font=font)
+    # ImageDraw.Draw(space).text((x, 0), text, fill='white', font=font, anchor="la")
 
     if rotation:
         space.rotate(rotation, expand=True)
