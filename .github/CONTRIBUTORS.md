@@ -2,11 +2,11 @@
 | username | Name | Contribution details |
 | --- | --- | --- |
 | **mgfcf** | [Max G.](https://github.com/mgfcf) | for first refactoring of inkycal-software |
-| **Atrejoe**| [Robert Sirre](https://github.com/Atrejoe)| for various suggestions, help with refacotring, implementing gitflow and a lot more...|
+| **Atrejoe**| [Robert Sirre](https://github.com/Atrejoe)| for various suggestions, help with refactoring, implementing gitflow and a lot more...|
 | **vitasam** | [vitasam](https://github.com/vitasam)| for help with refactoring, code improvements, modularity and a lot more... |
 
 ## BETA testers
-The following people have voluteered to test the beta release (pre-release). Thank you all very much for your suggestions, improvements, critics, feedback, time and commitment for Inkycal.
+The following people have volunteered to test the beta release (pre-release). Thank you all very much for your suggestions, improvements, critics, feedback, time and commitment for Inkycal.
 
 | username | Link |
 | --- | --- |
@@ -25,6 +25,7 @@ The following people have voluteered to test the beta release (pre-release). Tha
 | --- | --- | --- |
 | **efredericks** | [Erik Fredericks](https://github.com/efredericks) | for adding Jokes module |
 | **worstface** | [worstface](https://github.com/worstface)| for adding Stocks module |
+  **mrbwburns** | [mrbwburns](https://github.com/mrbwburns) | for adding fullscreen weather module | 
 
 ## Special help
 | username | Name | Contribution details |
