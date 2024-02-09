@@ -1,18 +1,23 @@
 // For format details, see https://aka.ms/devcontainer.json.
 {
 	"name": "Inkycal-dev",
-	"image": "python:3.9-bullseye",
+    "build": {
+            "dockerfile": "Dockerfile",
+            "target": "development"
+    },
 
     // This is the settings.json mount
 	"mounts": ["source=/c/temp/settings_test.json,target=/boot/settings.json,type=bind,consistency=cached"],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip3 install --upgrade pip && pip3 install --user -r requirements.txt",
+	"postCreateCommand": "dos2unix ./.devcontainer/postCreate.sh && chmod +x ./.devcontainer/postCreate.sh && ./.devcontainer/postCreate.sh",
 
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"ms-python.python"
+				"ms-python.python",
+				"ms-python.black-formatter",
+				"ms-azuretools.vscode-docker"
 			]
 		}
 	}

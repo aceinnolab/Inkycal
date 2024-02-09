@@ -3,16 +3,26 @@ Inkycal weather module
 Copyright by aceinnolab
 """
 
+import arrow
 import decimal
+import logging
 import math
 
-import arrow
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 
-from inkycal.custom import *
-from inkycal.custom import OpenWeatherMap
+from inkycal.custom.functions import draw_border
+from inkycal.custom.functions import fonts
+from inkycal.custom.functions import get_system_tz
+from inkycal.custom.functions import internet_available
+from inkycal.custom.functions import write
+from inkycal.custom.inkycal_exceptions import NetworkNotReachableError
+from inkycal.custom.openweathermap_wrapper import OpenWeatherMap
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
+logger.setLevel(level=logging.INFO)
 
 
 class Weather(inkycal_module):
@@ -75,6 +85,8 @@ class Weather(inkycal_module):
 
         config = config['config']
 
+        self.timezone = get_system_tz()
+
         # Check if all required parameters are present
         for param in self.requires:
             if not param in config:
@@ -88,54 +100,52 @@ class Weather(inkycal_module):
         self.round_temperature = config['round_temperature']
         self.round_windspeed = config['round_windspeed']
         self.forecast_interval = config['forecast_interval']
-        self.units = config['units']
         self.hour_format = int(config['hour_format'])
-        self.use_beaufort = config['use_beaufort']
-
-        # additional configuration
-        self.owm = OpenWeatherMap(api_key=self.api_key, city_id=self.location, units=config['units'])
-        self.timezone = get_system_tz()
+        if config['units'] == "imperial":
+            self.temp_unit = "fahrenheit"
+        else:
+            self.temp_unit = "celsius"
+        
+        if config['use_beaufort'] == True:
+            self.wind_unit = "beaufort"
+        elif config['units'] == "imperial":
+            self.wind_unit = "miles_hour"
+        else:
+            self.wind_unit = "meters_sec"
         self.locale = config['language']
+        # additional configuration
+
+        self.owm = OpenWeatherMap(
+            api_key=self.api_key, 
+            city_id=self.location, 
+            wind_unit=self.wind_unit, 
+            temp_unit=self.temp_unit,
+            language=self.locale, 
+            tz_name=self.timezone
+            )
+        
         self.weatherfont = ImageFont.truetype(
             fonts['weathericons-regular-webfont'], size=self.fontsize)
+        
+        if self.wind_unit == "beaufort":
+            self.windDispUnit = "bft"
+        elif self.wind_unit == "knots":
+            self.windDispUnit = "kn"
+        elif self.wind_unit == "km_hour":
+            self.windDispUnit = "km/h"
+        elif self.wind_unit == "miles_hour":
+            self.windDispUnit = "mph"
+        else:
+            self.windDispUnit = "m/s"
+        if self.temp_unit == "fahrenheit":
+            self.tempDispUnit = "F"
+        elif self.temp_unit == "celsius":
+            self.tempDispUnit = "°"
 
         # give an OK message
         print(f"{__name__} loaded")
 
-    @staticmethod
-    def mps_to_beaufort(meters_per_second: float) -> int:
-        """Map meters per second to the beaufort scale.
-
-        Args:
-            meters_per_second:
-                float representing meters per seconds
-
-        Returns:
-            an integer of the beaufort scale mapping the input
-        """
-        thresholds = [0.3, 1.6, 3.4, 5.5, 8.0, 10.8, 13.9, 17.2, 20.7, 24.5, 28.4]
-        return next((i for i, threshold in enumerate(thresholds) if meters_per_second < threshold), 11)
-
-    @staticmethod
-    def mps_to_mph(meters_per_second: float) -> float:
-        """Map meters per second to miles per hour, rounded to one decimal place.
-
-        Args:
-            meters_per_second:
-                float representing meters per seconds.
-
-        Returns:
-            float representing the input value in miles per hour.
-        """
-        # 1 m/s is approximately equal to 2.23694 mph
-        miles_per_hour = meters_per_second * 2.23694
-        return round(miles_per_hour, 1)
-
-    @staticmethod
-    def celsius_to_fahrenheit(celsius: int or float):
-        """Converts the given temperate from degrees Celsius to Fahrenheit."""
-        fahrenheit = (celsius * 9 / 5) + 32
-        return fahrenheit
+    
 
     def generate_image(self):
         """Generate image for this module"""
@@ -180,14 +190,14 @@ class Weather(inkycal_module):
                 7: '\uf0ae'
             }[int(index) & 7]
 
-        def is_negative(temp):
-            """Check if temp is below freezing point of water (0°C/30°F)
+        def is_negative(temp:str):
+            """Check if temp is below freezing point of water (0°C/32°F)
             returns True if temp below freezing point, else False"""
             answer = False
 
-            if temp_unit == 'celsius' and round(float(temp.split('°')[0])) <= 0:
+            if self.temp_unit == 'celsius' and round(float(temp.split(self.tempDispUnit)[0])) <= 0:
                 answer = True
-            elif temp_unit == 'fahrenheit' and round(float(temp.split('°')[0])) <= 0:
+            elif self.temp_unit == 'fahrenheit' and round(float(temp.split(self.tempDispUnit)[0])) <= 32:
                 answer = True
             return answer
 
@@ -389,24 +399,18 @@ class Weather(inkycal_module):
 
         # Create current-weather and weather-forecast objects
         logging.debug('looking up location by ID')
-        weather = self.owm.get_current_weather()
-        forecast = self.owm.get_weather_forecast()
+        current_weather = self.owm.get_current_weather()
+        weather_forecasts = self.owm.get_weather_forecast()
 
         # Set decimals
-        dec_temp = None if self.round_temperature == True else 1
-        dec_wind = None if self.round_windspeed == True else 1
+        dec_temp = 0 if self.round_temperature == True else 1
+        dec_wind = 0 if self.round_windspeed == True else 1
 
-        # Set correct temperature units
-        if self.units == 'metric':
-            temp_unit = 'celsius'
-        elif self.units == 'imperial':
-            temp_unit = 'fahrenheit'
-
-        logging.debug(f'temperature unit: {self.units}')
+        logging.debug(f'temperature unit: {self.temp_unit}')
         logging.debug(f'decimals temperature: {dec_temp} | decimals wind: {dec_wind}')
 
         # Get current time
-        now = arrow.utcnow()
+        now = arrow.utcnow().to(self.timezone)
 
         fc_data = {}
 
@@ -414,90 +418,41 @@ class Weather(inkycal_module):
 
             logger.debug("getting hourly forecasts")
 
-            # Forecasts are provided for every 3rd full hour
-            # find out how many hours there are until the next 3rd full hour
-            if (now.hour % 3) != 0:
-                hour_gap = 3 - (now.hour % 3)
-            else:
-                hour_gap = 3
-
-            # Create timings for hourly forecasts
-            forecast_timings = [now.shift(hours=+ hour_gap + _).floor('hour')
-                                for _ in range(0, 12, 3)]
-
-            # Create forecast objects for given timings
-            forecasts = [_ for _ in forecast if arrow.get(_["dt"]) in forecast_timings]
-
-            # Add forecast-data to fc_data dictionary
+            # Add next 4 forecasts to fc_data dictionary, since we only have
             fc_data = {}
-            for forecast in forecasts:
-                if self.units == "metric":
-                    temp = f"{round(weather['main']['temp'], ndigits=dec_temp)}°C"
-                else:
-                    temp = f"{round(self.celsius_to_fahrenheit(weather['main']['temp']), ndigits=dec_temp)}°F"
-
-                icon = forecast["weather"][0]["icon"]
-                fc_data['fc' + str(forecasts.index(forecast) + 1)] = {
-                    'temp': temp,
-                    'icon': icon,
-                    'stamp': forecast_timings[forecasts.index(forecast)].to(
-                        get_system_tz()).format('H.00' if self.hour_format == 24 else 'h a')
-                }
+            for index, forecast in enumerate(weather_forecasts[0:4]):
+                fc_data['fc' + str(index + 1)] = {
+                    'temp': f"{forecast['temp']:.{dec_temp}f}{self.tempDispUnit}",
+                    'icon': forecast["icon"],
+                    'stamp': forecast["datetime"].strftime("%I %p" if self.hour_format == 12 else "%H:%M")}
 
         elif self.forecast_interval == 'daily':
 
             logger.debug("getting daily forecasts")
 
-            def calculate_forecast(days_from_today) -> dict:
-                """Get temperature range and most frequent icon code for forecast
-                days_from_today should be int from 1-4: e.g. 2 -> 2 days from today
-                """
+            daily_forecasts = [self.owm.get_forecast_for_day(days) for days in range(1, 5)]
 
-                # Create a list containing time-objects for every 3rd hour of the day
-                time_range = list(
-                    arrow.Arrow.range('hour',
-                                      now.shift(days=days_from_today).floor('day'),
-                                      now.shift(days=days_from_today).ceil('day')
-                                      ))[::3]
-
-                # Get forecasts for each time-object
-                forecasts = [_ for _ in forecast if arrow.get(_["dt"]) in time_range]
-
-                # Get all temperatures for this day
-                daily_temp = [round(_["main"]["temp"]) for _ in forecasts]
-                # Calculate min. and max. temp for this day
-                temp_range = f'{min(daily_temp)}°/{max(daily_temp)}°'
-
-                # Get all weather icon codes for this day
-                daily_icons = [_["weather"][0]["icon"] for _ in forecasts]
-                # Find most common element from all weather icon codes
-                status = max(set(daily_icons), key=daily_icons.count)
-
-                weekday = now.shift(days=days_from_today).format('ddd', locale=self.locale)
-                return {'temp': temp_range, 'icon': status, 'stamp': weekday}
-
-            forecasts = [calculate_forecast(days) for days in range(1, 5)]
-
-            for forecast in forecasts:
-                fc_data['fc' + str(forecasts.index(forecast) + 1)] = {
-                    'temp': forecast['temp'],
+            for index, forecast in enumerate(daily_forecasts):
+                fc_data['fc' + str(index +1)] = {
+                    'temp': f'{forecast["temp_min"]:.{dec_temp}f}{self.tempDispUnit}/{forecast["temp_max"]:.{dec_temp}f}{self.tempDispUnit}',
                     'icon': forecast['icon'],
-                    'stamp': forecast['stamp']
+                    'stamp': forecast['datetime'].strftime("%A")
                 }
+        else:
+            logger.error(f"Invalid forecast interval specified: {self.forecast_interval}. Check your settings!")
 
         for key, val in fc_data.items():
             logger.debug((key, val))
 
         # Get some current weather details
-        if dec_temp != 0:
-            temperature = f"{round(weather['main']['temp'])}°"
-        else:
-            temperature = f"{round(weather['main']['temp'], ndigits=dec_temp)}°"
 
-        weather_icon = weather["weather"][0]["icon"]
-        humidity = str(weather["main"]["humidity"])
-        sunrise_raw = arrow.get(weather["sys"]["sunrise"]).to(self.timezone)
-        sunset_raw = arrow.get(weather["sys"]["sunset"]).to(self.timezone)
+        temperature = f"{current_weather['temp']:.{dec_temp}f}{self.tempDispUnit}"
+
+        weather_icon = current_weather["weather_icon_name"]
+        humidity = str(current_weather["humidity"])
+
+        sunrise_raw = arrow.get(current_weather["sunrise"]).to(self.timezone)
+        sunset_raw = arrow.get(current_weather["sunset"]).to(self.timezone)
 
         logger.debug(f'weather_icon: {weather_icon}')
 
@@ -512,16 +467,8 @@ class Weather(inkycal_module):
             sunset = sunset_raw.format('H:mm')
 
         # Format the wind-speed to user preference
-        if self.use_beaufort:
-            logger.debug("using beaufort for wind")
-            wind = str(self.mps_to_beaufort(weather["wind"]["speed"]))
-        else:
-            if self.units == 'metric':
-                logging.debug('getting wind speed in meters per second')
-                wind = f"{weather['wind']['speed']} m/s"
-            else:
-                logging.debug('getting wind speed in imperial unit')
-                wind = f"{self.mps_to_mph(weather['wind']['speed'])} miles/h"
+        logging.debug(f'getting wind speed in {self.windDispUnit}')
+        wind = f"{current_weather['wind']:.{dec_wind}f} {self.windDispUnit}"
 
         moon_phase = get_moon_phase()
 

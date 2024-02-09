@@ -4,6 +4,12 @@ The order is from latest to oldest and structured in the following way:
 * Version name with date of publishing
 * Sections with either 'added', 'fixed', 'updated' and 'changed'
 
+## [2.0.3] 2024
+### Added
+* Added fullscreen weather module
+* Own OWM API abstraction as a replacement for PyOWM module
+
+
 ## [2.0.2] 2022
 ### Added
 * Added support of 12.48" E-Paper display (all variants)
