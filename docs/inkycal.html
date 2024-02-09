@@ -89,9 +89,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.inky_image.Inkyimage.preview"><code class="docutils literal notranslate"><span class="pre">Inkyimage.preview()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.inky_image.Inkyimage.remove_alpha"><code class="docutils literal notranslate"><span class="pre">Inkyimage.remove_alpha()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.inky_image.Inkyimage.resize"><code class="docutils literal notranslate"><span class="pre">Inkyimage.resize()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#inkycal.modules.inky_image.Inkyimage.to_palette"><code class="docutils literal notranslate"><span class="pre">Inkyimage.to_palette()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#inkycal.modules.inky_image.image_to_palette"><code class="docutils literal notranslate"><span class="pre">image_to_palette()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About Inkycal</a></li>
@@ -261,13 +261,13 @@ printed fonts of this function:</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inkycal.custom.functions.get_system_tz">
-<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">get_system_tz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.get_system_tz" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">get_system_tz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#inkycal.custom.functions.get_system_tz" title="Link to this definition"></a></dt>
 <dd><p>Gets the system-timezone</p>
 <p>Gets the timezone set by the system.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><ul class="simple">
 <li><p>A timezone if a system timezone was found.</p></li>
-<li><p>None if no timezone was found.</p></li>
+<li><p>UTC if no timezone was found.</p></li>
 </ul>
 </dd>
 </dl>
@@ -524,9 +524,11 @@ white pixels.</p>
 <dd><p>Resize an image to desired width or height</p>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="inkycal.modules.inky_image.Inkyimage.to_palette">
-<span class="sig-name descname"><span class="pre">to_palette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">palette</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dither=True)</span> <span class="pre">-&gt;</span> <span class="pre">(&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/home/runner/work/Inkycal/Inkycal/venv/lib/python3.11/site-packages/PIL/Image.py'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/home/runner/work/Inkycal/Inkycal/venv/lib/python3.11/site-packages/PIL/Image.py'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.inky_image.Inkyimage.to_palette" title="Link to this definition"></a></dt>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inkycal.modules.inky_image.image_to_palette">
+<span class="sig-prename descclassname"><span class="pre">inkycal.modules.inky_image.</span></span><span class="sig-name descname"><span class="pre">image_to_palette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">image:</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/home/runner/work/Inkycal/Inkycal/venv/lib/python3.11/site-packages/PIL/Image.py'&gt;,</span> <span class="pre">palette:</span> <span class="pre">~typing.Literal</span> <span class="pre">=</span> <span class="pre">['bwr',</span> <span class="pre">'bwy',</span> <span class="pre">'bw',</span> <span class="pre">'16gray'],</span> <span class="pre">dither:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True)</span> <span class="pre">-&gt;</span> <span class="pre">(&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/home/runner/work/Inkycal/Inkycal/venv/lib/python3.11/site-packages/PIL/Image.py'&gt;,</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/home/runner/work/Inkycal/Inkycal/venv/lib/python3.11/site-packages/PIL/Image.py'&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.modules.inky_image.image_to_palette" title="Link to this definition"></a></dt>
 <dd><p>Maps an image to a given colour palette.</p>
 <p>Maps each pixel from the image to a colour from the palette.</p>
 <dl class="simple">
@@ -551,8 +553,6 @@ white pixels.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;16gray&#39;</span> <span class="c1"># 16 shades of gray</span>
 </pre></div>
 </div>
-</dd></dl>
-
 </dd></dl>
 
 </section>
