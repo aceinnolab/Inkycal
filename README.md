@@ -165,7 +165,7 @@ Run the following steps to install Inkycal. Do **not** use sudo for this, except
 
 ```bash
 # the next line is for the Raspberry Pi only
-sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf
+sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev
 cd $HOME
 git clone --branch main --single-branch https://github.com/aceinnolab/Inkycal
 cd Inkycal

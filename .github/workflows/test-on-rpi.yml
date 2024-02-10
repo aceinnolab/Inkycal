@@ -44,7 +44,7 @@ jobs:
             sudo apt-get update -y
             python --version
             sudo apt-get install -y python3-pip
-            sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf -y
+            sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev -y
             echo $PWD && ls
             git clone --branch main --single-branch https://github.com/aceinnolab/Inkycal
             cd Inkycal
