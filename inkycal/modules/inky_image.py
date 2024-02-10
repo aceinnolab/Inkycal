@@ -255,7 +255,7 @@ def image_to_palette(
 
     else:
         logger.error("The given palette is unsupported.")
-        raise ValueError("The given palette is not supported.")
+        raise ValueError(f"The given palette ({palette}) is not supported.")
 
     if pal:
         # The palette needs to have 256 colors, for this, the black-colour

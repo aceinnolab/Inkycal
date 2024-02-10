@@ -6,7 +6,7 @@ import glob
 
 from inkycal.custom import *
 # PIL has a class named Image, use alias for Inkyimage -> Images
-from inkycal.modules.inky_image import Inkyimage as Images
+from inkycal.modules.inky_image import Inkyimage as Images, image_to_palette
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
@@ -118,7 +118,7 @@ class Slideshow(inkycal_module):
         im.resize(width=im_width, height=im_height)
 
         # convert images according to specified palette
-        im_black, im_colour = im.to_palette(self.palette)
+        im_black, im_colour = image_to_palette(im.image.convert("RGB"), self.palette)
 
         # with the images now send, clear the current image
         im.clear()

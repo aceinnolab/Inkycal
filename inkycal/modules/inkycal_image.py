@@ -79,7 +79,7 @@ class Inkyimage(inkycal_module):
         im.resize(width=im_width, height=im_height)
 
         # convert images according to specified palette
-        im_black, im_colour = image_to_palette(image=im, palette=self.palette, dither=self.dither)
+        im_black, im_colour = image_to_palette(image=im.image.convert("RGB"), palette=self.palette, dither=self.dither)
 
         # with the images now send, clear the current image
         im.clear()
