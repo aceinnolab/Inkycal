@@ -6,7 +6,7 @@ by https://github.com/worstface
 import xkcd
 
 from inkycal.custom import *
-from inkycal.modules.inky_image import Inkyimage as Images
+from inkycal.modules.inky_image import Inkyimage as Image2, image_to_palette
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ class Xkcd(inkycal_module):
             "default": "latest"
         },
         "palette": {
-            "label": "Which color palette should be used for the comic images?",
+            "label": "Which color palette should be used for the comic Image2?",
             "options": ["bw", "bwr", "bwy"]
         },
         "alt": {
@@ -149,7 +149,7 @@ class Xkcd(inkycal_module):
         comicSpaceBlack = Image.new('RGBA', (im_width, im_height), (255, 255, 255, 255))
         comicSpaceColour = Image.new('RGBA', (im_width, im_height), (255, 255, 255, 255))
 
-        im = Images()
+        im = Image2()
         im.load(f"{tmpPath}/xkcdComic.png")
         im.remove_alpha()
 
@@ -170,7 +170,7 @@ class Xkcd(inkycal_module):
 
         im.resize(width=int(im.image.width * imageScale), height=comicHeight)
 
-        im_comic_black, im_comic_colour = im.to_palette(self.palette)
+        im_comic_black, im_comic_colour = image_to_palette(im.image.convert("RGB"), self.palette)
 
         headerCenterPosY = int((im_height / 2) - ((im.image.height + headerHeight + altHeight) / 2))
         comicCenterPosY = int((im_height / 2) - ((im.image.height + headerHeight + altHeight) / 2) + headerHeight)

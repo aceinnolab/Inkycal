@@ -6,7 +6,7 @@ by https://github.com/worstface
 from htmlwebshot import WebShot
 
 from inkycal.custom import *
-from inkycal.modules.inky_image import Inkyimage as Images
+from inkycal.modules.inky_image import Inkyimage as Images, image_to_palette
 from inkycal.modules.template import inkycal_module
 from tests import Config
 
@@ -145,7 +145,7 @@ class Webshot(inkycal_module):
 
         im.resize(width=int(im.image.width * imageScale), height=webshotHeight)
 
-        im_webshot_black, im_webshot_colour = im.to_palette(self.palette)
+        im_webshot_black, im_webshot_colour = image_to_palette(im.image.convert("RGB"), self.palette)
 
         webshotCenterPosY = int((im_height / 2) - (im.image.height / 2))
 
