@@ -45,7 +45,7 @@ jobs:
 
             # try support for python 3.12
             wget https://www.python.org/ftp/python/3.12.2/Python-3.12.2.tgz
-            sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev  libsqlite3-dev
+            sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev  libsqlite3-dev -y
             tar -xzvf Python-3.12.2.tgz 
             cd Python-3.12.2/
             ./configure --enable-optimizations
