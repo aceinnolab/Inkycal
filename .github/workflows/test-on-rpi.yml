@@ -32,7 +32,7 @@ jobs:
           base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-12-11/2023-12-11-raspios-bookworm-armhf-lite.img.xz
           image_additional_mb: 2560 # enlarge free space to 2.5 GB
           optimize_image: true
-          user: inky
+          # user: inky --> not supported?
           commands: |
             cd /home
             sudo useradd -m -p "$(openssl passwd -1 $INKY_INITAL_PASSWORD)" inky
@@ -42,13 +42,24 @@ jobs:
             whoami
             cd /home/inky
             sudo apt-get update -y
+
+            # try support for python 3.12
+            wget https://www.python.org/ftp/python/3.12.2/Python-3.12.2.tgz
+            sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev  libsqlite3-dev
+            tar -xzvf Python-3.12.2.tgz 
+            cd Python-3.12.2/
+            ./configure --enable-optimizations
+            sudo make altinstall
+            sudo rm /usr/bin/python
+            sudo ln -s /usr/local/bin/python3.12 /usr/bin/python
+
             python --version
             sudo apt-get install -y python3-pip
             sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev -y
             echo $PWD && ls
             git clone --branch main --single-branch https://github.com/aceinnolab/Inkycal
             cd Inkycal
-            python3 -m venv venv
+            python3.12 -m venv venv
             . venv/bin/activate
             python -m pip install --upgrade pip
             pip install wheel
