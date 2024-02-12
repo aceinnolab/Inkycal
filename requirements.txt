@@ -21,7 +21,6 @@ identify==2.5.34
 idna==3.6
 kiwisolver==1.4.5
 lgpio==0.0.0.2
-lxml==5.1.0
 matplotlib==3.8.2
 multitasking==0.0.11
 nodeenv==1.8.0
