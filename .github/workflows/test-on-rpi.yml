@@ -48,7 +48,7 @@ jobs:
             echo $PWD && ls
             git clone --branch main --single-branch https://github.com/aceinnolab/Inkycal
             cd Inkycal
-            python3.12 -m venv venv
+            python3.11 -m venv venv
             . venv/bin/activate
             python -m pip install --upgrade pip
             pip install wheel
