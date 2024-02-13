@@ -41,10 +41,15 @@ jobs:
             echo $HOME
             whoami
             cd /home/inky
-            sudo apt-get update -y
+            sudo apt-get -qq update -y
             python --version
-            sudo apt-get install -y python3-pip
-            sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev -y
+            sudo apt-get install -qq python3-pip -y
+            sudo apt-get install -qq zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev -y
+            
+            # fix some certificate errors
+            sudo update-ca-certificates --fresh
+            export SSL_CERT_DIR=/etc/ssl/certs
+            
             echo $PWD && ls
             git clone --branch main --single-branch https://github.com/aceinnolab/Inkycal
             cd Inkycal
