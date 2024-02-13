@@ -1,4 +1,4 @@
-name: Run tests on Raspberry Pi OS
+name: Raspberry Pi build
 
 on:
   push:
