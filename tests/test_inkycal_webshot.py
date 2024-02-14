@@ -16,7 +16,7 @@ tests = [
         "name": "Webshot",
         "config": {
             "size": [400, 100],
-            "url": "https://www.catsuthecat.com/blogs/comics/the-one-about-regeneration",
+            "url": "https://github.com",
             "palette": "bwr",
             "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
         }
@@ -26,7 +26,7 @@ tests = [
         "name": "Webshot",
         "config": {
             "size": [400, 200],
-            "url": "https://www.catsuthecat.com/blogs/comics/the-one-about-crazy-friday-nights",
+            "url": "https://github.com",
             "palette": "bwy",
             "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
         }
@@ -36,7 +36,7 @@ tests = [
         "name": "Webshot",
         "config": {
             "size": [400, 300],
-            "url": "https://www.catsuthecat.com/blogs/comics/the-one-about-teamwork",
+            "url": "https://github.com",
             "palette": "bw",
             "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
         }
@@ -46,7 +46,7 @@ tests = [
         "name": "Webshot",
         "config": {
             "size": [400, 400],
-            "url": "https://www.catsuthecat.com/blogs/comics/the-one-about-addictions-1",
+            "url": "https://github.com",
             "palette": "bwr",
             "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
         }
