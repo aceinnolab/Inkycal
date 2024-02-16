@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 class TextToDisplay(inkycal_module):
     """TextToDisplay module - Display text from a local file on the display
     """
+    name = "TextToDisplay - Display text from a local file on the display"
 
     def __init__(self, config):
         """Initialize inkycal_textfile_to_display module"""
