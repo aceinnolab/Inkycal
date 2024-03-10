@@ -3,27 +3,21 @@ Main class for inkycal Project
 Copyright by aceinnolab
 """
 
+import asyncio
 import glob
 import hashlib
-import json
 from logging.handlers import RotatingFileHandler
 
-import arrow
 import numpy
-import asyncio
-
 
 from inkycal.custom import *
 from inkycal.display import Display
 from inkycal.modules.inky_image import Inkyimage as Images
 
-from PIL import Image
-
 # On the console, set a logger to show only important logs
 # (level ERROR or higher)
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.ERROR)
-
 
 if not os.path.exists(f'{top_level}/logs'):
     os.mkdir(f'{top_level}/logs')
@@ -66,7 +60,7 @@ class Inkycal:
         to improve rendering on E-Papers. Set this to False for 9.7" E-Paper.
     """
 
-    def __init__(self, settings_path:str or None=None, render:bool=True):
+    def __init__(self, settings_path: str or None = None, render: bool = True):
         """Initialise Inkycal"""
 
         # Get the release version from setup.py
@@ -87,7 +81,8 @@ class Inkycal:
                     self.settings = settings
 
             except FileNotFoundError:
-                raise FileNotFoundError(f"No settings.json file could be found in the specified location: {settings_path}")
+                raise FileNotFoundError(
+                    f"No settings.json file could be found in the specified location: {settings_path}")
 
         else:
             try:
@@ -107,6 +102,8 @@ class Inkycal:
         self.optimize = True
 
         self.show_border = self.settings.get('border_around_modules', False)
+
+        self.cleanup()
 
         # Load drivers if image should be rendered
         if self.render:
@@ -146,7 +143,7 @@ class Inkycal:
                 logger.exception(f'Could not find module: "{module}". Please try to import manually')
 
             # If something unexpected happened, show the error message
-            except Exception as e:
+            except:
                 logger.exception(f"Exception: {traceback.format_exc()}.")
 
         # Path to store images
@@ -158,8 +155,16 @@ class Inkycal:
         # Give an OK message
         print('loaded inkycal')
 
-    def countdown(self, interval_mins=None):
-        """Returns the remaining time in seconds until next display update"""
+    def countdown(self, interval_mins: int or None = None) -> int:
+        """Returns the remaining time in seconds until next display update.
+
+        Args:
+            - interval_mins = int -> the interval in minutes for the update
+                if no interval is given, the value from the settings file is used.
+
+        Returns:
+            - int -> the remaining time in seconds until next update
+        """
 
         # Check if empty, if empty, use value from settings file
         if interval_mins is None:
@@ -167,20 +172,30 @@ class Inkycal:
 
         # Find out at which minutes the update should happen
         now = arrow.now()
-        update_timings = [(60 - int(interval_mins) * updates) for updates in
-                          range(60 // int(interval_mins))][::-1]
+        if interval_mins <= 60:
+            update_timings = [(60 - interval_mins * updates) for updates in range(60 // interval_mins)][::-1]
 
-        # Calculate time in minutes until next update
-        minutes = [_ for _ in update_timings if _ >= now.minute][0] - now.minute
+            # Calculate time in minutes until next update
+            minutes = [_ for _ in update_timings if _ >= now.minute][0] - now.minute
 
-        # Print the remaining time in minutes until next update
-        print(f'{minutes} minutes left until next refresh')
+            # Print the remaining time in minutes until next update
+            print(f'{minutes} minutes left until next refresh')
 
-        # Calculate time in seconds until next update
-        remaining_time = minutes * 60 + (60 - now.second)
+            # Calculate time in seconds until next update
+            remaining_time = minutes * 60 + (60 - now.second)
 
-        # Return seconds until next update
-        return remaining_time
+            # Return seconds until next update
+            return remaining_time
+        else:
+            # Calculate time in minutes until next update using the range of 24 hours in steps of every full hour
+            update_timings = [(60 * 24 - interval_mins * updates) for updates in range(60 * 24 // interval_mins)][::-1]
+            minutes = [_ for _ in update_timings if _ >= now.minute][0] - now.minute
+            remaining_time = minutes * 60 + (60 - now.second)
+
+            print(f'{round(minutes / 60, 1)} hours left until next refresh')
+
+            # Return seconds until next update
+            return remaining_time
 
     def test(self):
         """Tests if Inkycal can run without issues.
@@ -261,7 +276,6 @@ class Inkycal:
                 self._write_image_hash(item[0], item[1])
             print("Refresh needed: {a}".format(a=res))
         return res
-
 
     async def run(self):
         """Runs main program in nonstop mode.
@@ -346,8 +360,8 @@ class Inkycal:
 
                     # render the image on the display
                     if not self.settings.get('image_hash', False) or self._needs_image_update([
-                      (f"{self.image_folder}/canvas.png.hash", im_black),
-                      (f"{self.image_folder}/canvas_colour.png.hash", im_colour)
+                        (f"{self.image_folder}/canvas.png.hash", im_black),
+                        (f"{self.image_folder}/canvas_colour.png.hash", im_colour)
                     ]):
                         # render the image on the display
                         display.render(im_black, im_colour)
@@ -362,7 +376,7 @@ class Inkycal:
                         im_black = upside_down(im_black)
 
                     if not self.settings.get('image_hash', False) or self._needs_image_update([
-                      (f"{self.image_folder}/canvas.png.hash", im_black),
+                        (f"{self.image_folder}/canvas.png.hash", im_black),
                     ]):
                         display.render(im_black)
 
@@ -556,6 +570,16 @@ class Inkycal:
             self._calibration_state = True
         else:
             self._calibration_state = False
+
+    @staticmethod
+    def cleanup():
+        # clean up old images in image_folder
+        for _file in glob.glob(f"{image_folder}*.png"):
+            try:
+                os.remove(_file)
+            except:
+                logger.error(f"could not remove file: {_file}")
+                pass
 
 
 if __name__ == '__main__':

@@ -21,7 +21,7 @@ logs = logging.getLogger(__name__)
 logs.setLevel(level=logging.INFO)
 
 # Get the path to the Inkycal folder
-top_level = os.path.dirname(os.path.abspath(os.path.dirname(__file__))).split("/inkycal")[0]
+top_level = "/".join(os.path.dirname(os.path.abspath(os.path.dirname(__file__))).split("/")[:-1])
 
 # Get path of 'fonts' and 'images' folders within Inkycal folder
 fonts_location = os.path.join(top_level, "fonts/")
