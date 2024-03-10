@@ -2,15 +2,14 @@
 Inkycal ePaper driving functions
 Copyright by aceisace
 """
-import logging
 import os
-import traceback
 from importlib import import_module
 
 import PIL
 from PIL import Image
 
 from inkycal.custom import top_level
+from inkycal.display.supported_models import supported_models
 
 
 def import_driver(model):
@@ -47,14 +46,12 @@ class Display:
         except FileNotFoundError:
             raise Exception('SPI could not be found. Please check if SPI is enabled')
 
-
     def test(self) -> None:
         """Test the display by showing a test image"""
         # TODO implement test image
         raise NotImplementedError("Devs were too lazy again, sorry, please try again later")
 
-
-    def render(self, im_black: PIL.Image, im_colour: PIL.Image or None=None) -> None:
+    def render(self, im_black: PIL.Image, im_colour: PIL.Image or None = None) -> None:
         """Renders an image on the selected E-Paper display.
 
         Initlializes the E-Paper display, sends image data and executes command
@@ -166,26 +163,25 @@ class Display:
     def get_display_size(cls, model_name) -> (int, int):
         """Returns the size of the display as a tuple -> (width, height)
 
-        Looks inside "drivers" folder for the given model name, then returns it's
+        Looks inside supported_models file for the given model name, then returns it's
         size.
 
         Args:
-          - model_name: str -> The name of the E-Paper display to get it's size.
+            model_name: str -> The name of the E-Paper display to get it's size.
 
         Returns:
-          (width, height) ->tuple, showing the size of the display
+            (width, height) representing the size of the display
+
+        Raises:
+            AssertionError: If the display name was not found in the supported models.
 
         You can use this function directly without creating the Display class:
 
         >>> Display.get_display_size('model_name')
         """
-        try:
-            driver = import_driver(model_name)
-            return driver.EPD_WIDTH, driver.EPD_HEIGHT
-        except:
-            logging.error(f'Failed to load driver for ${model_name}. Check spelling?')
-            print(traceback.format_exc())
-            raise AssertionError("Could not import driver")
+        if model_name in supported_models:
+            return supported_models[model_name]
+        raise AssertionError(f'{model_name} not found in supported models')
 
     @classmethod
     def get_display_names(cls) -> list:
