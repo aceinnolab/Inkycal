@@ -137,7 +137,7 @@ class Agenda(inkycal_module):
         # Set the width for date, time and event titles
         date_width = int(max([self.font.getlength(
             dates['begin'].format(self.date_format, locale=self.language))
-            for dates in agenda_events]) * 1.2)
+            for dates in agenda_events]))
         logger.debug(f'date_width: {date_width}')
 
         # Calculate positions for each line
@@ -152,7 +152,7 @@ class Agenda(inkycal_module):
 
             time_width = int(max([self.font.getlength(
                 events['begin'].format(self.time_format, locale=self.language))
-                for events in upcoming_events]))
+                for events in upcoming_events]+[self.font.getlength("all day")]))
             logger.debug(f'time_width: {time_width}')
 
             # Calculate x-pos for time
