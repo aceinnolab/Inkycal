@@ -132,7 +132,7 @@ class Agenda(inkycal_module):
 
         # Sort events by beginning time
         parser.sort()
-        print(parser.show_events())
+        # parser.show_events()
 
         # Set the width for date, time and event titles
         date_width = int(max([self.font.getlength(
