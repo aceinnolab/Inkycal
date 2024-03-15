@@ -152,7 +152,7 @@ class Agenda(inkycal_module):
 
             time_width = int(max([self.font.getlength(
                 events['begin'].format(self.time_format, locale=self.language))
-                for events in upcoming_events]))
+                for events in upcoming_events]) + 10)
             logger.debug(f'time_width: {time_width}')
 
             # Calculate x-pos for time
