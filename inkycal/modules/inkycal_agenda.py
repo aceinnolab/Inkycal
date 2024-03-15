@@ -137,7 +137,7 @@ class Agenda(inkycal_module):
         # Set the width for date, time and event titles
         date_width = int(max([self.font.getlength(
             dates['begin'].format(self.date_format, locale=self.language))
-            for dates in agenda_events]) * 1.2)
+            for dates in agenda_events]))
         logger.debug(f'date_width: {date_width}')
 
         # Calculate positions for each line
@@ -152,19 +152,19 @@ class Agenda(inkycal_module):
 
             time_width = int(max([self.font.getlength(
                 events['begin'].format(self.time_format, locale=self.language))
-                for events in upcoming_events]) * 1.2)
+                for events in upcoming_events]) + 10)
             logger.debug(f'time_width: {time_width}')
 
             # Calculate x-pos for time
-            x_time = date_width
+            x_time = int(date_width/3)
             logger.debug(f'x-time: {x_time}')
 
             # Find out how much space is left for event titles
-            event_width = im_width - time_width - date_width
+            event_width = im_width - time_width 
             logger.debug(f'width for events: {event_width}')
 
             # Calculate x-pos for event titles
-            x_event = date_width + time_width
+            x_event = int(date_width/3) + time_width
             logger.debug(f'x-event: {x_event}')
 
             # Merge list of dates and list of events
@@ -202,11 +202,15 @@ class Agenda(inkycal_module):
                     if not parser.all_day(_):
                         write(im_black, (x_time, line_pos[cursor][1]),
                               (time_width, line_height), time,
-                              font=self.font, alignment='left')
+                              font=self.font, alignment='right')
+                    if parser.all_day(_):
+                        write(im_black, (x_time, line_pos[cursor][1]),
+                              (time_width, line_height), "all day",
+                              font=self.font, alignment='right')
 
                     write(im_black, (x_event, line_pos[cursor][1]),
                           (event_width, line_height),
-                          '• ' + title, font=self.font, alignment='left')
+                          ' • ' + title, font=self.font, alignment='left')
                     cursor += 1
 
         # If no events were found, write only dates and lines
