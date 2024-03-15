@@ -156,15 +156,15 @@ class Agenda(inkycal_module):
             logger.debug(f'time_width: {time_width}')
 
             # Calculate x-pos for time
-            x_time = date_width
+            x_time = int(date_width/3)
             logger.debug(f'x-time: {x_time}')
 
             # Find out how much space is left for event titles
-            event_width = im_width - time_width - date_width
+            event_width = im_width - time_width - int(date_width/3)
             logger.debug(f'width for events: {event_width}')
 
             # Calculate x-pos for event titles
-            x_event = date_width + time_width
+            x_event = int(date_width/3) + time_width
             logger.debug(f'x-event: {x_event}')
 
             # Merge list of dates and list of events
