@@ -132,7 +132,7 @@ class Agenda(inkycal_module):
 
         # Sort events by beginning time
         parser.sort()
-        # parser.show_events()
+        print(parser.show_events())
 
         # Set the width for date, time and event titles
         date_width = int(max([self.font.getlength(
@@ -203,7 +203,6 @@ class Agenda(inkycal_module):
                         write(im_black, (x_time, line_pos[cursor][1]),
                               (time_width, line_height), time+" ",
                               font=self.font, alignment='right')
-                    # Check if event is all day, if it is, add "all day" where time would be
                     if parser.all_day(_):
                         write(im_black, (x_time, line_pos[cursor][1]),
                               (time_width, line_height), "all day ",
