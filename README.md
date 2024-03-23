@@ -120,7 +120,7 @@ following settings:
 
 ```bash
 sudo raspi-config --expand-rootfs
-sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
+sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/firmware/config.txt
 sudo dpkg-reconfigure tzdata
 
 # If you have the 12.48" display, these steps are also required:
