@@ -24,8 +24,8 @@ jobs:
           TINDIE_USERNAME: ${{ secrets.TINDIE_USERNAME }}
         with:
           # Set the base_image to the desired Raspberry Pi OS version
-          base_image: https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz
-          image_additional_mb: 2560 # enlarge free space to 2.5 GB
+          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2024-03-15/2024-03-15-raspios-bookworm-armhf-lite.img.xz
+          image_additional_mb: 3072 # enlarge free space to 3 GB
           optimize_image: true
           commands: |
             cd /home
@@ -71,7 +71,7 @@ jobs:
             sudo dphys-swapfile swapon
 
             # enable SPI
-            sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
+            sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/firmware/config.txt
 
             # enable inkycal start at boot
             sudo -u inky bash -c 'echo "@reboot sleep 60 && cd /home/inky/Inkycal && venv/bin/python inky_run.py &" | crontab -'

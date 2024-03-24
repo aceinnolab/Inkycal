@@ -120,6 +120,8 @@ following settings:
 
 ```bash
 sudo raspi-config --expand-rootfs
+sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/firmware/config.txt
+# note: on older releases, this file is located in /boot/config.txt. If you get an error saying file not found, run the command below:
 sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
 sudo dpkg-reconfigure tzdata
 
