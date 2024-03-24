@@ -72,7 +72,7 @@ jobs:
             sudo dphys-swapfile swapon
 
             # enable SPI
-            sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/firmware/config.txt
+            sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
 
             # enable inkycal start at boot
             sudo -u inky bash -c 'echo "@reboot sleep 60 && cd /home/inky/Inkycal && venv/bin/python inky_run.py &" | crontab -'
