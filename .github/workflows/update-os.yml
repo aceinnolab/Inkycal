@@ -33,7 +33,8 @@ jobs:
             sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi inky
             sudo su inky
             echo $HOME
-            whoami
+            # get kernel info
+            uname -srm
             cd /home/inky
             sudo apt-get update -y
             sudo apt-get dist-upgrade -y
