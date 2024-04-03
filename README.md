@@ -26,10 +26,11 @@ Starting october 2023, Raspberry Pi OS is now based on Debian bookworm and uses 
 default version. Inkycal has been updated to work with python3.11, but the installation of numpy can take a very long
 time, in some cases even hours. If you do not want to wait this long to install Inkycal, you can also get a
 ready-to-flash version of Inkycal called InkycalOS-Lite with everything pre-installed for you by sponsoring
-via [Github Sponsors](https://github.com/sponsors/aceisace). This helps keep up maintenance costs, implement new
+via [GitHub Sponsors](https://github.com/sponsors/aceisace). This helps keep up maintenance costs, implement new
 features and fixing bugs. Please choose the one-time sponsor option and select the one with the plug-and-play version of
 Inkycal. Then, send your email-address to which InkycalOS-Lite should be sent.
-Alternatively, you can also use the paypal.me link and send the same amount as Github sponsors to get access to InkycalOS-Lite!
+Alternatively, you can also use the paypal.me link and send the same amount as Github sponsors to get access to
+InkycalOS-Lite!
 
 ## Main features
 
@@ -73,26 +74,31 @@ grayscale levels, which does not compare to the 256 grayscales of LCDs, but far 
 links below may or may not contain the required driver board. Please ensure you get the correct driver board for the
 display!**
 
-| type                                      | vendor                  | Where to buy                                                              |
-|-------------------------------------------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 7.5" Inkycal (plug-and-play)              | Aceinnolab (author)       |  [Buy on Tindie](https://www.tindie.com/products/aceisace4444/inkycal-build-v1/)  Pre-configured version of Inkycal with custom frame and a web-ui. You do not need to buy anything extra. Includes Raspberry Pi Zero W, 7.5" e-paper, microSD card, driver board, custom packaging and 1m of cable. Comes pre-assembled for plug-and-play. |
-| Inkycal frame (kit -> requires wires, 7.5" Display and Zero W with microSD card | Aceinnolab (author)       |  [Buy on Tindie](https://www.tindie.com/products/aceinnolab/inkycal-frame-custom-driver-board-only/) Ultraslim frame with custom-made front and backcover inkl. ultraslim driver board). You will need a Raspberry Pi, microSD card and a 7.5" e-paper display |
-| `[serial]`  12.48" (1304×984px) display   | waveshare / gooddisplay |  Search for `Waveshare 12.48" E-Paper 1304×984` on amazon or similar |
-| `[serial]` 7.5" (640x384px) -> v1 display (2/3-colour) | waveshare / gooddisplay |  Search for `Waveshare 7.5" E-Paper 640x384` on amazon or similar |
-| `[serial]` 7.5" (800x480px) -> v2 display (2/3-colour) | waveshare / gooddisplay |  Search for `Waveshare 7.5" E-Paper 800x480` on amazon or similar |
-| `[serial]` 7.5" (880x528px) -> v3 display (2/3-colour) | waveshare / gooddisplay |  Search for `Waveshare 7.5" E-Paper 800x528` on amazon or similar |
-| `[serial]`  5.83" (400x300px) display     | waveshare / gooddisplay | Search for `Waveshare 5.83" E-Paper 400x300` on amazon or similar |
-| `[serial]`  4.2" (400x300px)display       | waveshare / gooddisplay | Search for `Waveshare 4.2" E-Paper 400x300` on amazon or similar |                                                                                         |
-| `[parallel]` 10.3" (1872×1404px) display  | waveshare / gooddisplay |  Search for `Waveshare 10.3" E-Paper 1872×1404` on amazon or similar |
-| `[parallel]` 9.7" (1200×825px) display    | waveshare / gooddisplay | Search for `Waveshare 9.7" E-Paper 1200×825` on amazon or similar |
-| `[parallel]` 7.8" (1872×1404px) display   | waveshare / gooddisplay |  Search for `Waveshare 7.8" E-Paper 1872×1404` on amazon or similar |
-| Raspberry Pi Zero W                       | Raspberry Pi            |  Search for `Raspberry Pi Zero W` on amazon or similar |
-| MicroSD card                              | Sandisk                 |  Search for `MicroSD card 8GB` on amazon or similar |
+| type                                                                            | vendor                  | Where to buy                                                                                                                                                                                                                                                                                                                                |
+|---------------------------------------------------------------------------------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 7.5" Inkycal (plug-and-play)                                                    | Aceinnolab (author)     |  [Buy on Tindie](https://www.tindie.com/products/aceisace4444/inkycal-build-v1/)  Pre-configured version of Inkycal with custom frame and a web-ui. You do not need to buy anything extra. Includes Raspberry Pi Zero W, 7.5" e-paper, microSD card, driver board, custom packaging and 1m of cable. Comes pre-assembled for plug-and-play. |
+| Inkycal frame (kit -> requires wires, 7.5" Display and Zero W with microSD card | Aceinnolab (author)     | [Buy on Tindie](https://www.tindie.com/products/aceinnolab/inkycal-frame-custom-driver-board-only/) Ultraslim frame with custom-made front and backcover inkl. ultraslim driver board). You will need a Raspberry Pi, microSD card and a 7.5" e-paper display                                                                               |
+| Driver board                                                                    | Aceinnolab (author)     | [Buy on Tindie](https://www.tindie.com/products/aceinnolab/universal-e-paper-driver-board-for-24-pin-spi/) Ultraslim, 24-pin SPI driver board for many serial e-paper displays.                                                                                                                                                             |
+| `[serial]`  12.48" (1304×984px) display                                         | waveshare / gooddisplay |  Search for `Waveshare 12.48" E-Paper 1304×984` on amazon or similar                                                                                                                                                                                                                                                                        |
+| `[serial]` 7.5" (640x384px) -> v1 display (2/3-colour)                          | waveshare / gooddisplay | Search for `Waveshare 7.5" E-Paper 640x384` on amazon or similar                                                                                                                                                                                                                                                                            |
+| `[serial]` 7.5" (800x480px) -> v2 display (2/3-colour)                          | waveshare / gooddisplay | Search for `Waveshare 7.5" E-Paper 800x480` on amazon or similar                                                                                                                                                                                                                                                                            |
+| `[serial]` 7.5" (880x528px) -> v3 display (2/3-colour)                          | waveshare / gooddisplay | Search for `Waveshare 7.5" E-Paper 800x528` on amazon or similar                                                                                                                                                                                                                                                                            |
+| `[serial]`  5.83" (400x300px) display                                           | waveshare / gooddisplay | Search for `Waveshare 5.83" E-Paper 400x300` on amazon or similar                                                                                                                                                                                                                                                                           |
+| `[serial]`  4.2" (400x300px)display                                             | waveshare / gooddisplay | Search for `Waveshare 4.2" E-Paper 400x300` on amazon or similar                                                                                                                                                                                                                                                                            |                                                                                         |
+| `[parallel]` 10.3" (1872×1404px) display                                        | waveshare / gooddisplay |  Search for `Waveshare 10.3" E-Paper 1872×1404` on amazon or similar                                                                                                                                                                                                                                                                        |
+| `[parallel]` 9.7" (1200×825px) display                                          | waveshare / gooddisplay | Search for `Waveshare 9.7" E-Paper 1200×825` on amazon or similar                                                                                                                                                                                                                                                                           |
+| `[parallel]` 7.8" (1872×1404px) display                                         | waveshare / gooddisplay |  Search for `Waveshare 7.8" E-Paper 1872×1404` on amazon or similar                                                                                                                                                                                                                                                                         |
+| Raspberry Pi Zero W                                                             | Raspberry Pi            |  Search for `Raspberry Pi Zero W` on amazon or similar                                                                                                                                                                                                                                                                                      |
+| MicroSD card                                                                    | Sandisk                 |  Search for `MicroSD card 8GB` on amazon or similar                                                                                                                                                                                                                                                                                         |
 
 ## Configuring the Raspberry Pi
 
-Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://rptl.io/imager). Use the
-following settings:
+⚠️ Warning: You cannot use the latest version of Raspberry Pi OS as a kernel upgrade has caused many projects to fail.
+Please only use the version mentioned below.
+Download this specific version
+of [Raspberry Pi OS (11-12-2023)](https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-12-11/2023-12-11-raspios-bookworm-armhf-lite.img.xz)
+Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://rptl.io/imager).
+Use the following settings:
 
 | option                    |            value            |
 |:--------------------------|:---------------------------:|
@@ -120,9 +126,11 @@ following settings:
 
 ```bash
 sudo raspi-config --expand-rootfs
+
 sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/firmware/config.txt
 # note: on older releases, this file is located in /boot/config.txt. If you get an error saying file not found, run the command below:
 sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
+
 sudo dpkg-reconfigure tzdata
 
 # If you have the 12.48" display, these steps are also required:
@@ -158,8 +166,9 @@ to prepare a pre-configured image with the latest version of Inkycal for the Ras
 version of Inkycal, is fully tested and uses the Raspberry Pi OS Lite as it's base image. You only need to copy your
 settings.json file, we already took care of the rest, including auto-start at boot, enabling spi and installing all
 dependencies in advance. Pretty neat right? Check the [sponsor button](https://github.com/sponsors/aceisace) at the very
-top of the repo to get access to Inkycal-OS-Lite. Alternatively, you can also use the paypal.me link and send the same amount as Github sponsors to get access to InkycalOS-Lite! 
-This will help keep this project growing and cover the ongoing expenses too! Win-win for everyone! 🎊 
+top of the repo to get access to Inkycal-OS-Lite. Alternatively, you can also use the PayPal.me link and send the same
+amount as GitHub sponsors to get access to InkycalOS-Lite!
+This will help keep this project growing and cover the ongoing expenses too! Win-win for everyone! 🎊
 
 ### Manual installation
 
