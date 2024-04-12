@@ -18,7 +18,7 @@ html5lib==1.1
 htmlwebshot==0.1.2
 icalendar==5.0.11
 identify==2.5.34
-idna==3.6
+idna==3.7
 kiwisolver==1.4.5
 lgpio==0.0.0.2
 matplotlib==3.7.1
