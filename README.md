@@ -1,19 +1,19 @@
 # Welcome to inkycal v2.0.3!
 
 <p align="center">
+    <a href="https://github.com/aceinnolab/Inkycal/actions/workflows/test-on-rpi.yml"><img src="https://github.com/aceinnolab/Inkycal/actions/workflows/test-on-rpi.yml/badge.svg"></a>
+    <a href="https://discord.gg/sHYKeSM"><img src="https://img.shields.io/discord/672082714190544899?style=flat&logo=discord&logoColor=blue&color=lightorange"></a>
+    <a href="https://github.com/aceinnolab/Inkycal/releases"><img alt="Version" src="https://img.shields.io/github/release/aceisace/Inkycal.svg"/></a>
+    <a href="https://github.com/aceinnolab/Inkycal/blob/main/LICENSE"><img alt="Licence" src="https://img.shields.io/github/license/aceisace/Inkycal.svg" /></a>
+    <a href="https://github.com/aceinnolab/Inkycal"><img alt="python" src="https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11-lightorange"></a>
+    <a href="https://github.com/aceinnolab/Inkycal/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aceisace/Inkycal?color=yellow"></a>
+</p>
+
+<p align="center">
         <img src="https://raw.githubusercontent.com/aceisace/Inkycal/assets/Repo/logo.png" width="900" alt="aceinnolab logo">
 </p>
 <p align="center">
         <img src="https://github.com/aceinnolab/Inkycal/blob/c1c274878ba81ddaee6186561e6ea892da54cd6a/Repo/inkycal-featured-gif.gif" width="900" alt="featured-image">
-</p>
-
-<p align="center">
-        <a href="https://github.com/aceinnolab/Inkycal/actions/workflows/test-on-rpi.yml"><img src="https://github.com/aceinnolab/Inkycal/actions/workflows/test-on-rpi.yml/badge.svg"></a>
-    <a href="https://discord.gg/sHYKeSM"><img src="https://img.shields.io/discord/672082714190544899?style=flat&logo=discord&logoColor=blue&color=lightorange"></a>
-    <a href="https://github.com/aceinnolab/Inkycal/releases"><img alt="Version" src="https://img.shields.io/github/release/aceisace/Inkycal.svg"/></a>
-   <a href="https://github.com/aceinnolab/Inkycal/blob/main/LICENSE"><img alt="Licence" src="https://img.shields.io/github/license/aceisace/Inkycal.svg" /></a>
-   <a href="https://github.com/aceinnolab/Inkycal"><img alt="python" src="https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11-lightorange"></a>
-        <a href="https://github.com/aceinnolab/Inkycal/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aceisace/Inkycal?color=yellow"></a>
 </p>
 
 Inkycal is a software written in python for selected E-Paper displays. It converts these displays into useful
@@ -309,3 +309,8 @@ perks after confirming 💯
 * [schuemann.it](https://schuemann.it/2019/09/11/e-ink-calendar-with-a-raspberry-pi/)
 * [huernerfuerst.de](https://www.huenerfuerst.de/archives/e-ink-kalender-mit-einem-raspberry-pi-zero-teil-1-was-wird-benoetigt)
 * [canox.net](https://canox.net/2019/06/raspberry-pi-als-e-ink-kalender/)
+
+## Our Contributors
+
+<table><tr><td align="center"><a href="https://github.com/aceisace"><img alt="aceisace" src="https://avatars.githubusercontent.com/u/29558518?v=4" width="117" /><br />aceisace</a></td><td align="center"><a href="https://github.com/Atrejoe"><img alt="Atrejoe" src="https://avatars.githubusercontent.com/u/585091?v=4" width="117" /><br />Atrejoe</a></td><td align="center"><a href="https://github.com/actions-user"><img alt="actions-user" src="https://avatars.githubusercontent.com/u/65916846?v=4" width="117" /><br />actions-user</a></td><td align="center"><a href="https://github.com/emilyboda"><img alt="emilyboda" src="https://avatars.githubusercontent.com/u/9170143?v=4" width="117" /><br />emilyboda</a></td><td align="center"><a href="https://github.com/StevenSeifried"><img alt="StevenSeifried" src="https://avatars.githubusercontent.com/u/39765956?v=4" width="117" /><br />StevenSeifried</a></td><td align="center"><a href="https://github.com/mrbwburns"><img alt="mrbwburns" src="https://avatars.githubusercontent.com/u/66523867?v=4" width="117" /><br />mrbwburns</a></td></tr><tr><td align="center"><a href="https://github.com/apps/dependabot"><img alt="dependabot[bot]" src="https://avatars.githubusercontent.com/in/29110?v=4" width="117" /><br />dependabot[bot]</a></td><td align="center"><a href="https://github.com/LakesideMiners"><img alt="LakesideMiners" src="https://avatars.githubusercontent.com/u/23389169?v=4" width="117" /><br />LakesideMiners</a></td><td align="center"><a href="https://github.com/hjiang"><img alt="hjiang" src="https://avatars.githubusercontent.com/u/18527?v=4" width="117" /><br />hjiang</a></td><td align="center"><a href="https://github.com/ch3lmi"><img alt="ch3lmi" src="https://avatars.githubusercontent.com/u/19972012?v=4" width="117" /><br />ch3lmi</a></td><td align="center"><a href="https://github.com/mygrexit"><img alt="mygrexit" src="https://avatars.githubusercontent.com/u/33792951?v=4" width="117" /><br />mygrexit</a></td><td align="center"><a href="https://github.com/tobychui"><img alt="tobychui" src="https://avatars.githubusercontent.com/u/24617523?v=4" width="117" /><br />tobychui</a></td></tr><tr><td align="center"><a href="https://github.com/worstface"><img alt="worstface" src="https://avatars.githubusercontent.com/u/72295005?v=4" width="117" /><br />worstface</a></td><td align="center"><a href="https://github.com/sapostoluk"><img alt="sapostoluk" src="https://avatars.githubusercontent.com/u/7192139?v=4" width="117" /><br />sapostoluk</a></td><td align="center"><a href="https://github.com/freezingDaniel"><img alt="freezingDaniel" src="https://avatars.githubusercontent.com/u/82905307?v=4" width="117" /><br />freezingDaniel</a></td><td align="center"><a href="https://github.com/dealyllama"><img alt="dealyllama" src="https://avatars.githubusercontent.com/u/5891782?v=4" width="117" /><br />dealyllama</a></td><td align="center"><a href="https://github.com/rafaljanicki"><img alt="rafaljanicki" src="https://avatars.githubusercontent.com/u/7746477?v=4" width="117" /><br />rafaljanicki</a></td><td align="center"><a href="https://github.com/priv-kweihmann"><img alt="priv-kweihmann" src="https://avatars.githubusercontent.com/u/46938494?v=4" width="117" /><br />priv-kweihmann</a></td></tr><tr><td align="center"><a href="https://github.com/surak"><img alt="surak" src="https://avatars.githubusercontent.com/u/878399?v=4" width="117" /><br />surak</a></td><td align="center"><a href="https://github.com/AlessandroMandelli"><img alt="AlessandroMandelli" src="https://avatars.githubusercontent.com/u/65062723?v=4" width="117" /><br />AlessandroMandelli</a></td><td align="center"><a href="https://github.com/DavidCamre"><img alt="DavidCamre" src="https://avatars.githubusercontent.com/u/1098069?v=4" width="117" /><br />DavidCamre</a></td><td align="center"><a href="https://github.com/jordanschau"><img alt="jordanschau" src="https://avatars.githubusercontent.com/u/412028?v=4" width="117" /><br />jordanschau</a></td><td align="center"><a href="https://github.com/mshulman"><img alt="mshulman" src="https://avatars.githubusercontent.com/u/1484420?v=4" width="117" /><br />mshulman</a></td><td align="center"><a href="https://github.com/vitasam"><img alt="vitasam" src="https://avatars.githubusercontent.com/u/5597505?v=4" width="117" /><br />vitasam</a></td></tr></table>
+
