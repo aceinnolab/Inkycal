@@ -180,7 +180,7 @@ pip install RPi.GPIO==0.7.1 spidev==3.5 gpiozero==2.0
 # Raspberry Pi specific section end
 
 cd $HOME
-git clone --branch main https://github.com/aceinnolab/Inkycal
+git clone https://github.com/aceinnolab/Inkycal
 cd Inkycal
 python3 -m venv venv
 source venv/bin/activate
