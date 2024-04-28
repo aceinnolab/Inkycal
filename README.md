@@ -18,7 +18,7 @@
 
 Inkycal is a software written in python for selected E-Paper displays. It converts these displays into useful
 information dashboards. It's open-source, free for personal use, fully modular and user-friendly. Despite all this,
-Inkycal can run well even on the Raspberry Pi Zero. Oh, and it's open for third-party modules! Hooray!
+Inkycal can run well even on the Raspberry Pi Zero W. Oh, and it's open for third-party modules! Hooray!
 
 ## ⚠️ Warning: long installation time expected!
 
@@ -56,7 +56,7 @@ Watch the one-minute video on getting started with Inkycal:
 ## Hardware guide
 
 Before you can start, please ensure you have one of the supported displays and of the supported Raspberry
-Pi: `|4|3A|3B|3B+|2B|0W|0WH|02W|`. We personally recommend the Raspberry Pi Zero W as this is relatively cheaper, uses
+Pi: `|4|3A|3B|3B+|2B|ZeroW|ZeroWH|Zero2W|`. We personally recommend the Raspberry Pi Zero W as this is relatively cheaper, uses
 less power and is perfect to fit in a small photo frame once you have assembled everything.
 
 **Serial** displays are usually cheaper, but slower. Their main advantage is ease of use, like being able to communicate
@@ -92,11 +92,6 @@ display!**
 | MicroSD card                                                                    | Sandisk                 |  Search for `MicroSD card 8GB` on amazon or similar                                                                                                                                                                                                                                                                                         |
 
 ## Configuring the Raspberry Pi
-
-⚠️ Warning: You cannot use the latest version of Raspberry Pi OS as a kernel upgrade has caused many projects to fail.
-Please only use the version mentioned below.
-Download this specific version
-of [Raspberry Pi OS (11-12-2023)](https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-12-11/2023-12-11-raspios-bookworm-armhf-lite.img.xz)
 Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://rptl.io/imager).
 Use the following settings:
 
@@ -175,19 +170,23 @@ This will help keep this project growing and cover the ongoing expenses too! Win
 Run the following steps to install Inkycal. Do **not** use sudo for this, except where explicitly specified.
 
 ```bash
-# the next line is for the Raspberry Pi only
-sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python-dev-is-python3 scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev
+# Raspberry Pi specific section start
+sudo apt-get install git zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python-dev-is-python3 scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev
+git clone https://github.com/WiringPi/WiringPi
+cd WiringPi
+./build
+cd ..
+pip install RPi.GPIO==0.7.1 spidev==3.5 gpiozero==2.0
+# Raspberry Pi specific section end
+
 cd $HOME
-git clone --branch main --single-branch https://github.com/aceinnolab/Inkycal
+git clone --branch main https://github.com/aceinnolab/Inkycal
 cd Inkycal
 python3 -m venv venv
 source venv/bin/activate
 python -m pip install --upgrade pip
 pip install wheel
 pip install -e ./
-
-# If you are running on the Raspberry Pi, please install the following too to allow rendering on the display
-pip install RPi.GPIO==0.7.1 spidev==3.5 gpiozero==2.0
 ```
 
 ## Running Inkycal
