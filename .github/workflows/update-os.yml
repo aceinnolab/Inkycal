@@ -37,7 +37,7 @@ jobs:
             uname -srm
             cd /home/inky
             sudo apt-get update -y
-            sudo apt-get dist-upgrade -y
+            # sudo apt-get dist-upgrade -y
             
             sudo apt-get install -y python3-pip
             sudo apt-get install git zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev libxml2-dev libxslt-dev python-dev-is-python3 -y
