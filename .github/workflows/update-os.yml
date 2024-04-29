@@ -24,7 +24,7 @@ jobs:
           TINDIE_USERNAME: ${{ secrets.TINDIE_USERNAME }}
         with:
           # Set the base_image to the desired Raspberry Pi OS version
-          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-12-11/2023-12-11-raspios-bookworm-armhf-lite.img.xz
+          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2024-03-15/2024-03-15-raspios-bookworm-armhf-lite.img.xz
           image_additional_mb: 3072 # enlarge free space to 3 GB
           optimize_image: true
           commands: |
@@ -40,7 +40,13 @@ jobs:
             sudo apt-get dist-upgrade -y
             
             sudo apt-get install -y python3-pip
-            sudo apt-get install zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev libxml2-dev libxslt-dev python-dev-is-python3 -y
+            sudo apt-get install git zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python3-dev scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev libxml2-dev libxslt-dev python-dev-is-python3 -y
+            # #334 & #335
+            git clone https://github.com/WiringPi/WiringPi
+            cd WiringPi
+            ./build
+            cd ..
+            
             echo $PWD && ls
             git clone https://github.com/aceinnolab/Inkycal
             cd Inkycal
@@ -59,10 +65,6 @@ jobs:
             tar -xf bcm2835-1.71.tar
             cd bcm2835-1.71/
             sudo ./configure && sudo make && sudo make check && sudo make install
-            cd .. 
-            echo $CWD
-            wget https://project-downloads.drogon.net/wiringpi-latest.deb
-            sudo dpkg -i wiringpi-latest.deb
             cd ..
             echo $CWD
 
