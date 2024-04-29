@@ -65,10 +65,6 @@ jobs:
             tar -xf bcm2835-1.71.tar
             cd bcm2835-1.71/
             sudo ./configure && sudo make && sudo make check && sudo make install
-            cd .. 
-            echo $CWD
-            wget https://project-downloads.drogon.net/wiringpi-latest.deb
-            sudo dpkg -i wiringpi-latest.deb
             cd ..
             echo $CWD
 
