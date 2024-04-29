@@ -133,8 +133,6 @@ wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.71.tar.gz
 tar zxvf bcm2835-1.71.tar.gz 
 cd bcm2835-1.71/
 sudo ./configure && sudo make && sudo make check && sudo make install
-wget https://project-downloads.drogon.net/wiringpi-latest.deb
-sudo dpkg -i wiringpi-latest.deb
 
 # If you are using the Raspberry Pi Zero models, you may need to increase the swapfile size to be able to install Inkycal:
 sudo dphys-swapfile swapoff
@@ -176,7 +174,6 @@ git clone https://github.com/WiringPi/WiringPi
 cd WiringPi
 ./build
 cd ..
-pip install RPi.GPIO==0.7.1 spidev==3.5 gpiozero==2.0
 # Raspberry Pi specific section end
 
 cd $HOME
@@ -187,6 +184,10 @@ source venv/bin/activate
 python -m pip install --upgrade pip
 pip install wheel
 pip install -e ./
+
+
+# only for Raspberry Pi:
+pip install RPi.GPIO==0.7.1 spidev==3.5 gpiozero==2.0
 ```
 
 ## Running Inkycal
