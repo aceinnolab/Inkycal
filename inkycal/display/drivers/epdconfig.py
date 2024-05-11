@@ -28,8 +28,6 @@ THE SOFTWARE.
 """
 
 import logging
-import os
-import subprocess
 import sys
 import time
 
@@ -128,4 +126,3 @@ implementation = RaspberryPi()
 
 for func in [x for x in dir(implementation) if not x.startswith('_')]:
     setattr(sys.modules[__name__], func, getattr(implementation, func))
-

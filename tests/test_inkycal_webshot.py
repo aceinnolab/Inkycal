@@ -6,9 +6,14 @@ import logging
 import unittest
 
 from inkycal.modules import Webshot
+from inkycal.modules.inky_image import Inkyimage
+from tests import Config
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
+
+preview = Inkyimage.preview
+merge = Inkyimage.merge
 
 tests = [
     {
@@ -60,6 +65,7 @@ class TestWebshot(unittest.TestCase):
         for test in tests:
             logger.info(f'test {tests.index(test) + 1} generating image..')
             module = Webshot(test)
-            module.generate_image()
+            im_black, im_colour = module.generate_image()
+            if Config.USE_PREVIEW:
+                preview(merge(im_black, im_colour))
             logger.info('OK')
-
