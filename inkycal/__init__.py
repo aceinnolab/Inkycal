@@ -14,7 +14,7 @@ import inkycal.modules.inkycal_stocks
 import inkycal.modules.inkycal_webshot
 import inkycal.modules.inkycal_xkcd
 import inkycal.modules.inkycal_fullweather
+import inkycal.modules.inkycal_mawaqit
 
 # Main file
 from inkycal.main import Inkycal
-import inkycal.modules.inkycal_stocks

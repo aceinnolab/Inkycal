@@ -109,7 +109,7 @@ class Calendar(inkycal_module):
         # Allocate space for month-names, weekdays etc.
         month_name_height = int(im_height * 0.10)
         text_bbox_height = self.font.getbbox("hg")
-        weekdays_height = int((text_bbox_height[3] - text_bbox_height[1])* 1.25)
+        weekdays_height = int((text_bbox_height[3] - text_bbox_height[1]) * 1.25)
         logger.debug(f"month_name_height: {month_name_height}")
         logger.debug(f"weekdays_height: {weekdays_height}")
 
@@ -265,7 +265,7 @@ class Calendar(inkycal_module):
             # find out how many lines can fit at max in the event section
             line_spacing = 2
             text_bbox_height = self.font.getbbox("hg")
-            line_height = text_bbox_height[3] + line_spacing
+            line_height = text_bbox_height[3] - text_bbox_height[1] + line_spacing
             max_event_lines = events_height // (line_height + line_spacing)
 
             # generate list of coordinates for each line
@@ -326,7 +326,7 @@ class Calendar(inkycal_module):
                         (icon_width, icon_height),
                         radius=6,
                         thickness=1,
-                        shrinkage=(0.4, 0.2),
+                        shrinkage=(0, 0),
                     )
 
             # Filter upcoming events until 4 weeks in the future
