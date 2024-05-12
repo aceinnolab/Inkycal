@@ -11,6 +11,8 @@ from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
 
+settings = Settings()
+
 
 class Xkcd(inkycal_module):
     name = "xkcd - Displays comics from xkcd.com by Randall Munroe"
@@ -57,7 +59,7 @@ class Xkcd(inkycal_module):
         """Generate image for this module"""
 
         # Create tmp path
-        tmpPath = f"{top_level}/temp"
+        tmpPath = settings.TEMPORARY_FOLDER
 
         if not os.path.exists(tmpPath):
             os.mkdir(tmpPath)

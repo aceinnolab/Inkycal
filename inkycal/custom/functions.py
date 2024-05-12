@@ -17,20 +17,16 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 
-logs = logging.getLogger(__name__)
-logs.setLevel(level=logging.INFO)
+from inkycal.settings import Settings
 
-# Get the path to the Inkycal folder
-top_level = "/".join(os.path.dirname(os.path.abspath(os.path.dirname(__file__))).split("/")[:-1])
+logger = logging.getLogger(__name__)
 
-# Get path of 'fonts' and 'images' folders within Inkycal folder
-fonts_location = os.path.join(top_level, "fonts/")
-image_folder = os.path.join(top_level, "image_folder/")
+settings = Settings()
 
 # Get available fonts within fonts folder
 fonts = {}
 
-for path, dirs, files in os.walk(fonts_location):
+for path, dirs, files in os.walk(settings.FONT_PATH):
     for _ in files:
         if _.endswith(".otf"):
             name = _.split(".otf")[0]
@@ -39,7 +35,7 @@ for path, dirs, files in os.walk(fonts_location):
         if _.endswith(".ttf"):
             name = _.split(".ttf")[0]
             fonts[name] = os.path.join(path, _)
-logs.debug(f"Found fonts: {json.dumps(fonts, indent=4, sort_keys=True)}")
+logger.debug(f"Found fonts: {json.dumps(fonts, indent=4, sort_keys=True)}")
 available_fonts = [key for key, values in fonts.items()]
 
 
@@ -81,12 +77,12 @@ def get_system_tz() -> str:
     """
     try:
         local_tz = tzlocal.get_localzone().key
-        logs.debug(f"Local system timezone is {local_tz}.")
+        logger.debug(f"Local system timezone is {local_tz}.")
     except:
-        logs.error("System timezone could not be parsed!")
-        logs.error("Please set timezone manually!. Falling back to UTC...")
+        logger.error("System timezone could not be parsed!")
+        logger.error("Please set timezone manually!. Falling back to UTC...")
         local_tz = "UTC"
-    logs.debug(f"The time is {arrow.now(tz=local_tz).format('YYYY-MM-DD HH:mm:ss ZZ')}.")
+    logger.debug(f"The time is {arrow.now(tz=local_tz).format('YYYY-MM-DD HH:mm:ss ZZ')}.")
     return local_tz
 
 
@@ -182,14 +178,14 @@ def write(image, xy, box_size, text, font=None, **kwargs):
 
     # Truncate text if text is too long, so it can fit inside the box
     if (text_width, text_height) > (box_width, box_height):
-        logs.debug(("truncating {}".format(text)))
+        logger.debug(("truncating {}".format(text)))
         while (text_width, text_height) > (box_width, box_height):
             text = text[0:-1]
             text_bbox = font.getbbox(text)
             text_width = text_bbox[2] - text_bbox[0]
             text_bbox_height = font.getbbox("hg")
             text_height = text_bbox_height[3] - text_bbox_height[1]
-        logs.debug(text)
+        logger.debug(text)
 
     # Align text to desired position
     if alignment == "center" or None:
