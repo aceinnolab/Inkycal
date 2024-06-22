@@ -77,6 +77,8 @@ class Agenda(inkycal_module):
         # Additional config
         self.timezone = get_system_tz()
 
+        self.icon_font = ImageFont.truetype(fonts['MaterialIcons'], size=self.fontsize)
+
         # give an OK message
         print(f'{__name__} loaded')
 
@@ -203,10 +205,10 @@ class Agenda(inkycal_module):
                         write(im_black, (x_time, line_pos[cursor][1]),
                               (time_width, line_height), time,
                               font=self.font, alignment='right')
-                    if parser.all_day(_):
+                    else:
                         write(im_black, (x_time, line_pos[cursor][1]),
-                              (time_width, line_height), "all day",
-                              font=self.font, alignment='right')
+                              (time_width, line_height), "\ue878",
+                              font=self.icon_font, alignment='right')
 
                     write(im_black, (x_event, line_pos[cursor][1]),
                           (event_width, line_height),
