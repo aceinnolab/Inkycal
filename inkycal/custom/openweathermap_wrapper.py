@@ -41,18 +41,9 @@ def get_json_from_url(request_url):
 
 
 class OpenWeatherMap:
-    def __init__(
-        self,
-        api_key: str,
-        city_id: int = None,
-        lat: float = None,
-        lon: float = None,
-        api_version: API_VERSIONS = "2.5",
-        temp_unit: TEMP_UNITS = "celsius",
-        wind_unit: WIND_UNITS = "meters_sec",
-        language: str = "en",
-        tz_name: str = "UTC",
-    ) -> None:
+    def __init__(self, api_key: str, city_id: int = None, lat: float = None, lon: float = None,
+                 api_version: API_VERSIONS = "2.5", temp_unit: TEMP_UNITS = "celsius",
+                 wind_unit: WIND_UNITS = "meters_sec", language: str = "en", tz_name: str = "UTC") -> None:
         self.api_key = api_key
         self.temp_unit = temp_unit
         self.wind_unit = wind_unit
@@ -106,7 +97,7 @@ class OpenWeatherMap:
         current_weather["temp_feels_like"] = self.get_converted_temperature(current_data["main"]["feels_like"])
         current_weather["min_temp"] = self.get_converted_temperature(current_data["main"]["temp_min"])
         current_weather["max_temp"] = self.get_converted_temperature(current_data["main"]["temp_max"])
-        current_weather["humidity"] = current_data["main"]["humidity"]  #  OWM Unit: % rH
+        current_weather["humidity"] = current_data["main"]["humidity"]  # OWM Unit: % rH
         current_weather["wind"] = self.get_converted_windspeed(
             current_data["wind"]["speed"]
         )  # OWM Unit Default: meter/sec, Metric: meter/sec
@@ -161,10 +152,10 @@ class OpenWeatherMap:
                         forecast["wind"]["speed"]
                     ),  # OWM Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour
                     "wind_gust": self.get_converted_windspeed(forecast["wind"]["gust"]),
-                    "pressure": forecast["main"]["pressure"],  #  OWM Unit: hPa
-                    "humidity": forecast["main"]["humidity"],  #  OWM Unit: % rH
+                    "pressure": forecast["main"]["pressure"],  # OWM Unit: hPa
+                    "humidity": forecast["main"]["humidity"],  # OWM Unit: % rH
                     "precip_probability": forecast["pop"]
-                    * 100.0,  #  OWM value is unitless, directly converting to % scale
+                                          * 100.0,  # OWM value is unitless, directly converting to % scale
                     "icon": forecast["weather"][0]["icon"],
                     "datetime": datetime.fromtimestamp(forecast["dt"], tz=self.tz_zone),
                 }
@@ -187,7 +178,7 @@ class OpenWeatherMap:
         :return:
             Forecast dictionary
         """
-        # Make sure hourly forecasts are up to date
+        # Make sure hourly forecasts are up-to-date
         _ = self.get_weather_forecast()
 
         # Calculate the start and end times for the specified number of days from now
@@ -207,7 +198,7 @@ class OpenWeatherMap:
         ]
 
         # In case the next available forecast is already for the next day, use that one for the less than 3 remaining hours of today
-        if forecasts == []:
+        if not forecasts:
             forecasts.append(self.hourly_forecasts[0])
 
         # Get rain and temperatures for that day

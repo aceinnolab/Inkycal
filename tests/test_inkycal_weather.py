@@ -34,7 +34,7 @@ tests = [
             "padding_x": 10,
             "padding_y": 10,
             "fontsize": 12,
-            "language": "en"
+            "language": "de"
         }
     },
     {
