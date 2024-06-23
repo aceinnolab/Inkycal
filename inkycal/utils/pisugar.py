@@ -47,7 +47,7 @@ class PiSugar:
                     return int(line.split(':')[1].strip())
         return None
 
-    def get_model(self):
+    def get_model(self) -> str or None:
         """Get the PiSugar model."""
         model_output = self._get_output("get model")
         if model_output:
@@ -56,24 +56,71 @@ class PiSugar:
                     return line.split(':')[1].strip()
         return None
 
-    def get_rtc_time(self):
+    def get_rtc_time(self) -> str or None:
         """Get the RTC time."""
-        return self._get_output("get rtc_time")
+        result = self._get_output("get rtc_time")
+        if result:
+            second_line = result.splitlines()[1]
+            return second_line.split('rtc_alarm_time: ')[1].strip()
+        return None
 
-    def get_rtc_alarm_enabled(self):
+    def get_rtc_alarm_enabled(self) -> str or None:
         """Get the RTC alarm enabled status."""
-        return self._get_output("get rtc_alarm_enabled")
+        result = self._get_output("get rtc_alarm_enabled")
+        if result:
+            second_line = result.splitlines()[1]
+            return second_line.split('rtc_alarm_enabled: ')[1].strip()
+        return None
 
-    def get_rtc_alarm_time(self):
+    def get_rtc_alarm_time(self) -> str or None:
         """Get the RTC alarm time."""
-        return self._get_output("get rtc_alarm_time")
+        result = self._get_output("get rtc_alarm_time")
+        if result:
+            second_line = result.splitlines()[1]
+            return second_line.split('rtc_alarm_time: ')[1].strip()
+        return None
 
-    def get_alarm_repeat(self):
-        """Get the alarm repeat status."""
-        return self._get_output("get alarm_repeat")
+    def get_alarm_repeat(self) -> dict or None:
+        """Get the alarm repeat status.
 
-    def rtc_pi2rtc(self):
-        """Sync the Pi time to RTC."""
-        return self._get_output("rtc_pi2rtc")
+        Returns:
+            dict or None: A dictionary with the alarm repeating days or None if the command fails.
+        """
+        result = self._get_output("get alarm_repeat")
+        if result:
+            second_line = result.splitlines()[1]
+            repeating_days = second_line.split('alarm_repeat: ')[1].strip()
+            data = {"Monday": False, "Tuesday": False, "Wednesday": False, "Thursday": False, "Friday": False,
+                    "Saturday": False, "Sunday": False}
+            if repeating_days[0] == "1":
+                data["Monday"] = True
+            if repeating_days[1] == "1":
+                data["Tuesday"] = True
+            if repeating_days[2] == "1":
+                data["Wednesday"] = True
+            if repeating_days[3] == "1":
+                data["Thursday"] = True
+            if repeating_days[4] == "1":
+                data["Friday"] = True
+            if repeating_days[5] == "1":
+                data["Saturday"] = True
+            if repeating_days[6] == "1":
+                data["Sunday"] = True
+            return data
+        return None
+
+    def rtc_pi2rtc(self) -> bool:
+        """Sync the Pi time to RTC.
+
+        Returns:
+            bool: True if the sync was successful, False otherwise.
+        """
+        result = self._get_output("rtc_pi2rtc")
+        if result:
+            second_line = result.splitlines()[1]
+            status = second_line.split('rtc_pi2rtc: ')[1].strip()
+            if status == "done":
+                return True
+        return False
 
 
