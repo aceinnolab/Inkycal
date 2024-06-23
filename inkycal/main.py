@@ -13,7 +13,7 @@ from inkycal import loggers  # noqa
 from inkycal.custom import *
 from inkycal.display import Display
 from inkycal.modules.inky_image import Inkyimage as Images
-from inkycal.utils.json_cache import JSONCache
+from inkycal.utils import JSONCache
 
 logger = logging.getLogger(__name__)
 

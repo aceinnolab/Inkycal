@@ -8,7 +8,7 @@ from inkycal.custom import *
 # PIL has a class named Image, use alias for Inkyimage -> Images
 from inkycal.modules.inky_image import Inkyimage as Images, image_to_palette
 from inkycal.modules.template import inkycal_module
-from inkycal.utils.json_cache import JSONCache
+from inkycal.utils import JSONCache
 
 logger = logging.getLogger(__name__)
 
