@@ -142,7 +142,7 @@ class Stocks(inkycal_module):
                 logger.warning(f"Failed to get '{stockName}' ticker price hint! Using "
                                "default precision of 2 instead.")
 
-            stockHistory = yfTicker.history("30d")
+            stockHistory = yfTicker.history("1mo")
             stockHistoryLen = len(stockHistory)
             logger.info(f'fetched {stockHistoryLen} datapoints ...')
             previousQuote = (stockHistory.tail(2)['Close'].iloc[0])
