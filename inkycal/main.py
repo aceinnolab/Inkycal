@@ -81,10 +81,10 @@ class Inkycal:
         if self.render:
             # Init Display class with model in settings file
             # from inkycal.display import Display
-            self.Display = Display(settings["model"])
+            self.Display = Display(self.settings["model"])
 
             # check if colours can be rendered
-            self.supports_colour = True if 'colour' in settings['model'] else False
+            self.supports_colour = True if 'colour' in self.settings['model'] else False
 
             # get calibration hours
             self._calibration_hours = self.settings['calibration_hours']

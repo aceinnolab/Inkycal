@@ -4,6 +4,7 @@ import logging
 import subprocess
 
 from inkycal.settings import Settings
+import arrow
 
 settings = Settings()
 
@@ -73,12 +74,13 @@ class PiSugar:
             return True if output == "true" else False
         return None
 
-    def get_rtc_alarm_time(self) -> str or None:
+    def get_rtc_alarm_time(self) -> arrow.arrow or None:
         """Get the RTC alarm time."""
         result = self._get_output("get rtc_alarm_time")
         if result:
             second_line = result.splitlines()[1]
-            return second_line.split('rtc_alarm_time: ')[1].strip()
+            alarm_time = second_line.split('rtc_alarm_time: ')[1].strip()
+            return arrow.get(alarm_time)
         return None
 
     def get_alarm_repeat(self) -> dict or None:
@@ -120,6 +122,24 @@ class PiSugar:
         if result:
             second_line = result.splitlines()[1]
             status = second_line.split('rtc_pi2rtc: ')[1].strip()
+            if status == "done":
+                return True
+        return False
+
+    def rtc_alarm_set(self, time: arrow.arrow) -> bool:
+        """Set the RTC alarm time.
+
+        Args:
+            time (arrow.arrow): The alarm time in ISO 8601 format.
+
+        Returns:
+            bool: True if the alarm was set successfully, False otherwise.
+        """
+        iso_format = time.isoformat()
+        result = self._get_output(f"rtc_alarm_set {iso_format}")
+        if result:
+            second_line = result.splitlines()[1]
+            status = second_line.split('rtc_alarm_set: ')[1].strip()
             if status == "done":
                 return True
         return False
