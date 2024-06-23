@@ -89,7 +89,7 @@ class PiSugar:
         result = self._get_output("get alarm_repeat")
         if result:
             second_line = result.splitlines()[1]
-            repeating_days = f"{second_line.split('alarm_repeat: ')[1].strip():8b}".strip()
+            repeating_days = f"{int(second_line.split('alarm_repeat: ')[1].strip()):8b}".strip()
             data = {"Monday": False, "Tuesday": False, "Wednesday": False, "Thursday": False, "Friday": False,
                     "Saturday": False, "Sunday": False}
             if repeating_days[0] == "1":
