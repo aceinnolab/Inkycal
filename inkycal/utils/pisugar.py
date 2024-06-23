@@ -24,11 +24,12 @@ class PiSugar:
             return None
         cmd = self.command_template.replace("command", command)
         try:
-            result = subprocess.run(cmd, text=True, capture_output=True)
+            result = subprocess.run(cmd, shell=True, text=True, capture_output=True)
             if result.returncode != 0:
                 print(f"Command failed with {result.stderr}")
                 return None
-            return result
+            output = result.stdout.strip()
+            return output
         except Exception as e:
             logger.error(f"Error executing command: {e}")
             return None
