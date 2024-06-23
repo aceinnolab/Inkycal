@@ -197,7 +197,7 @@ class Display:
 
         >>> Display.get_display_names()
         """
-        return supported_models.keys()
+        return list(supported_models.keys())
 
 
 if __name__ == '__main__':

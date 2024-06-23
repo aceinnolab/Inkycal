@@ -130,6 +130,8 @@ class Inkycal:
         self.cache = JSONCache(CACHE_NAME)
         self.cache_data = self.cache.read()
 
+        self.counter = 0 if "counter" not in self.cache_data else int(self.cache_data["counter"])
+
         # Give an OK message
         print('loaded inkycal')
 
@@ -259,8 +261,6 @@ class Inkycal:
         # Function to flip images upside down
         upside_down = lambda image: image.rotate(180, expand=True)
 
-        # Count the number of times without any errors
-        counter = 0
 
         print(f'Inkycal version: v{self._release}')
         print(f'Selected E-paper display: {self.settings["model"]}')
@@ -287,9 +287,9 @@ class Inkycal:
 
             if errors:
                 logger.error("Error/s in modules:", *errors)
-                counter = 0
+                self.counter = 0
             else:
-                counter += 1
+                self.counter += 1
                 logger.info("successful")
             del errors
 
@@ -332,9 +332,13 @@ class Inkycal:
                         (f"{self.image_folder}/canvas.png.hash", im_black),]):
                         display.render(im_black)
 
-            print(f'\nNo errors since {counter} display updates \n'
+            print(f'\nNo errors since {self.counter} display updates \n'
                   f'program started {runtime.humanize()}')
 
+            # store the cache data
+            self.cache.write(self.cache_data)
+
+            # Exit the loop if run_once is True
             if run_once:
                 break  # Exit the loop after one full cycle if run_once is True
 
