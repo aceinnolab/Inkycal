@@ -61,7 +61,7 @@ class PiSugar:
         result = self._get_output("get rtc_time")
         if result:
             second_line = result.splitlines()[1]
-            return second_line.split('rtc_alarm_time: ')[1].strip()
+            return second_line.split('rtc_time: ')[1].strip()
         return None
 
     def get_rtc_alarm_enabled(self) -> str or None:
