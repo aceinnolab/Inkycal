@@ -140,8 +140,7 @@ class PiSugar:
         iso_format = time.isoformat()
         result = self._get_output("rtc_alarm_set", f"{iso_format } {repeat}")
         if result:
-            second_line = result.splitlines()[1]
-            status = second_line.split('rtc_alarm_set: ')[1].strip()
+            status = result.split('rtc_alarm_set: ')[1].strip()
             if status == "done":
                 return True
         return False
