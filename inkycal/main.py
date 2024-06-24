@@ -132,6 +132,14 @@ class Inkycal:
 
         self.counter = 0 if "counter" not in self.cache_data else int(self.cache_data["counter"])
 
+        self.use_pi_sugar = True
+        print("Please remove hardcoded value of pisugar!")
+
+        if self.use_pi_sugar:
+            from inkycal.utils import PiSugar
+            self.pisugar = PiSugar()
+            print(f"Using PiSigar model: {self.pisugar.get_model()}. Current PiSugar time: {self.pisugar.get_rtc_time()}")
+
         # Give an OK message
         print('loaded inkycal')
 
@@ -343,6 +351,16 @@ class Inkycal:
                 break  # Exit the loop after one full cycle if run_once is True
 
             sleep_time = self.countdown()
+
+            if self.use_pi_sugar:
+                # todo make this timezone aware!
+                sleep_time = arrow.now(tz=get_system_tz()).shift(seconds=sleep_time)
+                result = self.pisugar.rtc_alarm_set(sleep_time, 127)
+                if result:
+                    print(f"Alarm set for {sleep_time.format('HH:mm:ss')}")
+                else:
+                    print(f"Failed to set alarm for {sleep_time.format('HH:mm:ss')}")
+
             await asyncio.sleep(sleep_time)
 
     @staticmethod
