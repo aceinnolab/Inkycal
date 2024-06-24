@@ -17,7 +17,7 @@ class PiSugar:
         # replace "command" with actual command
         self.command_template = 'echo "command" | nc -q 0 127.0.0.1 8423'
         self.allowed_commands = ["get battery", "get model", "get rtc_time", "get rtc_alarm_enabled",
-                                 "get rtc_alarm_time", "get alarm_repeat", "rtc_pi2rtc"]
+                                 "get rtc_alarm_time", "get alarm_repeat", "rtc_pi2rtc", "rtc_alarm_set"]
 
     def _get_output(self, command):
         if command not in self.allowed_commands:
@@ -90,8 +90,7 @@ class PiSugar:
         """
         result = self._get_output("get alarm_repeat")
         if result:
-            second_line = result.splitlines()[1]
-            repeating_days = f"{int(second_line.split('alarm_repeat: ')[1].strip()):8b}".strip()
+            repeating_days = f"{int(result.split('alarm_repeat: ')[1].strip()):8b}".strip()
             data = {"Monday": False, "Tuesday": False, "Wednesday": False, "Thursday": False, "Friday": False,
                     "Saturday": False, "Sunday": False}
             if repeating_days[0] == "1":
