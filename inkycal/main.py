@@ -354,12 +354,12 @@ class Inkycal:
 
             if self.use_pi_sugar:
                 # todo make this timezone aware!
-                sleep_time = arrow.now(tz=get_system_tz()).shift(seconds=sleep_time)
-                result = self.pisugar.rtc_alarm_set(sleep_time, 127)
+                sleep_time_rtc = arrow.now(tz=get_system_tz()).shift(seconds=sleep_time)
+                result = self.pisugar.rtc_alarm_set(sleep_time_rtc, 127)
                 if result:
-                    print(f"Alarm set for {sleep_time.format('HH:mm:ss')}")
+                    print(f"Alarm set for {sleep_time_rtc.format('HH:mm:ss')}")
                 else:
-                    print(f"Failed to set alarm for {sleep_time.format('HH:mm:ss')}")
+                    print(f"Failed to set alarm for {sleep_time_rtc.format('HH:mm:ss')}")
 
             await asyncio.sleep(sleep_time)
 
