@@ -19,11 +19,14 @@ class PiSugar:
         self.allowed_commands = ["get battery", "get model", "get rtc_time", "get rtc_alarm_enabled",
                                  "get rtc_alarm_time", "get alarm_repeat", "rtc_pi2rtc", "rtc_alarm_set"]
 
-    def _get_output(self, command):
+    def _get_output(self, command, param=None):
         if command not in self.allowed_commands:
             logger.error(f"Command {command} not allowed")
             return None
-        cmd = self.command_template.replace("command", command)
+        if param:
+            cmd = self.command_template.replace("command", f"{command} {param}")
+        else:
+            cmd = self.command_template.replace("command", command)
         try:
             result = subprocess.run(cmd, shell=True, text=True, capture_output=True)
             if result.returncode != 0:
@@ -134,7 +137,7 @@ class PiSugar:
             bool: True if the alarm was set successfully, False otherwise.
         """
         iso_format = time.isoformat()
-        result = self._get_output(f"rtc_alarm_set {iso_format}")
+        result = self._get_output("rtc_alarm_set", iso_format)
         if result:
             second_line = result.splitlines()[1]
             status = second_line.split('rtc_alarm_set: ')[1].strip()
