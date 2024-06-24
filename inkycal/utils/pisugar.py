@@ -35,7 +35,7 @@ class PiSugar:
             logger.error(f"Error executing command: {e}")
             return None
 
-    def get_battery(self) -> int or None:
+    def get_battery(self) -> float or None:
         """Get the battery level in percentage.
 
         Returns:
@@ -45,7 +45,7 @@ class PiSugar:
         if battery_output:
             for line in battery_output.splitlines():
                 if 'battery:' in line:
-                    return int(line.split(':')[1].strip())
+                    return float(line.split(':')[1].strip())
         return None
 
     def get_model(self) -> str or None:
@@ -57,12 +57,12 @@ class PiSugar:
                     return line.split(':')[1].strip()
         return None
 
-    def get_rtc_time(self) -> str or None:
+    def get_rtc_time(self) -> arrow.arrow or None:
         """Get the RTC time."""
         result = self._get_output("get rtc_time")
         if result:
-            second_line = result.splitlines()[1]
-            return second_line.split('rtc_time: ')[1].strip()
+            rtc_time = result.split("rtc_time: ")[1].strip()
+            return arrow.get(rtc_time)
         return None
 
     def get_rtc_alarm_enabled(self) -> str or None:
@@ -78,8 +78,7 @@ class PiSugar:
         """Get the RTC alarm time."""
         result = self._get_output("get rtc_alarm_time")
         if result:
-            second_line = result.splitlines()[1]
-            alarm_time = second_line.split('rtc_alarm_time: ')[1].strip()
+            alarm_time = result.split('rtc_alarm_time: ')[1].strip()
             return arrow.get(alarm_time)
         return None
 
