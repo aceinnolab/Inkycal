@@ -127,17 +127,18 @@ class PiSugar:
                 return True
         return False
 
-    def rtc_alarm_set(self, time: arrow.arrow) -> bool:
+    def rtc_alarm_set(self, time: arrow.arrow, repeat:int=127) -> bool:
         """Set the RTC alarm time.
 
         Args:
             time (arrow.arrow): The alarm time in ISO 8601 format.
+            repeat: int representing 7-bit binary number of repeating days. e.g. 127 = 1111111 = repeat every day
 
         Returns:
             bool: True if the alarm was set successfully, False otherwise.
         """
         iso_format = time.isoformat()
-        result = self._get_output("rtc_alarm_set", iso_format)
+        result = self._get_output("rtc_alarm_set", f"{iso_format } {repeat}")
         if result:
             second_line = result.splitlines()[1]
             status = second_line.split('rtc_alarm_set: ')[1].strip()
