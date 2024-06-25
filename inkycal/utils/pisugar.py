@@ -121,8 +121,7 @@ class PiSugar:
         """
         result = self._get_output("rtc_pi2rtc")
         if result:
-            second_line = result.splitlines()[1]
-            status = second_line.split('rtc_pi2rtc: ')[1].strip()
+            status = result.split('rtc_pi2rtc: ')[1].strip()
             if status == "done":
                 return True
         return False

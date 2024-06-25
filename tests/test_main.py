@@ -21,9 +21,9 @@ class TestMain(unittest.TestCase):
         assert inkycal.settings["info_section_height"] == 70
         assert inkycal.settings["border_around_modules"] is True
 
-    def test_run(self):
+    def test_dry_run(self):
         inkycal = Inkycal(self.settings_path, render=False)
-        inkycal.test()
+        inkycal.dry_run()
 
     def test_countdown(self):
         inkycal = Inkycal(self.settings_path, render=False)
