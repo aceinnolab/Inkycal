@@ -2,12 +2,12 @@
 Inkycal weather module
 Copyright by aceinnolab
 """
-
-import arrow
 import decimal
 import logging
 import math
+from typing import Tuple
 
+import arrow
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
@@ -51,7 +51,7 @@ class Weather(inkycal_module):
             "options": [True, False],
         },
 
-        "round_windspeed": {
+        "round_wind_speed": {
             "label": "Round windspeed?",
             "options": [True, False],
         },
@@ -89,7 +89,7 @@ class Weather(inkycal_module):
 
         # Check if all required parameters are present
         for param in self.requires:
-            if not param in config:
+            if param not in config:
                 raise Exception(f'config is missing {param}')
 
         # required parameters
@@ -98,15 +98,15 @@ class Weather(inkycal_module):
 
         # optional parameters
         self.round_temperature = config['round_temperature']
-        self.round_windspeed = config['round_windspeed']
+        self.round_wind_speed = config['round_windspeed']
         self.forecast_interval = config['forecast_interval']
         self.hour_format = int(config['hour_format'])
         if config['units'] == "imperial":
             self.temp_unit = "fahrenheit"
         else:
             self.temp_unit = "celsius"
-        
-        if config['use_beaufort'] == True:
+
+        if config['use_beaufort']:
             self.wind_unit = "beaufort"
         elif config['units'] == "imperial":
             self.wind_unit = "miles_hour"
@@ -116,17 +116,17 @@ class Weather(inkycal_module):
         # additional configuration
 
         self.owm = OpenWeatherMap(
-            api_key=self.api_key, 
-            city_id=self.location, 
-            wind_unit=self.wind_unit, 
+            api_key=self.api_key,
+            city_id=self.location,
+            wind_unit=self.wind_unit,
             temp_unit=self.temp_unit,
-            language=self.locale, 
+            language=self.locale,
             tz_name=self.timezone
-            )
-        
+        )
+
         self.weatherfont = ImageFont.truetype(
             fonts['weathericons-regular-webfont'], size=self.fontsize)
-        
+
         if self.wind_unit == "beaufort":
             self.windDispUnit = "bft"
         elif self.wind_unit == "knots":
@@ -144,8 +144,6 @@ class Weather(inkycal_module):
 
         # give an OK message
         logger.debug(f"{__name__} loaded")
-
-    
 
     def generate_image(self):
         """Generate image for this module"""
@@ -191,7 +189,7 @@ class Weather(inkycal_module):
                 7: '\uf0ae'
             }[int(index) & 7]
 
-        def is_negative(temp:str):
+        def is_negative(temp: str):
             """Check if temp is below freezing point of water (0°C/32°F)
             returns True if temp below freezing point, else False"""
             answer = False
@@ -224,12 +222,19 @@ class Weather(inkycal_module):
             '50n': '\uf023'
         }
 
-        def draw_icon(image, xy, box_size, icon, rotation=None):
-            """Custom function to add icons of weather font on image
-            image = on which image should the text be added?
-            xy = xy-coordinates as tuple -> (x,y)
-            box_size = size of text-box -> (width,height)
-            icon = icon-unicode, looks this up in weathericons dictionary
+        def draw_icon(image: Image, xy: Tuple[int, int], box_size: Tuple[int, int], icon: str, rotation=None):
+            """Custom function to add icons of weather font on the image.
+
+            Args:
+                - image:
+                    the image on which image should the text be added
+                - xy:
+                    coordinates as tuple -> (x,y)
+                - box_size:
+                    size of text-box -> (width,height)
+                - icon:
+                    icon-unicode, looks this up in weather-icons dictionary
+
             """
 
             icon_size_correction = {
@@ -264,7 +269,6 @@ class Weather(inkycal_module):
                 '\uf0a0': 0,
                 '\uf0a3': 0,
                 '\uf0a7': 0,
-                '\uf0aa': 0,
                 '\uf0ae': 0
             }
 
@@ -278,8 +282,7 @@ class Weather(inkycal_module):
             font = ImageFont.truetype(font.path, size)
             text_width, text_height = font.getbbox(text)[2:]
 
-            while (text_width < int(box_width * 0.9) and
-                   text_height < int(box_height * 0.9)):
+            while text_width < int(box_width * 0.9) and text_height < int(box_height * 0.9):
                 size += 1
                 font = ImageFont.truetype(font.path, size)
                 text_width, text_height = font.getbbox(text)[2:]
@@ -290,8 +293,6 @@ class Weather(inkycal_module):
             x = int((box_width / 2) - (text_width / 2))
             y = int((box_height / 2) - (text_height / 2))
 
-            # Draw the text in the text-box
-            draw = ImageDraw.Draw(image)
             space = Image.new('RGBA', (box_width, box_height))
             ImageDraw.Draw(space).text((x, y), text, fill='black', font=font)
 
@@ -350,17 +351,17 @@ class Weather(inkycal_module):
         row3 = row2 + line_gap + row_height
 
         # Draw lines on each row and border
-        ############################################################################
-        ##    draw = ImageDraw.Draw(im_black)
-        ##    draw.line((0, 0, im_width, 0), fill='red')
-        ##    draw.line((0, im_height-1, im_width, im_height-1), fill='red')
-        ##    draw.line((0, row1, im_width, row1), fill='black')
-        ##    draw.line((0, row1+row_height, im_width, row1+row_height), fill='black')
-        ##    draw.line((0, row2, im_width, row2), fill='black')
-        ##    draw.line((0, row2+row_height, im_width, row2+row_height), fill='black')
-        ##    draw.line((0, row3, im_width, row3), fill='black')
-        ##    draw.line((0, row3+row_height, im_width, row3+row_height), fill='black')
-        ############################################################################
+        ###########################################################################
+        #    draw = ImageDraw.Draw(im_black)
+        #    draw.line((0, 0, im_width, 0), fill='red')
+        #    draw.line((0, im_height-1, im_width, im_height-1), fill='red')
+        #    draw.line((0, row1, im_width, row1), fill='black')
+        #    draw.line((0, row1+row_height, im_width, row1+row_height), fill='black')
+        #    draw.line((0, row2, im_width, row2), fill='black')
+        #    draw.line((0, row2+row_height, im_width, row2+row_height), fill='black')
+        #    draw.line((0, row3, im_width, row3), fill='black')
+        #    draw.line((0, row3+row_height, im_width, row3+row_height), fill='black')
+        ###########################################################################
 
         # Positions for current weather details
         weather_icon_pos = (col1, 0)
@@ -379,24 +380,24 @@ class Weather(inkycal_module):
         sunset_time_pos = (col3 + icon_small, row3)
 
         # Positions for forecast 1
-        stamp_fc1 = (col4, row1)
-        icon_fc1 = (col4, row1 + row_height)
-        temp_fc1 = (col4, row3)
+        stamp_fc1 = (col4, row1) # noqa
+        icon_fc1 = (col4, row1 + row_height) # noqa
+        temp_fc1 = (col4, row3) # noqa
 
         # Positions for forecast 2
-        stamp_fc2 = (col5, row1)
-        icon_fc2 = (col5, row1 + row_height)
-        temp_fc2 = (col5, row3)
+        stamp_fc2 = (col5, row1) # noqa
+        icon_fc2 = (col5, row1 + row_height) # noqa
+        temp_fc2 = (col5, row3) # noqa
 
         # Positions for forecast 3
-        stamp_fc3 = (col6, row1)
-        icon_fc3 = (col6, row1 + row_height)
-        temp_fc3 = (col6, row3)
+        stamp_fc3 = (col6, row1) # noqa
+        icon_fc3 = (col6, row1 + row_height) # noqa
+        temp_fc3 = (col6, row3) # noqa
 
         # Positions for forecast 4
-        stamp_fc4 = (col7, row1)
-        icon_fc4 = (col7, row1 + row_height)
-        temp_fc4 = (col7, row3)
+        stamp_fc4 = (col7, row1) # noqa
+        icon_fc4 = (col7, row1 + row_height) # noqa
+        temp_fc4 = (col7, row3) # noqa
 
         # Create current-weather and weather-forecast objects
         logging.debug('looking up location by ID')
@@ -405,7 +406,7 @@ class Weather(inkycal_module):
 
         # Set decimals
         dec_temp = 0 if self.round_temperature == True else 1
-        dec_wind = 0 if self.round_windspeed == True else 1
+        dec_wind = 0 if self.round_wind_speed == True else 1
 
         logging.debug(f'temperature unit: {self.temp_unit}')
         logging.debug(f'decimals temperature: {dec_temp} | decimals wind: {dec_wind}')
@@ -425,7 +426,8 @@ class Weather(inkycal_module):
                 fc_data['fc' + str(index + 1)] = {
                     'temp': f"{forecast['temp']:.{dec_temp}f}{self.tempDispUnit}",
                     'icon': forecast["icon"],
-                    'stamp': forecast["datetime"].strftime("%I %p" if self.hour_format == 12 else "%H:%M")}
+                    'stamp': forecast["datetime"].strftime("%I %p" if self.hour_format == 12 else "%H:%M")
+                }
 
         elif self.forecast_interval == 'daily':
 
@@ -434,7 +436,7 @@ class Weather(inkycal_module):
             daily_forecasts = [self.owm.get_forecast_for_day(days) for days in range(1, 5)]
 
             for index, forecast in enumerate(daily_forecasts):
-                fc_data['fc' + str(index +1)] = {
+                fc_data['fc' + str(index + 1)] = {
                     'temp': f'{forecast["temp_min"]:.{dec_temp}f}{self.tempDispUnit}/{forecast["temp_max"]:.{dec_temp}f}{self.tempDispUnit}',
                     'icon': forecast['icon'],
                     'stamp': forecast['datetime'].strftime("%A")
@@ -514,6 +516,9 @@ class Weather(inkycal_module):
         # Add the forecast data to the correct places
         for pos in range(1, len(fc_data) + 1):
             stamp = fc_data[f'fc{pos}']['stamp']
+            # check if we're using daily forecasts
+            if "day" in stamp:
+                stamp = arrow.get(fc_data[f'fc{pos}']['stamp'], "dddd").format("dddd", locale="de")
 
             icon = weather_icons[fc_data[f'fc{pos}']['icon']]
             temp = fc_data[f'fc{pos}']['temp']

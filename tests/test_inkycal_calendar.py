@@ -20,7 +20,7 @@ tests = [
     {
         "name": "Calendar",
         "config": {
-            "size": [500, 500],
+            "size": [500, 600],
             "week_starts_on": "Monday",
             "show_events": True,
             "ical_urls": sample_url,
