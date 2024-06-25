@@ -8,7 +8,7 @@ from inkycal.settings import Settings
 # On the console, set a logger to show only important logs
 # (level ERROR or higher)
 stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.ERROR)
+stream_handler.setLevel(logging.INFO)
 
 settings = Settings()
 

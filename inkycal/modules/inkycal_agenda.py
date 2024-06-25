@@ -2,9 +2,7 @@
 Inkycal Agenda Module
 Copyright by aceinnolab
 """
-
-import arrow
-
+import arrow # noqa
 from inkycal.custom import *
 from inkycal.modules.ical_parser import iCalendar
 from inkycal.modules.template import inkycal_module
