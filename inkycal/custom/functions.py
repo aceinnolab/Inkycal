@@ -17,20 +17,16 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 
+from inkycal.settings import Settings
+
 logger = logging.getLogger(__name__)
-logger.setLevel(level=logging.INFO)
 
-# Get the path to the Inkycal folder
-top_level = "/".join(os.path.dirname(os.path.abspath(os.path.dirname(__file__))).split("/")[:-1])
-
-# Get path of 'fonts' and 'images' folders within Inkycal folder
-fonts_location = os.path.join(top_level, "fonts/")
-image_folder = os.path.join(top_level, "image_folder/")
+settings = Settings()
 
 # Get available fonts within fonts folder
 fonts = {}
 
-for path, dirs, files in os.walk(fonts_location):
+for path, dirs, files in os.walk(settings.FONT_PATH):
     for _ in files:
         if _.endswith(".otf"):
             name = _.split(".otf")[0]

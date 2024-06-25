@@ -2,13 +2,11 @@
 Inkycal ePaper driving functions
 Copyright by aceisace
 """
-import os
 from importlib import import_module
 
 import PIL
 from PIL import Image
 
-from inkycal.custom import top_level
 from inkycal.display.supported_models import supported_models
 
 
@@ -199,9 +197,7 @@ class Display:
 
         >>> Display.get_display_names()
         """
-        driver_files = top_level + '/inkycal/display/drivers/'
-        drivers = [i for i in os.listdir(driver_files) if i.endswith(".py") and not i.startswith("__") and "_" in i]
-        return drivers
+        return list(supported_models.keys())
 
 
 if __name__ == '__main__':

@@ -156,7 +156,7 @@ class Simple(inkycal_module):
         # -----------------------------------------------------------------------#
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     #############################################################################
     #                 Validation of module specific parameters   (optional)     #

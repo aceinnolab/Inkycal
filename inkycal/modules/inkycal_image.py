@@ -50,7 +50,7 @@ class Inkyimage(inkycal_module):
             self.dither = False
 
         # give an OK message
-        print(f"{__name__} loaded")
+        logger.debug(f"{__name__} loaded")
 
     def generate_image(self):
         """Generate image for this module"""
@@ -71,7 +71,7 @@ class Inkyimage(inkycal_module):
         # Remove background if present
         im.remove_alpha()
 
-        # if autoflip was enabled, flip the image
+        # if auto-flip was enabled, flip the image
         if self.autoflip:
             im.autoflip(self.orientation)
 

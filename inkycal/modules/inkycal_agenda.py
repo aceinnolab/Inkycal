@@ -2,9 +2,7 @@
 Inkycal Agenda Module
 Copyright by aceinnolab
 """
-
-import arrow
-
+import arrow # noqa
 from inkycal.custom import *
 from inkycal.modules.ical_parser import iCalendar
 from inkycal.modules.template import inkycal_module
@@ -80,7 +78,7 @@ class Agenda(inkycal_module):
         self.icon_font = ImageFont.truetype(fonts['MaterialIcons'], size=self.fontsize)
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     def generate_image(self):
         """Generate image for this module"""
@@ -90,7 +88,7 @@ class Agenda(inkycal_module):
         im_height = int(self.height - (2 * self.padding_top))
         im_size = im_width, im_height
 
-        logger.info(f'Image size: {im_size}')
+        logger.debug(f'Image size: {im_size}')
 
         # Create an image for black pixels and one for coloured pixels
         im_black = Image.new('RGB', size=im_size, color='white')

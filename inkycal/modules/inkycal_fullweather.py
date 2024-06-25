@@ -23,16 +23,18 @@ from icons.weather_icons.weather_icons import get_weather_icon
 from inkycal.custom.functions import fonts
 from inkycal.custom.functions import get_system_tz
 from inkycal.custom.functions import internet_available
-from inkycal.custom.functions import top_level
 from inkycal.custom.inkycal_exceptions import NetworkNotReachableError
 from inkycal.custom.openweathermap_wrapper import OpenWeatherMap
 from inkycal.modules.inky_image import image_to_palette
 from inkycal.modules.template import inkycal_module
+from inkycal.settings import Settings
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-icons_dir = os.path.join(top_level, "icons", "ui-icons")
+settings = Settings()
+
+icons_dir = os.path.join(settings.FONT_PATH, "ui-icons")
 
 
 def outline(image: Image, size: int, color: tuple) -> Image:
@@ -139,7 +141,7 @@ class Fullweather(inkycal_module):
 
         # Check if all required parameters are present
         for param in self.requires:
-            if not param in config:
+            if param not in config:
                 raise Exception(f"config is missing {param}")
 
         # required parameters
@@ -237,7 +239,7 @@ class Fullweather(inkycal_module):
         self.left_section_width = int(self.width / 4)
 
         # give an OK message
-        print(f"{__name__} loaded")
+        logger.debug(f"{__name__} loaded")
 
     def createBaseImage(self):
         """
