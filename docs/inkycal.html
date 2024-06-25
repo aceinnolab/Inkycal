@@ -51,8 +51,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#inkycal.main.Inkycal"><code class="docutils literal notranslate"><span class="pre">Inkycal</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.calibrate"><code class="docutils literal notranslate"><span class="pre">Inkycal.calibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.countdown"><code class="docutils literal notranslate"><span class="pre">Inkycal.countdown()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.dry_run"><code class="docutils literal notranslate"><span class="pre">Inkycal.dry_run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.process_module"><code class="docutils literal notranslate"><span class="pre">Inkycal.process_module()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.run"><code class="docutils literal notranslate"><span class="pre">Inkycal.run()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.test"><code class="docutils literal notranslate"><span class="pre">Inkycal.test()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -130,7 +131,7 @@
 Copyright by aceinnolab</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="inkycal.main.Inkycal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">inkycal.main.</span></span><span class="sig-name descname"><span class="pre">Inkycal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">inkycal.main.</span></span><span class="sig-name descname"><span class="pre">Inkycal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_pi_sugar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal" title="Link to this definition"></a></dt>
 <dd><p>Inkycal main class</p>
 <p>Main class of Inkycal, test and run the main Inkycal program.</p>
 <dl class="simple">
@@ -157,40 +158,48 @@ cycles. After a refresh cycle, a new image is generated and shown.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="inkycal.main.Inkycal.countdown">
 <span class="sig-name descname"><span class="pre">countdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interval_mins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#inkycal.main.Inkycal.countdown" title="Link to this definition"></a></dt>
-<dd><p>Returns the remaining time in seconds until next display update.</p>
+<dd><p>Returns the remaining time in seconds until the next display update based on the interval.</p>
 <dl class="simple">
-<dt>Args:</dt><dd><ul class="simple">
-<li><dl class="simple">
-<dt>interval_mins = int -&gt; the interval in minutes for the update</dt><dd><p>if no interval is given, the value from the settings file is used.</p>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>interval_mins (int): The interval in minutes for the update. If none is given, the value</dt><dd><p>from the settings file is used.</p>
 </dd>
 </dl>
-</li>
-</ul>
 </dd>
-<dt>Returns:</dt><dd><ul class="simple">
-<li><p>int -&gt; the remaining time in seconds until next update</p></li>
-</ul>
+<dt>Returns:</dt><dd><p>int: The remaining time in seconds until the next update.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="inkycal.main.Inkycal.run">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal.run" title="Link to this definition"></a></dt>
-<dd><p>Runs main program in nonstop mode.</p>
-<p>Uses an infinity loop to run Inkycal nonstop. Inkycal generates the image
-from all modules, assembles them in one image, refreshed the E-Paper and
-then sleeps until the next scheduled update.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="inkycal.main.Inkycal.test">
-<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal.test" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="inkycal.main.Inkycal.dry_run">
+<span class="sig-name descname"><span class="pre">dry_run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal.dry_run" title="Link to this definition"></a></dt>
 <dd><p>Tests if Inkycal can run without issues.</p>
 <p>Attempts to import module names from settings file. Loads the config
 for each module and initializes the module. Tries to run the module and
 checks if the images could be generated correctly.</p>
 <p>Generated images can be found in the /images folder of Inkycal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.main.Inkycal.process_module">
+<span class="sig-name descname"><span class="pre">process_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inkycal.main.Inkycal.process_module" title="Link to this definition"></a></dt>
+<dd><p>Process individual module to generate images and handle exceptions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.main.Inkycal.run">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_once</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal.run" title="Link to this definition"></a></dt>
+<dd><p>Runs main program in nonstop mode or a single iteration based on the run_once flag.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>run_once (bool): If True, runs the updating process once and stops. If False,</dt><dd><p>runs indefinitely.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Uses an infinity loop to run Inkycal nonstop or a single time based on run_once.
+Inkycal generates the image from all modules, assembles them in one image,
+refreshes the E-Paper and then sleeps until the next scheduled update or exits.</p>
 </dd></dl>
 
 </dd></dl>
