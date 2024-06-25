@@ -232,14 +232,14 @@ which the given font should be scaled to.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inkycal.custom.functions.draw_border">
-<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">draw_border</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shrinkage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.1,</span> <span class="pre">0.1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.draw_border" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">draw_border</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">image:</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/home/runner/work/Inkycal/Inkycal/venv/lib/python3.11/site-packages/PIL/Image.py'&gt;,</span> <span class="pre">xy:</span> <span class="pre">~typing.Tuple[int,</span> <span class="pre">int],</span> <span class="pre">size:</span> <span class="pre">~typing.Tuple[int,</span> <span class="pre">int],</span> <span class="pre">radius:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5,</span> <span class="pre">thickness:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1,</span> <span class="pre">shrinkage:</span> <span class="pre">~typing.Tuple[int,</span> <span class="pre">int]</span> <span class="pre">=</span> <span class="pre">(0.1,</span> <span class="pre">0.1)</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#inkycal.custom.functions.draw_border" title="Link to this definition"></a></dt>
 <dd><p>Draws a border at given coordinates.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><ul class="simple">
 <li><p>image: The image on which the border should be drawn (usually im_black or
-im_colour.</p></li>
+im_colour).</p></li>
 <li><p>xy: Tuple representing the top-left corner of the border e.g. (32, 100)
-where 32 is the x co-ordinate and 100 is the y-coordinate.</p></li>
+where 32 is the x-coordinate and 100 is the y-coordinate.</p></li>
 <li><p>size: Size of the border as a tuple -&gt; (width, height).</p></li>
 <li><p>radius: Radius of the corners, where 0 = plain rectangle, 5 = round corners.</p></li>
 <li><p>thickness: Thickness of the border in pixels.</p></li>
@@ -288,14 +288,14 @@ printed fonts of this function:</p>
 <p>The extracted timezone can be used to show the local time instead of UTC. e.g.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">arrow</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arrow</span><span class="o">.</span><span class="n">now</span><span class="p">())</span> <span class="c1"># returns non-timezone-aware time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arrow</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">get_system_tz</span><span class="p">())</span> <span class="c1"># prints timezone aware time.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arrow</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">get_system_tz</span><span class="p">()))</span> <span class="c1"># prints timezone aware time.</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inkycal.custom.functions.internet_available">
-<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">internet_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.internet_available" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">internet_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inkycal.custom.functions.internet_available" title="Link to this definition"></a></dt>
 <dd><p>checks if the internet is available.</p>
 <p>Attempts to connect to google.com with a timeout of 5 seconds to check
 if the network can be reached.</p>
@@ -315,7 +315,7 @@ if the network can be reached.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inkycal.custom.functions.text_wrap">
-<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">text_wrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.text_wrap" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">text_wrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.text_wrap" title="Link to this definition"></a></dt>
 <dd><p>Splits a very long text into smaller parts</p>
 <p>Splits a long text to smaller lines which can fit in a line with max_width.
 Uses a Font object for more accurate calculations.</p>
@@ -334,7 +334,7 @@ splitting the text into the next chunk.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inkycal.custom.functions.write">
-<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.write" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">image:</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/home/runner/work/Inkycal/Inkycal/venv/lib/python3.11/site-packages/PIL/Image.py'&gt;,</span> <span class="pre">xy:</span> <span class="pre">~typing.Tuple[int,</span> <span class="pre">int],</span> <span class="pre">box_size:</span> <span class="pre">~typing.Tuple[int,</span> <span class="pre">int],</span> <span class="pre">text:</span> <span class="pre">str,</span> <span class="pre">font=None,</span> <span class="pre">**kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.write" title="Link to this definition"></a></dt>
 <dd><p>Writes text on an image.</p>
 <p>Writes given text at given position on the specified image.</p>
 <dl class="simple">

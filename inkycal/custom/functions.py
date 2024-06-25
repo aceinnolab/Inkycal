@@ -8,9 +8,9 @@ import logging
 import os
 import time
 import traceback
+from typing import Tuple
 
 import arrow
-import PIL
 import requests
 import tzlocal
 from PIL import Image
@@ -73,7 +73,7 @@ def get_system_tz() -> str:
 
       >>> import arrow
       >>> print(arrow.now()) # returns non-timezone-aware time
-      >>> print(arrow.now(tz=get_system_tz()) # prints timezone aware time.
+      >>> print(arrow.now(tz=get_system_tz())) # prints timezone aware time.
     """
     try:
         local_tz = tzlocal.get_localzone().key
@@ -111,7 +111,7 @@ def auto_fontsize(font, max_height):
     return font
 
 
-def write(image, xy, box_size, text, font=None, **kwargs):
+def write(image: Image, xy: Tuple[int, int], box_size: Tuple[int, int], text: str, font=None, **kwargs):
     """Writes text on an image.
 
     Writes given text at given position on the specified image.
@@ -161,7 +161,7 @@ def write(image, xy, box_size, text, font=None, **kwargs):
         text_bbox = font.getbbox(text)
         text_width = text_bbox[2] - text_bbox[0]
         text_bbox_height = font.getbbox("hg")
-        text_height = text_bbox_height[3] - text_bbox_height[1]
+        text_height = abs(text_bbox_height[3])  # - abs(text_bbox_height[1])
 
         while text_width < int(box_width * fill_width) and text_height < int(box_height * fill_height):
             size += 1
@@ -169,12 +169,12 @@ def write(image, xy, box_size, text, font=None, **kwargs):
             text_bbox = font.getbbox(text)
             text_width = text_bbox[2] - text_bbox[0]
             text_bbox_height = font.getbbox("hg")
-            text_height = text_bbox_height[3] - text_bbox_height[1]
+            text_height = abs(text_bbox_height[3])  # - abs(text_bbox_height[1])
 
     text_bbox = font.getbbox(text)
     text_width = text_bbox[2] - text_bbox[0]
     text_bbox_height = font.getbbox("hg")
-    text_height = text_bbox_height[3] - text_bbox_height[1]
+    text_height = abs(text_bbox_height[3])  # - abs(text_bbox_height[1])
 
     # Truncate text if text is too long, so it can fit inside the box
     if (text_width, text_height) > (box_width, box_height):
@@ -184,7 +184,7 @@ def write(image, xy, box_size, text, font=None, **kwargs):
             text_bbox = font.getbbox(text)
             text_width = text_bbox[2] - text_bbox[0]
             text_bbox_height = font.getbbox("hg")
-            text_height = text_bbox_height[3] - text_bbox_height[1]
+            text_height = abs(text_bbox_height[3])  # - abs(text_bbox_height[1])
         logger.debug(text)
 
     # Align text to desired position
@@ -195,10 +195,13 @@ def write(image, xy, box_size, text, font=None, **kwargs):
     elif alignment == "right":
         x = int(box_width - text_width)
 
+    # Vertical centering
+    y = int((box_height / 2) - (text_height / 2))
+
     # Draw the text in the text-box
     draw = ImageDraw.Draw(image)
     space = Image.new('RGBA', (box_width, box_height))
-    ImageDraw.Draw(space).text((x, 0), text, fill=colour, font=font)
+    ImageDraw.Draw(space).text((x, y), text, fill=colour, font=font)
 
     # Uncomment following two lines, comment out above two lines to show
     # red text-box with white text (debugging purposes)
@@ -213,7 +216,7 @@ def write(image, xy, box_size, text, font=None, **kwargs):
     image.paste(space, xy, space)
 
 
-def text_wrap(text, font=None, max_width=None):
+def text_wrap(text: str, font=None, max_width=None):
     """Splits a very long text into smaller parts
 
     Splits a long text to smaller lines which can fit in a line with max_width.
@@ -249,7 +252,7 @@ def text_wrap(text, font=None, max_width=None):
     return lines
 
 
-def internet_available():
+def internet_available() -> bool:
     """checks if the internet is available.
 
     Attempts to connect to google.com with a timeout of 5 seconds to check
@@ -274,15 +277,16 @@ def internet_available():
     return False
 
 
-def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
+def draw_border(image: Image, xy: Tuple[int, int], size: Tuple[int, int], radius: int = 5, thickness: int = 1,
+                shrinkage: Tuple[int, int] = (0.1, 0.1)) -> None:
     """Draws a border at given coordinates.
 
     Args:
       - image: The image on which the border should be drawn (usually im_black or
-        im_colour.
+        im_colour).
 
       - xy: Tuple representing the top-left corner of the border e.g. (32, 100)
-        where 32 is the x co-ordinate and 100 is the y-coordinate.
+        where 32 is the x-coordinate and 100 is the y-coordinate.
 
       - size: Size of the border as a tuple -> (width, height).
 
@@ -320,6 +324,7 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
         c5, c6 = ((x + width) - diameter, (y + height) - diameter), (x + width, y + height)
         c7, c8 = (x, (y + height) - diameter), (x + diameter, y + height)
 
+
     # Draw lines and arcs, creating a square with round corners
     draw = ImageDraw.Draw(image)
     draw.line((p1, p2), fill=colour, width=thickness)
@@ -334,7 +339,7 @@ def draw_border(image, xy, size, radius=5, thickness=1, shrinkage=(0.1, 0.1)):
         draw.arc((c7, c8), 90, 180, fill=colour, width=thickness)
 
 
-def draw_border_2(im: PIL.Image, xy: tuple, size: tuple, radius: int):
+def draw_border_2(im: Image, xy: Tuple[int, int], size: Tuple[int, int], radius: int):
     draw = ImageDraw.Draw(im)
 
     x, y = xy
