@@ -210,8 +210,6 @@ class Inkycal:
 
         Generated images can be found in the /images folder of Inkycal.
         """
-
-        logger.info(f"Inkycal version: v{self._release}")
         logger.info(f'Selected E-paper display: {self.settings["model"]}')
 
         # store module numbers in here
@@ -222,11 +220,11 @@ class Inkycal:
 
         for number in range(1, self._module_number):
             name = eval(f"self.module_{number}.name")
-            print(f'generating image(s) for {name}...', end="")
             success = self.process_module(number)
             if success:
-                print("OK!")
+                logger.debug(f'Image of module {name} generated successfully')
             else:
+                logger.warning(f'Generating image of module {name} failed!')
                 errors.append(number)
                 self.info += f"module {number}: Error!  "
 
@@ -291,14 +289,14 @@ class Inkycal:
         # Function to flip images upside down
         upside_down = lambda image: image.rotate(180, expand=True)
 
-        print(f'Inkycal version: v{self._release}')
-        print(f'Selected E-paper display: {self.settings["model"]}')
+        logger.info(f'Inkycal version: v{self._release}')
+        logger.info(f'Selected E-paper display: {self.settings["model"]}')
 
         while True:
+            logger.info("Starting new cycle...")
             current_time = arrow.now(tz=get_system_tz())
-            print(f"Date: {current_time.format('D MMM YY')} | "
-                  f"Time: {current_time.format('HH:mm')}")
-            print('Generating images for all modules...', end='')
+            logger.info(f"Timestamp: {current_time.format('HH:mm:ss DD.MM.YYYY')}")
+            self.cache_data["counter"] = self.counter
 
             errors = []  # Store module numbers in here
 
@@ -317,8 +315,10 @@ class Inkycal:
             if errors:
                 logger.error("Error/s in modules:", *errors)
                 self.counter = 0
+                self.cache_data["counter"] = 0
             else:
                 self.counter += 1
+                self.cache_data["counter"] += 1
                 logger.info("All images generated successfully!")
             del errors
 
@@ -330,6 +330,7 @@ class Inkycal:
 
             # Check if image should be rendered
             if self.render:
+                logger.info("Attempting to render image on display...")
                 display = self.Display
                 self._calibration_check()
                 if self._calibration_state:
@@ -353,7 +354,7 @@ class Inkycal:
                         display.render(im_black, im_colour)
 
                 # Part for black-white ePapers
-                elif not self.supports_colour:
+                else:
                     im_black = self._merge_bands()
 
                     # Flip the image by 180° if required
@@ -364,8 +365,8 @@ class Inkycal:
                         (f"{self.image_folder}/canvas.png.hash", im_black), ]):
                         display.render(im_black)
 
-            print(f'\nNo errors since {self.counter} display updates \n'
-                  f'program started {runtime.humanize()}')
+            logger.info(f'\nNo errors since {self.counter} display updates')
+            logger.info(f'program started {runtime.humanize()}')
 
             # store the cache data
             self.cache.write(self.cache_data)
