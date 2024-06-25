@@ -37,15 +37,19 @@ class Inkycal:
         to improve rendering on E-Papers. Set this to False for 9.7" E-Paper.
     """
 
-    def __init__(self, settings_path: str or None = None, render: bool = True):
+    def __init__(self, settings_path: str or None = None, render: bool = True, use_pi_sugar: bool = False):
         """Initialise Inkycal"""
         self._release = "2.0.3"
+
+        logger.info(f"Inkycal v{self._release} booting up...")
 
         self.render = render
         self.info = None
 
+        logger.info("Checking if a settings file is present...")
         # load settings file - throw an error if file could not be found
         if settings_path:
+            logger.info(f"Custom location for settings.json file specified: {settings_path}")
             try:
                 with open(settings_path) as settings_file:
                     self.settings = json.load(settings_file)
@@ -55,6 +59,7 @@ class Inkycal:
                     f"No settings.json file could be found in the specified location: {settings_path}")
 
         else:
+            logger.info("Looking for settings.json file in /boot folder...")
             try:
                 with open('/boot/settings.json', mode="r") as settings_file:
                     self.settings = json.load(settings_file)
@@ -63,6 +68,8 @@ class Inkycal:
                 raise SettingsFileNotFoundError
 
         self.disable_calibration = self.settings.get('disable_calibration', False)
+        if self.disable_calibration:
+            logger.info("Calibration disabled. Please proceed with caution to prevent ghosting.")
 
         if not os.path.exists(settings.IMAGE_FOLDER):
             os.mkdir(settings.IMAGE_FOLDER)
@@ -132,16 +139,31 @@ class Inkycal:
 
         self.counter = 0 if "counter" not in self.cache_data else int(self.cache_data["counter"])
 
-        self.use_pi_sugar = True
-        print("Please remove hardcoded value of pisugar!")
+        self.use_pi_sugar = use_pi_sugar
+        self.battery_capacity = 100
 
         if self.use_pi_sugar:
+            logger.info("PiSugar support enabled.")
             from inkycal.utils import PiSugar
             self.pisugar = PiSugar()
-            print(f"Using PiSigar model: {self.pisugar.get_model()}. Current PiSugar time: {self.pisugar.get_rtc_time()}")
+
+            self.battery_capacity = self.pisugar.get_battery()
+            logger.info(f"PiSugar battery capacity: {self.battery_capacity}%")
+
+            if self.battery_capacity < 20:
+                logger.warning("Battery capacity is below 20%!")
+
+            logger.info("Setting system time to PiSugar time...")
+            if self.pisugar.rtc_pi2rtc():
+                logger.info("RTC time updates successfully")
+            else:
+                logger.warning("RTC time could not be set!")
+
+            print(
+                f"Using PiSigar model: {self.pisugar.get_model()}. Current PiSugar time: {self.pisugar.get_rtc_time()}")
 
         # Give an OK message
-        print('loaded inkycal')
+        logger.info('Inkycal initialised successfully!')
 
     def countdown(self, interval_mins: int = None) -> int:
         """Returns the remaining time in seconds until the next display update based on the interval.
@@ -179,7 +201,7 @@ class Inkycal:
 
         return seconds_to_next_interval
 
-    def test(self):
+    def dry_run(self):
         """Tests if Inkycal can run without issues.
 
         Attempts to import module names from settings file. Loads the config
@@ -269,7 +291,6 @@ class Inkycal:
         # Function to flip images upside down
         upside_down = lambda image: image.rotate(180, expand=True)
 
-
         print(f'Inkycal version: v{self._release}')
         print(f'Selected E-paper display: {self.settings["model"]}')
 
@@ -291,7 +312,7 @@ class Inkycal:
                 success = self.process_module(number)
                 if not success:
                     errors.append(number)
-                    self.info += f"module {number}: Error!  "
+                    self.info += f"im {number}: X  "
 
             if errors:
                 logger.error("Error/s in modules:", *errors)
@@ -300,6 +321,9 @@ class Inkycal:
                 self.counter += 1
                 logger.info("successful")
             del errors
+
+            if self.battery_capacity < 20:
+                self.info += "Low battery!  "
 
             # Assemble image from each module - add info section if specified
             self._assemble()
@@ -337,7 +361,7 @@ class Inkycal:
                         im_black = upside_down(im_black)
 
                     if not self.settings.get('image_hash', False) or self._needs_image_update([
-                        (f"{self.image_folder}/canvas.png.hash", im_black),]):
+                        (f"{self.image_folder}/canvas.png.hash", im_black), ]):
                         display.render(im_black)
 
             print(f'\nNo errors since {self.counter} display updates \n'
@@ -353,13 +377,12 @@ class Inkycal:
             sleep_time = self.countdown()
 
             if self.use_pi_sugar:
-                # todo make this timezone aware!
                 sleep_time_rtc = arrow.now(tz=get_system_tz()).shift(seconds=sleep_time)
                 result = self.pisugar.rtc_alarm_set(sleep_time_rtc, 127)
                 if result:
-                    print(f"Alarm set for {sleep_time_rtc.format('HH:mm:ss')}")
+                    logger.info(f"Alarm set for {sleep_time_rtc.format('HH:mm:ss')}")
                 else:
-                    print(f"Failed to set alarm for {sleep_time_rtc.format('HH:mm:ss')}")
+                    logger.warning(f"Failed to set alarm for {sleep_time_rtc.format('HH:mm:ss')}")
 
             await asyncio.sleep(sleep_time)
 
@@ -574,6 +597,17 @@ class Inkycal:
         except Exception:
             logger.exception(f"Error in module {number}!")
             return False
+
+    def _shutdown_system(self):
+        """Shutdown the system"""
+        import subprocess
+        from time import sleep
+        try:
+            logger.info("Shutting down OS in 5 seconds...")
+            sleep(5)
+            subprocess.run(["sudo", "shutdown", "-h", "now"], check=True)
+        except subprocess.CalledProcessError:
+            logger.warning("Failed to execute shutdown command.")
 
 
 if __name__ == '__main__':
