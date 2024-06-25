@@ -169,7 +169,7 @@ Run the following steps to install Inkycal. Do **not** use sudo for this, except
 
 ```bash
 # Raspberry Pi specific section start
-sudo apt-get install git zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python-dev-is-python3 scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev
+sudo apt-get install git zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python-dev-is-python3 scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-base libopenblas-dev 
 git clone https://github.com/WiringPi/WiringPi
 cd WiringPi
 ./build

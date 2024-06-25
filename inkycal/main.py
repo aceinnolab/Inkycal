@@ -39,7 +39,7 @@ class Inkycal:
 
     def __init__(self, settings_path: str or None = None, render: bool = True, use_pi_sugar: bool = False):
         """Initialise Inkycal"""
-        self._release = "2.0.3"
+        self._release = "2.0.4"
 
         logger.info(f"Inkycal v{self._release} booting up...")
 
