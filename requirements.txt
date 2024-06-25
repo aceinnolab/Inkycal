@@ -51,4 +51,4 @@ virtualenv==20.25.0
 webencodings==0.5.1
 x-wr-timezone==0.0.6
 xkcd==2.4.2
-yfinance==0.2.36
+yfinance==0.2.40

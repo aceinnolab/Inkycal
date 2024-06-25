@@ -84,7 +84,7 @@ class Calendar(inkycal_module):
         )
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     @staticmethod
     def flatten(values):
@@ -100,7 +100,7 @@ class Calendar(inkycal_module):
         im_size = im_width, im_height
         events_height = 0
 
-        logger.info(f'Image size: {im_size}')
+        logger.debug(f'Image size: {im_size}')
 
         # Create an image for black pixels and one for coloured pixels
         im_black = Image.new('RGB', size=im_size, color='white')
@@ -265,7 +265,7 @@ class Calendar(inkycal_module):
             # find out how many lines can fit at max in the event section
             line_spacing = 2
             text_bbox_height = self.font.getbbox("hg")
-            line_height = text_bbox_height[3] + line_spacing
+            line_height = text_bbox_height[3] - text_bbox_height[1] + line_spacing
             max_event_lines = events_height // (line_height + line_spacing)
 
             # generate list of coordinates for each line
@@ -322,7 +322,7 @@ class Calendar(inkycal_module):
                         im_colour,
                         grid[days],
                         (icon_width, icon_height),
-                        radius=6,
+                        radius=6
                     )
 
             # Filter upcoming events until 4 weeks in the future

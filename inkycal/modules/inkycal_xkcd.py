@@ -11,6 +11,8 @@ from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
 
+settings = Settings()
+
 
 class Xkcd(inkycal_module):
     name = "xkcd - Displays comics from xkcd.com by Randall Munroe"
@@ -51,13 +53,13 @@ class Xkcd(inkycal_module):
         self.scale_filter = config['filter']
 
         # give an OK message
-        print(f'Inkycal XKCD loaded')
+        logger.debug(f'Inkycal XKCD loaded')
 
     def generate_image(self):
         """Generate image for this module"""
 
         # Create tmp path
-        tmpPath = f"{top_level}/temp"
+        tmpPath = settings.TEMPORARY_FOLDER
 
         if not os.path.exists(tmpPath):
             os.mkdir(tmpPath)
@@ -66,7 +68,7 @@ class Xkcd(inkycal_module):
         im_width = int(self.width - (2 * self.padding_left))
         im_height = int(self.height - (2 * self.padding_top))
         im_size = im_width, im_height
-        logger.info('image size: {} x {} px'.format(im_width, im_height))
+        logger.debug('image size: {} x {} px'.format(im_width, im_height))
 
         # Create an image for black pixels and one for coloured pixels (required)
         im_black = Image.new('RGB', size=im_size, color='white')
@@ -76,6 +78,7 @@ class Xkcd(inkycal_module):
         if internet_available():
             logger.info('Connection test passed')
         else:
+            logger.error("Network not reachable. Please check your connection.")
             raise Exception('Network could not be reached :/')
 
         # Set some parameters for formatting feeds

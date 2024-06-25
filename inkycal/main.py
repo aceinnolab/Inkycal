@@ -6,44 +6,21 @@ Copyright by aceinnolab
 import asyncio
 import glob
 import hashlib
-from logging.handlers import RotatingFileHandler
 
 import numpy
 
+from inkycal import loggers  # noqa
 from inkycal.custom import *
 from inkycal.display import Display
 from inkycal.modules.inky_image import Inkyimage as Images
-
-# On the console, set a logger to show only important logs
-# (level ERROR or higher)
-stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.ERROR)
-
-if not os.path.exists(f'{top_level}/logs'):
-    os.mkdir(f'{top_level}/logs')
-
-# Save all logs to a file, which contains more detailed output
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s | %(name)s |  %(levelname)s: %(message)s',
-    datefmt='%d-%m-%Y %H:%M:%S',
-    handlers=[
-        stream_handler,  # add stream handler from above
-        RotatingFileHandler(  # log to a file too
-            f'{top_level}/logs/inkycal.log',  # file to log
-            maxBytes=2097152,  # 2MB max filesize
-            backupCount=5  # create max 5 log files
-        )
-    ]
-)
-
-# Show less logging for PIL module
-logging.getLogger("PIL").setLevel(logging.WARNING)
+from inkycal.utils import JSONCache
 
 logger = logging.getLogger(__name__)
 
+settings = Settings()
 
-# TODO: autostart -> supervisor?
+CACHE_NAME = "inkycal_main"
+
 
 class Inkycal:
     """Inkycal main class
@@ -60,43 +37,45 @@ class Inkycal:
         to improve rendering on E-Papers. Set this to False for 9.7" E-Paper.
     """
 
-    def __init__(self, settings_path: str or None = None, render: bool = True):
+    def __init__(self, settings_path: str or None = None, render: bool = True, use_pi_sugar: bool = False):
         """Initialise Inkycal"""
+        self._release = "2.0.3"
 
-        # Get the release version from setup.py
-        with open(f'{top_level}/setup.py') as setup_file:
-            for line in setup_file:
-                if line.startswith('__version__'):
-                    self._release = line.split("=")[-1].replace("'", "").replace('"', "").replace(" ", "")
-                    break
+        logger.info(f"Inkycal v{self._release} booting up...")
 
         self.render = render
         self.info = None
 
+        logger.info("Checking if a settings file is present...")
         # load settings file - throw an error if file could not be found
         if settings_path:
+            logger.info(f"Custom location for settings.json file specified: {settings_path}")
             try:
                 with open(settings_path) as settings_file:
-                    settings = json.load(settings_file)
-                    self.settings = settings
+                    self.settings = json.load(settings_file)
 
             except FileNotFoundError:
                 raise FileNotFoundError(
                     f"No settings.json file could be found in the specified location: {settings_path}")
 
         else:
+            logger.info("Looking for settings.json file in /boot folder...")
             try:
-                with open('/boot/settings.json') as settings_file:
-                    settings = json.load(settings_file)
-                    self.settings = settings
+                with open('/boot/settings.json', mode="r") as settings_file:
+                    self.settings = json.load(settings_file)
 
             except FileNotFoundError:
                 raise SettingsFileNotFoundError
 
         self.disable_calibration = self.settings.get('disable_calibration', False)
+        if self.disable_calibration:
+            logger.info("Calibration disabled. Please proceed with caution to prevent ghosting.")
 
-        if not os.path.exists(image_folder):
-            os.mkdir(image_folder)
+        if not os.path.exists(settings.IMAGE_FOLDER):
+            os.mkdir(settings.IMAGE_FOLDER)
+
+        if not os.path.exists(settings.CACHE_PATH):
+            os.mkdir(settings.CACHE_PATH)
 
         # Option to use epaper image optimisation, reduces colours
         self.optimize = True
@@ -109,10 +88,10 @@ class Inkycal:
         if self.render:
             # Init Display class with model in settings file
             # from inkycal.display import Display
-            self.Display = Display(settings["model"])
+            self.Display = Display(self.settings["model"])
 
             # check if colours can be rendered
-            self.supports_colour = True if 'colour' in settings['model'] else False
+            self.supports_colour = True if 'colour' in self.settings['model'] else False
 
             # get calibration hours
             self._calibration_hours = self.settings['calibration_hours']
@@ -122,7 +101,7 @@ class Inkycal:
 
         # Load and initialise modules specified in the settings file
         self._module_number = 1
-        for module in settings['modules']:
+        for module in self.settings['modules']:
             module_name = module['name']
             try:
                 loader = f'from inkycal.modules import {module_name}'
@@ -131,10 +110,9 @@ class Inkycal:
                 setup = f'self.module_{self._module_number} = {module_name}({module})'
                 # print(setup)
                 exec(setup)
-                logger.info(('name : {name} size : {width}x{height} px'.format(
-                    name=module_name,
-                    width=module['config']['size'][0],
-                    height=module['config']['size'][1])))
+                width = module['config']['size'][0]
+                height = module['config']['size'][1]
+                logger.info(f'name : {module_name} size : {width}x{height} px')
 
                 self._module_number += 1
 
@@ -147,57 +125,83 @@ class Inkycal:
                 logger.exception(f"Exception: {traceback.format_exc()}.")
 
         # Path to store images
-        self.image_folder = image_folder
+        self.image_folder = settings.IMAGE_FOLDER
 
         # Remove old hashes
         self._remove_hashes(self.image_folder)
 
-        # Give an OK message
-        print('loaded inkycal')
+        # set up cache
+        if not os.path.exists(os.path.join(settings.CACHE_PATH, CACHE_NAME)):
+            if not os.path.exists(settings.CACHE_PATH):
+                os.mkdir(settings.CACHE_PATH)
+        self.cache = JSONCache(CACHE_NAME)
+        self.cache_data = self.cache.read()
 
-    def countdown(self, interval_mins: int or None = None) -> int:
-        """Returns the remaining time in seconds until next display update.
+        self.counter = 0 if "counter" not in self.cache_data else int(self.cache_data["counter"])
+
+        self.use_pi_sugar = use_pi_sugar
+        self.battery_capacity = 100
+
+        if self.use_pi_sugar:
+            logger.info("PiSugar support enabled.")
+            from inkycal.utils import PiSugar
+            self.pisugar = PiSugar()
+
+            self.battery_capacity = self.pisugar.get_battery()
+            logger.info(f"PiSugar battery capacity: {self.battery_capacity}%")
+
+            if self.battery_capacity < 20:
+                logger.warning("Battery capacity is below 20%!")
+
+            logger.info("Setting system time to PiSugar time...")
+            if self.pisugar.rtc_pi2rtc():
+                logger.info("RTC time updates successfully")
+            else:
+                logger.warning("RTC time could not be set!")
+
+            print(
+                f"Using PiSigar model: {self.pisugar.get_model()}. Current PiSugar time: {self.pisugar.get_rtc_time()}")
+
+        # Give an OK message
+        logger.info('Inkycal initialised successfully!')
+
+    def countdown(self, interval_mins: int = None) -> int:
+        """Returns the remaining time in seconds until the next display update based on the interval.
 
         Args:
-            - interval_mins = int -> the interval in minutes for the update
-                if no interval is given, the value from the settings file is used.
+            interval_mins (int): The interval in minutes for the update. If none is given, the value
+                                 from the settings file is used.
 
         Returns:
-            - int -> the remaining time in seconds until next update
+            int: The remaining time in seconds until the next update.
         """
-
-        # Check if empty, if empty, use value from settings file
+        # Default to settings if no interval is provided
         if interval_mins is None:
             interval_mins = self.settings["update_interval"]
 
-        # Find out at which minutes the update should happen
+        # Get the current time
         now = arrow.now()
-        if interval_mins <= 60:
-            update_timings = [(60 - interval_mins * updates) for updates in range(60 // interval_mins)][::-1]
 
-            # Calculate time in minutes until next update
-            minutes = [_ for _ in update_timings if _ >= now.minute][0] - now.minute
+        # Calculate the next update time
+        # Finding the total minutes from the start of the day
+        minutes_since_midnight = now.hour * 60 + now.minute
 
-            # Print the remaining time in minutes until next update
-            print(f'{minutes} minutes left until next refresh')
+        # Finding the next interval point
+        minutes_to_next_interval = (
+                                           minutes_since_midnight // interval_mins + 1) * interval_mins - minutes_since_midnight
+        seconds_to_next_interval = minutes_to_next_interval * 60 - now.second
 
-            # Calculate time in seconds until next update
-            remaining_time = minutes * 60 + (60 - now.second)
-
-            # Return seconds until next update
-            return remaining_time
+        # Logging the remaining time in appropriate units
+        hours_to_next_interval = minutes_to_next_interval // 60
+        remaining_minutes = minutes_to_next_interval % 60
+        if hours_to_next_interval > 0:
+            print(f'{hours_to_next_interval} hours and {remaining_minutes} minutes left until next refresh')
         else:
-            # Calculate time in minutes until next update using the range of 24 hours in steps of every full hour
-            update_timings = [(60 * 24 - interval_mins * updates) for updates in range(60 * 24 // interval_mins)][::-1]
-            minutes = [_ for _ in update_timings if _ >= now.minute][0] - now.minute
-            remaining_time = minutes * 60 + (60 - now.second)
+            print(f'{remaining_minutes} minutes left until next refresh')
 
-            print(f'{round(minutes / 60, 1)} hours left until next refresh')
+        return seconds_to_next_interval
 
-            # Return seconds until next update
-            return remaining_time
-
-    def test(self):
+    def dry_run(self):
         """Tests if Inkycal can run without issues.
 
         Attempts to import module names from settings file. Loads the config
@@ -206,8 +210,6 @@ class Inkycal:
 
         Generated images can be found in the /images folder of Inkycal.
         """
-
-        logger.info(f"Inkycal version: v{self._release}")
         logger.info(f'Selected E-paper display: {self.settings["model"]}')
 
         # store module numbers in here
@@ -218,20 +220,13 @@ class Inkycal:
 
         for number in range(1, self._module_number):
             name = eval(f"self.module_{number}.name")
-            module = eval(f'self.module_{number}')
-            print(f'generating image(s) for {name}...', end="")
-            try:
-                black, colour = module.generate_image()
-                if self.show_border:
-                    draw_border_2(im=black, xy=(1, 1), size=(black.width - 2, black.height - 2), radius=5)
-                black.save(f"{self.image_folder}module{number}_black.png", "PNG")
-                colour.save(f"{self.image_folder}module{number}_colour.png", "PNG")
-                print("OK!")
-            except Exception:
+            success = self.process_module(number)
+            if success:
+                logger.debug(f'Image of module {name} generated successfully')
+            else:
+                logger.warning(f'Generating image of module {name} failed!')
                 errors.append(number)
                 self.info += f"module {number}: Error!  "
-                logger.exception("Error!")
-                logger.exception(f"Exception: {traceback.format_exc()}.")
 
         if errors:
             logger.error('Error/s in modules:', *errors)
@@ -277,76 +272,69 @@ class Inkycal:
             print("Refresh needed: {a}".format(a=res))
         return res
 
-    async def run(self):
-        """Runs main program in nonstop mode.
+    async def run(self, run_once=False):
+        """Runs main program in nonstop mode or a single iteration based on the run_once flag.
 
-        Uses an infinity loop to run Inkycal nonstop. Inkycal generates the image
-        from all modules, assembles them in one image, refreshed the E-Paper and
-        then sleeps until the next scheduled update.
+        Args:
+            run_once (bool): If True, runs the updating process once and stops. If False,
+                             runs indefinitely.
+
+        Uses an infinity loop to run Inkycal nonstop or a single time based on run_once.
+        Inkycal generates the image from all modules, assembles them in one image,
+        refreshes the E-Paper and then sleeps until the next scheduled update or exits.
         """
-
         # Get the time of initial run
         runtime = arrow.now()
 
         # Function to flip images upside down
         upside_down = lambda image: image.rotate(180, expand=True)
 
-        # Count the number of times without any errors
-        counter = 0
-
-        print(f'Inkycal version: v{self._release}')
-        print(f'Selected E-paper display: {self.settings["model"]}')
+        logger.info(f'Inkycal version: v{self._release}')
+        logger.info(f'Selected E-paper display: {self.settings["model"]}')
 
         while True:
+            logger.info("Starting new cycle...")
             current_time = arrow.now(tz=get_system_tz())
-            print(f"Date: {current_time.format('D MMM YY')} | "
-                  f"Time: {current_time.format('HH:mm')}")
-            print('Generating images for all modules...', end='')
+            logger.info(f"Timestamp: {current_time.format('HH:mm:ss DD.MM.YYYY')}")
+            self.cache_data["counter"] = self.counter
 
-            errors = []  # store module numbers in here
+            errors = []  # Store module numbers in here
 
-            # short info for info-section
+            # Short info for info-section
             if not self.settings.get('image_hash', False):
                 self.info = f"{current_time.format('D MMM @ HH:mm')}  "
             else:
                 self.info = ""
 
             for number in range(1, self._module_number):
-
-                # name = eval(f"self.module_{number}.name")
-                module = eval(f'self.module_{number}')
-
-                try:
-                    black, colour = module.generate_image()
-                    if self.show_border:
-                        draw_border_2(im=black, xy=(1, 1), size=(black.width - 2, black.height - 2), radius=5)
-                    black.save(f"{self.image_folder}module{number}_black.png", "PNG")
-                    colour.save(f"{self.image_folder}module{number}_colour.png", "PNG")
-                    self.info += f"module {number}: OK  "
-                except Exception as e:
+                success = self.process_module(number)
+                if not success:
                     errors.append(number)
-                    self.info += f"module {number}: Error!  "
-                    logger.exception("Error!")
-                    logger.exception(f"Exception: {traceback.format_exc()}.")
+                    self.info += f"im {number}: X  "
 
             if errors:
                 logger.error("Error/s in modules:", *errors)
-                counter = 0
+                self.counter = 0
+                self.cache_data["counter"] = 0
             else:
-                counter += 1
-                logger.info("successful")
+                self.counter += 1
+                self.cache_data["counter"] += 1
+                logger.info("All images generated successfully!")
             del errors
+
+            if self.battery_capacity < 20:
+                self.info += "Low battery!  "
 
             # Assemble image from each module - add info section if specified
             self._assemble()
 
             # Check if image should be rendered
             if self.render:
+                logger.info("Attempting to render image on display...")
                 display = self.Display
-
                 self._calibration_check()
                 if self._calibration_state:
-                    # after calibration, we have to forcefully rewrite the screen
+                    # After calibration, we have to forcefully rewrite the screen
                     self._remove_hashes(self.image_folder)
 
                 if self.supports_colour:
@@ -358,17 +346,15 @@ class Inkycal:
                         im_black = upside_down(im_black)
                         im_colour = upside_down(im_colour)
 
-                    # render the image on the display
+                    # Render the image on the display
                     if not self.settings.get('image_hash', False) or self._needs_image_update([
                         (f"{self.image_folder}/canvas.png.hash", im_black),
                         (f"{self.image_folder}/canvas_colour.png.hash", im_colour)
                     ]):
-                        # render the image on the display
                         display.render(im_black, im_colour)
 
                 # Part for black-white ePapers
-                elif not self.supports_colour:
-
+                else:
                     im_black = self._merge_bands()
 
                     # Flip the image by 180° if required
@@ -376,14 +362,29 @@ class Inkycal:
                         im_black = upside_down(im_black)
 
                     if not self.settings.get('image_hash', False) or self._needs_image_update([
-                        (f"{self.image_folder}/canvas.png.hash", im_black),
-                    ]):
+                        (f"{self.image_folder}/canvas.png.hash", im_black), ]):
                         display.render(im_black)
 
-            print(f'\nNo errors since {counter} display updates \n'
-                  f'program started {runtime.humanize()}')
+            logger.info(f'\nNo errors since {self.counter} display updates')
+            logger.info(f'program started {runtime.humanize()}')
+
+            # store the cache data
+            self.cache.write(self.cache_data)
+
+            # Exit the loop if run_once is True
+            if run_once:
+                break  # Exit the loop after one full cycle if run_once is True
 
             sleep_time = self.countdown()
+
+            if self.use_pi_sugar:
+                sleep_time_rtc = arrow.now(tz=get_system_tz()).shift(seconds=sleep_time)
+                result = self.pisugar.rtc_alarm_set(sleep_time_rtc, 127)
+                if result:
+                    logger.info(f"Alarm set for {sleep_time_rtc.format('HH:mm:ss')}")
+                else:
+                    logger.warning(f"Failed to set alarm for {sleep_time_rtc.format('HH:mm:ss')}")
+
             await asyncio.sleep(sleep_time)
 
     @staticmethod
@@ -392,7 +393,8 @@ class Inkycal:
         returns the merged image
         """
 
-        im1_path, im2_path = image_folder + 'canvas.png', image_folder + 'canvas_colour.png'
+        im1_path = os.path.join(settings.image_folder, "canvas.png")
+        im2_path = os.path.join(settings.image_folder, "canvas_colour.png")
 
         # If there is an image for black and colour, merge them
         if os.path.exists(im1_path) and os.path.exists(im2_path):
@@ -531,7 +533,7 @@ class Inkycal:
         im_colour = black_to_colour(im_colour)
 
         im_colour.paste(im_black, (0, 0), im_black)
-        im_colour.save(image_folder + 'full-screen.png', 'PNG')
+        im_colour.save(os.path.join(settings.IMAGE_FOLDER, 'full-screen.png'), 'PNG')
 
     @staticmethod
     def _optimize_im(image, threshold=220):
@@ -574,12 +576,39 @@ class Inkycal:
     @staticmethod
     def cleanup():
         # clean up old images in image_folder
-        for _file in glob.glob(f"{image_folder}*.png"):
+        if len(glob.glob(settings.IMAGE_FOLDER)) <= 1:
+            return
+        for _file in glob.glob(settings.IMAGE_FOLDER):
             try:
                 os.remove(_file)
             except:
                 logger.error(f"could not remove file: {_file}")
                 pass
+
+    def process_module(self, number) -> bool or Exception:
+        """Process individual module to generate images and handle exceptions."""
+        module = eval(f'self.module_{number}')
+        try:
+            black, colour = module.generate_image()
+            if self.show_border:
+                draw_border_2(im=black, xy=(1, 1), size=(black.width - 2, black.height - 2), radius=5)
+            black.save(f"{self.image_folder}module{number}_black.png", "PNG")
+            colour.save(f"{self.image_folder}module{number}_colour.png", "PNG")
+            return True
+        except Exception:
+            logger.exception(f"Error in module {number}!")
+            return False
+
+    def _shutdown_system(self):
+        """Shutdown the system"""
+        import subprocess
+        from time import sleep
+        try:
+            logger.info("Shutting down OS in 5 seconds...")
+            sleep(5)
+            subprocess.run(["sudo", "shutdown", "-h", "now"], check=True)
+        except subprocess.CalledProcessError:
+            logger.warning("Failed to execute shutdown command.")
 
 
 if __name__ == '__main__':

@@ -83,7 +83,7 @@ class Webshot(inkycal_module):
                 raise Exception("Rotation must be either 0, 90, 180 or 270")
 
         # give an OK message
-        print(f'Inkycal webshot loaded')
+        logger.debug(f'Inkycal webshot loaded')
 
     def generate_image(self):
         """Generate image for this module"""
@@ -99,7 +99,7 @@ class Webshot(inkycal_module):
         im_width = int(self.width - (2 * self.padding_left))
         im_height = int(self.height - (2 * self.padding_top))
         im_size = im_width, im_height
-        logger.info('image size: {} x {} px'.format(im_width, im_height))
+        logger.debug('image size: {} x {} px'.format(im_width, im_height))
 
         # Create an image for black pixels and one for coloured pixels (required)
         im_black = Image.new('RGB', size=im_size, color='white')
@@ -109,6 +109,7 @@ class Webshot(inkycal_module):
         if internet_available():
             logger.info('Connection test passed')
         else:
+            logger.error("Network not reachable. Please check your connection.")
             raise Exception('Network could not be reached :/')
 
         logger.info(

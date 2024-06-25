@@ -4,18 +4,16 @@ Copyright by aceinnolab
 """
 from subprocess import run
 
-from inkycal.custom import image_folder, top_level
+from inkycal.settings import Settings
 
 # Display resolution
 EPD_WIDTH = 1200
 EPD_HEIGHT = 825
 
-# Please insert VCOM of your display. The Minus sign before is not required
-VCOM = "2.0"
 
-driver_dir = top_level + '/inkycal/display/drivers/parallel_drivers/'
+settings = Settings()
 
-command = f'sudo {driver_dir}epd -{VCOM} 0 {image_folder + "canvas.bmp"}'
+command = f'sudo {settings.PARALLEL_DRIVER_PATH}/epd -{settings.VCOM} 0 {settings.IMAGE_FOLDER + "canvas.bmp"}'
 
 
 class EPD:
@@ -38,8 +36,8 @@ class EPD:
     def getbuffer(self, image):
         """ad-hoc"""
         image = image.rotate(90, expand=True)
-        image.convert('RGB').save(image_folder + 'canvas.bmp', 'BMP')
-        command = f'sudo {driver_dir}epd -{VCOM} 0 {image_folder + "canvas.bmp"}'
+        image.convert('RGB').save(settings.IMAGE_FOLDER + 'canvas.bmp', 'BMP')
+        command = f'sudo {settings.PARALLEL_DRIVER_PATH}/epd -{settings.VCOM} 0 {settings.IMAGE_FOLDER + "canvas.bmp"}'
         print(command)
         return command
 

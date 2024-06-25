@@ -54,7 +54,7 @@ class Stocks(inkycal_module):
             self.tickers = config['tickers']
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     def generate_image(self):
         """Generate image for this module"""
@@ -63,7 +63,7 @@ class Stocks(inkycal_module):
         im_width = int(self.width - (2 * self.padding_left))
         im_height = int(self.height - (2 * self.padding_top))
         im_size = im_width, im_height
-        logger.info(f'image size: {im_width} x {im_height} px')
+        logger.debug(f'image size: {im_width} x {im_height} px')
 
         # Create an image for black pixels and one for coloured pixels (required)
         im_black = Image.new('RGB', size=im_size, color='white')
@@ -142,7 +142,7 @@ class Stocks(inkycal_module):
                 logger.warning(f"Failed to get '{stockName}' ticker price hint! Using "
                                "default precision of 2 instead.")
 
-            stockHistory = yfTicker.history("30d")
+            stockHistory = yfTicker.history("1mo")
             stockHistoryLen = len(stockHistory)
             logger.info(f'fetched {stockHistoryLen} datapoints ...')
             previousQuote = (stockHistory.tail(2)['Close'].iloc[0])
