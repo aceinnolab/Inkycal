@@ -143,7 +143,7 @@ class Weather(inkycal_module):
             self.tempDispUnit = "°"
 
         # give an OK message
-        print(f"{__name__} loaded")
+        logger.debug(f"{__name__} loaded")
 
     
 

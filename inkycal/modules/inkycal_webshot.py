@@ -74,7 +74,7 @@ class Webshot(inkycal_module):
             self.crop_y = 0
 
         # give an OK message
-        print(f'Inkycal webshot loaded')
+        logger.debug(f'Inkycal webshot loaded')
 
     def generate_image(self):
         """Generate image for this module"""

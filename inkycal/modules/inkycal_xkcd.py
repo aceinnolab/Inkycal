@@ -53,7 +53,7 @@ class Xkcd(inkycal_module):
         self.scale_filter = config['filter']
 
         # give an OK message
-        print(f'Inkycal XKCD loaded')
+        logger.debug(f'Inkycal XKCD loaded')
 
     def generate_image(self):
         """Generate image for this module"""

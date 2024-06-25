@@ -77,7 +77,7 @@ class Slideshow(inkycal_module):
         self._first_run = True
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     def generate_image(self):
         """Generate image for this module"""

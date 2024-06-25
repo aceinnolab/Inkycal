@@ -31,7 +31,7 @@ class TextToDisplay(inkycal_module):
         self.make_request = True if self.filepath.startswith("https://") else False
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     def _validate(self):
         """Validate module-specific parameters"""
