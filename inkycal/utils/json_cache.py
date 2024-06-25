@@ -12,6 +12,10 @@ settings = Settings()
 class JSONCache:
     def __init__(self, name: str, create_if_not_exists: bool = True):
         self.path = os.path.join(settings.CACHE_PATH,f"{name}.json")
+
+        if not os.path.exists(settings.CACHE_PATH):
+            os.makedirs(settings.CACHE_PATH)
+
         if create_if_not_exists and not os.path.exists(self.path):
             with open(self.path, "w", encoding="utf-8") as file:
                 json.dump({}, file)
