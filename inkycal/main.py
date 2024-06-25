@@ -319,7 +319,7 @@ class Inkycal:
                 self.counter = 0
             else:
                 self.counter += 1
-                logger.info("successful")
+                logger.info("All images generated successfully!")
             del errors
 
             if self.battery_capacity < 20:

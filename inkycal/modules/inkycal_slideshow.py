@@ -87,7 +87,7 @@ class Slideshow(inkycal_module):
         im_height = int(self.height - (2 * self.padding_top))
         im_size = im_width, im_height
 
-        logger.info(f'Image size: {im_size}')
+        logger.debug(f'Image size: {im_size}')
 
         # rotates list items by 1 index
         def rotate(list: list):

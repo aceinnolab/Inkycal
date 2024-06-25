@@ -59,7 +59,7 @@ class Inkyimage:
             logger.error("Invalid Image file provided", exc_info=True)
             raise Exception("Please check if the path points to an image file.")
 
-        logger.info(f"width: {image.width}, height: {image.height}")
+        logger.debug(f"width: {image.width}, height: {image.height}")
 
         image.convert(mode="RGBA")  # convert to a more suitable format
         self.image = image
