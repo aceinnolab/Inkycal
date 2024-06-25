@@ -29,6 +29,9 @@ async def run():
     # create an instance of Inkycal
     # If your settings.json file is not in /boot, use the full path:
     # inky = Inkycal('path/to/settings.json', render=True)
+
+    # when using experimental PiSugar support:
+    # inky = Inkycal(render=True, use_pi_sugar=True)
     inky = Inkycal(render=True)
     await inky.run()  # If there were no issues, you can run Inkycal nonstop
 

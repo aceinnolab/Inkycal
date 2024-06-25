@@ -154,7 +154,7 @@ class Weather(inkycal_module):
         im_width = int(self.width - (2 * self.padding_left))
         im_height = int(self.height - (2 * self.padding_top))
         im_size = im_width, im_height
-        logger.info(f'Image size: {im_size}')
+        logger.debug(f'Image size: {im_size}')
 
         # Create an image for black pixels and one for coloured pixels
         im_black = Image.new('RGB', size=im_size, color='white')
@@ -162,8 +162,9 @@ class Weather(inkycal_module):
 
         # Check if internet is available
         if internet_available():
-            logger.info('Connection test passed')
+            logger.debug('Connection test passed')
         else:
+            logger.error("Network not reachable. Please check your connection.")
             raise NetworkNotReachableError
 
         def get_moon_phase():
