@@ -84,7 +84,7 @@ class Calendar(inkycal_module):
         )
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     @staticmethod
     def flatten(values):
@@ -100,7 +100,7 @@ class Calendar(inkycal_module):
         im_size = im_width, im_height
         events_height = 0
 
-        logger.info(f'Image size: {im_size}')
+        logger.debug(f'Image size: {im_size}')
 
         # Create an image for black pixels and one for coloured pixels
         im_black = Image.new('RGB', size=im_size, color='white')

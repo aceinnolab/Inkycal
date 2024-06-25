@@ -76,7 +76,7 @@ class Agenda(inkycal_module):
         self.timezone = get_system_tz()
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     def generate_image(self):
         """Generate image for this module"""

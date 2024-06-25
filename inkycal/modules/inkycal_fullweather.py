@@ -239,7 +239,7 @@ class Fullweather(inkycal_module):
         self.left_section_width = int(self.width / 4)
 
         # give an OK message
-        print(f"{__name__} loaded")
+        logger.debug(f"{__name__} loaded")
 
     def createBaseImage(self):
         """

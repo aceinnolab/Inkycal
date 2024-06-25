@@ -67,7 +67,7 @@ class Inkyserver(inkycal_module):
             self.path_body = config['path_body']
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     def generate_image(self):
         """Generate image for this module"""

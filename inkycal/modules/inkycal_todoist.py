@@ -56,7 +56,7 @@ class Todoist(inkycal_module):
         self._api = TodoistAPI(config['api_key'])
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     def _validate(self):
         """Validate module-specific parameters"""

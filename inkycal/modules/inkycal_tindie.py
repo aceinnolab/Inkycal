@@ -32,7 +32,7 @@ class Tindie(inkycal_module):
         # self.mode = config['mode']  # unshipped_orders, shipped_orders, all_orders
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     def generate_image(self):
         """Generate image for this module"""

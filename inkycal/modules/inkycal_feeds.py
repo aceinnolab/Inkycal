@@ -60,7 +60,7 @@ class Feeds(inkycal_module):
         self.shuffle_feeds = config["shuffle_feeds"]
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     def _validate(self):
         """Validate module-specific parameters"""

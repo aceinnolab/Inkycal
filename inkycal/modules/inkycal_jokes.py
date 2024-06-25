@@ -30,7 +30,7 @@ class Jokes(inkycal_module):
         config = config['config']
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     def generate_image(self):
         """Generate image for this module"""
