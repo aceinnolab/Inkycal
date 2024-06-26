@@ -37,8 +37,21 @@ class Inkycal:
         to improve rendering on E-Papers. Set this to False for 9.7" E-Paper.
     """
 
-    def __init__(self, settings_path: str or None = None, render: bool = True, use_pi_sugar: bool = False):
-        """Initialise Inkycal"""
+    def __init__(self, settings_path: str or None = None, render: bool = True, use_pi_sugar: bool = False,
+                 shutdown_after_run: bool = False) -> None:
+        """Initialise Inkycal
+
+        Args:
+            settings_path (str):
+                The full path to your settings.json file. If no path was specified, will look in the /boot directory.
+            render (bool):
+                Show the image on the E-Paper display.
+            use_pi_sugar (bool):
+                Use PiSugar board (all revisions). Default is False.
+            shutdown_after_run (bool):
+                Shutdown the system after the run is complete. Will only work with PiSugar enabled.
+
+        """
         self._release = "2.0.4"
 
         logger.info(f"Inkycal v{self._release} booting up...")
@@ -51,7 +64,7 @@ class Inkycal:
         if settings_path:
             logger.info(f"Custom location for settings.json file specified: {settings_path}")
             try:
-                with open(settings_path) as settings_file:
+                with open(settings_path, mode="r") as settings_file:
                     self.settings = json.load(settings_file)
 
             except FileNotFoundError:
@@ -141,6 +154,7 @@ class Inkycal:
 
         self.use_pi_sugar = use_pi_sugar
         self.battery_capacity = 100
+        self.shutdown_after_run = use_pi_sugar and shutdown_after_run
 
         if self.use_pi_sugar:
             logger.info("PiSugar support enabled.")
@@ -161,6 +175,9 @@ class Inkycal:
 
             print(
                 f"Using PiSigar model: {self.pisugar.get_model()}. Current PiSugar time: {self.pisugar.get_rtc_time()}")
+
+            if self.shutdown_after_run:
+                logger.warning("Shutdown after run enabled. System will shutdown after the run is complete.")
 
         # Give an OK message
         logger.info('Inkycal initialised successfully!')
@@ -382,6 +399,11 @@ class Inkycal:
                 result = self.pisugar.rtc_alarm_set(sleep_time_rtc, 127)
                 if result:
                     logger.info(f"Alarm set for {sleep_time_rtc.format('HH:mm:ss')}")
+                    if self.shutdown_after_run:
+                        logger.warning("System shutdown in 5 seconds!")
+                        time.sleep(5)
+                        self._shutdown_system()
+                        break
                 else:
                     logger.warning(f"Failed to set alarm for {sleep_time_rtc.format('HH:mm:ss')}")
 

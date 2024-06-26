@@ -518,7 +518,7 @@ class Weather(inkycal_module):
             stamp = fc_data[f'fc{pos}']['stamp']
             # check if we're using daily forecasts
             if "day" in stamp:
-                stamp = arrow.get(fc_data[f'fc{pos}']['stamp'], "dddd").format("dddd", locale="de")
+                stamp = arrow.get(fc_data[f'fc{pos}']['stamp'], "dddd").format("dddd", locale=self.locale)
 
             icon = weather_icons[fc_data[f'fc{pos}']['icon']]
             temp = fc_data[f'fc{pos}']['temp']
