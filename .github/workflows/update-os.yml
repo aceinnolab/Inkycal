@@ -25,7 +25,7 @@ jobs:
         with:
           # Set the base_image to the desired Raspberry Pi OS version
           base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2024-03-15/2024-03-15-raspios-bookworm-armhf-lite.img.xz
-          image_additional_mb: 3072 # enlarge free space to 3 GB
+          image_additional_mb: 3584 # enlarge free space to 3.5 GB
           optimize_image: true
           commands: |
             cd /home
@@ -85,7 +85,8 @@ jobs:
             sudo chown -R inky:inky /home/inky/Inkycal
 
             # make all users require a password for sudo commands (improves security)
-            echo 'ALL   ALL=(ALL:ALL) PASSWD: ALL' | sudo tee -a /etc/sudoers.d/010_require_sudo_password
+            # temporarily disabled to allow pisugar support
+            # echo 'ALL   ALL=(ALL:ALL) PASSWD: ALL' | sudo tee -a /etc/sudoers.d/010_require_sudo_password
             # allow some time to unmount
             sleep 10
 
