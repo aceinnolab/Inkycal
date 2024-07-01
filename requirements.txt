@@ -37,7 +37,7 @@ python-dotenv==1.0.1
 pytz==2024.1
 PyYAML==6.0.1
 recurring-ical-events==2.1.2
-requests==2.32.0
+requests==2.32.3
 sgmllib3k==1.0.0
 six==1.16.0
 soupsieve==2.5
