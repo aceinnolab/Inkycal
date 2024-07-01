@@ -85,7 +85,8 @@ jobs:
             sudo chown -R inky:inky /home/inky/Inkycal
 
             # make all users require a password for sudo commands (improves security)
-            echo 'ALL   ALL=(ALL:ALL) PASSWD: ALL' | sudo tee -a /etc/sudoers.d/010_require_sudo_password
+            # temporarily disabled to allow pisugar support
+            # echo 'ALL   ALL=(ALL:ALL) PASSWD: ALL' | sudo tee -a /etc/sudoers.d/010_require_sudo_password
             # allow some time to unmount
             sleep 10
 
