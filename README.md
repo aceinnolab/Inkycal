@@ -29,7 +29,7 @@ ready-to-flash version of Inkycal called InkycalOS-Lite with everything pre-inst
 via [GitHub Sponsors](https://github.com/sponsors/aceisace). This helps keep up maintenance costs, implement new
 features and fixing bugs. Please choose the one-time sponsor option and select the one with the plug-and-play version of
 Inkycal. Then, send your email-address to which InkycalOS-Lite should be sent.
-Alternatively, you can also use the paypal.me link and send the same amount as Github sponsors to get access to
+Alternatively, you can also use the PayPal.me link and send the same amount as GitHub sponsors to get access to
 InkycalOS-Lite!
 
 ## Main features
@@ -42,10 +42,13 @@ following built-in modules are supported:
 * Image - Display an Image from URL or local file path.
 * Slideshow - Cycle through images in a given folder and show them on the E-Paper.
 * Feeds - Synchronise RSS/ATOM feeds from your favorite providers.
-* Stocks - Display stocks using Tickers from Yahoo! Finance.
+* Stocks - Display stocks using Tickers from Yahoo! Finance. Special thanks to @worstface
 * Weather - Show current weather, daily or hourly weather forecasts from openweathermap.
 * Todoist - Synchronise with Todoist app or website to show todos.
 * iCanHazDad - Display a random joke from [iCanHazDad.com](iCanhazdad.com).
+* Webshot - Display a website as an image. Special thanks to @worstface
+* Tindie - Show the latest orders from your Tindie store.
+* XKCD - Show XKCD comics. Special thanks to @worstface
 
 ## Quickstart
 
@@ -165,6 +168,12 @@ dependencies in advance. Pretty neat right? Check the [sponsor button](https://g
 top of the repo to get access to Inkycal-OS-Lite. Alternatively, you can also use the PayPal.me link and send the same
 amount as GitHub sponsors to get access to InkycalOS-Lite!
 This will help keep this project growing and cover the ongoing expenses too! Win-win for everyone! 🎊
+
+### Bonus: PiSugar support
+The PiSugar is a battery pack for the Raspberry Pi Zero W. It can be used to power the Raspberry Pi and the e-paper, allowing battery life up to several weeks.
+If you have a PiSugar board, please see the wiki page on how to install the PiSugar driver and configure Inkycal to work with it:
+[PiSugar support](https://github.com/aceinnolab/Inkycal/wiki/PiSugar-support)
+
 
 ### Manual installation
 
