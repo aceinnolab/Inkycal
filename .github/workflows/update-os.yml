@@ -69,10 +69,11 @@ jobs:
             echo $CWD
 
             # increase swap-size
-            sudo dphys-swapfile swapoff
-            sudo sed -i -E '/^CONF_SWAPSIZE=/s/=.*/=512/' /etc/dphys-swapfile
-            sudo dphys-swapfile setup
-            sudo dphys-swapfile swapon
+            # temporarily disabled due to unmounting issues
+            # sudo dphys-swapfile swapoff
+            # sudo sed -i -E '/^CONF_SWAPSIZE=/s/=.*/=512/' /etc/dphys-swapfile
+            # sudo dphys-swapfile setup
+            # sudo dphys-swapfile swapon
 
             # enable SPI
             sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
@@ -88,7 +89,7 @@ jobs:
             # temporarily disabled to allow pisugar support
             # echo 'ALL   ALL=(ALL:ALL) PASSWD: ALL' | sudo tee -a /etc/sudoers.d/010_require_sudo_password
             # allow some time to unmount
-            sleep 30
+            sleep 10
 
       - name: Compress the release image
         run: |
