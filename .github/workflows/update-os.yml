@@ -25,8 +25,8 @@ jobs:
         with:
           # Set the base_image to the desired Raspberry Pi OS version
           base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2024-03-15/2024-03-15-raspios-bookworm-armhf-lite.img.xz
-          image_additional_mb: 3584 # enlarge free space to 3.5 GB
-          optimize_image: true
+          image_additional_mb: 3072 # enlarge free space to 3 GB
+          optimize_image: false
           commands: |
             cd /home
             sudo useradd -m -p "$(openssl passwd -1 $INKY_INITAL_PASSWORD)" inky
