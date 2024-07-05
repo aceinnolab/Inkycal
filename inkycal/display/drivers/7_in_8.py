@@ -34,8 +34,8 @@ class EPD:
     def getbuffer(self, image):
         """ad-hoc"""
         image = image.rotate(90, expand=True)
-        image.convert('RGB').save(os.path.join(settings.IMAGE_FOLDER, 'canvas.bmp'), 'BMP')
-        command = f'sudo {settings.PARALLEL_DRIVER_PATH}/epd -{settings.VCOM} 0 {settings.IMAGE_FOLDER + "canvas.bmp"}'
+        image.convert("RGB").save(os.path.join(settings.IMAGE_FOLDER, "canvas.bmp"), 'BMP')
+        command = f'sudo {settings.PARALLEL_DRIVER_PATH}/epd -{settings.VCOM} 0 {os.path.join(settings.IMAGE_FOLDER, "canvas.bmp")}'
         print(command)
         return command
 
