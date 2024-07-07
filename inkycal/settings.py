@@ -11,7 +11,7 @@ class Settings:
 
     """
     CACHE_PATH = os.path.join(basedir, "cache")
-    LOG_PATH = os.path.join(basedir, "logs")
+    LOG_PATH = os.path.join(basedir, "../logs")
     INKYCAL_LOG_PATH = os.path.join(LOG_PATH, "inkycal.log")
     FONT_PATH = os.path.join(basedir, "../fonts")
     IMAGE_FOLDER = os.path.join(basedir, "../image_folder")
