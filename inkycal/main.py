@@ -379,7 +379,7 @@ class Inkycal:
                         (f"{settings.IMAGE_FOLDER}/canvas.png.hash", im_black), ]):
                         display.render(im_black)
 
-            logger.info(f'\nNo errors since {self.counter} display updates')
+            logger.info(f'No errors since {self.counter} display updates')
             logger.info(f'program started {runtime.humanize()}')
 
             # store the cache data
