@@ -98,8 +98,7 @@ display!**
 
 ## Configuring the Raspberry Pi
 
-Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://rptl.io/imager).
-Use the following settings:
+Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://rptl.io/imager). Please use this version of [Raspberry Pi OS - bookworm](https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-12-11/2023-12-11-raspios-bookworm-armhf-lite.img.xz) as the latest release is known to have some issues with the latest kernel update.
 
 | option                    |            value            |
 |:--------------------------|:---------------------------:|
