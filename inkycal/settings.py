@@ -18,3 +18,5 @@ class Settings:
     PARALLEL_DRIVER_PATH = os.path.join(basedir, "display", "drivers", "parallel_drivers")
     TEMPORARY_FOLDER = os.path.join(basedir, "tmp")
     VCOM = "2.0"
+    # /boot/settings.json is path on older releases, while the latter is more the more recent ones
+    SETTINGS_JSON_PATHS = ["/boot/settings.json", "/boot/firmware/settings.json"]

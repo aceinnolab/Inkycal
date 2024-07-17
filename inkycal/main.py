@@ -6,6 +6,7 @@ Copyright by aceinnolab
 import asyncio
 import glob
 import hashlib
+import os.path
 
 import numpy
 
@@ -72,13 +73,16 @@ class Inkycal:
                     f"No settings.json file could be found in the specified location: {settings_path}")
 
         else:
-            logger.info("Looking for settings.json file in /boot folder...")
-            try:
-                with open('/boot/settings.json', mode="r") as settings_file:
-                    self.settings = json.load(settings_file)
-
-            except FileNotFoundError:
-                raise SettingsFileNotFoundError
+            found = False
+            for location in settings.SETTINGS_JSON_PATHS:
+                if os.path.exists(location):
+                    logger.info(f"Found settings.json file in {location}")
+                    with open(location, mode="r") as settings_file:
+                        self.settings = json.load(settings_file)
+                    found = True
+                    break
+            if not found:
+                raise SettingsFileNotFoundError(f"No settings.json file could be found in {settings.SETTINGS_JSON_PATHS} and no explicit path was specified.")
 
         self.disable_calibration = self.settings.get('disable_calibration', False)
         if self.disable_calibration:
