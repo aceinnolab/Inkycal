@@ -30,7 +30,7 @@ tests = [
             "forecast_interval": "daily",
             "units": "metric",
             "hour_format": "12",
-            "use_beaufort": True,
+            "use_beaufort": False,
             "padding_x": 10,
             "padding_y": 10,
             "fontsize": 12,
