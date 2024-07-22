@@ -25,7 +25,7 @@ jobs:
         with:
           # Set the base_image to the desired Raspberry Pi OS version
           # note: version 2023-12-11 seems to have issues with the kernel and gpio
-          base_image: https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2023-12-06/2023-12-05-raspios-bookworm-arm64-lite.img.xz
+          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz
           image_additional_mb: 3072 # enlarge free space to 3 GB
           optimize_image: true
           commands: |
