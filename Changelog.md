@@ -1,13 +1,47 @@
-# E-Paper-Calendar Software Changelog
+# Inkycal Software Changelog
 All significant changes will be documented in this file. 
 The order is from latest to oldest and structured in the following way:
 * Version name with date of publishing
-* Sections with either 'added', 'fixed', 'updated' and 'changed'
+* Sections with either 'added', 'fixed', 'updated', 'changed' or 'removed' to describe the changes
 
 ## [2.0.3] 2024
+### Changed
+- Updated dependencies to the most-recent supported version
+- Unified logging all over the library. Print statements are now rare. This makes it easier to identify why Inkycal isn't working without having to look up the logs
+- Inkycal now makes use of a JSON-Cache to make it more resilient against resets etc. For example, the slideshow module will remember the last index even after a shutdown
+- Inkycal now uses a list of supported displays instead of having to look up each driver in the driver directory
+- Renamed tests according to python standards, starting with `test_..`, allowing unittest/pytest to automatically discover and run these tests.
+
+### Fixed
+- Fixed an annoying vertical alignment issue causing some characters to look chopped off
+- Fixed the alignment of the red-circle on the calendar module
+- Fixed weekday-names not translating in the weather module
+- Fixed python 3.11 issues with numpy on Raspberry Pi OS
+
 ### Added
-* Added fullscreen weather module
-* Own OWM API abstraction as a replacement for PyOWM module
+- Added long-awaited support of PiSugar v1/2/3. Still a bit experimental (no calibration handling), but works for most part. If PiSugar support is enabled, Inkycal will set the new alarm before shutting down the system, increasing battery life. Please note that around 70 updates were possible with the 1200mAh PiSugar 3 board, so one update a day to three should be max to get at least one month battery life.
+- Added Webshot module which can be used to display a webpage. Works on InkycalOS-Lite too and does not need a GUI.
+- Added XKCD module
+- Added Tindie module
+- Added support for much longer update-intervals than the previous max of once every 60 minutes
+- Added Material-UI icons font
+- Added dedicated Pipeline for unittests directly on Raspberry Pi OS to ensure Inkycal can run reliably on Raspberry Pi OS
+- Added Feature-request and PR template
+- Added support for 5.83" display (v2)
+- Added support for 12.48" display on 64-bit systems
+- Added Inkycal fullweather-module
+- Added `settings.py file (not to be confused with `settings.json`) to set VCOM and other internal variables
+
+
+## [2.0.3] 2023
+### Changed
+- Switched from pyowm to custom wrapper as pyowm only works up to python3.9, which is now outdated.
+- Updated dependencies to the most-recent supported version
+
+### Fixed
+- Fixed python 3.11 issues with numpy on Raspberry Pi OS
+- Fixed compatibility issues with Pillow when switching from v9.x to v10.x, particularly font width and height operations
+- Renamed tests according to python standards, starting with `test_..`, allowing unittest/pytest to automatically discover and run these tests.
 
 
 ## [2.0.2] 2022

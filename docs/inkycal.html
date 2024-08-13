@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inkycal &mdash; inkycal 2.0.3 documentation</title>
+  <title>Inkycal &mdash; inkycal 2.0.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=664ffad9"></script>
+        <script src="_static/documentation_options.js?v=adc66a14"></script>
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -51,8 +51,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#inkycal.main.Inkycal"><code class="docutils literal notranslate"><span class="pre">Inkycal</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.calibrate"><code class="docutils literal notranslate"><span class="pre">Inkycal.calibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.countdown"><code class="docutils literal notranslate"><span class="pre">Inkycal.countdown()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.dry_run"><code class="docutils literal notranslate"><span class="pre">Inkycal.dry_run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.process_module"><code class="docutils literal notranslate"><span class="pre">Inkycal.process_module()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.run"><code class="docutils literal notranslate"><span class="pre">Inkycal.run()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#inkycal.main.Inkycal.test"><code class="docutils literal notranslate"><span class="pre">Inkycal.test()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -130,7 +131,7 @@
 Copyright by aceinnolab</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="inkycal.main.Inkycal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">inkycal.main.</span></span><span class="sig-name descname"><span class="pre">Inkycal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">inkycal.main.</span></span><span class="sig-name descname"><span class="pre">Inkycal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_pi_sugar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shutdown_after_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal" title="Link to this definition"></a></dt>
 <dd><p>Inkycal main class</p>
 <p>Main class of Inkycal, test and run the main Inkycal program.</p>
 <dl class="simple">
@@ -157,40 +158,48 @@ cycles. After a refresh cycle, a new image is generated and shown.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="inkycal.main.Inkycal.countdown">
 <span class="sig-name descname"><span class="pre">countdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interval_mins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#inkycal.main.Inkycal.countdown" title="Link to this definition"></a></dt>
-<dd><p>Returns the remaining time in seconds until next display update.</p>
+<dd><p>Returns the remaining time in seconds until the next display update based on the interval.</p>
 <dl class="simple">
-<dt>Args:</dt><dd><ul class="simple">
-<li><dl class="simple">
-<dt>interval_mins = int -&gt; the interval in minutes for the update</dt><dd><p>if no interval is given, the value from the settings file is used.</p>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>interval_mins (int): The interval in minutes for the update. If none is given, the value</dt><dd><p>from the settings file is used.</p>
 </dd>
 </dl>
-</li>
-</ul>
 </dd>
-<dt>Returns:</dt><dd><ul class="simple">
-<li><p>int -&gt; the remaining time in seconds until next update</p></li>
-</ul>
+<dt>Returns:</dt><dd><p>int: The remaining time in seconds until the next update.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="inkycal.main.Inkycal.run">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal.run" title="Link to this definition"></a></dt>
-<dd><p>Runs main program in nonstop mode.</p>
-<p>Uses an infinity loop to run Inkycal nonstop. Inkycal generates the image
-from all modules, assembles them in one image, refreshed the E-Paper and
-then sleeps until the next scheduled update.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="inkycal.main.Inkycal.test">
-<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal.test" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="inkycal.main.Inkycal.dry_run">
+<span class="sig-name descname"><span class="pre">dry_run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal.dry_run" title="Link to this definition"></a></dt>
 <dd><p>Tests if Inkycal can run without issues.</p>
 <p>Attempts to import module names from settings file. Loads the config
 for each module and initializes the module. Tries to run the module and
 checks if the images could be generated correctly.</p>
 <p>Generated images can be found in the /images folder of Inkycal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.main.Inkycal.process_module">
+<span class="sig-name descname"><span class="pre">process_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inkycal.main.Inkycal.process_module" title="Link to this definition"></a></dt>
+<dd><p>Process individual module to generate images and handle exceptions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="inkycal.main.Inkycal.run">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_once</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.main.Inkycal.run" title="Link to this definition"></a></dt>
+<dd><p>Runs main program in nonstop mode or a single iteration based on the run_once flag.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>run_once (bool): If True, runs the updating process once and stops. If False,</dt><dd><p>runs indefinitely.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Uses an infinity loop to run Inkycal nonstop or a single time based on run_once.
+Inkycal generates the image from all modules, assembles them in one image,
+refreshes the E-Paper and then sleeps until the next scheduled update or exits.</p>
 </dd></dl>
 
 </dd></dl>
@@ -232,14 +241,14 @@ which the given font should be scaled to.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inkycal.custom.functions.draw_border">
-<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">draw_border</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shrinkage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.1,</span> <span class="pre">0.1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.draw_border" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">draw_border</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">image:</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/home/runner/work/Inkycal/Inkycal/venv/lib/python3.11/site-packages/PIL/Image.py'&gt;,</span> <span class="pre">xy:</span> <span class="pre">~typing.Tuple[int,</span> <span class="pre">int],</span> <span class="pre">size:</span> <span class="pre">~typing.Tuple[int,</span> <span class="pre">int],</span> <span class="pre">radius:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5,</span> <span class="pre">thickness:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1,</span> <span class="pre">shrinkage:</span> <span class="pre">~typing.Tuple[int,</span> <span class="pre">int]</span> <span class="pre">=</span> <span class="pre">(0.1,</span> <span class="pre">0.1)</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#inkycal.custom.functions.draw_border" title="Link to this definition"></a></dt>
 <dd><p>Draws a border at given coordinates.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><ul class="simple">
 <li><p>image: The image on which the border should be drawn (usually im_black or
-im_colour.</p></li>
+im_colour).</p></li>
 <li><p>xy: Tuple representing the top-left corner of the border e.g. (32, 100)
-where 32 is the x co-ordinate and 100 is the y-coordinate.</p></li>
+where 32 is the x-coordinate and 100 is the y-coordinate.</p></li>
 <li><p>size: Size of the border as a tuple -&gt; (width, height).</p></li>
 <li><p>radius: Radius of the corners, where 0 = plain rectangle, 5 = round corners.</p></li>
 <li><p>thickness: Thickness of the border in pixels.</p></li>
@@ -288,14 +297,14 @@ printed fonts of this function:</p>
 <p>The extracted timezone can be used to show the local time instead of UTC. e.g.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">arrow</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arrow</span><span class="o">.</span><span class="n">now</span><span class="p">())</span> <span class="c1"># returns non-timezone-aware time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arrow</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">get_system_tz</span><span class="p">())</span> <span class="c1"># prints timezone aware time.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arrow</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">get_system_tz</span><span class="p">()))</span> <span class="c1"># prints timezone aware time.</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inkycal.custom.functions.internet_available">
-<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">internet_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.internet_available" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">internet_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#inkycal.custom.functions.internet_available" title="Link to this definition"></a></dt>
 <dd><p>checks if the internet is available.</p>
 <p>Attempts to connect to google.com with a timeout of 5 seconds to check
 if the network can be reached.</p>
@@ -315,7 +324,7 @@ if the network can be reached.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inkycal.custom.functions.text_wrap">
-<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">text_wrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.text_wrap" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">text_wrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.text_wrap" title="Link to this definition"></a></dt>
 <dd><p>Splits a very long text into smaller parts</p>
 <p>Splits a long text to smaller lines which can fit in a line with max_width.
 Uses a Font object for more accurate calculations.</p>
@@ -334,7 +343,7 @@ splitting the text into the next chunk.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inkycal.custom.functions.write">
-<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.write" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">inkycal.custom.functions.</span></span><span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">image:</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/home/runner/work/Inkycal/Inkycal/venv/lib/python3.11/site-packages/PIL/Image.py'&gt;,</span> <span class="pre">xy:</span> <span class="pre">~typing.Tuple[int,</span> <span class="pre">int],</span> <span class="pre">box_size:</span> <span class="pre">~typing.Tuple[int,</span> <span class="pre">int],</span> <span class="pre">text:</span> <span class="pre">str,</span> <span class="pre">font=None,</span> <span class="pre">**kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#inkycal.custom.functions.write" title="Link to this definition"></a></dt>
 <dd><p>Writes text on an image.</p>
 <p>Writes given text at given position on the specified image.</p>
 <dl class="simple">
