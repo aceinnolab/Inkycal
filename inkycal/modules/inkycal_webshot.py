@@ -40,7 +40,10 @@ class Webshot(inkycal_module):
         },
         "crop_h": {
             "label": "Please enter the crop height",
-        }
+        },
+        "rotation": {
+            "label": "Please enter the rotation. Must be either 0, 90, 180 or 270",
+        },
     }
 
     def __init__(self, config):
@@ -72,8 +75,14 @@ class Webshot(inkycal_module):
         else:
             self.crop_y = 0
 
+        self.rotation = 0
+        if "rotation" in config:
+            self.rotation = int(config["rotation"])
+            if self.rotation not in [0, 90, 180, 270]:
+                raise Exception("Rotation must be either 0, 90, 180 or 270")
+
         # give an OK message
-        print(f'Inkycal webshot loaded')
+        logger.debug(f'Inkycal webshot loaded')
 
     def generate_image(self):
         """Generate image for this module"""
@@ -89,7 +98,7 @@ class Webshot(inkycal_module):
         im_width = int(self.width - (2 * self.padding_left))
         im_height = int(self.height - (2 * self.padding_top))
         im_size = im_width, im_height
-        logger.info('image size: {} x {} px'.format(im_width, im_height))
+        logger.debug('image size: {} x {} px'.format(im_width, im_height))
 
         # Create an image for black pixels and one for coloured pixels (required)
         im_black = Image.new('RGB', size=im_size, color='white')
@@ -99,12 +108,13 @@ class Webshot(inkycal_module):
         if internet_available():
             logger.info('Connection test passed')
         else:
+            logger.error("Network not reachable. Please check your connection.")
             raise Exception('Network could not be reached :/')
 
         logger.info(
             f'preparing webshot from {self.url}... cropH{self.crop_h} cropW{self.crop_w} cropX{self.crop_x} cropY{self.crop_y}')
 
-        shot = WebShot()
+        shot = WebShot(size=(im_height, im_width))
 
         shot.params = {
             "--crop-x": self.crop_x,
@@ -150,11 +160,21 @@ class Webshot(inkycal_module):
 
         centerPosX = int((im_width / 2) - (im.image.width / 2))
 
-        webshotSpaceBlack.paste(im_webshot_black, (centerPosX, webshotCenterPosY))
-        im_black.paste(webshotSpaceBlack)
 
-        webshotSpaceColour.paste(im_webshot_colour, (centerPosX, webshotCenterPosY))
-        im_colour.paste(webshotSpaceColour)
+        if self.rotation != 0:
+            webshotSpaceBlack.paste(im_webshot_black, (centerPosX, webshotCenterPosY))
+            im_black.paste(webshotSpaceBlack)
+            im_black = im_black.rotate(self.rotation, expand=True)
+
+            webshotSpaceColour.paste(im_webshot_colour, (centerPosX, webshotCenterPosY))
+            im_colour.paste(webshotSpaceColour)
+            im_colour = im_colour.rotate(self.rotation, expand=True)
+        else:
+            webshotSpaceBlack.paste(im_webshot_black, (centerPosX, webshotCenterPosY))
+            im_black.paste(webshotSpaceBlack)
+
+            webshotSpaceColour.paste(im_webshot_colour, (centerPosX, webshotCenterPosY))
+            im_colour.paste(webshotSpaceColour)
 
         im.clear()
         logger.info(f'added webshot image')

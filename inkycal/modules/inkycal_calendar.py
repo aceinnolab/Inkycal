@@ -6,16 +6,16 @@ Copyright by aceinnolab
 # pylint: disable=logging-fstring-interpolation
 
 import calendar as cal
-import arrow
-from inkycal.modules.template import inkycal_module
+
 from inkycal.custom import *
+from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
 
 
 class Calendar(inkycal_module):
     """Calendar class
-    Create monthly calendar and show events from given icalendars
+    Create monthly calendar and show events from given iCalendars
     """
 
     name = "Calendar - Show monthly calendar with events from iCalendars"
@@ -39,12 +39,12 @@ class Calendar(inkycal_module):
         },
         "date_format": {
             "label": "Use an arrow-supported token for custom date formatting "
-            + "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. D MMM",
+                     + "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. D MMM",
             "default": "D MMM",
         },
         "time_format": {
             "label": "Use an arrow-supported token for custom time formatting "
-            + "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm",
+                     + "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm",
             "default": "HH:mm",
         },
     }
@@ -61,7 +61,7 @@ class Calendar(inkycal_module):
         self._days_with_events = None
 
         # optional parameters
-        self.weekstart = config['week_starts_on']
+        self.week_start = config['week_starts_on']
         self.show_events = config['show_events']
         self.date_format = config["date_format"]
         self.time_format = config['time_format']
@@ -84,7 +84,7 @@ class Calendar(inkycal_module):
         )
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     @staticmethod
     def flatten(values):
@@ -100,7 +100,7 @@ class Calendar(inkycal_module):
         im_size = im_width, im_height
         events_height = 0
 
-        logger.info(f'Image size: {im_size}')
+        logger.debug(f'Image size: {im_size}')
 
         # Create an image for black pixels and one for coloured pixels
         im_black = Image.new('RGB', size=im_size, color='white')
@@ -109,7 +109,7 @@ class Calendar(inkycal_module):
         # Allocate space for month-names, weekdays etc.
         month_name_height = int(im_height * 0.10)
         text_bbox_height = self.font.getbbox("hg")
-        weekdays_height = int((text_bbox_height[3] - text_bbox_height[1])* 1.25)
+        weekdays_height = int((abs(text_bbox_height[3]) + abs(text_bbox_height[1])) * 1.25)
         logger.debug(f"month_name_height: {month_name_height}")
         logger.debug(f"weekdays_height: {weekdays_height}")
 
@@ -117,7 +117,7 @@ class Calendar(inkycal_module):
             logger.debug("Allocating space for events")
             calendar_height = int(im_height * 0.6)
             events_height = (
-                im_height - month_name_height - weekdays_height - calendar_height
+                    im_height - month_name_height - weekdays_height - calendar_height
             )
             logger.debug(f'calendar-section size: {im_width} x {calendar_height} px')
             logger.debug(f'events-section size: {im_width} x {events_height} px')
@@ -156,13 +156,13 @@ class Calendar(inkycal_module):
 
         now = arrow.now(tz=self.timezone)
 
-        # Set weekstart of calendar to specified weekstart
-        if self.weekstart == "Monday":
+        # Set week-start of calendar to specified week-start
+        if self.week_start == "Monday":
             cal.setfirstweekday(cal.MONDAY)
-            weekstart = now.shift(days=-now.weekday())
+            week_start = now.shift(days=-now.weekday())
         else:
             cal.setfirstweekday(cal.SUNDAY)
-            weekstart = now.shift(days=-now.isoweekday())
+            week_start = now.shift(days=-now.isoweekday())
 
         # Write the name of current month
         write(
@@ -174,9 +174,9 @@ class Calendar(inkycal_module):
             autofit=True,
         )
 
-        # Set up weeknames in local language and add to main section
+        # Set up week-names in local language and add to main section
         weekday_names = [
-            weekstart.shift(days=+_).format('ddd', locale=self.language)
+            week_start.shift(days=+_).format('ddd', locale=self.language)
             for _ in range(7)
         ]
         logger.debug(f'weekday names: {weekday_names}')
@@ -192,7 +192,7 @@ class Calendar(inkycal_module):
                 fill_height=0.9,
             )
 
-        # Create a calendar template and flatten (remove nestings)
+        # Create a calendar template and flatten (remove nesting)
         calendar_flat = self.flatten(cal.monthcalendar(now.year, now.month))
         # logger.debug(f" calendar_flat: {calendar_flat}")
 
@@ -265,7 +265,7 @@ class Calendar(inkycal_module):
             # find out how many lines can fit at max in the event section
             line_spacing = 2
             text_bbox_height = self.font.getbbox("hg")
-            line_height = text_bbox_height[3] + line_spacing
+            line_height = text_bbox_height[3] - text_bbox_height[1] + line_spacing
             max_event_lines = events_height // (line_height + line_spacing)
 
             # generate list of coordinates for each line
@@ -281,7 +281,7 @@ class Calendar(inkycal_module):
             month_start = arrow.get(now.floor('month'))
             month_end = arrow.get(now.ceil('month'))
 
-            # fetch events from given icalendars
+            # fetch events from given iCalendars
             self.ical = iCalendar()
             parser = self.ical
 
@@ -294,14 +294,12 @@ class Calendar(inkycal_module):
             month_events = parser.get_events(month_start, month_end, self.timezone)
             parser.sort()
             self.month_events = month_events
-            
+
             # Initialize days_with_events as an empty list
             days_with_events = []
 
             # Handle multi-day events by adding all days between start and end
             for event in month_events:
-                start_date = event['begin'].date()
-                end_date = event['end'].date()
 
                 # Convert start and end dates to arrow objects with timezone
                 start = arrow.get(event['begin'].date(), tzinfo=self.timezone)
@@ -324,9 +322,7 @@ class Calendar(inkycal_module):
                         im_colour,
                         grid[days],
                         (icon_width, icon_height),
-                        radius=6,
-                        thickness=1,
-                        shrinkage=(0.4, 0.2),
+                        radius=6
                     )
 
             # Filter upcoming events until 4 weeks in the future
@@ -345,13 +341,13 @@ class Calendar(inkycal_module):
 
                 date_width = int(max((
                     self.font.getlength(events['begin'].format(self.date_format, locale=lang))
-                    for events in upcoming_events))* 1.1
-                )
+                    for events in upcoming_events)) * 1.1
+                                 )
 
                 time_width = int(max((
                     self.font.getlength(events['begin'].format(self.time_format, locale=lang))
-                    for events in upcoming_events))* 1.1
-                )
+                    for events in upcoming_events)) * 1.1
+                                 )
 
                 text_bbox_height = self.font.getbbox("hg")
                 line_height = text_bbox_height[3] + line_spacing
@@ -369,7 +365,8 @@ class Calendar(inkycal_module):
                         event_duration = (event['end'] - event['begin']).days
                         if event_duration > 1:
                             # Format the duration using Arrow's localization
-                            days_translation = arrow.get().shift(days=event_duration).humanize(only_distance=True, locale=lang)
+                            days_translation = arrow.get().shift(days=event_duration).humanize(only_distance=True,
+                                                                                               locale=lang)
                             the_name = f"{event['title']} ({days_translation})"
                         else:
                             the_name = event['title']

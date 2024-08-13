@@ -56,7 +56,7 @@ class Todoist(inkycal_module):
         self._api = TodoistAPI(config['api_key'])
 
         # give an OK message
-        print(f'{__name__} loaded')
+        logger.debug(f'{__name__} loaded')
 
     def _validate(self):
         """Validate module-specific parameters"""
@@ -70,7 +70,7 @@ class Todoist(inkycal_module):
         im_width = int(self.width - (2 * self.padding_left))
         im_height = int(self.height - (2 * self.padding_top))
         im_size = im_width, im_height
-        logger.info(f'Image size: {im_size}')
+        logger.debug(f'Image size: {im_size}')
 
         # Create an image for black pixels and one for coloured pixels
         im_black = Image.new('RGB', size=im_size, color='white')
@@ -80,6 +80,7 @@ class Todoist(inkycal_module):
         if internet_available():
             logger.info('Connection test passed')
         else:
+            logger.error("Network not reachable. Please check your connection.")
             raise NetworkNotReachableError
 
         # Set some parameters for formatting todos

@@ -28,7 +28,7 @@ tests = [
             "padding_x": 10,
             "padding_y": 10,
             "fontsize": 12,
-            "language": "en"
+            "language": "de"
         }
     },
     {
@@ -37,7 +37,7 @@ tests = [
             "size": [500, 800],
             "ical_urls": sample_url,
             "ical_files": None,
-            "date_format": "ddd D MMM",
+            "date_format": "DD.MMMM YYYY",
             "time_format": "HH:mm",
             "padding_x": 10,
             "padding_y": 10,
