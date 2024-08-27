@@ -37,6 +37,7 @@ jobs:
             # get kernel info
             uname -srm
             cd /home/inky
+            sudo apt update
             sudo apt-get update -y
             # sudo apt-get dist-upgrade -y
             
