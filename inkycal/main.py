@@ -163,7 +163,12 @@ class Inkycal:
             self.pisugar = PiSugar()
 
             self.battery_capacity = self.pisugar.get_battery()
-            logger.info(f"PiSugar battery capacity: {self.battery_capacity}%")
+
+            if not self.battery_capacity:
+                logger.warning("[PISUGAR] Could not get battery capacity! Is the board off? Setting battery capacity to 0%")
+                self.battery_capacity = 100
+            else:
+                logger.info(f"PiSugar battery capacity: {self.battery_capacity}%")
 
             if self.battery_capacity < 20:
                 logger.warning("Battery capacity is below 20%!")
