@@ -114,7 +114,7 @@ class Feeds(inkycal_module):
                 # if "description" in posts:
 
         if parsed_feeds:
-            parsed_feeds = [i.split("\n") for i in parsed_feeds][0]
+            parsed_feeds = [i.split("\n") for i in parsed_feeds]
             parsed_feeds = [i for i in parsed_feeds if i]
 
         # Shuffle the list to prevent showing the same content
@@ -129,7 +129,7 @@ class Feeds(inkycal_module):
         filtered_feeds, counter = [], 0
 
         for posts in parsed_feeds:
-            wrapped = text_wrap(posts, font=self.font, max_width=line_width)
+            wrapped = text_wrap(posts[0], font=self.font, max_width=line_width)
             counter += len(wrapped)
             if counter < max_lines:
                 filtered_feeds.append(wrapped)
