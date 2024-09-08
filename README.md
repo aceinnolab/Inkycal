@@ -113,7 +113,7 @@ Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager]
 | set timezone              |     your local timezone     |
 
 1. Create and download `settings.json` file for Inkycal from
-   the [WEB-UI](https://aceinnolab.com/inkycal/ui). Add the modules you want with the add
+   the [WEB-UI](https://inkycal.aceinnolab.com/ui). Add the modules you want with the add
    module button.
 2. Copy the `settings.json` to the flashed microSD card.
 3. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
