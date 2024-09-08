@@ -8,7 +8,6 @@ from htmlwebshot import WebShot
 from inkycal.custom import *
 from inkycal.modules.inky_image import Inkyimage as Images, image_to_palette
 from inkycal.modules.template import inkycal_module
-from tests import Config
 
 logger = logging.getLogger(__name__)
 
@@ -89,7 +88,7 @@ class Webshot(inkycal_module):
         """Generate image for this module"""
 
         # Create tmp path
-        tmpFolder = Config.TEMP_PATH
+        tmpFolder = "temp"
 
         if not os.path.exists(tmpFolder):
             print(f"Creating tmp directory {tmpFolder}")
