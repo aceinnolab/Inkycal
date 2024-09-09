@@ -283,7 +283,7 @@ to have some faster responses, please use Discord (link below)
 ## Join us on Discord!
 
 We're happy to help, to beginners and developers alike. In fact, you are more likely to get faster support on Discord
-than on Github.
+than on GitHub.
 
 <a href="https://discord.gg/sHYKeSM">
         <img src="https://github.com/aceisace/Inkycal/blob/assets/Repo/discord-logo.png?raw=true" alt="Inkycal chatroom Discord" width=200>
@@ -291,12 +291,12 @@ than on Github.
 
 ## Sponsoring
 
-Inkycal relies on sponsors to keep up maintainance, development and bug-fixing. Please consider sponsoring Inkycal via
+Inkycal relies on sponsors to keep up maintenance, development and bug-fixing. Please consider sponsoring Inkycal via
 the sponsor button if you are happy with Inkycal.
 
 We now offer perks depending on the amount contributed for sponsoring, ranging from pre-configured OS images for
 plug-and-play to development of user-suggested modules. Check out the sponsor page to find out more.
-If you have been a previous sponsor, please let us know on our Dicord server or by sending an email. We'll send you the
+If you have been a previous sponsor, please let us know on our Discord server or by sending an email. We'll send you the
 perks after confirming 💯
 
 ## As featured on
@@ -305,6 +305,7 @@ perks after confirming 💯
 * [hackster.io](https://www.hackster.io/news/ace-innovation-lab-s-inkycal-v3-puts-a-raspberry-pi-powered-modular-epaper-dashboard-on-your-desk-b55a83cc0f46)
 * [raspberryme.com](https://www.raspberryme.com/inkycal-v3-est-un-tableau-de-bord-epaper-alimente-par-raspberry-pi-pour-votre-bureau/)
 * [adafruit.com](https://blog.adafruit.com/2023/12/19/icymi-python-on-microcontrollers-newsletter-circuitpython-9-alpha-6-released-gpt-via-circuitpython-new-books-and-more-circuitpython-python-micropython-icymi-raspberry_pi/)
+* [all3dp.com](https://all3dp.com/1/best-raspberry-pi-projects/)
 * [ittagesschau.de](https://www.ittagesschau.de/artikel/inkycal-v3-smartes-display-auf-grundlage-des-raspberry-pi-mit-elektronischem-papier-und-vielen-moglichkeiten_365893)
 * [makeuseof - fantastic projects using an eink display](http://makeuseof.com/fantastic-projects-using-an-e-ink-display/)
 * [notebookcheck.com](https://www.notebookcheck.com/Inkycal-V3-Smartes-Display-auf-Grundlage-des-Raspberry-Pi-mit-elektronischem-Papier-und-vielen-Moeglichkeiten.783012.0.html?ref=ittagesschau.de)
