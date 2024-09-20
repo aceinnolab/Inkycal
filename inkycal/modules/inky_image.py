@@ -71,22 +71,6 @@ class Inkyimage:
             self.image = None
             logger.info("cleared previous image")
 
-    def _preview(self):
-        """Preview the image on gpicview (only works on Rapsbian with Desktop)"""
-        if self._image_loaded():
-            path = "/home/pi/Desktop/"
-            self.image.save(path + "temp.png")
-            os.system("gpicview " + path + "temp.png")
-            os.system("rm " + path + "temp.png")
-
-    @staticmethod
-    def preview(image):
-        """Previews an image on gpicview (only works on Rapsbian with Desktop)."""
-        path = "~/temp"
-        image.save(path + "/temp.png")
-        os.system("gpicview " + path + "/temp.png")
-        os.system("rm " + path + "/temp.png")
-
     def _image_loaded(self):
         """returns True if image was loaded"""
         if self.image:
