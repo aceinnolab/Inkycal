@@ -12,7 +12,6 @@ from inkycal.modules import Slideshow
 from inkycal.modules.inky_image import Inkyimage
 from tests import Config
 
-preview = Inkyimage.preview
 merge = Inkyimage.merge
 
 if not os.path.exists("tmp"):
@@ -144,21 +143,21 @@ class TestSlideshow(unittest.TestCase):
             im_black, im_colour = module.generate_image()
             logger.info('OK')
             if Config.USE_PREVIEW:
-                preview(merge(im_black, im_colour))
+                merge(im_black, im_colour).show()
 
     def test_switch_to_next_image(self):
         logger.info(f'testing switching to next images..')
         module = Slideshow(tests[0])
         im_black, im_colour = module.generate_image()
         if Config.USE_PREVIEW:
-            preview(merge(im_black, im_colour))
+            merge(im_black, im_colour).show()
 
         im_black, im_colour = module.generate_image()
         if Config.USE_PREVIEW:
-            preview(merge(im_black, im_colour))
+            merge(im_black, im_colour).show()
 
         im_black, im_colour = module.generate_image()
         if Config.USE_PREVIEW:
-            preview(merge(im_black, im_colour))
+            merge(im_black, im_colour).show()
 
         logger.info('OK')

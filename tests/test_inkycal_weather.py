@@ -8,7 +8,6 @@ from inkycal.modules import Weather
 from inkycal.modules.inky_image import Inkyimage
 from tests import Config
 
-preview = Inkyimage.preview
 merge = Inkyimage.merge
 
 owm_api_key = Config.OPENWEATHERMAP_API_KEY

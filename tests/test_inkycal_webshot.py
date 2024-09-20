@@ -12,7 +12,6 @@ from tests import Config
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
-preview = Inkyimage.preview
 merge = Inkyimage.merge
 
 tests = [
@@ -70,5 +69,5 @@ class TestWebshot(unittest.TestCase):
             module = Webshot(test)
             im_black, im_colour = module.generate_image()
             if Config.USE_PREVIEW:
-                preview(merge(im_black, im_colour))
+                merge(im_black, im_colour).show()
             logger.info('OK')
