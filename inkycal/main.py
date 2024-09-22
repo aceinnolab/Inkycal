@@ -345,8 +345,12 @@ class Inkycal:
                 logger.info("All images generated successfully!")
             del errors
 
-            if self.battery_capacity < 20:
-                self.info += "Low battery!  "
+            if self.use_pi_sugar:
+                self.battery_capacity = self.pisugar.get_battery() or 0
+                if self.battery_capacity < 20:
+                    self.info += f"Low battery! ({self.battery_capacity})% "
+                else:
+                    self.info += f"Battery: {self.battery_capacity}% "
 
             # Assemble image from each module - add info section if specified
             self._assemble()

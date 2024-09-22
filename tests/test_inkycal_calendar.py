@@ -8,7 +8,6 @@ from inkycal.modules import Calendar
 from inkycal.modules.inky_image import Inkyimage
 from tests import Config
 
-preview = Inkyimage.preview
 merge = Inkyimage.merge
 
 sample_url = Config.SAMPLE_ICAL_URL
@@ -77,4 +76,4 @@ class TestCalendar(unittest.TestCase):
             im_black, im_colour = module.generate_image()
             print('OK')
             if Config.USE_PREVIEW:
-                preview(merge(im_black, im_colour))
+                merge(im_black, im_colour).show()

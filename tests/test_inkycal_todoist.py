@@ -8,7 +8,7 @@ from inkycal.modules import Todoist
 
 from inkycal.modules.inky_image import Inkyimage
 from tests import Config
-preview = Inkyimage.preview
+
 merge = Inkyimage.merge
 
 api_key = Config.TODOIST_API_KEY
@@ -42,6 +42,6 @@ class TestTodoist(unittest.TestCase):
                 im_black, im_colour = module.generate_image()
                 print('OK')
                 if Config.USE_PREVIEW:
-                    preview(merge(im_black, im_colour))
+                    merge(im_black, im_colour).show()
         else:
             print('No api key given, omitting test')
