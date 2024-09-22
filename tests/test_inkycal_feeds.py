@@ -7,7 +7,6 @@ from inkycal.modules import Feeds
 from inkycal.modules.inky_image import Inkyimage
 from tests import Config
 
-preview = Inkyimage.preview
 merge = Inkyimage.merge
 
 logger = logging.getLogger(__name__)
@@ -53,5 +52,5 @@ class TestFeeds(unittest.TestCase):
             im_black, im_colour = module.generate_image()
             logger.info('OK')
             if Config.USE_PREVIEW:
-                preview(merge(im_black, im_colour))
+                merge(im_black, im_colour).show()
 

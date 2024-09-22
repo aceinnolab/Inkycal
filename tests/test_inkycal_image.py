@@ -11,7 +11,6 @@ from inkycal.modules import Inkyimage as Module
 from inkycal.modules.inky_image import Inkyimage
 from tests import Config
 
-preview = Inkyimage.preview
 merge = Inkyimage.merge
 
 url ="https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/Inkycal_cover.png"
@@ -113,4 +112,4 @@ class TestInkyImage(unittest.TestCase):
             im_black, im_colour = module.generate_image()
             logger.info('OK')
             if Config.USE_PREVIEW:
-                preview(merge(im_black, im_colour))
+                merge(im_black, im_colour).show()
