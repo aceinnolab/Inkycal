@@ -1,5 +1,5 @@
 # About Inkycal
-<img align="center" src="https://raw.githubusercontent.com/aceisace/Inkycal/assets/Repo/logo.png" width="800" alt="inkycal logo">
+<img align="center" src="https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/Repo/logo.png" width="800" alt="inkycal logo">
 
 Inkycal is a python3 software for selected E-Paper displays.
 It's open-source (non-commercially), fully modular, user-friendly and even runs
