@@ -17,7 +17,7 @@ Before submitting a bug report, check if the issue is already reported in the [I
 We welcome suggestions for new features or enhancements. Use the [Issues](https://github.com/aceinnolab/Inkycal/issues) section to submit your ideas, and provide as much detail as possible.
 
 ### Third party modules
-So you had a great idea for an inkycal-module? Awesome! In fact, there is already a repo sepcfifically created for that purpose: [inkycal-modules-template](https://github.com/aceisace/inkycal-modules-template). Just fork that repo, add your module and give me a shout via Discord, Github or Email.
+So you had a great idea for an inkycal-module? Awesome! In fact, there is already a repo sepcfifically created for that purpose: [inkycal-modules-template](https://github.com/aceinnolab/inkycal-modules-template). Just fork that repo, add your module and give me a shout via Discord, Github or Email.
 
 
 ### Pull Requests
