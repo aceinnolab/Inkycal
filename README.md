@@ -270,10 +270,60 @@ With your setup being complete at this stage, you may want to 3d-print a case. T
 friendly community:
 [3D-printable case](https://github.com/aceinnolab/Inkycal/wiki/3D-printable-files)
 
+## Directory structure
+```tree
+├── __init__.py
+├── custom (custom functions of Inkycal are inside here)
+│   ├── __init__.py
+│   ├── functions.py
+│   ├── inkycal_exceptions.py
+│   └── openweathermap_wrapper.py
+├── display (display drivers and functions)
+│   ├── __init__.py
+│   ├── display.py (this file acts like a wrapper for the display drivers)
+│   ├── drivers (actual driver files are inside here)
+│   │   ├── epd_7_in_5_colour.py (7.5" display driver). Each supported display has it's own driver
+│   │   └── parallel_drivers (parallel display drivers, e.g. 9.7", 10.2" etc.)
+│   ├── supported_models.py (this file contains the supported display models and is used to check which displays are supported)
+│   └── test_display.py (a dummy driver which does not require a display to be attached)
+├── fonts (fonts used by Inkycal are located here)
+│   ├── NotoSansUI
+│   ├── ProFont
+│   └── WeatherFont
+├── loggers.py (logging functions)
+├── main.py (main file to run Inkycal)
+├── modules (inkycal modules, e.g. calendar, weather, stocks etc.)
+│   ├── __init__.py
+│   ├── dev_module.py (a dummy module for development)
+│   ├── ical_parser.py (parses icalendar files, not strictly a module, but helper class)
+│   ├── inky_image.py (module to display images)
+│   ├── inkycal_agenda.py (agenda module)
+│   ├── inkycal_calendar.py (calendar module)
+│   ├── inkycal_feeds.py (feeds module)
+│   ├── inkycal_fullweather.py (full-weather module)
+│   ├── inkycal_image.py (image module)
+│   ├── inkycal_jokes.py (jokes module)
+│   ├── inkycal_server.py (module for inkycal-server, by third party)
+│   ├── inkycal_slideshow.py (slideshow module)
+│   ├── inkycal_stocks.py (stocks module - credit to @worstface)
+│   ├── inkycal_textfile_to_display.py (module to display text files)
+│   ├── inkycal_tindie.py (tindie module)
+│   ├── inkycal_todoist.py (todoist module)
+│   ├── inkycal_weather.py (weather module)
+│   ├── inkycal_webshot.py (webshot module - credit to @worstface)
+│   ├── inkycal_xkcd.py (xkcd module - credit to @worstface)
+│   └── template.py (template module)
+├── settings.py (settings for Inkycal)
+└── utils (utility functions)
+    ├── __init__.py
+    ├── json_cache.py
+    └── pisugar.py (PiSugar driver)
+```
+
 ## Contributing
 
 All sorts of contributions are most welcome and appreciated. To start contributing, please follow
-the [Contribution Guidelines](https://github.com/aceisace/Inkycal/blob/main/.github/CONTRIBUTING.md)
+the [Contribution Guidelines](https://github.com/aceinnolab/Inkycal/blob/main/.github/CONTRIBUTING.md)
 
 The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer. If you want
 to have some faster responses, please use Discord (link below)
@@ -286,7 +336,7 @@ We're happy to help, to beginners and developers alike. In fact, you are more li
 than on GitHub.
 
 <a href="https://discord.gg/sHYKeSM">
-        <img src="https://github.com/aceisace/Inkycal/blob/assets/Repo/discord-logo.png?raw=true" alt="Inkycal chatroom Discord" width=200>
+        <img src="https://github.com/aceinnolab/Inkycal/blob/assets/Repo/discord-logo.png?raw=true" alt="Inkycal chatroom Discord" width=200>
 </a>
 
 ## Sponsoring
@@ -325,5 +375,5 @@ perks after confirming 💯
 
 ## Our Contributors
 
-<table><tr><td align="center"><a href="https://github.com/aceisace"><img alt="aceisace" src="https://avatars.githubusercontent.com/u/29558518?v=4" width="117" /><br />aceisace</a></td><td align="center"><a href="https://github.com/Atrejoe"><img alt="Atrejoe" src="https://avatars.githubusercontent.com/u/585091?v=4" width="117" /><br />Atrejoe</a></td><td align="center"><a href="https://github.com/actions-user"><img alt="actions-user" src="https://avatars.githubusercontent.com/u/65916846?v=4" width="117" /><br />actions-user</a></td><td align="center"><a href="https://github.com/emilyboda"><img alt="emilyboda" src="https://avatars.githubusercontent.com/u/9170143?v=4" width="117" /><br />emilyboda</a></td><td align="center"><a href="https://github.com/StevenSeifried"><img alt="StevenSeifried" src="https://avatars.githubusercontent.com/u/39765956?v=4" width="117" /><br />StevenSeifried</a></td><td align="center"><a href="https://github.com/mrbwburns"><img alt="mrbwburns" src="https://avatars.githubusercontent.com/u/66523867?v=4" width="117" /><br />mrbwburns</a></td></tr><tr><td align="center"><a href="https://github.com/apps/dependabot"><img alt="dependabot[bot]" src="https://avatars.githubusercontent.com/in/29110?v=4" width="117" /><br />dependabot[bot]</a></td><td align="center"><a href="https://github.com/LakesideMiners"><img alt="LakesideMiners" src="https://avatars.githubusercontent.com/u/23389169?v=4" width="117" /><br />LakesideMiners</a></td><td align="center"><a href="https://github.com/hjiang"><img alt="hjiang" src="https://avatars.githubusercontent.com/u/18527?v=4" width="117" /><br />hjiang</a></td><td align="center"><a href="https://github.com/ch3lmi"><img alt="ch3lmi" src="https://avatars.githubusercontent.com/u/19972012?v=4" width="117" /><br />ch3lmi</a></td><td align="center"><a href="https://github.com/mygrexit"><img alt="mygrexit" src="https://avatars.githubusercontent.com/u/33792951?v=4" width="117" /><br />mygrexit</a></td><td align="center"><a href="https://github.com/tobychui"><img alt="tobychui" src="https://avatars.githubusercontent.com/u/24617523?v=4" width="117" /><br />tobychui</a></td></tr><tr><td align="center"><a href="https://github.com/worstface"><img alt="worstface" src="https://avatars.githubusercontent.com/u/72295005?v=4" width="117" /><br />worstface</a></td><td align="center"><a href="https://github.com/sapostoluk"><img alt="sapostoluk" src="https://avatars.githubusercontent.com/u/7192139?v=4" width="117" /><br />sapostoluk</a></td><td align="center"><a href="https://github.com/freezingDaniel"><img alt="freezingDaniel" src="https://avatars.githubusercontent.com/u/82905307?v=4" width="117" /><br />freezingDaniel</a></td><td align="center"><a href="https://github.com/dealyllama"><img alt="dealyllama" src="https://avatars.githubusercontent.com/u/5891782?v=4" width="117" /><br />dealyllama</a></td><td align="center"><a href="https://github.com/rafaljanicki"><img alt="rafaljanicki" src="https://avatars.githubusercontent.com/u/7746477?v=4" width="117" /><br />rafaljanicki</a></td><td align="center"><a href="https://github.com/priv-kweihmann"><img alt="priv-kweihmann" src="https://avatars.githubusercontent.com/u/46938494?v=4" width="117" /><br />priv-kweihmann</a></td></tr><tr><td align="center"><a href="https://github.com/surak"><img alt="surak" src="https://avatars.githubusercontent.com/u/878399?v=4" width="117" /><br />surak</a></td><td align="center"><a href="https://github.com/AlessandroMandelli"><img alt="AlessandroMandelli" src="https://avatars.githubusercontent.com/u/65062723?v=4" width="117" /><br />AlessandroMandelli</a></td><td align="center"><a href="https://github.com/DavidCamre"><img alt="DavidCamre" src="https://avatars.githubusercontent.com/u/1098069?v=4" width="117" /><br />DavidCamre</a></td><td align="center"><a href="https://github.com/jordanschau"><img alt="jordanschau" src="https://avatars.githubusercontent.com/u/412028?v=4" width="117" /><br />jordanschau</a></td><td align="center"><a href="https://github.com/mshulman"><img alt="mshulman" src="https://avatars.githubusercontent.com/u/1484420?v=4" width="117" /><br />mshulman</a></td><td align="center"><a href="https://github.com/vitasam"><img alt="vitasam" src="https://avatars.githubusercontent.com/u/5597505?v=4" width="117" /><br />vitasam</a></td></tr></table>
+<table><tr><td align="center"><a href="https://github.com/aceinnolab"><img alt="aceinnolab" src="https://avatars.githubusercontent.com/u/29558518?v=4" width="117" /><br />aceisace</a></td><td align="center"><a href="https://github.com/Atrejoe"><img alt="Atrejoe" src="https://avatars.githubusercontent.com/u/585091?v=4" width="117" /><br />Atrejoe</a></td><td align="center"><a href="https://github.com/actions-user"><img alt="actions-user" src="https://avatars.githubusercontent.com/u/65916846?v=4" width="117" /><br />actions-user</a></td><td align="center"><a href="https://github.com/emilyboda"><img alt="emilyboda" src="https://avatars.githubusercontent.com/u/9170143?v=4" width="117" /><br />emilyboda</a></td><td align="center"><a href="https://github.com/StevenSeifried"><img alt="StevenSeifried" src="https://avatars.githubusercontent.com/u/39765956?v=4" width="117" /><br />StevenSeifried</a></td><td align="center"><a href="https://github.com/mrbwburns"><img alt="mrbwburns" src="https://avatars.githubusercontent.com/u/66523867?v=4" width="117" /><br />mrbwburns</a></td></tr><tr><td align="center"><a href="https://github.com/apps/dependabot"><img alt="dependabot[bot]" src="https://avatars.githubusercontent.com/in/29110?v=4" width="117" /><br />dependabot[bot]</a></td><td align="center"><a href="https://github.com/LakesideMiners"><img alt="LakesideMiners" src="https://avatars.githubusercontent.com/u/23389169?v=4" width="117" /><br />LakesideMiners</a></td><td align="center"><a href="https://github.com/hjiang"><img alt="hjiang" src="https://avatars.githubusercontent.com/u/18527?v=4" width="117" /><br />hjiang</a></td><td align="center"><a href="https://github.com/ch3lmi"><img alt="ch3lmi" src="https://avatars.githubusercontent.com/u/19972012?v=4" width="117" /><br />ch3lmi</a></td><td align="center"><a href="https://github.com/mygrexit"><img alt="mygrexit" src="https://avatars.githubusercontent.com/u/33792951?v=4" width="117" /><br />mygrexit</a></td><td align="center"><a href="https://github.com/tobychui"><img alt="tobychui" src="https://avatars.githubusercontent.com/u/24617523?v=4" width="117" /><br />tobychui</a></td></tr><tr><td align="center"><a href="https://github.com/worstface"><img alt="worstface" src="https://avatars.githubusercontent.com/u/72295005?v=4" width="117" /><br />worstface</a></td><td align="center"><a href="https://github.com/sapostoluk"><img alt="sapostoluk" src="https://avatars.githubusercontent.com/u/7192139?v=4" width="117" /><br />sapostoluk</a></td><td align="center"><a href="https://github.com/freezingDaniel"><img alt="freezingDaniel" src="https://avatars.githubusercontent.com/u/82905307?v=4" width="117" /><br />freezingDaniel</a></td><td align="center"><a href="https://github.com/dealyllama"><img alt="dealyllama" src="https://avatars.githubusercontent.com/u/5891782?v=4" width="117" /><br />dealyllama</a></td><td align="center"><a href="https://github.com/rafaljanicki"><img alt="rafaljanicki" src="https://avatars.githubusercontent.com/u/7746477?v=4" width="117" /><br />rafaljanicki</a></td><td align="center"><a href="https://github.com/priv-kweihmann"><img alt="priv-kweihmann" src="https://avatars.githubusercontent.com/u/46938494?v=4" width="117" /><br />priv-kweihmann</a></td></tr><tr><td align="center"><a href="https://github.com/surak"><img alt="surak" src="https://avatars.githubusercontent.com/u/878399?v=4" width="117" /><br />surak</a></td><td align="center"><a href="https://github.com/AlessandroMandelli"><img alt="AlessandroMandelli" src="https://avatars.githubusercontent.com/u/65062723?v=4" width="117" /><br />AlessandroMandelli</a></td><td align="center"><a href="https://github.com/DavidCamre"><img alt="DavidCamre" src="https://avatars.githubusercontent.com/u/1098069?v=4" width="117" /><br />DavidCamre</a></td><td align="center"><a href="https://github.com/jordanschau"><img alt="jordanschau" src="https://avatars.githubusercontent.com/u/412028?v=4" width="117" /><br />jordanschau</a></td><td align="center"><a href="https://github.com/mshulman"><img alt="mshulman" src="https://avatars.githubusercontent.com/u/1484420?v=4" width="117" /><br />mshulman</a></td><td align="center"><a href="https://github.com/vitasam"><img alt="vitasam" src="https://avatars.githubusercontent.com/u/5597505?v=4" width="117" /><br />vitasam</a></td></tr></table>
 
