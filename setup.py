@@ -17,7 +17,7 @@ __version__ = "2.0.4"
 __description__ = "Inkycal is a python3 software for syncing icalendar events, weather and news on selected E-Paper displays"
 __packages__ = ["inkycal"]
 __author__ = "aceinnolab"
-__author_email__ = "aceisace63@yahoo.com"
+__author_email__ = "inkycal@aceinnolab.com"
 __url__ = "https://github.com/aceinnolab/Inkycal"
 
 __install_requires__ = required

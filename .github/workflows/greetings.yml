@@ -12,5 +12,5 @@ jobs:
     - uses: actions/first-interaction@v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        issue-message: "Hi there and welcome to Inkycal. Thanks for opening this issue. As this is your first issue in this repository, please read through the [contributing guidelines](https://github.com/aceisace/Inkycal/blob/main/.github/CONTRIBUTING.md)"
-        pr-message: "Hi there and welcome to Inkycal. Thanks for opening this issue. As this is your first Pull-Request in this repository, please read through the [contributing guidelines](https://github.com/aceisace/Inkycal/blob/main/.github/CONTRIBUTING.md). Please note that non-critical pull-request cannot be merged into the main branch to ensure stability. Please create a new branch and ask to have it merged into main. Thanks for your understanding."
+        issue-message: "Hi there and welcome to Inkycal. Thanks for opening this issue. As this is your first issue in this repository, please read through the [contributing guidelines](https://github.com/aceinnolab/Inkycal/blob/main/.github/CONTRIBUTING.md)"
+        pr-message: "Hi there and welcome to Inkycal. Thanks for opening this issue. As this is your first Pull-Request in this repository, please read through the [contributing guidelines](https://github.com/aceinnolab/Inkycal/blob/main/.github/CONTRIBUTING.md). Please note that non-critical pull-request cannot be merged into the main branch to ensure stability. Please create a new branch and ask to have it merged into main. Thanks for your understanding."
