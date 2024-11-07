@@ -78,13 +78,17 @@ class TextToDisplay(inkycal_module):
             with open(self.filepath, 'r') as file:
                 file_content = file.read()
 
-        fitted_content = text_wrap(file_content, font=self.font, max_width=im_width)
+        # Split content by lines if not making a request
+        if not self.make_request:
+            lines = file_content.split('\n')
+        else:
+            lines = text_wrap(file_content, font=self.font, max_width=im_width)
 
         # Trim down the list to the max number of lines
-        del fitted_content[max_lines:]
+        del lines[max_lines:]
 
         # Write feeds on image
-        for index, line in enumerate(fitted_content):
+        for index, line in enumerate(lines):
             write(
                 im_black,
                 line_positions[index],
