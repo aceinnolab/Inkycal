@@ -47,7 +47,7 @@ typing_extensions==4.9.0
 tzdata==2024.1
 tzlocal==5.2
 urllib3==2.2.2
-virtualenv==20.25.0
+virtualenv==20.26.6
 webencodings==0.5.1
 x-wr-timezone==0.0.6
 xkcd==2.4.2
