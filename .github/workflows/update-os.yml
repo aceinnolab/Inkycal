@@ -24,8 +24,8 @@ jobs:
           TINDIE_USERNAME: ${{ secrets.TINDIE_USERNAME }}
         with:
           # Set the base_image to the desired Raspberry Pi OS version
-          # note: version 2023-12-11 seems to have issues with the kernel and gpio
-          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz
+          # note: version 2023-12-11 onwards seems to have issues with the kernel and gpio. Using later versions requires some additional steps
+          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2024-11-19/2024-11-19-raspios-bookworm-armhf-lite.img.xz
           image_additional_mb: 3072 # enlarge free space to 3 GB
           optimize_image: true
           commands: |
@@ -57,7 +57,31 @@ jobs:
             python -m pip install --upgrade pip
             pip install wheel
             pip install -e ./
-            pip install RPi.GPIO==0.7.1 spidev==3.5 gpiozero==2.0
+            pip install spidev==3.5 gpiozero==2.0
+            
+            # specific hacks to get this running on newer kernels, see #387. Special thanks to pbarthelemy
+            wget  https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/pcre2-10.44.tar.bz2
+            bzip2 -d pcre2-10.44.tar.bz2
+            tar -xf pcre2-10.44.tar
+            cd pcre2-10.44/
+            ./configure && make && sudo make install && make clean
+            cd ..
+
+            wget https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/swig-4.3.0.tar
+            tar -xf swig-4.3.0.tar
+            cd swig-4.3.0/
+            ./configure && make && sudo make install && make clean
+            cd ..
+
+            wget https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/lg.zip
+            unzip lg.zip
+            cd lg
+            make && sudo make install && make clean
+            cd ..
+
+            pip install rpi-lgpio
+            # hacks section end
+
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             pip install pytest
             python -m pytest
