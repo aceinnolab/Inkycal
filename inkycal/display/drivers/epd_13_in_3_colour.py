@@ -103,6 +103,9 @@ class EPD:
         self.ReadBusy()
 
     def init(self):
+        # Ensure SPI and GPIO are initialized properly
+        epdconfig.module_init()
+
         # EPD hardware init start
         self.reset()
         self.ReadBusy()

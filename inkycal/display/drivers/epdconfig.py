@@ -97,29 +97,50 @@ class RaspberryPi:
         self.SPI.writebytes2(data)
 
     def module_init(self):
+        if not hasattr(self, "SPI") or not self.SPI:
+            import spidev
+            self.SPI = spidev.SpiDev()
+
+        if not hasattr(self, "GPIO_RST_PIN") or not self.GPIO_RST_PIN:
+            import gpiozero
+            self.GPIO_RST_PIN = gpiozero.LED(self.RST_PIN)
+            self.GPIO_DC_PIN = gpiozero.LED(self.DC_PIN)
+            self.GPIO_PWR_PIN = gpiozero.LED(self.PWR_PIN)
+            self.GPIO_BUSY_PIN = gpiozero.Button(self.BUSY_PIN, pull_up=False)
+
+        logger.debug("Initializing SPI and GPIO")
         self.GPIO_PWR_PIN.on()
 
-        # SPI device, bus = 0, device = 0
-        self.SPI.open(0, 0)
-        self.SPI.max_speed_hz = 4000000
-        self.SPI.mode = 0b00
+        if not self.SPI:
+            self.SPI.open(0, 0)
+            self.SPI.max_speed_hz = 4000000
+            self.SPI.mode = 0b00
         return 0
 
     def module_exit(self, cleanup=False):
-        logger.debug("spi end")
-        self.SPI.close()
+        logger.debug("Cleaning up SPI and GPIO resources")
+        if hasattr(self, "SPI") and self.SPI:
+            self.SPI.close()
+            self.SPI = None
 
-        self.GPIO_RST_PIN.off()
-        self.GPIO_DC_PIN.off()
-        self.GPIO_PWR_PIN.off()
-        logger.debug("close 5V, Module enters 0 power consumption ...")
+        if hasattr(self, "GPIO_RST_PIN"):
+            self.GPIO_RST_PIN.off()
+        if hasattr(self, "GPIO_DC_PIN"):
+            self.GPIO_DC_PIN.off()
+        if hasattr(self, "GPIO_PWR_PIN"):
+            self.GPIO_PWR_PIN.off()
 
         if cleanup:
-            self.GPIO_RST_PIN.close()
-            self.GPIO_DC_PIN.close()
-            # self.GPIO_CS_PIN.close()
-            self.GPIO_PWR_PIN.close()
-            self.GPIO_BUSY_PIN.close()
+            if hasattr(self, "GPIO_RST_PIN"):
+                self.GPIO_RST_PIN.close()
+            if hasattr(self, "GPIO_DC_PIN"):
+                self.GPIO_DC_PIN.close()
+            if hasattr(self, "GPIO_PWR_PIN"):
+                self.GPIO_PWR_PIN.close()
+            if hasattr(self, "GPIO_BUSY_PIN"):
+                self.GPIO_BUSY_PIN.close()
+
+        logger.debug("Cleanup complete")
 
 
 implementation = RaspberryPi()
