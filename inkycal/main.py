@@ -107,6 +107,17 @@ class Inkycal:
             # from inkycal.display import Display
             self.Display = Display(self.settings["model"])
 
+            # define the visible frame, i.e. useable area of the display
+            #   please note the height and width refer to a panel in portrait mode
+            display_width, display_height = self.Display.get_display_size(self.settings["model"])
+            self.frame_coord =  (self.settings.get('frame_border_height_top', 0),
+                                 self.settings.get('frame_border_width_left', 0),
+                                 display_width - self.settings.get('frame_border_height_bottom', 0),
+                                 display_height - self.settings.get('frame_border_width_right', 0)
+            )
+            self.frame_size = (self.frame_coord[2] - self.frame_coord[0], 
+                               self.frame_coord[3] - self.frame_coord[1])    
+
             # check if colours can be rendered
             self.supports_colour = True if 'colour' in self.settings['model'] else False
 
@@ -449,13 +460,20 @@ class Inkycal:
         """Assembles all sub-images to a single image"""
 
         # Create 2 blank images with the same resolution as the display
-        width, height = Display.get_display_size(self.settings["model"])
-
+        display_width, display_height = Display.get_display_size(self.settings["model"])
+        # Create 2 blank images for the visible frame
+        frame_width, frame_height = (self.frame_size[0], self.frame_size[1])
+        
         # Since Inkycal runs in vertical mode, switch the height and width
-        width, height = height, width
+        display_width, display_height = display_height, display_width
+        frame_width, frame_height = frame_height, frame_width, 
+        
 
-        im_black = Image.new('RGB', (width, height), color='white')
-        im_colour = Image.new('RGB', (width, height), color='white')
+        im_display_black = Image.new('RGB', (display_width, display_height), color='white')
+        im_display_colour = Image.new('RGB', (display_width, display_height), color='black')
+
+        im_frame_black = Image.new('RGB', (frame_width, frame_height), color='white')
+        im_frame_colour = Image.new('RGB', (frame_width, frame_height), color='white')
 
         # Set cursor for y-axis
         im1_cursor = 0
@@ -487,7 +505,7 @@ class Inkycal:
                     y = im1_cursor + int((section_size[1] - im1_size[1]) / 2)
 
                 # center the image in the section space
-                im_black.paste(im1, (x, y), im1)
+                im_frame_black.paste(im1, (x, y), im1)
 
                 # Shift the y-axis cursor at the beginning of next section
                 im1_cursor += section_size[1]
@@ -512,7 +530,7 @@ class Inkycal:
                     y = im2_cursor + int((section_size[1] - im2_size[1]) / 2)
 
                 # center the image in the section space
-                im_colour.paste(im2, (x, y), im2)
+                im_frame_colour.paste(im2, (x, y), im2)
 
                 # Shift the y-axis cursor at the beginning of next section
                 im2_cursor += section_size[1]
@@ -522,21 +540,26 @@ class Inkycal:
         # Calculate the max. fontsize for info-section
         if self.settings['info_section']:
             info_height = self.settings["info_section_height"]
-            info_width = width
+            info_width = self.frame_size[1] 
             font = self.font = ImageFont.truetype(
                 fonts['NotoSansUI-Regular'], size=14)
 
-            info_x = im_black.size[1] - info_height
-            write(im_black, (0, info_x), (info_width, info_height),
+            info_x = im_frame_black.size[1] - info_height
+            write(im_frame_black, (0, info_x), (info_width, info_height),
                   self.info, font=font)
+
+        # Paste the visible frame to the display
+        #   note : x,y seems inverted but screen coordinates are 'in portrait' mode; see line 467
+        im_display_black.paste(im_frame_black, (self.frame_coord[1], self.frame_coord[0]))
+        im_display_colour.paste(im_frame_colour, (self.frame_coord[1], self.frame_coord[0]))
 
         # optimize the image by mapping colours to pure black and white
         if self.optimize:
-            im_black = self._optimize_im(im_black)
-            im_colour = self._optimize_im(im_colour)
+            im_display_black = self._optimize_im(im_display_black)
+            im_display_colour = self._optimize_im(im_display_colour)
 
-        im_black.save(os.path.join(settings.IMAGE_FOLDER, "canvas.png"), "PNG")
-        im_colour.save(os.path.join(settings.IMAGE_FOLDER, "canvas_colour.png"), 'PNG')
+        im_display_black.save(os.path.join(settings.IMAGE_FOLDER, "canvas.png"), "PNG")
+        im_display_colour.save(os.path.join(settings.IMAGE_FOLDER, "canvas_colour.png"), 'PNG')
 
         # Additionally, combine the two images with color
         def clear_white(img):
@@ -561,11 +584,11 @@ class Inkycal:
             return Image.fromarray(buffer)
 
         # Save full-screen images as well
-        im_black = clear_white(im_black)
-        im_colour = black_to_colour(im_colour)
+        im_display_black = clear_white(im_display_black)
+        im_display_colour = black_to_colour(im_display_colour)
 
-        im_colour.paste(im_black, (0, 0), im_black)
-        im_colour.save(os.path.join(settings.IMAGE_FOLDER, 'full-screen.png'), 'PNG')
+        im_display_colour.paste(im_display_black, (0, 0), im_display_black)
+        im_display_colour.save(os.path.join(settings.IMAGE_FOLDER, 'full-screen.png'), 'PNG')
 
     @staticmethod
     def _optimize_im(image, threshold=220):
