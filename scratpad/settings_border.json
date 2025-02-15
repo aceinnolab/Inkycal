@@ -1,0 +1,36 @@
+{
+    "model": "image_file_7_in_5_v3_colour",
+    
+    "frame_border_width_left" : 10,
+    "frame_border_width_right" : 20,
+    "frame_border_height_top" : 40,
+    "frame_border_height_bottom" : 80,
+
+        "update_interval": 60,
+        "orientation": 0,
+        "info_section": true,
+        "info_section_height": 20,
+        "border_around_modules": true,
+        "modules": [
+            {
+                "position": 1,
+                "name": "Xkcd",
+                "config": {
+                    "size": [
+                        498,
+                        770
+                    ],
+                    "mode": "latest",
+                    "palette": "bw",
+                    "alt": "no",
+                    "filter": "no",
+                    "padding_x": 10,
+                    "padding_y": 5,
+                    "fontsize": 12,
+                    "language": "en"
+                }
+            }
+        ],
+        "language": "en",
+        "calibration_hours": []
+    }
