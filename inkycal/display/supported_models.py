@@ -20,4 +20,5 @@ supported_models = {
     "epd_7_in_5_v3_colour": (880, 528),
     "epd_5_in_83": (600, 448),
     "image_file": (800, 480),
+    "image_file_7_in_5_v3_colour": (880, 528)
 }
