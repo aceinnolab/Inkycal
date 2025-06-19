@@ -44,5 +44,10 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add docs/*
-          git commit -m "update docs [bot]"
-          git push
+          # Check if anything is staged before committing
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+          else
+            git commit -m "update docs [bot]"
+            git push
+          fi
