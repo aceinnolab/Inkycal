@@ -141,7 +141,7 @@ sudo ./configure && sudo make && sudo make check && sudo make install
 
 # If you are using the Raspberry Pi Zero models, you may need to increase the swapfile size to be able to install Inkycal:
 sudo dphys-swapfile swapoff
-sudo sed -i -E '/^CONF_SWAPSIZE=/s/=.*/=512/' /etc/dphys-swapfile
+sudo sed -i -E '/^CONF_SWAPSIZE=/s/=.*/=1024/' /etc/dphys-swapfile
 sudo dphys-swapfile setup
 sudo dphys-swapfile swapon
 ```
