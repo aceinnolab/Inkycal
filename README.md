@@ -5,7 +5,7 @@
     <a href="https://discord.gg/sHYKeSM"><img src="https://img.shields.io/discord/672082714190544899?style=flat&logo=discord&logoColor=blue&color=lightorange"></a>
     <a href="https://github.com/aceinnolab/Inkycal/releases"><img alt="Version" src="https://img.shields.io/github/release/aceisace/Inkycal.svg"/></a>
     <a href="https://github.com/aceinnolab/Inkycal/blob/main/LICENSE"><img alt="Licence" src="https://img.shields.io/github/license/aceisace/Inkycal.svg" /></a>
-    <a href="https://github.com/aceinnolab/Inkycal"><img alt="python" src="https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11-lightorange"></a>
+    <a href="https://github.com/aceinnolab/Inkycal"><img alt="python" src="https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-lightorange"></a>
     <a href="https://github.com/aceinnolab/Inkycal/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aceisace/Inkycal?color=yellow"></a>
 </p>
 
@@ -22,15 +22,15 @@ Inkycal can run well even on the Raspberry Pi Zero W. Oh, and it's open for thir
 
 ## ⚠️ Warning: long installation time expected!
 
-Starting october 2023, Raspberry Pi OS is now based on Debian bookworm and uses python 3.11 instead of 3.9 as the
-default version. Inkycal has been updated to work with python3.11, but the installation of numpy can take a very long
-time, in some cases even hours. If you do not want to wait this long to install Inkycal, you can also get a
-ready-to-flash version of Inkycal called InkycalOS-Lite with everything pre-installed for you by sponsoring
-via [GitHub Sponsors](https://github.com/sponsors/aceisace). This helps keep up maintenance costs, implement new
-features and fixing bugs. Please choose the one-time sponsor option and select the one with the plug-and-play version of
-Inkycal. Then, send your email-address to which InkycalOS-Lite should be sent.
-Alternatively, you can also use the PayPal.me link and send the same amount as GitHub sponsors to get access to
-InkycalOS-Lite!
+Installing Inkycal, particularly on the Raspberry Pi Zero W models can take up to **a few hours**. 
+
+The good news is that this is one-time and InkyCal generally runs without an issue for months or even years. 
+
+The bad news is that the Zero W can run out of memory when installing the required packages. A temporary fix for this is to use SWAP (kind of like a file-based RAM) which is slow, but at least won't lead to 
+
+
+**TLDR: Skip the wait and several hours of headaches, sponsor InkyCal via [GitHub Sponsors](https://github.com/sponsors/aceisace) and you will shortly receive the download link
+
 
 ## Main features
 
@@ -80,8 +80,7 @@ display!**
 
 | type                                                                            | vendor                  | Where to buy                                                                                                                                                                                                                                                                                                                                                        |
 |---------------------------------------------------------------------------------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 12.48" Inkycal (plug-and-play)                                                  | Aceinnolab (author)     | [Buy on Tindie](https://www.tindie.com/products/aceinnolab/inkycal-1248-build/) Pre-configured version of Inkycal with matte black aluminium designer frame and a web-ui. You do not need to buy anything extra. Includes Raspberry Pi Zero W, 12.48" e-paper, microSD card, driver board, custom packaging and 1m of cable. Comes pre-assembled for plug-and-play. |
-| 7.5" Inkycal (plug-and-play)                                                    | Aceinnolab (author)     |  [Buy on Tindie](https://www.tindie.com/products/aceisace4444/inkycal-build-v1/)  Pre-configured version of Inkycal with custom frame and a web-ui. You do not need to buy anything extra. Includes Raspberry Pi Zero W, 7.5" e-paper, microSD card, driver board, custom packaging and 1m of cable. Comes pre-assembled for plug-and-play.                         |
+| 7.5" Inkycal (plug-and-play)                                                    | Aceinnolab (author)     |  [Buy on Tindie](https://www.tindie.com/products/aceinnolab/inkycal-create-your-own-e-paper-dashboard/) 7" black-white-red e-paper with custom 3d-printed case, fully pre-assembled (Raspberry Pi Zero W, 7.5" e-paper, microSD card, driver board, custom packaging and 1m of cable). Also grants access to InkyCalOS-Lite. You only need to generate the settings.json file and copy it to the microSD card |
 | Inkycal frame (kit -> requires wires, 7.5" Display and Zero W with microSD card | Aceinnolab (author)     | [Buy on Tindie](https://www.tindie.com/products/aceinnolab/inkycal-frame-custom-driver-board-only/) Ultraslim frame with custom-made front and backcover inkl. ultraslim driver board). You will need a Raspberry Pi, microSD card and a 7.5" e-paper display                                                                                                       |
 | Driver board                                                                    | Aceinnolab (author)     | [Buy on Tindie](https://www.tindie.com/products/aceinnolab/universal-e-paper-driver-board-for-24-pin-spi/) Ultraslim, 24-pin SPI driver board for many serial e-paper displays.                                                                                                                                                                                     |
 | `[serial]`  12.48" (1304×984px) display                                         | waveshare / gooddisplay |  Search for `Waveshare 12.48" E-Paper 1304×984` on amazon or similar                                                                                                                                                                                                                                                                                                |
@@ -186,6 +185,12 @@ git clone https://github.com/WiringPi/WiringPi
 cd WiringPi
 ./build
 cd ..
+
+# python3.9 can lead to issues, hence an update to python3.11 is strongly recommended:
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt update
+sudo apt install python3.11
+
 # Raspberry Pi specific section end
 
 cd $HOME
