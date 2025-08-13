@@ -147,9 +147,9 @@ sudo dphys-swapfile swapon
 
 These commands expand the filesystem, enable SPI and set up the correct timezone on the Raspberry Pi. When running the
 last command, please select the continent you live in, press enter and then select the capital of the country you live
-in. Lastly, press enter.
+in. Lastly, press enter. 
 
-7. Follow the steps in `Installation` (see below) on how to install Inkycal.
+Follow the steps in `Installation` (see below) on how to install Inkycal.
 
 ## Installing Inkycal
 
@@ -204,7 +204,7 @@ pip install -e ./
 
 
 # only for Raspberry Pi:
-pip install RPi.GPIO==0.7.1 spidev==3.5 gpiozero==2.0
+pip install RPi.GPIO==0.7.1 spidev==3.7 lgpio==0.2.2.0
 ```
 
 ## Running Inkycal
