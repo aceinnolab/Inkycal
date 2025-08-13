@@ -25,7 +25,7 @@ jobs:
         with:
           # Set the base_image to the desired Raspberry Pi OS version
           # note: version 2023-12-11 onwards seems to have issues with the kernel and gpio. Using later versions requires some additional steps
-          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2024-11-19/2024-11-19-raspios-bookworm-armhf-lite.img.xz
+          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-05-13/2025-05-13-raspios-bookworm-armhf-lite.img.xz
           image_additional_mb: 3072 # enlarge free space to 3 GB
           optimize_image: true
           commands: |
@@ -57,7 +57,7 @@ jobs:
             python -m pip install --upgrade pip
             pip install wheel
             pip install -e ./
-            pip install spidev==3.5 gpiozero==2.0
+            pip install RPi.GPIO==0.7.1 spidev==3.7 lgpio==0.2.2.0
             
             # specific hacks to get this running on newer kernels, see #387. Special thanks to pbarthelemy
             wget  https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/pcre2-10.44.tar.bz2
@@ -97,7 +97,7 @@ jobs:
             # increase swap-size
             # temporarily disabled due to unmounting issues
             # sudo dphys-swapfile swapoff
-            # sudo sed -i -E '/^CONF_SWAPSIZE=/s/=.*/=512/' /etc/dphys-swapfile
+            # sudo sed -i -E '/^CONF_SWAPSIZE=/s/=.*/=1024/' /etc/dphys-swapfile
             # sudo dphys-swapfile setup
             # sudo dphys-swapfile swapon
 

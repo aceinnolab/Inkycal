@@ -29,7 +29,7 @@ jobs:
           TINDIE_USERNAME: ${{ secrets.TINDIE_USERNAME }}
         with:
           # Set the base_image to the desired Raspberry Pi OS version
-          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2024-03-15/2024-03-15-raspios-bookworm-armhf-lite.img.xz
+          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-05-13/2025-05-13-raspios-bookworm-armhf-lite.img.xz
           image_additional_mb: 3072 # enlarge free space to 3GB
           optimize_image: true
           # user: inky --> not supported?
@@ -52,7 +52,7 @@ jobs:
             python -m pip install --upgrade pip
             pip install wheel
             pip install -e ./
-            pip install RPi.GPIO==0.7.1 spidev==3.5 gpiozero==2.0
+            pip install RPi.GPIO==0.7.1 spidev==3.7 lgpio==0.2.2.0
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             pip install pytest
             python -m pytest
