@@ -152,6 +152,13 @@ class Inkyimage:
                 logger.error("no height of width specified")
                 return
 
+            current_width, current_height = self.image.size
+
+            # Skip if dimensions are the same
+            if width == current_width and height == current_height:
+                logger.info(f"Image already correct size ({width}x{height}), skipping resize")
+                return
+
             image = self.image
 
             if width:
