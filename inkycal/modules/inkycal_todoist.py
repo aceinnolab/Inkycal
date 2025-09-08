@@ -127,6 +127,7 @@ class Todoist(inkycal_module):
             {
                 'name': task.content,
                 'due': arrow.get(task.due.date, "YYYY-MM-DD").format("D-MMM-YY") if task.due else "",
+                'due_date': arrow.get(task.due.date, "YYYY-MM-DD") if task.due else None,
                 'priority': task.priority,
                 'project': filtered_project_ids_and_names[task.project_id]
             }
@@ -156,6 +157,15 @@ class Todoist(inkycal_module):
             group_of_current_task = task["project"]
             if group_of_current_task in groups:
                 groups[group_of_current_task].append(task)
+
+        # Sort tasks within each project group by due date
+        for project_name in groups:
+            groups[project_name].sort(
+                key=lambda task: (
+                    task['due_date'] is None,  # Tasks with dates come first
+                    task['due_date'] if task['due_date'] else arrow.get('9999-12-31')  # Sort by date
+                )
+            )
 
         logger.debug(f"grouped: {groups}")
 
