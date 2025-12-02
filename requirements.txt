@@ -9,7 +9,7 @@ cycler==0.12.1
 distlib==0.4.0
 feedparser==6.0.11
 filelock==3.18.0
-fonttools==4.59.0
+fonttools==4.61.0
 frozendict==2.4.6
 gpiozero==2.0.1
 html2text==2025.4.15
