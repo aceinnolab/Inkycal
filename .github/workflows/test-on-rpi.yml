@@ -52,7 +52,7 @@ jobs:
             python -m pip install --upgrade pip
             pip install wheel
             pip install -e ./
-            pip install RPi.GPIO==0.7.1 spidev==3.7 lgpio==0.2.2.0
+            pip install spidev==3.7 lgpio==0.2.2.0
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             pip install pytest
             python -m pytest

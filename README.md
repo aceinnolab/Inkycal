@@ -204,7 +204,7 @@ pip install -e ./
 
 
 # only for Raspberry Pi:
-pip install RPi.GPIO==0.7.1 spidev==3.7 lgpio==0.2.2.0
+pip install spidev==3.7 lgpio==0.2.2.0
 ```
 
 ## Running Inkycal
