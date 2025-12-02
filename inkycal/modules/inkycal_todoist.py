@@ -199,8 +199,8 @@ class Todoist(inkycal_module):
 
             # Try to fetch fresh data from API
             try:
-                all_projects = self._fetch_with_retry(self._api.get_projects)
-                all_active_tasks = self._fetch_with_retry(self._api.get_tasks)
+                all_projects = [i[0] for i in self._fetch_with_retry(self._api.get_projects)] if self._fetch_with_retry(self._api.get_projects) else []
+                all_active_tasks = [i[0] for i in self._fetch_with_retry(self._api.get_tasks)] if self._fetch_with_retry(self._api.get_tasks) else []
                 # Save to cache on successful fetch
                 self._save_cache(all_projects, all_active_tasks)
             except Exception as e:
@@ -293,7 +293,7 @@ class Todoist(inkycal_module):
                 'is_overdue': is_overdue,
                 'priority': task.priority,
                 'priority_text': priority_text,
-                'project': filtered_project_ids_and_names[task.project_id]
+                'project': filtered_project_ids_and_names[task.project_id] if task.project_id in filtered_project_ids_and_names else None
             })
 
         logger.debug(f'simplified: {simplified}')
