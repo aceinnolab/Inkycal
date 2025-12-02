@@ -57,7 +57,7 @@ jobs:
             python -m pip install --upgrade pip
             pip install wheel
             pip install -e ./
-            pip install RPi.GPIO==0.7.1 spidev==3.7 lgpio==0.2.2.0
+            pip install spidev==3.7 lgpio==0.2.2.0
             
             # specific hacks to get this running on newer kernels, see #387. Special thanks to pbarthelemy
             wget  https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/pcre2-10.44.tar.bz2

@@ -98,9 +98,9 @@ class Todoist(inkycal_module):
             (0, spacing_top + _ * line_height) for _ in range(max_lines)]
 
         # Get all projects by name and id
-        all_projects = self._api.get_projects()
+        all_projects = [i for i in self._api.get_projects()][0]
         filtered_project_ids_and_names = {project.id: project.name for project in all_projects}
-        all_active_tasks = self._api.get_tasks()
+        all_active_tasks = [i[0] for i in self._api.get_tasks()]
 
         logger.debug(f"all_projects: {all_projects}")
 
