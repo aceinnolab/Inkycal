@@ -29,10 +29,9 @@ jobs:
           TINDIE_USERNAME: ${{ secrets.TINDIE_USERNAME }}
         with:
           # Set the base_image to the desired Raspberry Pi OS version
-          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-05-13/2025-05-13-raspios-bookworm-armhf-lite.img.xz
+          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-11-24/2025-11-24-raspios-trixie-armhf-lite.img.xz
           image_additional_mb: 3072 # enlarge free space to 3GB
           optimize_image: true
-          # user: inky --> not supported?
           commands: |
             cd /home
             sudo useradd -m -p "$(openssl passwd -1 $INKY_INITAL_PASSWORD)" inky
