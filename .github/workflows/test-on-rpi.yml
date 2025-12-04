@@ -47,7 +47,8 @@ jobs:
             echo $PWD && ls
             git clone https://github.com/aceinnolab/Inkycal
             cd Inkycal
-            python3.11 -m venv venv
+            # in trixie, defaults to python 3.13
+            python3 -m venv venv
             . venv/bin/activate
             pip install --upgrade pip wheel
             pip install -e ./
