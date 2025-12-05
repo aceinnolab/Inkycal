@@ -124,12 +124,16 @@ Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager]
 5. After connecting via SSH, run the following commands, line by line:
 
 ```bash
+# expand the filesystem to make use of the full space on the microSD card
 sudo raspi-config --expand-rootfs
 
+# enable SPI
 sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/firmware/config.txt
-# note: on older releases, this file is located in /boot/config.txt. If you get an error saying file not found, run the command below:
-sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
 
+# note: on older releases, this file is located in /boot/config.txt. If you get an error saying file not found, run the command below:
+# sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
+
+# set the timezone (optional)
 sudo dpkg-reconfigure tzdata
 
 # If you have the 12.48" display, these steps are also required:
@@ -139,10 +143,12 @@ cd bcm2835-1.71/
 sudo ./configure && sudo make && sudo make check && sudo make install
 
 # If you are using the Raspberry Pi Zero models, you may need to increase the swapfile size to be able to install Inkycal:
-sudo dphys-swapfile swapoff
-sudo sed -i -E '/^CONF_SWAPSIZE=/s/=.*/=1024/' /etc/dphys-swapfile
-sudo dphys-swapfile setup
-sudo dphys-swapfile swapon
+# sudo apt remove rpi-swap systemd-zram-generator
+# sudo apt-get install dphys-swapfile
+#sudo dphys-swapfile swapoff
+#sudo sed -i -E '/^CONF_SWAPSIZE=/s/=.*/=1024/' /etc/dphys-swapfile
+#sudo dphys-swapfile setup
+#sudo dphys-swapfile swapon
 ```
 
 These commands expand the filesystem, enable SPI and set up the correct timezone on the Raspberry Pi. When running the
@@ -180,26 +186,34 @@ Run the following steps to install Inkycal. Do **not** use sudo for this, except
 ```bash
 # Raspberry Pi specific section start
 sudo apt update
-sudo apt-get install git zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python-dev-is-python3 scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev build-essential libxml2-dev libxslt1-dev python3-dev -y
-git clone https://github.com/WiringPi/WiringPi
-cd WiringPi
-./build
-cd ..
+#sudo apt-get install git zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python-dev-is-python3 scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev build-essential libxml2-dev libxslt1-dev python3-dev -y
+#git clone https://github.com/WiringPi/WiringPi
+#cd WiringPi
+#./build
+#cd ..
 
-# python3.9 can lead to issues, hence an update to python3.11 is strongly recommended:
-sudo add-apt-repository ppa:deadsnakes/ppa
-sudo apt update
-sudo apt install python3.11
+# set up swap (file-based-ram)
+# /etc/rpi/swap.conf.d/80-use-swapfile.conf 
+[Main]
+Mechanism=swapfile
 
+[File]
+FixedSizeMiB=1024
+
+export TMPDIR=/var/tmp
 # Raspberry Pi specific section end
+
+# pillow specific deps, see here https://pillow.readthedocs.io/en/latest/installation/building-from-source.html
+sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev wkhtmltopdf -y
+# git needed for git ops e.g. clone, python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev for pillow, wkhtmltopdf for inkycal module
 
 cd $HOME
 git clone https://github.com/aceinnolab/Inkycal
 cd Inkycal
 python3 -m venv venv
 source venv/bin/activate
-python -m pip install --upgrade pip
-pip install wheel
+pip install --upgrade pip wheel
+# trixie is known to run out of disk space. A change due to storing temp files, e.g. pip install directly into RAM
 pip install -e ./
 
 
