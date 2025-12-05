@@ -2,17 +2,22 @@
 Inkycal Todoist Module
 Copyright by aceinnolab
 """
+import logging
+
 import arrow
 import json
 import os
 import time
 from datetime import datetime
 
+from PIL import Image
+
 from inkycal.modules.template import inkycal_module
-from inkycal.custom import *
 
 from todoist_api_python.api import TodoistAPI
 import requests.exceptions
+
+from inkycal.utils.functions import write, internet_available
 
 logger = logging.getLogger(__name__)
 

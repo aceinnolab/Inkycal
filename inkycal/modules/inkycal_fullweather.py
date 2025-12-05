@@ -20,12 +20,10 @@ from PIL import ImageFont
 from PIL import ImageOps
 
 from icons.weather_icons.weather_icons import get_weather_icon
-from inkycal.custom.functions import fonts
-from inkycal.custom.functions import get_system_tz
-from inkycal.custom.functions import internet_available
-from inkycal.custom.inkycal_exceptions import NetworkNotReachableError
-from inkycal.custom.openweathermap_wrapper import OpenWeatherMap
-from inkycal.modules.inky_image import image_to_palette
+from inkycal.utils.functions import fonts, get_system_tz, internet_available
+from inkycal.utils.inkycal_exceptions import NetworkNotReachableError
+from inkycal.utils.openweathermap_wrapper import OpenWeatherMap
+from inkycal.utils.inky_image import image_to_palette
 from inkycal.modules.template import inkycal_module
 from inkycal.settings import Settings
 

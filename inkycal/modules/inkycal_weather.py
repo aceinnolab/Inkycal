@@ -12,13 +12,9 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 
-from inkycal.custom.functions import draw_border
-from inkycal.custom.functions import fonts
-from inkycal.custom.functions import get_system_tz
-from inkycal.custom.functions import internet_available
-from inkycal.custom.functions import write
-from inkycal.custom.inkycal_exceptions import NetworkNotReachableError
-from inkycal.custom.openweathermap_wrapper import OpenWeatherMap
+from inkycal.utils.functions import get_system_tz, fonts, internet_available, write, draw_border
+from inkycal.utils.inkycal_exceptions import NetworkNotReachableError
+from inkycal.utils.openweathermap_wrapper import OpenWeatherMap
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)

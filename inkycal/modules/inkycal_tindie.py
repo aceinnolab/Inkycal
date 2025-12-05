@@ -5,11 +5,15 @@ Shows unshipped orders from your Tindie store
 Copyright by aceinnolab
 """
 import json
+import logging
 
 import arrow
+import requests
+from PIL import Image
 
-from inkycal.custom import *
 from inkycal.modules.template import inkycal_module
+from inkycal.utils.functions import internet_available, write
+from inkycal.utils.inkycal_exceptions import NetworkNotReachableError
 
 # Show less logging for request module
 logging.getLogger("urllib3").setLevel(logging.WARNING)

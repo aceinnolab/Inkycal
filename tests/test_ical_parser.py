@@ -7,7 +7,7 @@ import unittest
 from urllib.request import urlopen
 
 import arrow
-from inkycal.modules.ical_parser import iCalendar
+from inkycal.utils.ical_parser import iCalendar
 from tests import Config
 
 ical = iCalendar()
