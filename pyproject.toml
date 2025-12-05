@@ -40,7 +40,7 @@ include = ["inkycal*"]  # change if your top-level package name differs
 # single source of truth: one requirements.txt (with Pi-only env markers at the end)
 dependencies = { file = ["requirements.txt"] }
 # version is read from a small module that CI overwrites each push (CalVer)
-version = { file = "inkycal/_version.py" }
+version = "2025.12.05"
 
 # Include common package assets in wheels (adjust patterns as you like)
 [tool.setuptools.package-data]
