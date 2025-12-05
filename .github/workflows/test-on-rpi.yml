@@ -46,6 +46,7 @@ jobs:
             sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev wkhtmltopdf -y
             echo $PWD && ls
             git clone https://github.com/aceinnolab/Inkycal
+            git checkout trixie-preparation
             cd Inkycal
             # in trixie, defaults to python 3.13
             python3 -m venv venv
