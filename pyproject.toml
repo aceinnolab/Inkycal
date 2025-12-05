@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=69", "wheel", "build"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "inkycal"
+description = "InkyCal – e-paper calendar/dashboard for Raspberry Pi"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "GPL-3.0-only" }  # match your previous setup.py classifiers
+authors = [{ name = "aceinnolab", email = "inkycal@aceinnolab.com" }]
+dynamic = ["version", "dependencies"]
+
+# (optional but nice)
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Intended Audience :: Education",
+  "Natural Language :: English",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+
+[project.urls]
+Homepage  = "https://github.com/aceinnolab/Inkycal"
+Issues    = "https://github.com/aceinnolab/Inkycal/issues"
+Changelog = "https://github.com/aceinnolab/Inkycal/releases"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["inkycal*"]  # change if your top-level package name differs
+
+[tool.setuptools.dynamic]
+# single source of truth: one requirements.txt (with Pi-only env markers at the end)
+dependencies = { file = ["requirements.txt"] }
+# version is read from a small module that CI overwrites each push (CalVer)
+version = { file = "inkycal/_version.py" }
+
+# Include common package assets in wheels (adjust patterns as you like)
+[tool.setuptools.package-data]
+"inkycal" = [
+  "**/*.html", "**/*.jinja2", "**/*.css", "**/*.js", "**/*.json",
+  "assets/**/*", "static/**/*", "templates/**/*", "data/**/*"
+]
