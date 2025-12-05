@@ -6,8 +6,8 @@ import logging
 import os
 import unittest
 
-from inkycal.modules import TextToDisplay
-from inkycal.modules.inky_image import Inkyimage
+from inkycal.modules.inkycal_textfile_to_display import TextToDisplay
+from inkycal.utils.inky_image import Inkyimage
 from tests import Config
 
 merge = Inkyimage.merge

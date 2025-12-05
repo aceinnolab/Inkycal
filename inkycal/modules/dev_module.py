@@ -3,13 +3,14 @@ Third party module template (inkycal-compatible module)
 
 Copyright by aceinnolab
 """
+from PIL import Image
 
 #############################################################################
 #                           Required imports (do not remove)
 #############################################################################
 # Required for setting up this module
 from inkycal.modules.template import inkycal_module
-from inkycal.custom import *
+import logging
 
 #############################################################################
 #                           Built-in library imports (change as desired)
@@ -25,11 +26,7 @@ from random import shuffle
 # For external libraries, which require installing,
 # use try...except ImportError to check if it has been installed
 # If it is not found, print a short message on how to install this dependency
-try:
-    import feedparser
-except ImportError:
-    print('feedparser is not installed! Please install with:')
-    print('pip3 install feedparser')
+import feedparser
 
 #############################################################################
 #                         Filename + logging (do not remove)

@@ -2,9 +2,12 @@
 Inkycal Agenda Module
 Copyright by aceinnolab
 """
-import arrow # noqa
-from inkycal.custom import *
-from inkycal.modules.ical_parser import iCalendar
+import logging
+import arrow
+from PIL import ImageFont, Image, ImageDraw
+
+from inkycal.utils.functions import get_system_tz, fonts, write
+from inkycal.utils.ical_parser import iCalendar
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)

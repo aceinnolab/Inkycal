@@ -4,10 +4,17 @@ Special thanks to Erik Fredericks (@efredericks) for the template!
 
 Copyright by aceinnolab
 """
+import logging
+
+from PIL import Image
+
 from inkycal.modules.template import inkycal_module
-from inkycal.custom import *
+
 
 import requests
+
+from inkycal.utils.functions import internet_available, text_wrap, write
+from inkycal.utils.inkycal_exceptions import NetworkNotReachableError
 
 # Show less logging for request module
 logging.getLogger("urllib3").setLevel(logging.WARNING)

@@ -7,8 +7,8 @@ import unittest
 import requests
 from PIL import Image
 
-from inkycal.modules import Inkyimage as Module
-from inkycal.modules.inky_image import Inkyimage
+from inkycal.modules.inkycal_image import Inkyimage as Module
+from inkycal.utils.inky_image import Inkyimage
 from tests import Config
 
 merge = Inkyimage.merge
