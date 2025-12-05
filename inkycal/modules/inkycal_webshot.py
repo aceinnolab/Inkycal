@@ -2,11 +2,15 @@
 Webshot module for Inkycal
 by https://github.com/worstface
 """
+import logging
+import os
+import traceback
 
+from PIL import Image
 from htmlwebshot import WebShot
 
-from inkycal.custom import *
-from inkycal.modules.inky_image import Inkyimage as Images, image_to_palette
+from inkycal.utils.functions import internet_available
+from inkycal.utils.inky_image import Inkyimage as Images, image_to_palette
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)

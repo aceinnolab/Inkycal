@@ -3,9 +3,12 @@ Inkycal-server module for Inkycal Project
 by Aterju (https://inkycal.robertsirre.nl/)
 Copyright by aceinnolab
 """
+import logging
 
-from inkycal.custom import *
-from inkycal.modules.inky_image import Inkyimage as Images
+import requests
+from PIL import Image
+
+from inkycal.utils.inky_image import Inkyimage as Images
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)

@@ -2,11 +2,15 @@
 Inkycal XKCD module
 by https://github.com/worstface
 """
+import logging
+import os
 
 import xkcd
+from PIL import Image
 
-from inkycal.custom import *
-from inkycal.modules.inky_image import Inkyimage as Image2, image_to_palette
+from inkycal.settings import Settings
+from inkycal.utils.functions import internet_available, write
+from inkycal.utils.inky_image import Inkyimage as Image2, image_to_palette
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)

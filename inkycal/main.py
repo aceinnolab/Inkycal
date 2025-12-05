@@ -2,26 +2,34 @@
 Main class for inkycal Project
 Copyright by aceinnolab
 """
-
 import asyncio
 import glob
 import hashlib
+import json
 import os.path
+import time
+import traceback
 
+import arrow
 import numpy
 
-from inkycal import loggers  # noqa
-from inkycal.custom import *
+import logging
+
+from PIL import Image, ImageFont
+
 from inkycal.display import Display
-from inkycal.modules.inky_image import Inkyimage as Images
+from inkycal.modules import InkycalModuleImporter
+from inkycal.settings import Settings
+from inkycal.utils.functions import get_system_tz, fonts, write, draw_border_2
+from inkycal.utils.inky_image import Inkyimage as Images
 from inkycal.utils import JSONCache
+from inkycal.utils.inkycal_exceptions import SettingsFileNotFoundError
 
 logger = logging.getLogger(__name__)
 
 settings = Settings()
 
 CACHE_NAME = "inkycal_main"
-
 
 class Inkycal:
     """Inkycal main class
@@ -121,7 +129,7 @@ class Inkycal:
         for module in self.settings['modules']:
             module_name = module['name']
             try:
-                loader = f'from inkycal.modules import {module_name}'
+                loader = InkycalModuleImporter[module_name].value
                 # print(loader)
                 exec(loader)
                 setup = f'self.module_{self._module_number} = {module_name}({module})'

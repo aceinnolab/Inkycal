@@ -3,10 +3,10 @@ Inkycal Slideshow Module
 Copyright by aceinnolab
 """
 import glob
+import logging
 
-from inkycal.custom import *
 # PIL has a class named Image, use alias for Inkyimage -> Images
-from inkycal.modules.inky_image import Inkyimage as Images, image_to_palette
+from inkycal.utils.inky_image import Inkyimage as Images, image_to_palette
 from inkycal.modules.template import inkycal_module
 from inkycal.utils import JSONCache
 
