@@ -9,7 +9,8 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "GPL-3.0-only" }  # match your previous setup.py classifiers
 authors = [{ name = "aceinnolab", email = "inkycal@aceinnolab.com" }]
-dynamic = ["version", "dependencies"]
+version = "2025.12.06"
+dynamic = ["dependencies"]
 
 # (optional but nice)
 classifiers = [
@@ -39,8 +40,6 @@ include = ["inkycal*"]  # change if your top-level package name differs
 [tool.setuptools.dynamic]
 # single source of truth: one requirements.txt (with Pi-only env markers at the end)
 dependencies = { file = ["requirements.txt"] }
-# version is read from a small module that CI overwrites each push (CalVer)
-version = "2025.12.05"
 
 # Include common package assets in wheels (adjust patterns as you like)
 [tool.setuptools.package-data]
