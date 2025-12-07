@@ -130,9 +130,6 @@ sudo raspi-config --expand-rootfs
 # enable SPI
 sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/firmware/config.txt
 
-# note: on older releases, this file is located in /boot/config.txt. If you get an error saying file not found, run the command below:
-# sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
-
 # set the timezone (optional)
 sudo dpkg-reconfigure tzdata
 
@@ -141,14 +138,6 @@ wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.71.tar.gz
 tar zxvf bcm2835-1.71.tar.gz 
 cd bcm2835-1.71/
 sudo ./configure && sudo make && sudo make check && sudo make install
-
-# If you are using the Raspberry Pi Zero models, you may need to increase the swapfile size to be able to install Inkycal:
-# sudo apt remove rpi-swap systemd-zram-generator
-# sudo apt-get install dphys-swapfile
-#sudo dphys-swapfile swapoff
-#sudo sed -i -E '/^CONF_SWAPSIZE=/s/=.*/=1024/' /etc/dphys-swapfile
-#sudo dphys-swapfile setup
-#sudo dphys-swapfile swapon
 ```
 
 These commands expand the filesystem, enable SPI and set up the correct timezone on the Raspberry Pi. When running the
@@ -185,12 +174,7 @@ Run the following steps to install Inkycal. Do **not** use sudo for this, except
 
 ```bash
 # Raspberry Pi specific section start
-sudo apt update
-#sudo apt-get install git zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python-dev-is-python3 scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev build-essential libxml2-dev libxslt1-dev python3-dev -y
-#git clone https://github.com/WiringPi/WiringPi
-#cd WiringPi
-#./build
-#cd ..
+sudo apt-get update -y
 
 # set up swap (file-based-ram)
 # /etc/rpi/swap.conf.d/80-use-swapfile.conf 
@@ -199,26 +183,31 @@ Mechanism=swapfile
 
 [File]
 FixedSizeMiB=1024
+###########
 
 export TMPDIR=/var/tmp
 # Raspberry Pi specific section end
 
-# pillow specific deps, see here https://pillow.readthedocs.io/en/latest/installation/building-from-source.html
+# apt-dependencies
 sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev wkhtmltopdf -y
-# git needed for git ops e.g. clone, python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev for pillow, wkhtmltopdf for inkycal module
 
 cd $HOME
 git clone https://github.com/aceinnolab/Inkycal
 cd Inkycal
-python3 -m venv venv
+# in trixie, defaults to python3.13
+python -m venv venv
 source venv/bin/activate
-pip install --upgrade pip wheel
-# trixie is known to run out of disk space. A change due to storing temp files, e.g. pip install directly into RAM
-pip install -e ./
 
+# trixie is known to run out of disk space. A change due to storing temp files, e.g. pip install directly into RAM
+export TMPDIR="/var/temp"
+
+pip install --upgrade pip wheel setuptools --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
+pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
+pip install spidev==3.7 lgpio==0.2.2.0  --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
+            
 
 # only for Raspberry Pi:
-pip install spidev==3.7 lgpio==0.2.2.0
+pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
 ```
 
 ## Running Inkycal
@@ -289,55 +278,6 @@ With your setup being complete at this stage, you may want to 3d-print a case. T
 friendly community:
 [3D-printable case](https://github.com/aceinnolab/Inkycal/wiki/3D-printable-files)
 
-## Directory structure
-```tree
-├── __init__.py
-├── custom (custom functions of Inkycal are inside here)
-│   ├── __init__.py
-│   ├── functions.py
-│   ├── inkycal_exceptions.py
-│   └── openweathermap_wrapper.py
-├── display (display drivers and functions)
-│   ├── __init__.py
-│   ├── display.py (this file acts like a wrapper for the display drivers)
-│   ├── drivers (actual driver files are inside here)
-│   │   ├── epd_7_in_5_colour.py (7.5" display driver). Each supported display has it's own driver
-│   │   └── parallel_drivers (parallel display drivers, e.g. 9.7", 10.2" etc.)
-│   ├── supported_models.py (this file contains the supported display models and is used to check which displays are supported)
-│   └── test_display.py (a dummy driver which does not require a display to be attached)
-├── fonts (fonts used by Inkycal are located here)
-│   ├── NotoSansUI
-│   ├── ProFont
-│   └── WeatherFont
-├── loggers.py (logging functions)
-├── main.py (main file to run Inkycal)
-├── modules (inkycal modules, e.g. calendar, weather, stocks etc.)
-│   ├── __init__.py
-│   ├── dev_module.py (a dummy module for development)
-│   ├── ical_parser.py (parses icalendar files, not strictly a module, but helper class)
-│   ├── inky_image.py (module to display images)
-│   ├── inkycal_agenda.py (agenda module)
-│   ├── inkycal_calendar.py (calendar module)
-│   ├── inkycal_feeds.py (feeds module)
-│   ├── inkycal_fullweather.py (full-weather module)
-│   ├── inkycal_image.py (image module)
-│   ├── inkycal_jokes.py (jokes module)
-│   ├── inkycal_server.py (module for inkycal-server, by third party)
-│   ├── inkycal_slideshow.py (slideshow module)
-│   ├── inkycal_stocks.py (stocks module - credit to @worstface)
-│   ├── inkycal_textfile_to_display.py (module to display text files)
-│   ├── inkycal_tindie.py (tindie module)
-│   ├── inkycal_todoist.py (todoist module)
-│   ├── inkycal_weather.py (weather module)
-│   ├── inkycal_webshot.py (webshot module - credit to @worstface)
-│   ├── inkycal_xkcd.py (xkcd module - credit to @worstface)
-│   └── template.py (template module)
-├── settings.py (settings for Inkycal)
-└── utils (utility functions)
-    ├── __init__.py
-    ├── json_cache.py
-    └── pisugar.py (PiSugar driver)
-```
 
 ## Contributing
 
