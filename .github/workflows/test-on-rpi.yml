@@ -1,12 +1,11 @@
 name: Test on Raspberry Pi OS
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main, trixie-preparation]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   test-on-rpi-os:
@@ -54,4 +53,4 @@ jobs:
             pip install spidev==3.7 lgpio==0.2.2.0  --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             pip install pytest
-            python -m pytest
+            python -m pytest 
