@@ -43,16 +43,16 @@ jobs:
             sudo apt update
             sudo apt-get update -y
             # sudo apt-get install git zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python-dev-is-python3 scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev build-essential libxml2-dev libxslt1-dev python3-dev -y
-            sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev wkhtmltopdf -y
+            sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev wkhtmltopdf -y
             echo $PWD && ls
             git clone -b trixie-preparation --single-branch https://github.com/aceinnolab/Inkycal 
             cd Inkycal
             # in trixie, defaults to python 3.13
             python3 -m venv venv
             . venv/bin/activate
-            pip install --upgrade pip wheel
-            pip install -e ./
-            pip install spidev==3.7 lgpio==0.2.2.0
+            pip install --upgrade pip wheel setuptools --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
+            pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
+            pip install spidev==3.7 lgpio==0.2.2.0  --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             pip install pytest
             python -m pytest
