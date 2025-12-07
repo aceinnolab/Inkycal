@@ -5,7 +5,7 @@ import unittest
 
 from PIL import Image, ImageFont
 
-from inkycal.custom import write, fonts, get_system_tz
+from inkycal.utils.functions import write, fonts, get_system_tz
 
 
 class TestIcalendar(unittest.TestCase):

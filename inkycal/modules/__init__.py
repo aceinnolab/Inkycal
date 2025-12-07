@@ -1,14 +1,18 @@
-from .inkycal_agenda import Agenda
-from .inkycal_calendar import Calendar
-from .inkycal_weather import Weather
-from .inkycal_feeds import Feeds
-from .inkycal_todoist import Todoist
-from .inkycal_image import Inkyimage
-from .inkycal_jokes import Jokes
-from .inkycal_stocks import Stocks
-from .inkycal_slideshow import Slideshow
-from .inkycal_textfile_to_display import TextToDisplay
-from .inkycal_webshot import Webshot
-from .inkycal_xkcd import Xkcd
-from .inkycal_fullweather import Fullweather
-from .inkycal_tindie import Tindie
+from enum import Enum
+
+
+class InkycalModuleImporter(Enum):
+    Agenda = "inkycal.modules.inkycal_agenda.Agenda"
+    Calendar = "inkycal.modules.inkycal_calendar.Calendar"
+    Feeds = "inkycal.modules.inkycal_feeds.Feeds"
+    Inkyimage = "inkycal.modules.inky_image.Inkyimage"
+    Jokes = "inkycal.modules.inkycal_jokes.Jokes"
+    Inkyserver = "inkycal.modules.inkycal_server.Inkyserver"
+    Slideshow = "inkycal.modules.inkycal_slideshow.Slideshow"
+    Stocks = "inkycal.modules.inkycal_stocks.Stocks"
+    TextToDisplay = "inkycal.modules.inkycal_textfile_to_display.TextToDisplay"
+    Tindie = "inkycal.modules.inkycal_tindie.Tindie"
+    Todoist = "inkycal.modules.inkycal_todoist.Todoist"
+    Weather = "inkycal.modules.inkycal_weather.Weather"
+    Webshot = "inkycal.modules.inkycal_webshot.Webshot"
+    Xkcd = "inkycal.modules.inkycal_xkcd.Xkcd"

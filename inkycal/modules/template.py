@@ -1,7 +1,9 @@
 """Inkycal module template"""
 import abc
 
-from inkycal.custom import *
+from PIL import ImageFont
+
+from inkycal.utils.functions import fonts
 
 
 class inkycal_module(metaclass=abc.ABCMeta):

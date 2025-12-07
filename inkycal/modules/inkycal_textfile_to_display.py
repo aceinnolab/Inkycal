@@ -6,10 +6,14 @@ If the content is too long, it will be truncated from the back until it fits
 
 Copyright by aceinnolab
 """
+import logging
 from urllib.request import urlopen
 
-from inkycal.custom import *
+from PIL import Image
+
 from inkycal.modules.template import inkycal_module
+from inkycal.utils.functions import text_wrap, write, internet_available
+from inkycal.utils.inkycal_exceptions import NetworkNotReachableError
 
 logger = logging.getLogger(__name__)
 

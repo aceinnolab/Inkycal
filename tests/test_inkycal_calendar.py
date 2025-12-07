@@ -4,8 +4,8 @@ inkycal_calendar unittest
 import logging
 import unittest
 
-from inkycal.modules import Calendar
-from inkycal.modules.inky_image import Inkyimage
+from inkycal.modules.inkycal_calendar import Calendar as Module
+from inkycal.utils.inky_image import Inkyimage
 from tests import Config
 
 merge = Inkyimage.merge
@@ -72,7 +72,7 @@ class TestCalendar(unittest.TestCase):
     def test_generate_image(self):
         for test in tests:
             print(f'test {tests.index(test) + 1} generating image..', end="")
-            module = Calendar(test)
+            module = Module(test)
             im_black, im_colour = module.generate_image()
             print('OK')
             if Config.USE_PREVIEW:

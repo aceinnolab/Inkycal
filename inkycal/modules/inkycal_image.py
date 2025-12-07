@@ -2,9 +2,10 @@
 Inkycal Image Module
 Copyright by aceinnolab
 """
-from inkycal.custom import *
-from inkycal.modules.inky_image import image_to_palette
-from inkycal.modules.inky_image import Inkyimage as Images
+import logging
+
+from inkycal.utils.inky_image import image_to_palette
+from inkycal.utils.inky_image import Inkyimage as Images
 from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)

@@ -3,12 +3,14 @@ Inkycal Calendar Module
 Copyright by aceinnolab
 """
 
-# pylint: disable=logging-fstring-interpolation
-
 import calendar as cal
+import logging
 
-from inkycal.custom import *
+import arrow
+from PIL import ImageFont, Image, ImageDraw
+
 from inkycal.modules.template import inkycal_module
+from inkycal.utils.functions import get_system_tz, fonts, write, draw_border
 
 logger = logging.getLogger(__name__)
 
@@ -260,7 +262,7 @@ class Calendar(inkycal_module):
 
             # import the ical-parser
             # pylint: disable=import-outside-toplevel
-            from inkycal.modules.ical_parser import iCalendar
+            from inkycal.utils.ical_parser import iCalendar
 
             # find out how many lines can fit at max in the event section
             line_spacing = 2
