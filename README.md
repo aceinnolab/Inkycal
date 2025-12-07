@@ -168,47 +168,78 @@ If you have a PiSugar board, please see the wiki page on how to install the PiSu
 [PiSugar support](https://github.com/aceinnolab/Inkycal/wiki/PiSugar-support)
 
 
-### Manual installation
+### Installing on Raspberry Pi
 
 Run the following steps to install Inkycal. Do **not** use sudo for this, except where explicitly specified.
 
+- update the system
 ```bash
-# Raspberry Pi specific section start
 sudo apt-get update -y
+```
 
-# set up swap (file-based-ram)
-# /etc/rpi/swap.conf.d/80-use-swapfile.conf 
+- To avoid running out of RAM, set up swap (file-based-RAM)
+```bash
+sudo sh -c 'mkdir -p /etc/rpi/swap.conf.d &&
+cat <<EOF | cmp -s - /etc/rpi/swap.conf.d/80-use-swapfile.conf || cat <<EOF >/etc/rpi/swap.conf.d/80-use-swapfile.conf
 [Main]
 Mechanism=swapfile
 
 [File]
 FixedSizeMiB=1024
-###########
+EOF
+EOF'
+```
 
+- To make sure we don't attempt to overload the RAM during installation, we use a temp directory on the filesystem
+```bash
 export TMPDIR=/var/tmp
-# Raspberry Pi specific section end
+```
 
-# apt-dependencies
-sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev wkhtmltopdf -y
+- Install apt dependencies
+```bash
+sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 wkhtmltopdf rustc build-essential libssl-dev -y
+```
 
+- clone the repo in the home directory
+```bash
 cd $HOME
 git clone https://github.com/aceinnolab/Inkycal
 cd Inkycal
-# in trixie, defaults to python3.13
+```
+
+- set-up virtual environment & install dependencies
+```bash
+# defaults to python3.13 on trixie
 python -m venv venv
 source venv/bin/activate
 
-# trixie is known to run out of disk space. A change due to storing temp files, e.g. pip install directly into RAM
-export TMPDIR="/var/temp"
-
+# ARMv6 often has no matching wheels for many libraries - it will attempt to build wheels from source, which can
+# take a very long time. Piwheels already has wheels for the Raspberry Pi, we're using these to avoid hours of time
 pip install --upgrade pip wheel setuptools --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
 pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
-pip install spidev==3.7 lgpio==0.2.2.0  --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
-            
-
-# only for Raspberry Pi:
 pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
 ```
+
+- To make inkycal run on each boot automatically, you can use crontab. Do not use sudo for this
+
+```bash
+CRON_LINE='@reboot sleep 60 && cd $HOME/Inkycal && venv/bin/python inky_run.py &'
+( crontab -l 2>/dev/null | grep -qxF "$CRON_LINE" ) || \
+( crontab -l 2>/dev/null; echo "$CRON_LINE" ) | crontab -
+```
+
+## Installing on devices without GPIO
+- Get the most of InkyCal by using more powerful IDE, for debugging and creating own modules etc. 
+- You don't need to use a Raspberry Pi to use Inkycal, though you won't be able to display the generated images
+
+```sh
+git clone https://github.com/aceinnolab/Inkycal
+cd Inkycal
+python3 -m venv venv
+source venv/bin/activate
+pip install -e .
+```
+
 
 ## Running Inkycal
 
@@ -218,14 +249,6 @@ To run Inkycal, type in the following command in the terminal:
 cd $HOME/Inkycal
 source venv/bin/activate
 python3 inky_run.py
-```
-
-## Running on each boot
-
-To make inkycal run on each boot automatically, you can use crontab. Do not use sudo for this
-
-```bash
-(crontab -l ; echo "@reboot sleep 60 && cd $HOME/Inkycal && venv/bin/python inky_run.py &")| crontab -
 ```
 
 ## Updating Inkycal
