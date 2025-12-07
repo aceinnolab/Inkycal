@@ -23,9 +23,8 @@ jobs:
           TINDIE_API_KEY: ${{ secrets.TINDIE_API_KEY }}
           TINDIE_USERNAME: ${{ secrets.TINDIE_USERNAME }}
         with:
-          # Set the base_image to the desired Raspberry Pi OS version
-          # note: version 2023-12-11 onwards seems to have issues with the kernel and gpio. Using later versions requires some additional steps
-          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-05-13/2025-05-13-raspios-bookworm-armhf-lite.img.xz
+          # Set the base_image to the desired Raspberry Pi OS version - current version: Nov 2025 (Trixie)
+          base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-11-24/2025-11-24-raspios-trixie-armhf-lite.img.xz
           image_additional_mb: 3072 # enlarge free space to 3 GB
           optimize_image: true
           commands: |
@@ -37,54 +36,43 @@ jobs:
             # get kernel info
             uname -srm
             cd /home/inky
-            sudo apt update
             sudo apt-get update -y
-            # sudo apt-get dist-upgrade -y
+            sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 wkhtmltopdf rustc build-essential libssl-dev -y
             
-            sudo apt-get install -y python3-pip
-            sudo apt-get install git zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python-dev-is-python3 scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev build-essential libxml2-dev libxslt1-dev python3-dev -y
-            # #334 & #335
-            git clone https://github.com/WiringPi/WiringPi
-            cd WiringPi
-            ./build
-            cd ..
+            #334 & #335. TODO: check if 12.48" stuff is still required
+            # git clone https://github.com/WiringPi/WiringPi
+            # cd WiringPi
+            # ./build
+            # cd ..
             
             echo $PWD && ls
-            git clone https://github.com/aceinnolab/Inkycal
+            git clone https://github.com/aceinnolab/Inkycal 
             cd Inkycal
+            # in trixie, defaults to python 3.13
             python3 -m venv venv
-            . venv/bin/activate
-            python -m pip install --upgrade pip
-            pip install wheel
-            pip install -e ./
-            pip install spidev==3.7 lgpio==0.2.2.0
             
+            # TODO: check if still required
             # specific hacks to get this running on newer kernels, see #387. Special thanks to pbarthelemy
-            wget  https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/pcre2-10.44.tar.bz2
-            bzip2 -d pcre2-10.44.tar.bz2
-            tar -xf pcre2-10.44.tar
-            cd pcre2-10.44/
-            ./configure && make && sudo make install && make clean
-            cd ..
-
-            wget https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/swig-4.3.0.tar
-            tar -xf swig-4.3.0.tar
-            cd swig-4.3.0/
-            ./configure && make && sudo make install && make clean
-            cd ..
-
-            wget https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/lg.zip
-            unzip lg.zip
-            cd lg
-            make && sudo make install && make clean
-            cd ..
-
-            pip install rpi-lgpio
+            # wget  https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/pcre2-10.44.tar.bz2
+            # bzip2 -d pcre2-10.44.tar.bz2
+            # tar -xf pcre2-10.44.tar
+            # cd pcre2-10.44/
+            # ./configure && make && sudo make install && make clean
+            # cd ..
+            # wget https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/swig-4.3.0.tar
+            # tar -xf swig-4.3.0.tar
+            # cd swig-4.3.0/
+            # ./configure && make && sudo make install && make clean
+            # cd ..
+            # wget https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/lg.zip
+            # unzip lg.zip
+            # cd lg
+            # make && sudo make install && make clean
+            # cd ..
+            # pip install rpi-lgpio
             # hacks section end
 
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
-            pip install pytest
-            python -m pytest
 
             # install deps for 12.48" display
             wget https://github.com/aceinnolab/Inkycal/raw/assets/tests/bcm2835-1.71.tar
@@ -93,13 +81,6 @@ jobs:
             sudo ./configure && sudo make && sudo make check && sudo make install
             cd ..
             echo $CWD
-
-            # increase swap-size
-            # temporarily disabled due to unmounting issues
-            # sudo dphys-swapfile swapoff
-            # sudo sed -i -E '/^CONF_SWAPSIZE=/s/=.*/=1024/' /etc/dphys-swapfile
-            # sudo dphys-swapfile setup
-            # sudo dphys-swapfile swapon
 
             # enable SPI
             sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
