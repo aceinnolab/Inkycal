@@ -11,3 +11,5 @@ feedparser~=6.0.12
 xkcd~=2.4.2
 yfinance~=0.2.66
 htmlwebshot~=0.1.2
+todoist_api_python~=3.1.0
+recurring-ical-events~=3.8.0
