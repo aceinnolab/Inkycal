@@ -7,10 +7,9 @@ name = "inkycal"
 description = "InkyCal – e-paper calendar/dashboard for Raspberry Pi"
 readme = "README.md"
 requires-python = ">=3.9"
-license = { text = "GPL-3.0-only" }  # match your previous setup.py classifiers
+license = { text = "GPL-3.0-only" }
 authors = [{ name = "aceinnolab", email = "inkycal@aceinnolab.com" }]
-version = "2025.12.06"
-dynamic = ["dependencies"]
+dynamic = ["dependencies", "version"]
 
 # (optional but nice)
 classifiers = [
@@ -38,10 +37,8 @@ include-package-data = true
 include = ["inkycal*"]  # change if your top-level package name differs
 
 [tool.setuptools.dynamic]
-# single source of truth: one requirements.txt (with Pi-only env markers at the end)
 dependencies = { file = ["requirements.txt"] }
-
-# Include common package assets in wheels (adjust patterns as you like)
+version = { file = ["_version.txt"] }
 [tool.setuptools.package-data]
 "inkycal" = [
   "**/*.html", "**/*.jinja2", "**/*.css", "**/*.js", "**/*.json",
