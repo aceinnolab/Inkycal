@@ -2,19 +2,29 @@
 Main class for inkycal Project
 Copyright by aceinnolab
 """
-
 import asyncio
 import glob
 import hashlib
+import json
 import os.path
+import time
+import traceback
 
+import arrow
 import numpy
 
-from inkycal import loggers  # noqa
-from inkycal.custom import *
+import logging
+
+from PIL import Image, ImageFont
+import importlib
+
 from inkycal.display import Display
-from inkycal.modules.inky_image import Inkyimage as Images
+from inkycal.modules import InkycalModuleImporter
+from inkycal.settings import Settings
+from inkycal.utils.functions import get_system_tz, fonts, write, draw_border_2
+from inkycal.utils.inky_image import Inkyimage as Images
 from inkycal.utils import JSONCache
+from inkycal.utils.inkycal_exceptions import SettingsFileNotFoundError
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +32,15 @@ settings = Settings()
 
 CACHE_NAME = "inkycal_main"
 
+
+def load_module_class(dotted_path: str):
+    """
+    Load a class from a dotted import path.
+    Example: "inkycal.modules.inkycal_weather.Weather"
+    """
+    module_name, class_name = dotted_path.rsplit(".", 1)
+    module = importlib.import_module(module_name)
+    return getattr(module, class_name)
 
 class Inkycal:
     """Inkycal main class
@@ -121,25 +140,29 @@ class Inkycal:
         for module in self.settings['modules']:
             module_name = module['name']
             try:
-                loader = f'from inkycal.modules import {module_name}'
-                # print(loader)
-                exec(loader)
-                setup = f'self.module_{self._module_number} = {module_name}({module})'
-                # print(setup)
-                exec(setup)
-                width = module['config']['size'][0]
-                height = module['config']['size'][1]
-                logger.info(f'name : {module_name} size : {width}x{height} px')
+                # 1. Resolve import path from Enum
+                dotted_path = InkycalModuleImporter[module_name].value
+
+                # 2. Load class safely
+                ModuleClass = load_module_class(dotted_path)
+
+                # 3. Instantiate module
+                instance = ModuleClass(module)
+
+                # 4. Attach instance to self.module_X
+                setattr(self, f"module_{self._module_number}", instance)
+
+                # 5. Log info
+                width, height = module['config']['size']
+                logger.info(f"name: {module_name} size: {width}x{height}px")
 
                 self._module_number += 1
-
-            # If a module was not found, print an error message
+            except KeyError:
+                logger.error(f'Module "{module_name}" not found in InkycalModuleImporter.')
             except ImportError:
-                logger.exception(f'Could not find module: "{module}". Please try to import manually')
-
-            # If something unexpected happened, show the error message
-            except:
-                logger.exception(f"Exception: {traceback.format_exc()}.")
+                logger.exception(f'Could not import module "{module_name}".')
+            except Exception as e:
+                logger.exception(f"Unexpected exception while loading {module_name}: {e}")
 
         # Remove old hashes
         self._remove_hashes(settings.IMAGE_FOLDER)

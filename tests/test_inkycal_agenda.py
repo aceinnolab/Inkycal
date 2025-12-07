@@ -4,8 +4,8 @@ inkycal_agenda unittest
 import logging
 import unittest
 
-from inkycal.modules import Agenda
-from inkycal.modules.inky_image import Inkyimage
+from inkycal.modules.inkycal_agenda import Agenda as Module
+from inkycal.utils.inky_image import Inkyimage
 from tests import Config
 
 merge = Inkyimage.merge
@@ -67,7 +67,7 @@ class TestAgenda(unittest.TestCase):
     def test_generate_image(self):
         for test in tests:
             logger.info(f'test {tests.index(test) + 1} generating image..')
-            module = Agenda(test)
+            module = Module(test)
             im_black, im_colour = module.generate_image()
             logger.info('OK')
             if Config.USE_PREVIEW:

@@ -2,11 +2,10 @@
 inkycal_todoist unittest
 """
 import logging
-import sys
 import unittest
-from inkycal.modules import Todoist
+from inkycal.modules.inkycal_todoist import Todoist
 
-from inkycal.modules.inky_image import Inkyimage
+from inkycal.utils.inky_image import Inkyimage
 from tests import Config
 
 merge = Inkyimage.merge

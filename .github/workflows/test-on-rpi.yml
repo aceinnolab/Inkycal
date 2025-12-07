@@ -3,10 +3,9 @@ name: Test on Raspberry Pi OS
 on:
   workflow_dispatch:
   push:
-    branches: [main, trixie-preparation]
-  pull_request:
     branches: [main]
-
+  pull_request:
+      branches: [main]
 jobs:
   test-on-rpi-os:
     name: Run Tests on Raspberry Pi OS
@@ -43,14 +42,17 @@ jobs:
             # sudo apt-get install git zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python-dev-is-python3 scons libssl-dev python3-venv python3-pip git libfreetype6-dev wkhtmltopdf libopenblas-dev build-essential libxml2-dev libxslt1-dev python3-dev -y
             sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 wkhtmltopdf rustc build-essential libssl-dev -y
             echo $PWD && ls
-            git clone -b trixie-preparation --single-branch https://github.com/aceinnolab/Inkycal 
+            git clone -b main --single-branch https://github.com/aceinnolab/Inkycal 
             cd Inkycal
             # in trixie, defaults to python 3.13
             python3 -m venv venv
             . venv/bin/activate
+            # python packages for armv6 often do not have wheels, as a result, numpy, matplotlib etc. can easily take several hours to build
+            # to ensure we don't reach the max timeout for GitHub Actions and making it faster to install Inkycal, we're depending on piwheels
+            # for the wheels we need
             pip install --upgrade pip wheel setuptools --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
             pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
-            pip install -r raspberry_os_requirements.txt  --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
+            pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
             wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             pip install pytest
             python -m pytest 

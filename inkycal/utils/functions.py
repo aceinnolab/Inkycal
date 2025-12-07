@@ -5,6 +5,7 @@ Copyright by aceinnolab
 """
 import json
 import logging
+import math
 import os
 import time
 import traceback
@@ -346,3 +347,60 @@ def draw_border_2(im: Image, xy: Tuple[int, int], size: Tuple[int, int], radius:
     w, h = size
 
     draw.rounded_rectangle(xy=(x, y, x + w, y + h), outline="black", radius=radius)
+
+
+
+def render_line_chart(values, size, line_width=2, line_color="black", bg_color="white", padding=4):
+    """
+    Render a simple line chart from a sequence of numeric values using Pillow.
+
+    Args:
+        values (Sequence[float]): Data points to plot in order.
+        size (Tuple[int, int]): (width, height) of the output image in pixels.
+        line_width (int): Width of the plotted line.
+        line_color (str or Tuple[int,int,int]): Line color.
+        bg_color (str or Tuple[int,int,int]): Background color.
+        padding (int): Inner padding in pixels.
+
+    Returns:
+        PIL.Image.Image: The rendered chart image.
+    """
+    width, height = size
+    img = Image.new("RGBA", (width, height), bg_color)
+    draw = ImageDraw.Draw(img)
+
+    if not values or len(values) < 2:
+        # Nothing to draw, return blank chart
+        return img
+
+    # Basic bounds
+    v_min = min(values)
+    v_max = max(values)
+    if math.isclose(v_min, v_max):
+        # Avoid div-by-zero: flat line in the middle
+        v_min -= 1.0
+        v_max += 1.0
+
+    inner_w = max(1, width - 2 * padding)
+    inner_h = max(1, height - 2 * padding)
+
+    def to_xy(idx, val, n_points):
+        # x: spread points evenly in [padding, padding + inner_w]
+        if n_points == 1:
+            x = padding + inner_w / 2
+        else:
+            x = padding + (inner_w * idx) / (n_points - 1)
+        # y: map v_max -> padding, v_min -> padding + inner_h (invert y)
+        norm = (val - v_min) / (v_max - v_min)
+        y = padding + inner_h * (1.0 - norm)
+        return x, y
+
+    pts = []
+    n = len(values)
+    for i, v in enumerate(values):
+        pts.append(to_xy(i, float(v), n))
+
+    # Draw as polyline
+    draw.line(pts, fill=line_color, width=line_width)
+
+    return img

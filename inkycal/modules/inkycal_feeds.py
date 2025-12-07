@@ -2,14 +2,19 @@
 Feeds module for InkyCal Project
 Copyright by aceinnolab
 """
+import logging
 import re
 
+from PIL import Image
+
 from inkycal.modules.template import inkycal_module
-from inkycal.custom import *
 
 from random import shuffle
 
 import feedparser
+
+from inkycal.utils.functions import internet_available, write, text_wrap
+from inkycal.utils.inkycal_exceptions import NetworkNotReachableError
 
 logger = logging.getLogger(__name__)
 

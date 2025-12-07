@@ -1,6 +1,7 @@
 """
 Stocks Module for Inkycal Project
 
+Version 0.6: Dropped matplotlib dependency in favour of render_line_chart function
 Version 0.5: Added improved precision by using new priceHint parameter of yfinance
 Version 0.4: Added charts
 Version 0.3: Added support for web-UI of Inkycal 2.0.0
@@ -13,14 +14,11 @@ import logging
 import os
 
 from PIL import Image
-from matplotlib import pyplot
 
-from inkycal.custom import write, internet_available
+from inkycal.utils.functions import write, internet_available, render_line_chart
 from inkycal.modules.template import inkycal_module
 
 import yfinance as yf
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 
 logger = logging.getLogger(__name__)
 
@@ -209,21 +207,24 @@ class Stocks(inkycal_module):
             chartCloseData = chartData.loc[:, 'Close']
             chartTimeData = chartData.loc[:, 'Date']
 
-            logger.info(f'creating chart plot...')
-            fig, ax = plt.subplots()  # Create a figure containing a single axes.
-            ax.plot(chartTimeData, chartCloseData, linewidth=8)  # Plot some data on the axes.
-            ax.set_xticklabels([])
-            ax.set_yticklabels([])
-            chartPath = tmpPath + ticker + '.png'
-            logger.info(f'saving chart image to {chartPath}...')
-            plt.savefig(chartPath)
+            logger.info('creating chart plot with Pillow...')
+            # We only need the Close series; time axis is implicit (index)
+            close_values = list(chartCloseData)
+
+            # Decide chart size — similar to your thumbnail size
+            chart_w = int(im_width / 4)
+            chart_h = int(line_height * 4)
+
+            chartImage = render_line_chart(
+                values=close_values,
+                size=(chart_w, chart_h),
+                line_width=2,
+                line_color="black",
+                bg_color="white",
+                padding=2,
+            )
 
             logger.info(f'chartSpace is...{im_width} {im_height}')
-            logger.info(f'open chart ...{chartPath}')
-            chartImage = Image.open(chartPath)
-            chartImage.thumbnail((int(im_width / 4), int(line_height * 4)), Image.BICUBIC)
-            pyplot.close()
-
             chartPasteX = im_width - chartImage.width
             chartPasteY = line_height * 5 * _
             logger.info(f'pasting chart image with index {_} to...{chartPasteX} {chartPasteY}')
@@ -232,7 +233,6 @@ class Stocks(inkycal_module):
                 chartSpace_colour.paste(chartImage, (chartPasteX, chartPasteY))
             else:
                 chartSpace.paste(chartImage, (chartPasteX, chartPasteY))
-
         im_black.paste(chartSpace)
         im_colour.paste(chartSpace_colour)
 
