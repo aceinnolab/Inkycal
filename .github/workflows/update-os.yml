@@ -39,18 +39,22 @@ jobs:
             sudo apt-get update -y
             sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 wkhtmltopdf rustc build-essential libssl-dev -y
             
-            #334 & #335. TODO: check if 12.48" stuff is still required
-            # git clone https://github.com/WiringPi/WiringPi
-            # cd WiringPi
-            # ./build
-            # cd ..
-            
             echo $PWD && ls
             git clone https://github.com/aceinnolab/Inkycal 
             cd Inkycal
             # in trixie, defaults to python 3.13
             python3 -m venv venv
+            . venv/bin/activate
+            pip install --upgrade pip wheel setuptools --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
+            pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
+            pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
             
+            #334 & #335. TODO: check if 12.48" stuff is still required
+            # git clone https://github.com/WiringPi/WiringPi
+            # cd WiringPi
+            # ./build
+            # cd ..
+          
             # TODO: check if still required
             # specific hacks to get this running on newer kernels, see #387. Special thanks to pbarthelemy
             # wget  https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/pcre2-10.44.tar.bz2
@@ -72,7 +76,7 @@ jobs:
             # pip install rpi-lgpio
             # hacks section end
 
-            wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
+            # wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
 
             # install deps for 12.48" display
             wget https://github.com/aceinnolab/Inkycal/raw/assets/tests/bcm2835-1.71.tar
@@ -80,10 +84,12 @@ jobs:
             cd bcm2835-1.71/
             sudo ./configure && sudo make && sudo make check && sudo make install
             cd ..
+            # cleanup
+            rm bcm2835-1.71.tar
             echo $CWD
 
-            # enable SPI
-            sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
+            # enable SPI - SPI enabled via user-data file in bootfs
+            # sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
 
             # enable inkycal start at boot
             sudo -u inky bash -c 'echo "@reboot sleep 60 && cd /home/inky/Inkycal && venv/bin/python inky_run.py &" | crontab -'
@@ -92,9 +98,6 @@ jobs:
             # fix permissions of Inkycal folder recursively
             sudo chown -R inky:inky /home/inky/Inkycal
 
-            # make all users require a password for sudo commands (improves security)
-            # temporarily disabled to allow pisugar support
-            # echo 'ALL   ALL=(ALL:ALL) PASSWD: ALL' | sudo tee -a /etc/sudoers.d/010_require_sudo_password
             # allow some time to unmount
             sleep 10
 
