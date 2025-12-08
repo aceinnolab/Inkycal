@@ -73,7 +73,7 @@ tests = [
         "name": "TextToFile",
         "config": {
             "size": [500, 400],
-            "filepath": "https://raw.githubusercontent.com/aceinnolab/Inkycal/main/setup.py",
+            "filepath": "https://raw.githubusercontent.com/aceinnolab/Inkycal/main/pyproject.toml",
             "padding_x": 10,
             "padding_y": 10,
             "fontsize": 12,
