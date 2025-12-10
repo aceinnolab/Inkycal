@@ -8,7 +8,6 @@ import hashlib
 import json
 import os.path
 import time
-from random import seed
 from typing import Optional
 
 import arrow
@@ -16,14 +15,15 @@ import numpy
 
 import logging
 
-from PIL import Image, ImageFont
+from PIL import Image
 import importlib
 
 from inkycal.display import Display
 from inkycal.modules import InkycalModuleImporter
+from inkycal.settings import Settings
 from inkycal.utils.canvas import Canvas
 from inkycal.utils.enums import FONTS
-from settings import Settings
+
 from inkycal.utils.functions import get_system_tz, draw_border_2
 from inkycal.utils.inky_image import Inkyimage as Images
 from inkycal.utils import JSONCache
@@ -91,14 +91,6 @@ class Inkycal:
                     self.settings = json.load(settings_file)
 
             except FileNotFoundError:
-                try:
-                    if self.render:
-                        display = Display(self.settings["model"])
-                        display.render_text(f"You have specified a custom settings.json path {settings_path}, but settings.json was not found.")
-                except Exception as e:
-                    logger.warning(f"Could not load settings file from custom path: {settings_path}: {e}")
-                    pass
-
                 raise FileNotFoundError(
                     f"No settings.json file could be found in the specified location: {settings_path}")
 
@@ -112,13 +104,6 @@ class Inkycal:
                     found = True
                     break
             if not found:
-                try:
-                    if self.render:
-                        display = Display(self.settings["model"])
-                        display.render_text(f"You have specified a custom settings.json path {settings_path}, but settings.json was not found.")
-                except Exception as e:
-                    logger.warning(f"Could not load settings file from custom path: {settings_path}: {e}")
-                    pass
                 raise SettingsFileNotFoundError(f"No settings.json file could be found in {settings.SETTINGS_JSON_PATHS} and no explicit path was specified.")
 
         self.disable_calibration = self.settings.get('disable_calibration', False)

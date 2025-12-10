@@ -103,6 +103,8 @@ class Webshot(InkycalModule):
         # Define new image size with respect to padding
         im_width = int(self.width - (2 * self.padding_left))
         im_height = int(self.height - (2 * self.padding_top))
+        if self.rotation in (90, 270):
+            im_width, im_height = im_height, im_width
         im_size = im_width, im_height
         logger.debug('image size: {} x {} px'.format(im_width, im_height))
 

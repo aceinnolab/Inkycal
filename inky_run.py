@@ -5,7 +5,7 @@ set render=True to render the display, set render=False to only run the modules.
 """
 import asyncio
 
-from inkycal import Inkycal
+from inkycal.main import Inkycal
 
 
 async def run():
