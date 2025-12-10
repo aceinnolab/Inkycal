@@ -152,3 +152,5 @@ dmypy.json
 
 # generated files
 /image_folder/
+/inkycal/cache/
+/inkycal/icons/weather_icons/owm_icons_cache/
