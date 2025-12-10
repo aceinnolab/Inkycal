@@ -3,7 +3,7 @@ Test main module
 """
 import unittest
 
-from inkycal import Inkycal
+from inkycal.main import Inkycal
 from tests import Config
 
 

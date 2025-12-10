@@ -7,13 +7,13 @@ import logging
 
 # PIL has a class named Image, use alias for Inkyimage -> Images
 from inkycal.utils.inky_image import Inkyimage as Images, image_to_palette
-from inkycal.modules.template import inkycal_module
+from inkycal.modules.template import InkycalModule
 from inkycal.utils import JSONCache
 
 logger = logging.getLogger(__name__)
 
 
-class Slideshow(inkycal_module):
+class Slideshow(InkycalModule):
     """Cycles through images in a local image folder"""
     name = "Slideshow - cycle through images from a local folder"
 

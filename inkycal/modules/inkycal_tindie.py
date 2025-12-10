@@ -9,10 +9,10 @@ import logging
 
 import arrow
 import requests
-from PIL import Image
 
-from inkycal.modules.template import inkycal_module
-from inkycal.utils.functions import internet_available, write
+from inkycal.modules.template import InkycalModule
+from inkycal.utils.canvas import Canvas
+from inkycal.utils.functions import internet_available
 from inkycal.utils.inkycal_exceptions import NetworkNotReachableError
 
 # Show less logging for request module
@@ -21,7 +21,7 @@ logging.getLogger("urllib3").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
-class Tindie(inkycal_module):
+class Tindie(InkycalModule):
     """Tindie - show latest orders from your store"""
 
     def __init__(self, config):
@@ -46,9 +46,7 @@ class Tindie(inkycal_module):
         im_size = im_width, im_height
         logger.debug(f'image size: {im_width} x {im_height} px')
 
-        # Create an image for black pixels and one for coloured pixels
-        im_black = Image.new('RGB', size=im_size, color='white')
-        im_colour = Image.new('RGB', size=im_size, color='white')
+        canvas = Canvas(im_size=im_size, font=self.font, font_size=self.fontsize)
 
         # Check if internet is available
         if internet_available():
@@ -59,8 +57,7 @@ class Tindie(inkycal_module):
 
         # Set some parameters for formatting feeds
         line_spacing = 5
-        text_bbox = self.font.getbbox("hg")
-        line_height = text_bbox[3] + line_spacing
+        line_height = canvas.get_line_height() + line_spacing
         line_width = im_width
         max_lines = (im_height // (line_height + line_spacing))
 
@@ -105,9 +102,21 @@ class Tindie(inkycal_module):
                 logger.error(f'Ran out of lines! Required {len(text)} lines but only {max_lines} available')
                 break
             if pos == 0:
-                write(im_colour, line_positions[pos], (line_width, line_height), line, font=self.font, alignment='left')
+                canvas.write(
+                    xy=line_positions[pos],
+                    box_size=(line_width, line_height),
+                    text=line,
+                    alignment='left',
+                    colour="colour"
+                )
             else:
-                write(im_black, line_positions[pos], (line_width, line_height), line, font=self.font, alignment='left')
+                canvas.write(
+                    xy=line_positions[pos],
+                    box_size=(line_width, line_height),
+                    text=line,
+                    alignment='left',
+                )
+
 
         # Return images for black and colour channels
-        return im_black, im_colour
+        return canvas.image_black, canvas.image_colour

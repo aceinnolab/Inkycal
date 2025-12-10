@@ -11,14 +11,15 @@ from urllib.request import urlopen
 
 from PIL import Image
 
-from inkycal.modules.template import inkycal_module
-from inkycal.utils.functions import text_wrap, write, internet_available
+from inkycal.modules.template import InkycalModule
+from inkycal.utils.canvas import Canvas
+from inkycal.utils.functions import internet_available
 from inkycal.utils.inkycal_exceptions import NetworkNotReachableError
 
 logger = logging.getLogger(__name__)
 
 
-class TextToDisplay(inkycal_module):
+class TextToDisplay(InkycalModule):
     """TextToDisplay module - Display text from a local file on the display
     """
     name = "TextToDisplay - Display text from a local file on the display"
@@ -46,19 +47,17 @@ class TextToDisplay(inkycal_module):
         """Generate image for this module"""
 
         # Define new image size with respect to padding
+        file_content = None
         im_width = int(self.width - (2 * self.padding_left))
         im_height = int(self.height - (2 * self.padding_top))
         im_size = im_width, im_height
         logger.debug(f'Image size: {im_size}')
 
-        # Create an image for black pixels and one for coloured pixels
-        im_black = Image.new('RGB', size=im_size, color='white')
-        im_colour = Image.new('RGB', size=im_size, color='white')
+        canvas = Canvas(im_size=im_size, font=self.font, font_size=self.fontsize)
 
         # Set some parameters for formatting feeds
         line_spacing = 4
-        text_bbox_height = self.font.getbbox("hg")
-        line_height = text_bbox_height[3] + line_spacing
+        line_height = canvas.get_line_height() + line_spacing
         line_width = im_width
         max_lines = im_height // line_height
 
@@ -86,21 +85,19 @@ class TextToDisplay(inkycal_module):
         if not self.make_request:
             lines = file_content.split('\n')
         else:
-            lines = text_wrap(file_content, font=self.font, max_width=im_width)
+            lines = canvas.text_wrap(file_content, max_width=im_width)
 
         # Trim down the list to the max number of lines
         del lines[max_lines:]
 
         # Write feeds on image
         for index, line in enumerate(lines):
-            write(
-                im_black,
-                line_positions[index],
-                (line_width, line_height),
-                line,
-                font=self.font,
+            canvas.write(
+                xy=line_positions[index],
+                box_size=(line_width, line_height),
+                text=line,
                 alignment='left'
             )
 
         # return images
-        return im_black, im_colour
+        return canvas.image_black, canvas.image_colour

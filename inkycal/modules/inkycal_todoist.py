@@ -12,17 +12,18 @@ from datetime import datetime
 
 from PIL import Image
 
-from inkycal.modules.template import inkycal_module
+from inkycal.modules.template import InkycalModule
 
 from todoist_api_python.api import TodoistAPI
 import requests.exceptions
 
-from inkycal.utils.functions import write, internet_available
+from inkycal.utils.canvas import Canvas
+from inkycal.utils.functions import internet_available
 
 logger = logging.getLogger(__name__)
 
 
-class Todoist(inkycal_module):
+class Todoist(InkycalModule):
     """Todoist api class
     parses todos from the todoist api.
     """
@@ -138,13 +139,11 @@ class Todoist(inkycal_module):
     def _create_error_image(self, im_size, error_msg=None, cached_data=None):
         """Create an error message image when API fails"""
         im_width, im_height = im_size
-        im_black = Image.new('RGB', size=im_size, color='white')
-        im_colour = Image.new('RGB', size=im_size, color='white')
+        canvas = Canvas(im_size=im_size, font=self.font, font_size=self.fontsize)
 
         # Display error message
         line_spacing = 1
-        text_bbox_height = self.font.getbbox("hg")
-        line_height = text_bbox_height[3] + line_spacing
+        line_height = canvas.get_line_height() + line_spacing
 
         messages = []
         if error_msg:
@@ -165,11 +164,14 @@ class Todoist(inkycal_module):
         for i, msg in enumerate(messages):
             y_pos = start_y + (i * line_height)
             # First line in red (colour image), rest in black
-            target_image = im_colour if i == 0 else im_black
-            write(target_image, (0, y_pos), (im_width, line_height),
-                  msg, font=self.font, alignment='center')
+            canvas.write(
+                xy= (0, y_pos),
+                box_size=(im_width, line_height),
+                text=msg,
+                colour="colour" if i == 0 else "black"
+            )
 
-        return im_black, im_colour
+        return canvas.image_black, canvas.image_colour
 
     def generate_image(self):
         """Generate image for this module"""
@@ -180,9 +182,7 @@ class Todoist(inkycal_module):
         im_size = im_width, im_height
         logger.debug(f'Image size: {im_size}')
 
-        # Create an image for black pixels and one for coloured pixels
-        im_black = Image.new('RGB', size=im_size, color='white')
-        im_colour = Image.new('RGB', size=im_size, color='white')
+        canvas = Canvas(im_size=im_size, font=self.font, font_size=self.fontsize)
 
         # Check if internet is available
         if not internet_available():
@@ -227,9 +227,7 @@ class Todoist(inkycal_module):
 
         # Set some parameters for formatting todos
         line_spacing = 1
-        text_bbox_height = self.font.getbbox("hg")
-        line_height = text_bbox_height[3] + line_spacing
-        line_width = im_width
+        line_height = canvas.get_line_height() + line_spacing
         max_lines = im_height // line_height
 
         # Calculate padding from top so the lines look centralised
@@ -309,11 +307,11 @@ class Todoist(inkycal_module):
 
         for task in simplified:
             if task["project"]:
-                project_lengths.append(int(self.font.getlength(task['project']) * 1.1))
+                project_lengths.append(int(canvas.get_text_width(task['project']) * 1.1))
             if task["due"]:
-                due_lengths.append(int(self.font.getlength(task['due']) * 1.1))
+                due_lengths.append(int(canvas.get_text_width(task['due']) * 1.1))
             if task["priority_text"]:
-                priority_lengths.append(int(self.font.getlength(task['priority_text']) * 1.1))
+                priority_lengths.append(int(canvas.get_text_width(task['priority_text']) * 1.1))
 
         # Get maximum width of project names for selected font
         project_offset = int(max(project_lengths)) if project_lengths else 0
@@ -353,43 +351,47 @@ class Todoist(inkycal_module):
 
                         if todo['project']:
                             # Add todos project name
-                            write(
-                                im_colour, line_positions[cursor],
-                                (project_offset, line_height),
-                                todo['project'], font=self.font, alignment='left')
+                            canvas.write(
+                                xy=line_positions[cursor],
+                                box_size=(project_offset, line_height),
+                                text= todo['project'],
+                                colour="colour",
+                                alignment='left'
+                            )
 
                         # Add todos due if not empty
                         if todo['due']:
                             # Show overdue dates in red, normal dates in black
-                            due_image = im_colour if todo.get('is_overdue', False) else im_black
-                            write(
-                                due_image,
-                                (line_x + project_offset, line_y),
-                                (due_offset, line_height),
-                                todo['due'], font=self.font, alignment='left')
+                            canvas.write(
+                                xy=(line_x + project_offset, line_y),
+                                box_size=(due_offset, line_height),
+                                text= todo['due'],
+                                colour="colour" if todo.get('is_overdue', False) else "black",
+                                alignment='left'
+                            )
 
                         # Add priority indicator if present
                         if todo['priority_text']:
                             # P1 (priority 4) in red, P2 and P3 in black
-                            priority_image = im_colour if todo['priority'] == 4 else im_black
-                            write(
-                                priority_image,
-                                (line_x + project_offset + due_offset, line_y),
-                                (priority_offset, line_height),
-                                todo['priority_text'], font=self.font, alignment='left')
-
+                            canvas.write(
+                                xy=(line_x + project_offset + due_offset, line_y),
+                                box_size=(priority_offset, line_height),
+                                text=todo['priority_text'],
+                                colour="colour" if todo['priority'] == 4 else "black",
+                                alignment='left'
+                            )
                         if todo['name']:
                             # Add todos name
-                            write(
-                                im_black,
-                                (line_x + project_offset + due_offset + priority_offset, line_y),
-                                (im_width - project_offset - due_offset - priority_offset, line_height),
-                                todo['name'], font=self.font, alignment='left')
-
+                            canvas.write(
+                                xy=(line_x + project_offset + due_offset + priority_offset, line_y),
+                                box_size=(im_width - project_offset - due_offset - priority_offset, line_height),
+                                text=todo['name'],
+                                alignment='left'
+                            )
                         cursor += 1
                     else:
                         logger.error('More todos than available lines')
                         break
 
         # return the images ready for the display
-        return im_black, im_colour
+        return canvas.image_black, canvas.image_colour

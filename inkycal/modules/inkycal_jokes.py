@@ -8,12 +8,13 @@ import logging
 
 from PIL import Image
 
-from inkycal.modules.template import inkycal_module
+from inkycal.modules.template import InkycalModule
 
 
 import requests
 
-from inkycal.utils.functions import internet_available, text_wrap, write
+from inkycal.utils.canvas import Canvas
+from inkycal.utils.functions import internet_available
 from inkycal.utils.inkycal_exceptions import NetworkNotReachableError
 
 # Show less logging for request module
@@ -22,7 +23,7 @@ logging.getLogger("urllib3").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
-class Jokes(inkycal_module):
+class Jokes(InkycalModule):
     """Icanhazdad-api class
     parses rss/atom feeds from given urls
     """
@@ -48,9 +49,7 @@ class Jokes(inkycal_module):
         im_size = im_width, im_height
         logger.debug(f'image size: {im_width} x {im_height} px')
 
-        # Create an image for black pixels and one for coloured pixels
-        im_black = Image.new('RGB', size=im_size, color='white')
-        im_colour = Image.new('RGB', size=im_size, color='white')
+        canvas = Canvas(im_size, font=self.font, font_size=self.fontsize)
 
         # Check if internet is available
         if internet_available():
@@ -61,8 +60,7 @@ class Jokes(inkycal_module):
 
         # Set some parameters for formatting feeds
         line_spacing = 5
-        text_bbox = self.font.getbbox("hg")
-        line_height = text_bbox[3] + line_spacing
+        line_height = canvas.get_line_height()
         line_width = im_width
         max_lines = (im_height // (line_height + line_spacing))
 
@@ -86,7 +84,7 @@ class Jokes(inkycal_module):
         logger.debug(f"joke: {joke}")
 
         # wrap text in case joke is too large
-        wrapped = text_wrap(joke, font=self.font, max_width=line_width)
+        wrapped = canvas.text_wrap(joke, max_width=line_width)
         logger.debug(f"wrapped: {wrapped}")
 
         # Check if joke can actually fit on the provided space
@@ -99,8 +97,12 @@ class Jokes(inkycal_module):
             if _ + 1 > max_lines:
                 logger.error('Ran out of lines for this joke :/')
                 break
-            write(im_black, line_positions[_], (line_width, line_height),
-                  wrapped[_], font=self.font, alignment='left')
+            canvas.write(
+                xy=line_positions[_],
+                box_size=(line_width, line_height),
+                text=wrapped[_],
+                alignment='left'
+            )
 
         # Return images for black and colour channels
-        return im_black, im_colour
+        return canvas.image_black, canvas.image_colour

@@ -19,12 +19,12 @@ from PIL import ImageDraw
 from PIL import ImageFont
 from PIL import ImageOps
 
-from icons.weather_icons.weather_icons import get_weather_icon
-from inkycal.utils.functions import fonts, get_system_tz, internet_available
+from inkycal.icons.weather_icons.weather_icons import get_weather_icon
+from inkycal.utils.functions import get_system_tz, internet_available
 from inkycal.utils.inkycal_exceptions import NetworkNotReachableError
 from inkycal.utils.openweathermap_wrapper import OpenWeatherMap
 from inkycal.utils.inky_image import image_to_palette
-from inkycal.modules.template import inkycal_module
+from inkycal.modules.template import InkycalModule
 from inkycal.settings import Settings
 
 logger = logging.getLogger(__name__)
@@ -65,7 +65,7 @@ def get_image_from_plot(fig: plt) -> Image:
     return Image.open(buf)
 
 
-class Fullweather(inkycal_module):
+class Fullweather(InkycalModule):
     """Fullscreen Weather class
     gets weather details from openweathermap and plots a nice fullscreen forecast picture
     """

@@ -9,12 +9,12 @@ import requests
 from PIL import Image
 
 from inkycal.utils.inky_image import Inkyimage as Images
-from inkycal.modules.template import inkycal_module
+from inkycal.modules.template import InkycalModule
 
 logger = logging.getLogger(__name__)
 
 
-class Inkyserver(inkycal_module):
+class Inkyserver(InkycalModule):
     """Displays an image from URL or local path
     """
 

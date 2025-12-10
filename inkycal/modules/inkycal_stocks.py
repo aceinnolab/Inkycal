@@ -15,15 +15,16 @@ import os
 
 from PIL import Image
 
-from inkycal.utils.functions import write, internet_available, render_line_chart
-from inkycal.modules.template import inkycal_module
+from inkycal.utils.canvas import Canvas
+from inkycal.utils.functions import internet_available, render_line_chart
+from inkycal.modules.template import InkycalModule
 
 import yfinance as yf
 
 logger = logging.getLogger(__name__)
 
 
-class Stocks(inkycal_module):
+class Stocks(InkycalModule):
     name = "Stocks - Displays stock market infos from Yahoo finance"
 
     # required parameters
@@ -63,9 +64,7 @@ class Stocks(inkycal_module):
         im_size = im_width, im_height
         logger.debug(f'image size: {im_width} x {im_height} px')
 
-        # Create an image for black pixels and one for coloured pixels (required)
-        im_black = Image.new('RGB', size=im_size, color='white')
-        im_colour = Image.new('RGB', size=im_size, color='white')
+        canvas = Canvas(im_size=im_size, font=self.font, font_size=self.fontsize)
 
         # Create tmp path
         tmpPath = 'temp/'
@@ -82,8 +81,7 @@ class Stocks(inkycal_module):
 
         # Set some parameters for formatting feeds
         line_spacing = 1
-        text_bbox = self.font.getbbox("hg")
-        line_height = text_bbox[3] + line_spacing
+        line_height = canvas.get_line_height()
         line_width = im_width
         max_lines = (im_height // (line_height + line_spacing))
 
@@ -233,25 +231,33 @@ class Stocks(inkycal_module):
                 chartSpace_colour.paste(chartImage, (chartPasteX, chartPasteY))
             else:
                 chartSpace.paste(chartImage, (chartPasteX, chartPasteY))
-        im_black.paste(chartSpace)
-        im_colour.paste(chartSpace_colour)
+        canvas.image_black.paste(chartSpace)
+        canvas.image_colour.paste(chartSpace_colour)
 
         # Write/Draw something on the black image
         for _ in range(len(parsed_tickers)):
             if _ + 1 > max_lines:
                 logger.error('Ran out of lines for parsed_ticker_colour')
                 break
-            write(im_black, line_positions[_], (line_width, line_height),
-                  parsed_tickers[_], font=self.font, alignment='left')
+            canvas.write(
+                xy=line_positions[_],
+                box_size= (line_width, line_height),
+                text=parsed_tickers[_],
+                alignment='left'
+            )
 
         # Write/Draw something on the colour image
         for _ in range(len(parsed_tickers_colour)):
             if _ + 1 > max_lines:
                 logger.error('Ran out of lines for parsed_tickers_colour')
                 break
-            write(im_colour, line_positions[_], (line_width, line_height),
-                  parsed_tickers_colour[_], font=self.font, alignment='left')
+            canvas.write(
+                xy=line_positions[_],
+                box_size= (line_width, line_height),
+                text=parsed_tickers[_],
+                alignment='left'
+            )
 
         # Save image of black and colour channel in image-folder
-        return im_black, im_colour
+        return canvas.image_black, canvas.image_colour
 

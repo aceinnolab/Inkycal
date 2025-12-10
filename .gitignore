@@ -143,7 +143,7 @@ dmypy.json
 /ftp/
 
 # inkycal logs
-/logs
+/inkycal/logs
 
 # inkycal tests
 /tests/tmp/
@@ -152,3 +152,6 @@ dmypy.json
 
 # generated files
 /image_folder/
+/inkycal/cache/
+/inkycal/icons/weather_icons/owm_icons_cache/
+/docs/site/

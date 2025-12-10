@@ -9,16 +9,17 @@ import xkcd
 from PIL import Image
 
 from inkycal.settings import Settings
-from inkycal.utils.functions import internet_available, write
+from inkycal.utils.canvas import Canvas
+from inkycal.utils.functions import internet_available
 from inkycal.utils.inky_image import Inkyimage as Image2, image_to_palette
-from inkycal.modules.template import inkycal_module
+from inkycal.modules.template import InkycalModule
 
 logger = logging.getLogger(__name__)
 
 settings = Settings()
 
 
-class Xkcd(inkycal_module):
+class Xkcd(InkycalModule):
     name = "xkcd - Displays comics from xkcd.com by Randall Munroe"
 
     # required parameters
@@ -72,11 +73,9 @@ class Xkcd(inkycal_module):
         im_width = int(self.width - (2 * self.padding_left))
         im_height = int(self.height - (2 * self.padding_top))
         im_size = im_width, im_height
-        logger.debug('image size: {} x {} px'.format(im_width, im_height))
+        logger.debug(f'image size: {im_width} x {im_height} px')
 
-        # Create an image for black pixels and one for coloured pixels (required)
-        im_black = Image.new('RGB', size=im_size, color='white')
-        im_colour = Image.new('RGB', size=im_size, color='white')
+        canvas = Canvas(im_size, font=self.font, font_size=self.fontsize)
 
         # Check if internet is available
         if internet_available():
@@ -87,8 +86,7 @@ class Xkcd(inkycal_module):
 
         # Set some parameters for formatting feeds
         line_spacing = 1
-        text_bbox = self.font.getbbox("hg")
-        line_height = text_bbox[3] + line_spacing
+        line_height = canvas.get_line_height() + line_spacing
         line_width = im_width
         max_lines = im_height // (line_height + line_spacing)
 
@@ -140,9 +138,7 @@ class Xkcd(inkycal_module):
                 # one word at a time until the line is longer than the width of the module
                 # then it appends the line to the alt_lines array and starts testing a new line
                 # with the next word
-                text_bbox = self.font.getbbox(current_line + _ + " ")
-
-                if text_bbox[2] < im_width:
+                if canvas.get_text_width(current_line + _ + " ") < im_width:
                     current_line = current_line + _ + " "
                 else:
                     alt_lines.append(current_line)
@@ -187,23 +183,29 @@ class Xkcd(inkycal_module):
         centerPosX = int((im_width / 2) - (im.image.width / 2))
 
         comicSpaceBlack.paste(im_comic_black, (centerPosX, comicCenterPosY))
-        im_black.paste(comicSpaceBlack)
+        canvas.image_black.paste(comicSpaceBlack)
 
         comicSpaceColour.paste(im_comic_colour, (centerPosX, comicCenterPosY))
-        im_colour.paste(comicSpaceColour)
+        canvas.image_colour.paste(comicSpaceColour)
 
         im.clear()
         logger.info(f'added comic image')
 
         # Write the title on the black image
-        write(im_black, (0, headerCenterPosY), (line_width, line_height),
-              title_lines[0], font=self.font, alignment='center')
+        canvas.write(
+            xy=(0, headerCenterPosY),
+            box_size=(line_width, line_height),
+            text=title_lines[0]
+        )
 
         if self.alt == "yes":
             # write alt_text
             for _ in range(len(alt_lines)):
-                write(im_black, (0, altCenterPosY + _ * line_height + altOffset), (line_width, line_height),
-                      alt_lines[_], font=self.font, alignment='left')
-
+                canvas.write(
+                    xy=(0, altCenterPosY + _ * line_height + altOffset),
+                    box_size=(line_width, line_height),
+                    text=alt_lines[_],
+                    alignment='left'
+                )
         # Save image of black and colour channel in image-folder
-        return im_black, im_colour
+        return canvas.image_black, canvas.image_colour
