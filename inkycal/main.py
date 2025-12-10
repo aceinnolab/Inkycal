@@ -8,7 +8,8 @@ import hashlib
 import json
 import os.path
 import time
-import traceback
+from random import seed
+from typing import Optional
 
 import arrow
 import numpy
@@ -20,8 +21,10 @@ import importlib
 
 from inkycal.display import Display
 from inkycal.modules import InkycalModuleImporter
-from inkycal.settings import Settings
-from inkycal.utils.functions import get_system_tz, fonts, write, draw_border_2
+from inkycal.utils.canvas import Canvas
+from inkycal.utils.enums import FONTS
+from settings import Settings
+from inkycal.utils.functions import get_system_tz, draw_border_2
 from inkycal.utils.inky_image import Inkyimage as Images
 from inkycal.utils import JSONCache
 from inkycal.utils.inkycal_exceptions import SettingsFileNotFoundError
@@ -57,7 +60,7 @@ class Inkycal:
         to improve rendering on E-Papers. Set this to False for 9.7" E-Paper.
     """
 
-    def __init__(self, settings_path: str or None = None, render: bool = True, use_pi_sugar: bool = False,
+    def __init__(self, settings_path: Optional[str] = None, render: bool = True, use_pi_sugar: bool = False,
                  shutdown_after_run: bool = False) -> None:
         """Initialise Inkycal
 
@@ -88,6 +91,14 @@ class Inkycal:
                     self.settings = json.load(settings_file)
 
             except FileNotFoundError:
+                try:
+                    if self.render:
+                        display = Display(self.settings["model"])
+                        display.render_text(f"You have specified a custom settings.json path {settings_path}, but settings.json was not found.")
+                except Exception as e:
+                    logger.warning(f"Could not load settings file from custom path: {settings_path}: {e}")
+                    pass
+
                 raise FileNotFoundError(
                     f"No settings.json file could be found in the specified location: {settings_path}")
 
@@ -101,6 +112,13 @@ class Inkycal:
                     found = True
                     break
             if not found:
+                try:
+                    if self.render:
+                        display = Display(self.settings["model"])
+                        display.render_text(f"You have specified a custom settings.json path {settings_path}, but settings.json was not found.")
+                except Exception as e:
+                    logger.warning(f"Could not load settings file from custom path: {settings_path}: {e}")
+                    pass
                 raise SettingsFileNotFoundError(f"No settings.json file could be found in {settings.SETTINGS_JSON_PATHS} and no explicit path was specified.")
 
         self.disable_calibration = self.settings.get('disable_calibration', False)
@@ -137,6 +155,18 @@ class Inkycal:
 
         # Load and initialise modules specified in the settings file
         self._module_number = 1
+
+        # common pitfall -> user has settings.json but no modules
+        if len(self.settings['modules']) == 0:
+            try:
+                if self.render:
+                    display = Display(self.settings["model"])
+                    display.render_text(
+                        f"Your settings.json file was found - but there were no modules. Did you forget to add a module in the web-ui?")
+            except Exception as e:
+                logger.warning(f"Could not load settings file from custom path: {settings_path}: {e}")
+                pass
+
         for module in self.settings['modules']:
             module_name = module['name']
             try:
@@ -477,8 +507,7 @@ class Inkycal:
         # Since Inkycal runs in vertical mode, switch the height and width
         width, height = height, width
 
-        im_black = Image.new('RGB', (width, height), color='white')
-        im_colour = Image.new('RGB', (width, height), color='white')
+        canvas = Canvas(im_size=(width, height), font=FONTS.default, font_size=14)
 
         # Set cursor for y-axis
         im1_cursor = 0
@@ -510,7 +539,7 @@ class Inkycal:
                     y = im1_cursor + int((section_size[1] - im1_size[1]) / 2)
 
                 # center the image in the section space
-                im_black.paste(im1, (x, y), im1)
+                canvas.image_black.paste(im1, (x, y), im1)
 
                 # Shift the y-axis cursor at the beginning of next section
                 im1_cursor += section_size[1]
@@ -535,7 +564,7 @@ class Inkycal:
                     y = im2_cursor + int((section_size[1] - im2_size[1]) / 2)
 
                 # center the image in the section space
-                im_colour.paste(im2, (x, y), im2)
+                canvas.image_colour.paste(im2, (x, y), im2)
 
                 # Shift the y-axis cursor at the beginning of next section
                 im2_cursor += section_size[1]
@@ -546,20 +575,20 @@ class Inkycal:
         if self.settings['info_section']:
             info_height = self.settings["info_section_height"]
             info_width = width
-            font = self.font = ImageFont.truetype(
-                fonts['NotoSansUI-Regular'], size=14)
-
-            info_x = im_black.size[1] - info_height
-            write(im_black, (0, info_x), (info_width, info_height),
-                  self.info, font=font)
+            info_x = canvas.image_black.height - info_height
+            canvas.write(
+                xy=(0, info_x),
+                box_size=(info_width, info_height),
+                text=self.info
+            )
 
         # optimize the image by mapping colours to pure black and white
         if self.optimize:
-            im_black = self._optimize_im(im_black)
-            im_colour = self._optimize_im(im_colour)
+            canvas.image_black = self._optimize_im(canvas.image_black)
+            canvas.image_colour = self._optimize_im(canvas.image_colour)
 
-        im_black.save(os.path.join(settings.IMAGE_FOLDER, "canvas.png"), "PNG")
-        im_colour.save(os.path.join(settings.IMAGE_FOLDER, "canvas_colour.png"), 'PNG')
+        canvas.image_black.save(os.path.join(settings.IMAGE_FOLDER, "canvas.png"), "PNG")
+        canvas.image_colour.save(os.path.join(settings.IMAGE_FOLDER, "canvas_colour.png"), 'PNG')
 
         # Additionally, combine the two images with color
         def clear_white(img):
@@ -584,11 +613,11 @@ class Inkycal:
             return Image.fromarray(buffer)
 
         # Save full-screen images as well
-        im_black = clear_white(im_black)
-        im_colour = black_to_colour(im_colour)
+        im_black = clear_white(canvas.image_black)
+        im_colour = black_to_colour(canvas.image_colour)
 
         im_colour.paste(im_black, (0, 0), im_black)
-        im_colour.save(os.path.join(settings.IMAGE_FOLDER, 'full-screen.png'), 'PNG')
+        im_colour.save(os.path.join(settings.IMAGE_FOLDER, 'fullscreen.png'), 'PNG')
 
     @staticmethod
     def _optimize_im(image, threshold=220):

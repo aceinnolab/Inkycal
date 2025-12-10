@@ -3,8 +3,8 @@ Inkycal ePaper driving functions
 Copyright by aceinnolab
 """
 from importlib import import_module
+from typing import Tuple, List, Optional
 
-import PIL
 from PIL import Image
 
 from inkycal.display.supported_models import supported_models
@@ -49,7 +49,7 @@ class Display:
         # TODO implement test image
         raise NotImplementedError("Devs were too lazy again, sorry, please try again later")
 
-    def render(self, im_black: PIL.Image, im_colour: PIL.Image or None = None) -> None:
+    def render(self, im_black: Image.Image, im_colour: Optional[Image.Image] = None) -> None:
         """Renders an image on the selected E-Paper display.
 
         Initlializes the E-Paper display, sends image data and executes command
@@ -158,7 +158,7 @@ class Display:
             epaper.sleep()
 
     @classmethod
-    def get_display_size(cls, model_name) -> (int, int):
+    def get_display_size(cls, model_name) -> Tuple[int, int]:
         """Returns the size of the display as a tuple -> (width, height)
 
         Looks inside supported_models file for the given model name, then returns it's
@@ -182,7 +182,7 @@ class Display:
         raise AssertionError(f'{model_name} not found in supported models')
 
     @classmethod
-    def get_display_names(cls) -> list:
+    def get_display_names(cls) -> List[str]:
         """Prints all supported E-Paper models.
 
         Fetches all filenames in driver folder and prints them on the console.
@@ -198,6 +198,73 @@ class Display:
         >>> Display.get_display_names()
         """
         return list(supported_models.keys())
+
+
+    def render_text(self, text: str, font_size=24, max_width_ratio=0.95):
+        """
+        Create a centered text image sized for the given display, using Pillow >= 10 APIs.
+        """
+        from PIL import Image, ImageDraw, ImageFont
+
+        # Fetch display size - yes, we're flipping width and height since Inkycal officially only supports vertical mode
+        height, width = self.get_display_size(self.model_name)
+
+        from inkycal.utils.enums import FONTS
+
+        # Load font
+        font = ImageFont.truetype(FONTS.default.value, 20)
+
+        # Helper: measure text width/height using textbbox
+        def measure(text_line: str):
+            bbox = draw.textbbox((0, 0), text_line, font=font)
+            w = bbox[2] - bbox[0]
+            h = bbox[3] - bbox[1]
+            return w, h
+
+        # Prepare temporary drawing surface for measurement
+        temp_img = Image.new("1", (width, height), "white")
+        draw = ImageDraw.Draw(temp_img)
+
+        max_px_width = int(width * max_width_ratio)
+
+        # Auto-wrap logic
+        words = text.split()
+        lines = []
+        current = []
+
+        for word in words:
+            test_line = " ".join(current + [word])
+            w, _ = measure(test_line)
+            if w <= max_px_width:
+                current.append(word)
+            else:
+                lines.append(" ".join(current))
+                current = [word]
+        if current:
+            lines.append(" ".join(current))
+
+        # Measure total text block height
+        line_sizes = [measure(line) for line in lines]
+        total_text_height = sum(h for _, h in line_sizes)
+
+        # Vertical centering
+        y = (height - total_text_height) // 2
+
+        # Final BW image (mode "1")
+        img_bw = Image.new("1", (width, height), "white")
+        draw_final = ImageDraw.Draw(img_bw)
+
+        # Draw text centered horizontally
+        for line, (w, h) in zip(lines, line_sizes):
+            x = (width - w) // 2
+            draw_final.text((x, y), line, fill="black", font=font)
+            y += h
+
+        # Dummy colour image (for colour displays)
+        img_colour = Image.new("1", (width, height), "white")
+
+        # Render to display
+        self.render(img_bw, img_colour)
 
 
 if __name__ == '__main__':

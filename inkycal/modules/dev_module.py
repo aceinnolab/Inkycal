@@ -3,34 +3,13 @@ Third party module template (inkycal-compatible module)
 
 Copyright by aceinnolab
 """
-from PIL import Image
-
 #############################################################################
 #                           Required imports (do not remove)
 #############################################################################
-# Required for setting up this module
-from inkycal.modules.template import inkycal_module
 import logging
 
-#############################################################################
-#                           Built-in library imports (change as desired)
-#############################################################################
-
-# Built-in libraries go here
-from random import shuffle
-
-#############################################################################
-#                         External library imports (always use try-except)
-#############################################################################
-
-# For external libraries, which require installing,
-# use try...except ImportError to check if it has been installed
-# If it is not found, print a short message on how to install this dependency
-import feedparser
-
-#############################################################################
-#                         Filename + logging (do not remove)
-#############################################################################
+from inkycal.modules.template import InkycalModule
+from inkycal.utils.canvas import Canvas
 
 # Get the name of this file, set up logging for this filename
 logger = logging.getLogger(__name__)
@@ -43,7 +22,7 @@ logger = logging.getLogger(__name__)
 # Change 'Simple' to a different name, the first letter must be a Capital!
 # Avoid naming the class with too long names
 
-class Simple(inkycal_module):
+class Simple(InkycalModule):
     """ Simple Class
     Once sentence describing what this module does,
     e.g. Display hello world with your name!
@@ -185,9 +164,8 @@ class Simple(inkycal_module):
         # useful information for the developer
         logger.info('image size: {} x {} px'.format(im_width, im_height))
 
-        # Create an image for black pixels and one for coloured pixels (required)
-        im_black = Image.new('RGB', size=im_size, color='white')
-        im_colour = Image.new('RGB', size=im_size, color='white')
+        # Create a canvas object to write stuff to
+        canvas = Canvas(im_size=im_size, font=self.font, font_size=self.fontsize)
 
         #################################################################
 
@@ -196,11 +174,7 @@ class Simple(inkycal_module):
         # Write/Draw something on the image
 
         #   You can use these custom functions to help you create the image:
-        # - write()               -> write text on the image
-        # - get_fonts()           -> see which fonts are available
         # - get_system_tz()       -> Get the system's current timezone
-        # - auto_fontsize()       -> Scale the fontsize to the provided height
-        # - textwrap()            -> Split a paragraph into smaller lines
         # - internet_available()  -> Check if internet is available
         # - draw_border()         -> Draw a border around the specified area
 
@@ -209,8 +183,24 @@ class Simple(inkycal_module):
 
         #################################################################
 
+        # writing black text
+        canvas.write(
+            xy=(0,0), # xy-coordinates (top-left-corner)
+            box_size=(100, 50), # box with width of 100px and height of 50px,
+            text='Hello world!', # the text to write
+            alignment="left", # default alignment is center
+        )
+
+        # writing coloured text
+        canvas.write(
+            xy=(0, 0),  # xy-coordinates (top-left-corner)
+            box_size=(100, 50),  # box with width of 100px and height of 50px,
+            text='Hello world!',  # the text to write
+            colour="colour" # when colour is set to colour, we draw on the coloured image
+        )
+
         # return the images ready for the display
-        return im_black, im_colour
+        return canvas.image_black, canvas.image_colour
 
 
 if __name__ == '__main__':

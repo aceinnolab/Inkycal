@@ -5,21 +5,20 @@ Copyright by aceinnolab
 import logging
 import re
 
-from PIL import Image
-
-from inkycal.modules.template import inkycal_module
+from inkycal.modules.template import InkycalModule
 
 from random import shuffle
 
 import feedparser
 
-from inkycal.utils.functions import internet_available, write, text_wrap
+from inkycal.utils.canvas import Canvas
+from inkycal.utils.functions import internet_available
 from inkycal.utils.inkycal_exceptions import NetworkNotReachableError
 
 logger = logging.getLogger(__name__)
 
 
-class Feeds(inkycal_module):
+class Feeds(InkycalModule):
     """RSS class
     parses rss/atom feeds from given urls
     """
@@ -82,9 +81,7 @@ class Feeds(inkycal_module):
         im_size = im_width, im_height
         logger.debug(f'Image size: {im_size}')
 
-        # Create an image for black pixels and one for coloured pixels
-        im_black = Image.new('RGB', size=im_size, color='white')
-        im_colour = Image.new('RGB', size=im_size, color='white')
+        canvas = Canvas(im_size, self.font, self.fontsize)
 
         # Check if internet is available
         if internet_available():
@@ -97,8 +94,7 @@ class Feeds(inkycal_module):
         line_spacing = 1
 
         line_width = im_width
-        text_bbox_height = self.font.getbbox("hg")
-        line_height = text_bbox_height[3] + line_spacing
+        line_height = canvas.get_line_height() + line_spacing
         max_lines = (im_height // (line_height + line_spacing))
 
         # Calculate padding from top so the lines look centralised
@@ -134,7 +130,7 @@ class Feeds(inkycal_module):
         filtered_feeds, counter = [], 0
 
         for posts in parsed_feeds:
-            wrapped = text_wrap(posts[0], font=self.font, max_width=line_width)
+            wrapped = canvas.text_wrap(posts[0], max_width=line_width)
             counter += len(wrapped)
             if counter < max_lines:
                 filtered_feeds.append(wrapped)
@@ -150,8 +146,11 @@ class Feeds(inkycal_module):
         else:
             # Write feeds on image
             for _ in range(len(filtered_feeds)):
-                write(im_black, line_positions[_], (line_width, line_height),
-                      filtered_feeds[_], font=self.font, alignment='left')
-
+                canvas.write(
+                    xy=line_positions[_],
+                    box_size=(line_width, line_height),
+                    text=filtered_feeds[_],
+                    alignment="left"
+                )
         # return images
-        return im_black, im_colour
+        return canvas.image_black, canvas.image_colour

@@ -26,10 +26,10 @@ Installing Inkycal, particularly on the Raspberry Pi Zero W models can take up t
 
 The good news is that this is one-time and InkyCal generally runs without an issue for months or even years. 
 
-The bad news is that the Zero W can run out of memory when installing the required packages. A temporary fix for this is to use SWAP (kind of like a file-based RAM) which is slow, but at least won't lead to 
+The bad news is that the Zero W can run out of memory when installing the required packages. A temporary fix for this is to use SWAP (kind of like a file-based RAM) which is slow, but will allow the installation to complete.
 
 
-**TLDR: Skip the wait and several hours of headaches, sponsor InkyCal via [GitHub Sponsors](https://github.com/sponsors/aceisace) and you will shortly receive the download link
+**TLDR: Skip the wait and several hours of headaches, sponsor InkyCal via [GitHub Sponsors](https://github.com/sponsors/aceisace) and you will shortly receive the download link**
 
 
 ## Main features

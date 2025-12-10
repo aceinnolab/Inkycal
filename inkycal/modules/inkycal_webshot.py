@@ -9,14 +9,16 @@ import traceback
 from PIL import Image
 from htmlwebshot import WebShot
 
+from inkycal.settings import Settings
 from inkycal.utils.functions import internet_available
 from inkycal.utils.inky_image import Inkyimage as Images, image_to_palette
-from inkycal.modules.template import inkycal_module
+from inkycal.modules.template import InkycalModule
 
 logger = logging.getLogger(__name__)
 
+settings = Settings()
 
-class Webshot(inkycal_module):
+class Webshot(InkycalModule):
     name = "Webshot - Displays screenshots of webpages"
 
     # required parameters
@@ -92,7 +94,7 @@ class Webshot(inkycal_module):
         """Generate image for this module"""
 
         # Create tmp path
-        tmpFolder = "temp"
+        tmpFolder = settings.TEMPORARY_FOLDER
 
         if not os.path.exists(tmpFolder):
             print(f"Creating tmp directory {tmpFolder}")

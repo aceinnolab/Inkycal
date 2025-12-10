@@ -9,13 +9,15 @@ import logging
 import arrow
 from PIL import ImageFont, Image, ImageDraw
 
-from inkycal.modules.template import inkycal_module
-from inkycal.utils.functions import get_system_tz, fonts, write, draw_border
+from inkycal.modules.template import InkycalModule
+from inkycal.utils.canvas import Canvas
+from inkycal.utils.enums import FONTS
+from inkycal.utils.functions import get_system_tz, draw_border
 
 logger = logging.getLogger(__name__)
 
 
-class Calendar(inkycal_module):
+class Calendar(InkycalModule):
     """Calendar class
     Create monthly calendar and show events from given iCalendars
     """
@@ -81,9 +83,7 @@ class Calendar(inkycal_module):
 
         # additional configuration
         self.timezone = get_system_tz()
-        self.num_font = ImageFont.truetype(
-            fonts['NotoSans-SemiCondensed'], size=self.fontsize
-        )
+        self.num_font = FONTS.noto_sans_semicondensed
 
         # give an OK message
         logger.debug(f'{__name__} loaded')
@@ -104,14 +104,11 @@ class Calendar(inkycal_module):
 
         logger.debug(f'Image size: {im_size}')
 
-        # Create an image for black pixels and one for coloured pixels
-        im_black = Image.new('RGB', size=im_size, color='white')
-        im_colour = Image.new('RGB', size=im_size, color='white')
+        canvas = Canvas(im_size, font=self.font, font_size=self.fontsize)
 
         # Allocate space for month-names, weekdays etc.
-        month_name_height = int(im_height * 0.10)
-        text_bbox_height = self.font.getbbox("hg")
-        weekdays_height = int((abs(text_bbox_height[3]) + abs(text_bbox_height[1])) * 1.25)
+        month_name_height = int(im_height * 0.10) # 10% of the available height
+        weekdays_height = int(canvas.get_line_height() * 1.25) # slightly more height for some padding
         logger.debug(f"month_name_height: {month_name_height}")
         logger.debug(f"weekdays_height: {weekdays_height}")
 
@@ -167,12 +164,10 @@ class Calendar(inkycal_module):
             week_start = now.shift(days=-now.isoweekday())
 
         # Write the name of current month
-        write(
-            im_black,
-            (0, 0),
-            (im_width, month_name_height),
-            str(now.format('MMMM', locale=self.language)),
-            font=self.font,
+        canvas.write(
+            xy=(0,0),
+            box_size=(im_width, month_name_height),
+            text= str(now.format('MMMM', locale=self.language)),
             autofit=True,
         )
 
@@ -184,12 +179,10 @@ class Calendar(inkycal_module):
         logger.debug(f'weekday names: {weekday_names}')
 
         for index, weekday in enumerate(weekday_pos):
-            write(
-                im_black,
-                weekday,
-                (icon_width, weekdays_height),
-                weekday_names[index],
-                font=self.font,
+            canvas.write(
+                xy=weekday,
+                box_size=(icon_width, weekdays_height),
+                text=weekday_names[index],
                 autofit=True,
                 fill_height=0.9,
             )
@@ -210,44 +203,61 @@ class Calendar(inkycal_module):
 
         # ensure all numbers have the same size
         fontsize_numbers = int(min(icon_width, icon_height) * 0.5)
-        number_font = ImageFont.truetype(self.font.path, fontsize_numbers)
 
+        canvas.set_font(self.font, fontsize_numbers)
         # Add the numbers on the correct positions
         for number in calendar_flat:
             if number != int(now.day):
-                write(
-                    im_black,
-                    grid[number],
-                    (icon_width, icon_height),
-                    str(number),
-                    font=number_font,
+                canvas.write(
+                    xy=grid[number],
+                    box_size=(icon_width, icon_height),
+                    text= str(number)
                 )
 
-        # Draw a red/black circle with the current day of month in white
-        icon = Image.new('RGBA', (icon_width, icon_height))
-        current_day_pos = grid[int(now.day)]
-        x_circle, y_circle = int(icon_width / 2), int(icon_height / 2)
-        radius = int(icon_width * 0.2)
-        ImageDraw.Draw(icon).ellipse(
-            (
-                x_circle - radius,
-                y_circle - radius,
-                x_circle + radius,
-                y_circle + radius,
-            ),
-            fill='black',
-            outline=None,
+        canvas.set_font(self.font, self.fontsize)
+
+
+        # special handling of current day
+        day_str = str(now.day)
+
+        # Icon canvas
+        icon = Image.new("RGBA", (icon_width, icon_height), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(icon)
+
+        # --- Larger circle (properly centered) ---
+        cx = icon_width // 2
+        cy = icon_height // 2
+        radius = int(icon_width * 0.40)
+
+        draw.ellipse(
+            (cx - radius, cy - radius, cx + radius, cy + radius),
+            fill="black"
         )
-        write(
-            icon,
-            (0, 0),
-            (icon_width, icon_height),
-            str(now.day),
-            font=self.num_font,
-            fill_height=0.5,
-            colour='white',
+
+        # --- Load number font ---
+        font = ImageFont.truetype(self.num_font.value, fontsize_numbers)
+
+        # --- Perfect vertical + horizontal centering using anchor="mm" ---
+        draw.text(
+            (cx, cy),
+            day_str,
+            fill="white",
+            font=font,
+            anchor="mm"  # ← the magic incantation
         )
-        im_colour.paste(icon, current_day_pos, icon)
+
+        # --- Paste onto main canvas ---
+        cell_x, cell_y = grid[int(now.day)]
+
+        # center the icon inside its grid cell
+        paste_x = cell_x + (icon_width - icon.width) // 2
+        paste_y = cell_y + (icon_height - icon.height) // 2
+
+        canvas.image_black.paste(icon, (paste_x, paste_y), icon)
+        canvas.image_colour.paste(icon, (paste_x, paste_y), icon)
+
+
+
 
         # If events should be loaded and shown...
         if self.show_events:
@@ -266,8 +276,7 @@ class Calendar(inkycal_module):
 
             # find out how many lines can fit at max in the event section
             line_spacing = 2
-            text_bbox_height = self.font.getbbox("hg")
-            line_height = text_bbox_height[3] - text_bbox_height[1] + line_spacing
+            line_height = canvas.get_line_height() + line_spacing
             max_event_lines = events_height // (line_height + line_spacing)
 
             # generate list of coordinates for each line
@@ -321,7 +330,7 @@ class Calendar(inkycal_module):
             for days in days_with_events:
                 if days in grid:
                     draw_border(
-                        im_colour,
+                        canvas.image_colour,
                         grid[days],
                         (icon_width, icon_height),
                         radius=6
@@ -377,56 +386,48 @@ class Calendar(inkycal_module):
                         # logger.debug(f"name:{the_name}   date:{the_date} time:{the_time}")
 
                         if now < event['end']:
-                            write(
-                                im_colour,
-                                event_lines[cursor],
-                                (date_width, line_height),
-                                the_date,
-                                font=self.font,
+                            canvas.write(
+                                xy=event_lines[cursor],
+                                box_size=(date_width, line_height),
+                                text=the_date,
                                 alignment='left',
                             )
 
                             # Check if event is all day
                             if parser.all_day(event):
-                                write(
-                                    im_black,
-                                    (date_width, event_lines[cursor][1]),
-                                    (event_width_l, line_height),
-                                    the_name,
-                                    font=self.font,
+                                canvas.write(
+                                    xy=(date_width, event_lines[cursor][1]),
+                                    box_size= (event_width_l, line_height),
+                                    text=the_name,
                                     alignment='left',
                                 )
                             else:
-                                write(
-                                    im_black,
-                                    (date_width, event_lines[cursor][1]),
-                                    (time_width, line_height),
-                                    the_time,
-                                    font=self.font,
+                                canvas.write(
+                                    xy=(date_width, event_lines[cursor][1]),
+                                    box_size=(time_width, line_height),
+                                    text=the_time,
                                     alignment='left',
                                 )
 
-                                write(
-                                    im_black,
-                                    (date_width + time_width, event_lines[cursor][1]),
-                                    (event_width_s, line_height),
-                                    the_name,
-                                    font=self.font,
+                                canvas.write(
+                                    xy=(date_width + time_width, event_lines[cursor][1]),
+                                    box_size=(event_width_s, line_height),
+                                    text=the_name,
                                     alignment='left',
                                 )
                             cursor += 1
             else:
                 symbol = '- '
+                length = canvas.get_text_width(symbol)
+                multiplier = int(im_width // length)
+                symbol = symbol * multiplier
 
-                while self.font.getlength(symbol) < im_width * 0.9:
-                    symbol += ' -'
-                write(
-                    im_black,
-                    event_lines[0],
-                    (im_width, line_height),
-                    symbol,
-                    font=self.font,
-                )
+                canvas.write(
+                    xy=event_lines[0],
+                    box_size=(im_width, line_height),
+                    text=symbol,
+                    alignment='left',
+                    )
 
         # return the images ready for the display
-        return im_black, im_colour
+        return canvas.image_black, canvas.image_colour
