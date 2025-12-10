@@ -18,7 +18,7 @@ master_doc = 'index'
 # -- Project information -----------------------------------------------------
 
 project = 'inkycal'
-copyright = '2018-2023, aceinnolab'
+copyright = '2018-2025, aceinnolab'
 author = 'aceinnolab'
 
 # The full version, including alpha/beta/rc tags

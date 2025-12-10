@@ -143,7 +143,7 @@ dmypy.json
 /ftp/
 
 # inkycal logs
-/logs
+/inkycal/logs
 
 # inkycal tests
 /tests/tmp/

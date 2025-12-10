@@ -1,4 +1,4 @@
-.. image:: https://raw.githubusercontent.com/aceisace/Inkycal/assets/Repo/logo.png
+.. image:: https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/Repo/logo.png
     :alt: logo
     :align: center
 
@@ -12,16 +12,17 @@ Display
 .. automodule:: inkycal.display.Display
   :members:
 
+Canvas
+===========================
+.. automodule:: inkycal.utils.canvas.Canvas
+  :members:
 
 Custom functions
 ===========================
-.. automodule:: inkycal.custom.functions
+.. automodule:: inkycal.utils.functions
   :members:
 
-Helper classes
-=================
-.. automodule:: inkycal.modules.ical_parser
-  :members:
-
-.. automodule:: inkycal.modules.inky_image
+Fonts
+============================
+.. automodule:: inkycal.utils.enums.FONTS
   :members:
