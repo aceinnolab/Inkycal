@@ -1,2 +1,6 @@
 pytest
 twine
+
+mkdocs
+mkdocs-material
+mkdocstrings[python]

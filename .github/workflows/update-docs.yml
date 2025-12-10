@@ -1,4 +1,4 @@
-name: update docs
+name: Build & Deploy Docs
 
 on:
   push:
@@ -6,48 +6,45 @@ on:
       - main
 
 jobs:
-  update-docs:
-    name: update docs
+  build-deploy:
+    name: Build MkDocs Documentation
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout Repository
+      # --------------------------
+      # Checkout
+      # --------------------------
+      - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: main
+          fetch-depth: 0   # required for mkdocs gh-deploy
 
+      # --------------------------
+      # Python Setup
+      # --------------------------
       - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11
+          python-version: "3.11"
 
-      - name: Install Dependencies & generate Docs
+      # --------------------------
+      # Install Dependencies
+      # --------------------------
+      - name: Install dependencies
         run: |
-          sudo apt-get install python3-sphinx
-          python3 -m venv venv
-          source venv/bin/activate
           python -m pip install --upgrade pip
-          pip install wheel
-          pip install -r requirements.txt
+          pip install mkdocs mkdocs-material mkdocstrings[python]
+          pip install -r dev_requirements.txt
           pip install -e .
-          pip install sphinxemoji sphinx_rtd_theme recommonmark
-          cd docsource && make github && cd ..
 
-      - name: Check if there are any changes
-        id: verify_diff
-        run: |
-          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+      # --------------------------
+      # Build Documentation (optional check)
+      # --------------------------
+      - name: Build documentation
+        run: mkdocs build --strict
 
-      - name: push docs
-        if: steps.verify_diff.outputs.changed == 'true'
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add docs/*
-          # Check if anything is staged before committing
-          if git diff --cached --quiet; then
-            echo "Nothing to commit."
-          else
-            git commit -m "update docs [bot]"
-            git push
-          fi
+      # --------------------------
+      # Deploy to gh-pages branch
+      # --------------------------
+      - name: Deploy docs
+        run: mkdocs gh-deploy --force
