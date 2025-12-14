@@ -1,0 +1,60 @@
+site_name: Inkycal Documentation
+site_url: https://aceinnolab.github.io/Inkycal/
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+    - content.action.edit
+    - content.tooltips
+    - toc.follow
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: deep purple
+    - scheme: slate
+      primary: indigo
+      accent: deep purple
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths:
+            - ..
+          options:
+            show_source: true
+            docstring_style: google
+
+nav:
+  - Home: index.md
+  - Installation:
+      - Install Inkycal: installation.md
+      - Quickstart: quickstart.md
+      - Hardware Setup: hardware.md
+  - Modules:
+      - Display Class: api/display.md
+      - Calendar: modules/calendar.md
+      - Weather: modules/weather.md
+      - Image: modules/image.md
+  - Development:
+      - Architecture Overview: inkycal.md
+      - Developer Guide: dev_doc.md
+      - Custom Module Guide: modules/custom.md
+      - Canvas Class: api/canvas.md
+      - Utils: api/utils.md
+      - API Reference: reference.md  # optional if using mkdocstrings
+  - Troubleshooting: troubleshooting.md
+  - About: about.md
