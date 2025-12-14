@@ -10,7 +10,7 @@ import os
 import time
 from datetime import datetime
 
-from PIL import Image
+from typing import Callable, Iterable, TypeVar
 
 from inkycal.modules.template import InkycalModule
 
@@ -22,6 +22,7 @@ from inkycal.utils.functions import internet_available
 
 logger = logging.getLogger(__name__)
 
+T = TypeVar("T")
 
 class Todoist(InkycalModule):
     """Todoist api class
@@ -85,27 +86,56 @@ class Todoist(InkycalModule):
         if not isinstance(self.api_key, str):
             print('api_key has to be a string: "Yourtopsecretkey123" ')
 
-    def _fetch_with_retry(self, fetch_func, max_retries=3):
-        """Fetch data with retry logic and exponential backoff"""
-        for attempt in range(max_retries):
+
+    def _fetch_with_retry(
+            self,
+            fetch_func: Callable[[], Iterable[T]],
+            *,
+            max_retries: int = 3,
+            retry_statuses: set[int] = {502, 503, 504},
+    ) -> list[T]:
+        """
+        Fetch data with retry logic and exponential backoff.
+
+        Retries on:
+        - Connection errors
+        - HTTP errors with retryable status codes
+
+        Args:
+            fetch_func: Callable returning an iterable of results.
+            max_retries: Maximum number of attempts.
+            retry_statuses: HTTP status codes that should trigger a retry.
+
+        Returns:
+            A list of fetched items.
+
+        Raises:
+            requests.exceptions.RequestException
+            RuntimeError: If all retries are exhausted.
+        """
+        for attempt in range(1, max_retries + 1):
             try:
-                return fetch_func()
-            except requests.exceptions.HTTPError as e:
-                if e.response.status_code in [502, 503, 504]:  # Retry on server errors
-                    if attempt < max_retries - 1:
-                        delay = (2 ** attempt)  # Exponential backoff: 1s, 2s, 4s
-                        logger.warning(f"API request failed (attempt {attempt + 1}/{max_retries}), retrying in {delay}s...")
-                        time.sleep(delay)
-                        continue
-                raise
+                return list(fetch_func())
+
+            except requests.exceptions.HTTPError as exc:
+                status = exc.response.status_code if exc.response else None
+                if status not in retry_statuses or attempt == max_retries:
+                    raise
+
             except requests.exceptions.ConnectionError:
-                if attempt < max_retries - 1:
-                    delay = (2 ** attempt)
-                    logger.warning(f"Connection error (attempt {attempt + 1}/{max_retries}), retrying in {delay}s...")
-                    time.sleep(delay)
-                    continue
-                raise
-        raise Exception("Max retries exceeded")
+                if attempt == max_retries:
+                    raise
+
+            delay = 2 ** (attempt - 1)
+            logger.warning(
+                "API request failed (attempt %d/%d), retrying in %ds...",
+                attempt,
+                max_retries,
+                delay,
+            )
+            time.sleep(delay)
+
+        raise RuntimeError("Max retries exceeded")
 
     def _save_cache(self, projects, tasks):
         """Save API response to cache file"""
@@ -117,7 +147,7 @@ class Todoist(InkycalModule):
                     'content': t.content,
                     'project_id': t.project_id,
                     'priority': t.priority,
-                    'due': {'date': t.due.date} if t.due else None
+                    'due': {'date': str(t.due.date)} if t.due else None
                 } for t in tasks]
             }
             with open(self.cache_file, 'w') as f:
@@ -204,9 +234,12 @@ class Todoist(InkycalModule):
 
             # Try to fetch fresh data from API
             try:
-                all_projects = [i[0] for i in self._fetch_with_retry(self._api.get_projects)] if self._fetch_with_retry(self._api.get_projects) else []
-                all_active_tasks = [i[0] for i in self._fetch_with_retry(self._api.get_tasks)] if self._fetch_with_retry(self._api.get_tasks) else []
-                # Save to cache on successful fetch
+                all_projects = self._fetch_with_retry(self._api.get_projects)[0] or []
+                all_tasks_api = self._fetch_with_retry(self._api.get_tasks) or []
+                all_active_tasks = []
+                for task_list in all_tasks_api:
+                    all_active_tasks.extend(task_list)
+                 # Save to cache on successful fetch
                 self._save_cache(all_projects, all_active_tasks)
             except Exception as e:
                 logger.error(f"Failed to fetch Todoist data: {e}")
@@ -276,7 +309,11 @@ class Todoist(InkycalModule):
 
             # Check if task is overdue
             # Parse date in local timezone to ensure correct comparison
-            due_date = arrow.get(task.due.date, "YYYY-MM-DD").replace(tzinfo='local') if task.due else None
+            try:
+                due_date = arrow.get(task.due.date, "YYYY-MM-DD").replace(tzinfo='local') if task.due else None
+            except Exception as e:
+                logger.warning(f"Could not parse due date of task: {task} with due date: {task.due} reason: ", e)
+                continue
             today = arrow.now('local').floor('day')
             is_overdue = due_date and due_date < today if due_date else False
 
