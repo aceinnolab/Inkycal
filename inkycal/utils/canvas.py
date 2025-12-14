@@ -371,7 +371,7 @@ class Canvas:
             self.image_colour.paste(layer, xy, layer)
 
     @staticmethod
-    def _optimize_for_red_preview(img: Image.Image, threshold: int = 220) -> Image.Image:
+    def _optimize_for_red_preview(img: Image.Image, threshold: int = 200) -> Image.Image:
         """
         Normalize coloured-image contrast before converting to red.
         Dark pixels → black

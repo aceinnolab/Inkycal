@@ -37,7 +37,7 @@ jobs:
             uname -srm
             cd /home/inky
             sudo apt-get update -y
-            sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 wkhtmltopdf rustc build-essential libssl-dev -y
+            sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 wkhtmltopdf rustc build-essential libssl-dev liblgpio-dev -y
             
             echo $PWD && ls
             git clone https://github.com/aceinnolab/Inkycal 

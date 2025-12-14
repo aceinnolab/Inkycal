@@ -216,7 +216,6 @@ class Calendar(InkycalModule):
 
         canvas.set_font(self.font, self.fontsize)
 
-
         # special handling of current day
         day_str = str(now.day)
 
