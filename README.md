@@ -1,4 +1,4 @@
-# Welcome to inkycal v2.0.4!
+# Welcome to inkycal v2025-12-15!
 
 <p align="center">
     <a href="https://github.com/aceinnolab/Inkycal/actions/workflows/test-on-rpi.yml"><img src="https://github.com/aceinnolab/Inkycal/actions/workflows/test-on-rpi.yml/badge.svg"></a>
@@ -97,7 +97,7 @@ display!**
 
 ## Configuring the Raspberry Pi
 
-Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://rptl.io/imager). Please use this version of [Raspberry Pi OS - bookworm](https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz) as the latest release is known to have some issues with the latest kernel update.
+Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://www.raspberrypi.com/software/). Please use this version of [Raspberry Pi OS - trixie]([https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz](https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-11-24/2025-11-24-raspios-trixie-armhf-lite.img.xz))
 
 | option                    |            value            |
 |:--------------------------|:---------------------------:|
@@ -127,8 +127,8 @@ Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager]
 # expand the filesystem to make use of the full space on the microSD card
 sudo raspi-config --expand-rootfs
 
-# enable SPI
-sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/firmware/config.txt
+# enable SPI - the zero at the end means "on"
+sudo raspi-config nonint do_spi 0
 
 # set the timezone (optional)
 sudo dpkg-reconfigure tzdata
