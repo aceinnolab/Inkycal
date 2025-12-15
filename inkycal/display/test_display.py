@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from inkycal import Display
+from inkycal.display import Display
 
 
 class TestDisplay(TestCase):
