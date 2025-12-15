@@ -3669,12 +3669,12 @@ Create monthly calendar and show events from given iCalendars</p>
                 <span class="n">lang</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span>
 
                 <span class="n">date_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">((</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">getlength</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">lang</span><span class="p">))</span>
+                    <span class="n">canvas</span><span class="o">.</span><span class="n">get_text_width</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">lang</span><span class="p">))</span>
                     <span class="k">for</span> <span class="n">events</span> <span class="ow">in</span> <span class="n">upcoming_events</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1.1</span>
                                  <span class="p">)</span>
 
                 <span class="n">time_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">((</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">getlength</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">lang</span><span class="p">))</span>
+                    <span class="n">canvas</span><span class="o">.</span><span class="n">get_text_width</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">lang</span><span class="p">))</span>
                     <span class="k">for</span> <span class="n">events</span> <span class="ow">in</span> <span class="n">upcoming_events</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1.1</span>
                                  <span class="p">)</span>
 
@@ -4496,12 +4496,12 @@ Create monthly calendar and show events from given iCalendars</p>
             <span class="n">lang</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span>
 
             <span class="n">date_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">((</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">getlength</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">lang</span><span class="p">))</span>
+                <span class="n">canvas</span><span class="o">.</span><span class="n">get_text_width</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">lang</span><span class="p">))</span>
                 <span class="k">for</span> <span class="n">events</span> <span class="ow">in</span> <span class="n">upcoming_events</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1.1</span>
                              <span class="p">)</span>
 
             <span class="n">time_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">((</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">getlength</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">lang</span><span class="p">))</span>
+                <span class="n">canvas</span><span class="o">.</span><span class="n">get_text_width</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">lang</span><span class="p">))</span>
                 <span class="k">for</span> <span class="n">events</span> <span class="ow">in</span> <span class="n">upcoming_events</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1.1</span>
                              <span class="p">)</span>
 
@@ -8896,8 +8896,7 @@ Create agenda and show events from given icalendars</p>
 <span class="normal">243</span>
 <span class="normal">244</span>
 <span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Agenda</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
+<span class="normal">246</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Agenda</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Agenda class</span>
 <span class="sd">    Create agenda and show events from given icalendars</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -9032,8 +9031,7 @@ Create agenda and show events from given icalendars</p>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Managed to parse events from urls&#39;</span><span class="p">)</span>
 
             <span class="c1"># Find out how much space the event times take</span>
-
-            <span class="n">time_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">getlength</span><span class="p">(</span>
+            <span class="n">time_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">([</span><span class="n">canvas</span><span class="o">.</span><span class="n">get_text_width</span><span class="p">(</span>
                 <span class="n">events</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">))</span>
                 <span class="k">for</span> <span class="n">events</span> <span class="ow">in</span> <span class="n">upcoming_events</span><span class="p">])</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;time_width: </span><span class="si">{</span><span class="n">time_width</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -9408,8 +9406,7 @@ Create agenda and show events from given icalendars</p>
 <span class="normal">243</span>
 <span class="normal">244</span>
 <span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">246</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate image for this module&quot;&quot;&quot;</span>
 
     <span class="c1"># Define new image size with respect to padding</span>
@@ -9474,8 +9471,7 @@ Create agenda and show events from given icalendars</p>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Managed to parse events from urls&#39;</span><span class="p">)</span>
 
         <span class="c1"># Find out how much space the event times take</span>
-
-        <span class="n">time_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">getlength</span><span class="p">(</span>
+        <span class="n">time_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">([</span><span class="n">canvas</span><span class="o">.</span><span class="n">get_text_width</span><span class="p">(</span>
             <span class="n">events</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">events</span> <span class="ow">in</span> <span class="n">upcoming_events</span><span class="p">])</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;time_width: </span><span class="si">{</span><span class="n">time_width</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
