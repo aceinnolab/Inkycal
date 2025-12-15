@@ -24,7 +24,7 @@ from inkycal.settings import Settings
 from inkycal.utils.canvas import Canvas
 from inkycal.utils.enums import FONTS
 
-from inkycal.utils.functions import get_system_tz, draw_border_2
+from inkycal.utils.functions import get_system_tz, draw_border_2, get_inkycal_version
 from inkycal.utils.inky_image import Inkyimage as Images
 from inkycal.utils import JSONCache
 from inkycal.utils.inkycal_exceptions import SettingsFileNotFoundError
@@ -75,7 +75,7 @@ class Inkycal:
                 Shutdown the system after the run is complete. Will only work with PiSugar enabled.
 
         """
-        self._release = "2.0.4"
+        self._release = get_inkycal_version()
 
         logger.info(f"Inkycal v{self._release} booting up...")
 

@@ -359,8 +359,7 @@ class Calendar(InkycalModule):
                     for events in upcoming_events)) * 1.1
                                  )
 
-                text_bbox_height = self.font.getbbox("hg")
-                line_height = text_bbox_height[3] + line_spacing
+                line_height = canvas.get_line_height() + line_spacing
 
                 event_width_s = im_width - date_width - time_width
                 event_width_l = im_width - date_width

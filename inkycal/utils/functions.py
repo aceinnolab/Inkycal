@@ -13,6 +13,8 @@ import logging
 import math
 import time
 import traceback
+from importlib.metadata import PackageNotFoundError, version as pkg_version
+from importlib.resources import files
 from typing import Tuple, Sequence
 
 import arrow
@@ -53,9 +55,7 @@ def get_system_tz() -> str:
         local_tz = "UTC"
 
     # Log formatted current time in detected TZ
-    logger.debug(
-        f"Current time: {arrow.now(tz=local_tz).format('YYYY-MM-DD HH:mm:ss ZZ')}"
-    )
+    logger.debug(f"Current time: {arrow.now(tz=local_tz).format('YYYY-MM-DD HH:mm:ss ZZ')}")
     return local_tz
 
 
@@ -92,14 +92,8 @@ def internet_available() -> bool:
 # ------------------------------------------------------------------------------
 # Drawing Helpers
 # ------------------------------------------------------------------------------
-def draw_border(
-    image: Image.Image,
-    xy: Tuple[int, int],
-    size: Tuple[int, int],
-    radius: int = 5,
-    thickness: int = 1,
-    shrinkage: Tuple[float, float] = (0.1, 0.1),
-) -> None:
+def draw_border(image: Image.Image, xy: Tuple[int, int], size: Tuple[int, int], radius: int = 5, thickness: int = 1,
+        shrinkage: Tuple[float, float] = (0.1, 0.1), ) -> None:
     """Draw a stylized border around a rectangular region.
 
     Args:
@@ -181,14 +175,8 @@ def draw_border_2(im: Image.Image, xy: Tuple[int, int], size: Tuple[int, int], r
 # ------------------------------------------------------------------------------
 # Basic Line Chart
 # ------------------------------------------------------------------------------
-def render_line_chart(
-    values: Sequence[float],
-    size: Tuple[int, int],
-    line_width: int = 2,
-    line_color="black",
-    bg_color="white",
-    padding: int = 4
-) -> Image.Image:
+def render_line_chart(values: Sequence[float], size: Tuple[int, int], line_width: int = 2, line_color="black",
+        bg_color="white", padding: int = 4) -> Image.Image:
     """Render a lightweight line chart using Pillow.
 
     Args:
@@ -260,3 +248,21 @@ def render_line_chart(
     draw.line(pts, fill=line_color, width=line_width)
 
     return img
+
+
+def get_inkycal_version() -> str:
+    """
+    Resolve Inkycal version.
+
+    Priority:
+    1. Installed package metadata (preferred, matches pyproject.toml)
+    2. _version.txt inside the package (editable / dev fallback)
+    """
+    try:
+        return pkg_version("inkycal")
+    except PackageNotFoundError:
+        try:
+            version_file = files("inkycal").joinpath("_version.txt")
+            return version_file.read_text().strip()
+        except Exception:
+            return "unknown"
