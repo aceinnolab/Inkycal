@@ -10049,7 +10049,15 @@ parses todos from the todoist api.</p>
 <span class="normal">431</span>
 <span class="normal">432</span>
 <span class="normal">433</span>
-<span class="normal">434</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Todoist</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Todoist</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Todoist api class</span>
 <span class="sd">    parses todos from the todoist api.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -10335,9 +10343,17 @@ parses todos from the todoist api.</p>
             <span class="c1"># Check if task is overdue</span>
             <span class="c1"># Parse date in local timezone to ensure correct comparison</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">due_date</span> <span class="o">=</span> <span class="n">arrow</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">due</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="s2">&quot;YYYY-MM-DD&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">due</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">due_date</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">arrow</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">due</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="s2">&quot;YYYY-MM-DD&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">due</span>
+                    <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not parse due date of task: </span><span class="si">{</span><span class="n">task</span><span class="si">}</span><span class="s2"> with due date: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">due</span><span class="p">)</span><span class="si">}</span><span class="s2"> reason: &quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;Could not parse due date of task </span><span class="si">%r</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">task</span><span class="p">,</span>
+                    <span class="n">e</span><span class="p">,</span>
+                <span class="p">)</span>
                 <span class="k">continue</span>
             <span class="n">today</span> <span class="o">=</span> <span class="n">arrow</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="s1">&#39;local&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="s1">&#39;day&#39;</span><span class="p">)</span>
             <span class="n">is_overdue</span> <span class="o">=</span> <span class="n">due_date</span> <span class="ow">and</span> <span class="n">due_date</span> <span class="o">&lt;</span> <span class="n">today</span> <span class="k">if</span> <span class="n">due_date</span> <span class="k">else</span> <span class="kc">False</span>
@@ -10802,7 +10818,15 @@ parses todos from the todoist api.</p>
 <span class="normal">431</span>
 <span class="normal">432</span>
 <span class="normal">433</span>
-<span class="normal">434</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate image for this module&quot;&quot;&quot;</span>
 
     <span class="c1"># Define new image size with respect to padding</span>
@@ -10909,9 +10933,17 @@ parses todos from the todoist api.</p>
         <span class="c1"># Check if task is overdue</span>
         <span class="c1"># Parse date in local timezone to ensure correct comparison</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">due_date</span> <span class="o">=</span> <span class="n">arrow</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">due</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="s2">&quot;YYYY-MM-DD&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">due</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">due_date</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">arrow</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">due</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="s2">&quot;YYYY-MM-DD&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">due</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not parse due date of task: </span><span class="si">{</span><span class="n">task</span><span class="si">}</span><span class="s2"> with due date: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">due</span><span class="p">)</span><span class="si">}</span><span class="s2"> reason: &quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Could not parse due date of task </span><span class="si">%r</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">task</span><span class="p">,</span>
+                <span class="n">e</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="k">continue</span>
         <span class="n">today</span> <span class="o">=</span> <span class="n">arrow</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="s1">&#39;local&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="s1">&#39;day&#39;</span><span class="p">)</span>
         <span class="n">is_overdue</span> <span class="o">=</span> <span class="n">due_date</span> <span class="ow">and</span> <span class="n">due_date</span> <span class="o">&lt;</span> <span class="n">today</span> <span class="k">if</span> <span class="n">due_date</span> <span class="k">else</span> <span class="kc">False</span>
