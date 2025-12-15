@@ -10,19 +10,21 @@ import os
 import time
 from datetime import datetime
 
-from PIL import Image
+from typing import Callable, Iterable, TypeVar
 
-from inkycal.modules.template import inkycal_module
+from inkycal.modules.template import InkycalModule
 
 from todoist_api_python.api import TodoistAPI
 import requests.exceptions
 
-from inkycal.utils.functions import write, internet_available
+from inkycal.utils.canvas import Canvas
+from inkycal.utils.functions import internet_available
 
 logger = logging.getLogger(__name__)
 
+T = TypeVar("T")
 
-class Todoist(inkycal_module):
+class Todoist(InkycalModule):
     """Todoist api class
     parses todos from the todoist api.
     """
@@ -84,27 +86,56 @@ class Todoist(inkycal_module):
         if not isinstance(self.api_key, str):
             print('api_key has to be a string: "Yourtopsecretkey123" ')
 
-    def _fetch_with_retry(self, fetch_func, max_retries=3):
-        """Fetch data with retry logic and exponential backoff"""
-        for attempt in range(max_retries):
+
+    def _fetch_with_retry(
+            self,
+            fetch_func: Callable[[], Iterable[T]],
+            *,
+            max_retries: int = 3,
+            retry_statuses: set[int] = {502, 503, 504},
+    ) -> list[T]:
+        """
+        Fetch data with retry logic and exponential backoff.
+
+        Retries on:
+        - Connection errors
+        - HTTP errors with retryable status codes
+
+        Args:
+            fetch_func: Callable returning an iterable of results.
+            max_retries: Maximum number of attempts.
+            retry_statuses: HTTP status codes that should trigger a retry.
+
+        Returns:
+            A list of fetched items.
+
+        Raises:
+            requests.exceptions.RequestException
+            RuntimeError: If all retries are exhausted.
+        """
+        for attempt in range(1, max_retries + 1):
             try:
-                return fetch_func()
-            except requests.exceptions.HTTPError as e:
-                if e.response.status_code in [502, 503, 504]:  # Retry on server errors
-                    if attempt < max_retries - 1:
-                        delay = (2 ** attempt)  # Exponential backoff: 1s, 2s, 4s
-                        logger.warning(f"API request failed (attempt {attempt + 1}/{max_retries}), retrying in {delay}s...")
-                        time.sleep(delay)
-                        continue
-                raise
+                return list(fetch_func())
+
+            except requests.exceptions.HTTPError as exc:
+                status = exc.response.status_code if exc.response else None
+                if status not in retry_statuses or attempt == max_retries:
+                    raise
+
             except requests.exceptions.ConnectionError:
-                if attempt < max_retries - 1:
-                    delay = (2 ** attempt)
-                    logger.warning(f"Connection error (attempt {attempt + 1}/{max_retries}), retrying in {delay}s...")
-                    time.sleep(delay)
-                    continue
-                raise
-        raise Exception("Max retries exceeded")
+                if attempt == max_retries:
+                    raise
+
+            delay = 2 ** (attempt - 1)
+            logger.warning(
+                "API request failed (attempt %d/%d), retrying in %ds...",
+                attempt,
+                max_retries,
+                delay,
+            )
+            time.sleep(delay)
+
+        raise RuntimeError("Max retries exceeded")
 
     def _save_cache(self, projects, tasks):
         """Save API response to cache file"""
@@ -116,7 +147,7 @@ class Todoist(inkycal_module):
                     'content': t.content,
                     'project_id': t.project_id,
                     'priority': t.priority,
-                    'due': {'date': t.due.date} if t.due else None
+                    'due': {'date': str(t.due.date)} if t.due else None
                 } for t in tasks]
             }
             with open(self.cache_file, 'w') as f:
@@ -138,13 +169,11 @@ class Todoist(inkycal_module):
     def _create_error_image(self, im_size, error_msg=None, cached_data=None):
         """Create an error message image when API fails"""
         im_width, im_height = im_size
-        im_black = Image.new('RGB', size=im_size, color='white')
-        im_colour = Image.new('RGB', size=im_size, color='white')
+        canvas = Canvas(im_size=im_size, font=self.font, font_size=self.fontsize)
 
         # Display error message
         line_spacing = 1
-        text_bbox_height = self.font.getbbox("hg")
-        line_height = text_bbox_height[3] + line_spacing
+        line_height = canvas.get_line_height() + line_spacing
 
         messages = []
         if error_msg:
@@ -165,11 +194,14 @@ class Todoist(inkycal_module):
         for i, msg in enumerate(messages):
             y_pos = start_y + (i * line_height)
             # First line in red (colour image), rest in black
-            target_image = im_colour if i == 0 else im_black
-            write(target_image, (0, y_pos), (im_width, line_height),
-                  msg, font=self.font, alignment='center')
+            canvas.write(
+                xy= (0, y_pos),
+                box_size=(im_width, line_height),
+                text=msg,
+                colour="colour" if i == 0 else "black"
+            )
 
-        return im_black, im_colour
+        return canvas.image_black, canvas.image_colour
 
     def generate_image(self):
         """Generate image for this module"""
@@ -180,9 +212,7 @@ class Todoist(inkycal_module):
         im_size = im_width, im_height
         logger.debug(f'Image size: {im_size}')
 
-        # Create an image for black pixels and one for coloured pixels
-        im_black = Image.new('RGB', size=im_size, color='white')
-        im_colour = Image.new('RGB', size=im_size, color='white')
+        canvas = Canvas(im_size=im_size, font=self.font, font_size=self.fontsize)
 
         # Check if internet is available
         if not internet_available():
@@ -204,9 +234,12 @@ class Todoist(inkycal_module):
 
             # Try to fetch fresh data from API
             try:
-                all_projects = [i[0] for i in self._fetch_with_retry(self._api.get_projects)] if self._fetch_with_retry(self._api.get_projects) else []
-                all_active_tasks = [i[0] for i in self._fetch_with_retry(self._api.get_tasks)] if self._fetch_with_retry(self._api.get_tasks) else []
-                # Save to cache on successful fetch
+                all_projects = self._fetch_with_retry(self._api.get_projects)[0] or []
+                all_tasks_api = self._fetch_with_retry(self._api.get_tasks) or []
+                all_active_tasks = []
+                for task_list in all_tasks_api:
+                    all_active_tasks.extend(task_list)
+                 # Save to cache on successful fetch
                 self._save_cache(all_projects, all_active_tasks)
             except Exception as e:
                 logger.error(f"Failed to fetch Todoist data: {e}")
@@ -227,9 +260,7 @@ class Todoist(inkycal_module):
 
         # Set some parameters for formatting todos
         line_spacing = 1
-        text_bbox_height = self.font.getbbox("hg")
-        line_height = text_bbox_height[3] + line_spacing
-        line_width = im_width
+        line_height = canvas.get_line_height() + line_spacing
         max_lines = im_height // line_height
 
         # Calculate padding from top so the lines look centralised
@@ -278,7 +309,11 @@ class Todoist(inkycal_module):
 
             # Check if task is overdue
             # Parse date in local timezone to ensure correct comparison
-            due_date = arrow.get(task.due.date, "YYYY-MM-DD").replace(tzinfo='local') if task.due else None
+            try:
+                due_date = arrow.get(task.due.date, "YYYY-MM-DD").replace(tzinfo='local') if task.due else None
+            except Exception as e:
+                logger.warning(f"Could not parse due date of task: {task} with due date: {task.due} reason: ", e)
+                continue
             today = arrow.now('local').floor('day')
             is_overdue = due_date and due_date < today if due_date else False
 
@@ -309,11 +344,11 @@ class Todoist(inkycal_module):
 
         for task in simplified:
             if task["project"]:
-                project_lengths.append(int(self.font.getlength(task['project']) * 1.1))
+                project_lengths.append(int(canvas.get_text_width(task['project']) * 1.1))
             if task["due"]:
-                due_lengths.append(int(self.font.getlength(task['due']) * 1.1))
+                due_lengths.append(int(canvas.get_text_width(task['due']) * 1.1))
             if task["priority_text"]:
-                priority_lengths.append(int(self.font.getlength(task['priority_text']) * 1.1))
+                priority_lengths.append(int(canvas.get_text_width(task['priority_text']) * 1.1))
 
         # Get maximum width of project names for selected font
         project_offset = int(max(project_lengths)) if project_lengths else 0
@@ -353,43 +388,47 @@ class Todoist(inkycal_module):
 
                         if todo['project']:
                             # Add todos project name
-                            write(
-                                im_colour, line_positions[cursor],
-                                (project_offset, line_height),
-                                todo['project'], font=self.font, alignment='left')
+                            canvas.write(
+                                xy=line_positions[cursor],
+                                box_size=(project_offset, line_height),
+                                text= todo['project'],
+                                colour="colour",
+                                alignment='left'
+                            )
 
                         # Add todos due if not empty
                         if todo['due']:
                             # Show overdue dates in red, normal dates in black
-                            due_image = im_colour if todo.get('is_overdue', False) else im_black
-                            write(
-                                due_image,
-                                (line_x + project_offset, line_y),
-                                (due_offset, line_height),
-                                todo['due'], font=self.font, alignment='left')
+                            canvas.write(
+                                xy=(line_x + project_offset, line_y),
+                                box_size=(due_offset, line_height),
+                                text= todo['due'],
+                                colour="colour" if todo.get('is_overdue', False) else "black",
+                                alignment='left'
+                            )
 
                         # Add priority indicator if present
                         if todo['priority_text']:
                             # P1 (priority 4) in red, P2 and P3 in black
-                            priority_image = im_colour if todo['priority'] == 4 else im_black
-                            write(
-                                priority_image,
-                                (line_x + project_offset + due_offset, line_y),
-                                (priority_offset, line_height),
-                                todo['priority_text'], font=self.font, alignment='left')
-
+                            canvas.write(
+                                xy=(line_x + project_offset + due_offset, line_y),
+                                box_size=(priority_offset, line_height),
+                                text=todo['priority_text'],
+                                colour="colour" if todo['priority'] == 4 else "black",
+                                alignment='left'
+                            )
                         if todo['name']:
                             # Add todos name
-                            write(
-                                im_black,
-                                (line_x + project_offset + due_offset + priority_offset, line_y),
-                                (im_width - project_offset - due_offset - priority_offset, line_height),
-                                todo['name'], font=self.font, alignment='left')
-
+                            canvas.write(
+                                xy=(line_x + project_offset + due_offset + priority_offset, line_y),
+                                box_size=(im_width - project_offset - due_offset - priority_offset, line_height),
+                                text=todo['name'],
+                                alignment='left'
+                            )
                         cursor += 1
                     else:
                         logger.error('More todos than available lines')
                         break
 
         # return the images ready for the display
-        return im_black, im_colour
+        return canvas.image_black, canvas.image_colour

@@ -30,6 +30,7 @@ tests = [
             "path": test_path,
             "palette": "16gray",
             "autoflip": True,
+            "dither": True,
             "orientation": "vertical",
             "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
         }
@@ -41,6 +42,7 @@ tests = [
             "path": test_path,
             "palette": "bwy",
             "autoflip": True,
+            "dither": False,
             "orientation": "vertical",
             "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
         }
@@ -52,6 +54,7 @@ tests = [
             "path": test_path,
             "palette": "bw",
             "autoflip": False,
+            "dither": True,
             "orientation": "vertical",
             "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
         }
@@ -63,6 +66,7 @@ tests = [
             "path": test_path,
             "palette": "bwr",
             "autoflip": True,
+            "dither": True,
             "orientation": "vertical",
             "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
         }
@@ -74,6 +78,7 @@ tests = [
             "path": test_path,
             "palette": "bwy",
             "autoflip": True,
+            "dither": True,
             "orientation": "horizontal",
             "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
         }
@@ -85,6 +90,7 @@ tests = [
             "path": test_path,
             "palette": "bw",
             "autoflip": True,
+            "dither": True,
             "orientation": "vertical",
             "padding_x": 0, "padding_y": 0, "fontsize": 12, "language": "en"
         }
@@ -96,6 +102,7 @@ tests = [
             "path": test_path,
             "palette": "bwr",
             "autoflip": True,
+            "dither": True,
             "orientation": "vertical",
             "padding_x": 20, "padding_y": 20, "fontsize": 12, "language": "en"
         }

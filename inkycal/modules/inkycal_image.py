@@ -6,12 +6,12 @@ import logging
 
 from inkycal.utils.inky_image import image_to_palette
 from inkycal.utils.inky_image import Inkyimage as Images
-from inkycal.modules.template import inkycal_module
+from inkycal.modules.template import InkycalModule
 
 logger = logging.getLogger(__name__)
 
 
-class Inkyimage(inkycal_module):
+class Inkyimage(InkycalModule):
     """Displays an image from URL or local path"""
 
     name = "Inkycal Image - show an image from a URL or local path"

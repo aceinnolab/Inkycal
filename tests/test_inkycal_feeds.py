@@ -17,7 +17,7 @@ tests = [
         "name": "Feeds",
         "config": {
             "size": [400, 200],
-            "feed_urls": "http://feeds.bbci.co.uk/news/world/rss.xml#",
+            "feed_urls": "https://feeds.bbci.co.uk/news/world/rss.xml#",
             "shuffle_feeds": True,
             "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
         }

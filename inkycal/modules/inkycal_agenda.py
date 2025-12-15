@@ -3,17 +3,20 @@ Inkycal Agenda Module
 Copyright by aceinnolab
 """
 import logging
-import arrow
-from PIL import ImageFont, Image, ImageDraw
 
-from inkycal.utils.functions import get_system_tz, fonts, write
+import arrow
+from PIL import Image, ImageDraw
+
+from inkycal.modules.template import InkycalModule
+from inkycal.utils.canvas import Canvas
+from inkycal.utils.enums import FONTS
+from inkycal.utils.functions import get_system_tz
 from inkycal.utils.ical_parser import iCalendar
-from inkycal.modules.template import inkycal_module
 
 logger = logging.getLogger(__name__)
 
 
-class Agenda(inkycal_module):
+class Agenda(InkycalModule):
     """Agenda class
     Create agenda and show events from given icalendars
     """
@@ -78,7 +81,7 @@ class Agenda(inkycal_module):
         # Additional config
         self.timezone = get_system_tz()
 
-        self.icon_font = ImageFont.truetype(fonts['MaterialIcons'], size=self.fontsize)
+        self.icon_font = FONTS.material_icons
 
         # give an OK message
         logger.debug(f'{__name__} loaded')
@@ -93,16 +96,12 @@ class Agenda(inkycal_module):
 
         logger.debug(f'Image size: {im_size}')
 
-        # Create an image for black pixels and one for coloured pixels
-        im_black = Image.new('RGB', size=im_size, color='white')
-        im_colour = Image.new('RGB', size=im_size, color='white')
+        canvas = Canvas(im_size, self.font, self.fontsize)
 
         # Calculate the max number of lines that can fit on the image
         line_spacing = 1
 
-        text_bbox_height = self.font.getbbox("hg")
-        line_height = text_bbox_height[3] + line_spacing
-        line_width = im_width
+        line_height = canvas.get_line_height() + line_spacing
         max_lines = im_height // line_height
         logger.debug(f'max lines: {max_lines}')
 
@@ -120,27 +119,27 @@ class Agenda(inkycal_module):
             for _ in range(max_lines)]
 
         # Load icalendar from config
-        self.ical = iCalendar()
-        parser = self.ical
+        ical = iCalendar()
 
         if self.ical_urls:
-            parser.load_url(self.ical_urls)
+            ical.load_url(self.ical_urls)
 
         if self.ical_files:
-            parser.load_from_file(self.ical_files)
+            ical.load_from_file(self.ical_files)
 
         # Load events from all icalendar in timerange
-        upcoming_events = parser.get_events(today, agenda_events[-1]['begin'],
+        upcoming_events = ical.get_events(today, agenda_events[-1]['begin'],
                                             self.timezone)
 
         # Sort events by beginning time
-        parser.sort()
+        ical.sort()
         # parser.show_events()
 
         # Set the width for date, time and event titles
-        date_width = int(max([self.font.getlength(
-            dates['begin'].format(self.date_format, locale=self.language))
-            for dates in agenda_events]))
+        date_strings = [date['begin'].format(self.date_format, locale=self.language) for date in agenda_events]
+        longest_date = max(date_strings, key=len)
+
+        date_width = canvas.get_text_width(longest_date)
         logger.debug(f'date_width: {date_width}')
 
         # Calculate positions for each line
@@ -180,20 +179,21 @@ class Agenda(inkycal_module):
             # Delete more entries than can be displayed (max lines)
             del agenda_events[max_lines:]
 
-            self._agenda_events = agenda_events
-
             cursor = 0
             for _ in agenda_events:
                 title = _['title']
 
                 # Check if item is a date
                 if 'end' not in _:
-                    ImageDraw.Draw(im_colour).line(
+                    ImageDraw.Draw(canvas.image_colour).line(
                         (0, line_pos[cursor][1], im_width, line_pos[cursor][1]),
                         fill='black')
 
-                    write(im_black, line_pos[cursor], (date_width, line_height),
-                          title, font=self.font, alignment='left')
+                    canvas.write(
+                        xy=line_pos[cursor],
+                        box_size=(date_width, line_height),
+                        text=title,
+                        alignment="left")
 
                     cursor += 1
 
@@ -202,18 +202,27 @@ class Agenda(inkycal_module):
                     time = _['begin'].format(self.time_format, locale=self.language)
 
                     # Check if event is all day, if not, add the time
-                    if not parser.all_day(_):
-                        write(im_black, (x_time, line_pos[cursor][1]),
-                              (time_width, line_height), time,
-                              font=self.font, alignment='right')
+                    if not ical.all_day(_):
+                        canvas.write(
+                            xy=(x_time, line_pos[cursor][1]),
+                            box_size=(time_width, line_height),
+                            text=time,
+                            alignment="right")
                     else:
-                        write(im_black, (x_time, line_pos[cursor][1]),
-                              (time_width, line_height), "\ue878",
-                              font=self.icon_font, alignment='right')
+                        canvas.set_font(font=self.icon_font, font_size=self.fontsize)
 
-                    write(im_black, (x_event, line_pos[cursor][1]),
-                          (event_width, line_height),
-                          ' • ' + title, font=self.font, alignment='left')
+                        canvas.write(
+                            xy=(x_time, line_pos[cursor][1]),
+                            box_size=(time_width, line_height),
+                            text="\ue878",
+                            alignment="right")
+
+                    canvas.set_font(font=self.font, font_size=self.fontsize)
+                    canvas.write(
+                        xy=(x_event, line_pos[cursor][1]),
+                        box_size=(event_width, line_height),
+                        text=' • ' + title,
+                        alignment="left")
                     cursor += 1
 
         # If no events were found, write only dates and lines
@@ -223,14 +232,16 @@ class Agenda(inkycal_module):
             cursor = 0
             for _ in agenda_events:
                 title = _['title']
-                ImageDraw.Draw(im_colour).line(
+                ImageDraw.Draw(canvas.image_colour).line(
                     (0, line_pos[cursor][1], im_width, line_pos[cursor][1]),
                     fill='black')
 
-                write(im_black, line_pos[cursor], (date_width, line_height),
-                      title, font=self.font, alignment='left')
-
+                canvas.write(
+                    xy=line_pos[cursor],
+                    box_size=(date_width, line_height),
+                    text=title,
+                    alignment="left")
                 cursor += 1
 
         # return the images ready for the display
-        return im_black, im_colour
+        return canvas.image_black, canvas.image_colour
