@@ -1,4 +1,4 @@
-# Welcome to inkycal v2025-12-15!
+# Welcome to inkycal
 
 <p align="center">
     <a href="https://github.com/aceinnolab/Inkycal/actions/workflows/test-on-rpi.yml"><img src="https://github.com/aceinnolab/Inkycal/actions/workflows/test-on-rpi.yml/badge.svg"></a>
