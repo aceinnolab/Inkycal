@@ -151,8 +151,7 @@ class Agenda(InkycalModule):
             logger.info('Managed to parse events from urls')
 
             # Find out how much space the event times take
-
-            time_width = int(max([self.font.getlength(
+            time_width = int(max([canvas.get_text_width(
                 events['begin'].format(self.time_format, locale=self.language))
                 for events in upcoming_events]) + 10)
             logger.debug(f'time_width: {time_width}')

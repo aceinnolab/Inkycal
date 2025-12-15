@@ -350,12 +350,12 @@ class Calendar(InkycalModule):
                 lang = self.language
 
                 date_width = int(max((
-                    self.font.getlength(events['begin'].format(self.date_format, locale=lang))
+                    canvas.get_text_width(events['begin'].format(self.date_format, locale=lang))
                     for events in upcoming_events)) * 1.1
                                  )
 
                 time_width = int(max((
-                    self.font.getlength(events['begin'].format(self.time_format, locale=lang))
+                    canvas.get_text_width(events['begin'].format(self.time_format, locale=lang))
                     for events in upcoming_events)) * 1.1
                                  )
 
