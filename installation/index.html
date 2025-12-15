@@ -1,0 +1,1193 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://aceinnolab.github.io/Inkycal/installation/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../quickstart/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Install Inkycal - Inkycal Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#installation-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Inkycal Documentation" class="md-header__button md-logo" aria-label="Inkycal Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inkycal Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Install Inkycal
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-hidden="true"  type="radio" name="__palette" id="__palette_1">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Inkycal Documentation" class="md-nav__button md-logo" aria-label="Inkycal Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Inkycal Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Installation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Inkycal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hardware/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/display/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Display Class
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/calendar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Calendar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/weather.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Weather
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/image.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Image
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inkycal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev_doc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/custom.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Module Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/canvas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Canvas Class
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="installation-guide">📦 Installation Guide<a class="headerlink" href="#installation-guide" title="Permanent link">&para;</a></h1>
+<p>Welcome to the Inkycal installation guide.<br />
+Whether you're installing Inkycal on a <strong>Raspberry Pi</strong>, setting it up on a <strong>desktop system</strong>, or using the preconfigured <strong>InkycalOS Lite</strong> image, this guide will walk you through each step.</p>
+<hr />
+<h1 id="1-choose-your-installation-method">🚀 1. Choose Your Installation Method<a class="headerlink" href="#1-choose-your-installation-method" title="Permanent link">&para;</a></h1>
+<p>Inkycal can be installed in <strong>three different ways</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Recommended For</th>
+<th>Difficulty</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>InkycalOS Lite (preconfigured)</strong></td>
+<td>Raspberry Pi Zero / Zero W</td>
+<td>⭐ Very Easy</td>
+<td>Fastest and most reliable method</td>
+</tr>
+<tr>
+<td><strong>Install on Raspberry Pi OS</strong></td>
+<td>Full control, custom setups</td>
+<td>⭐⭐ Medium</td>
+<td>Requires manual configuration</td>
+</tr>
+<tr>
+<td><strong>Install on non-GPIO devices</strong></td>
+<td>Development, preview, debugging</td>
+<td>⭐ Easy</td>
+<td>No display output</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="2-using-inkycalos-lite-recommended">🎯 2. Using InkycalOS Lite (Recommended)<a class="headerlink" href="#2-using-inkycalos-lite-recommended" title="Permanent link">&para;</a></h1>
+<p>If you want the <strong>fastest, most reliable installation</strong>, use the prebuilt InkycalOS Lite image.</p>
+<h3 id="what-you-get">✅ What you get:<a class="headerlink" href="#what-you-get" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fully configured Raspberry Pi OS Lite  </li>
+<li>SPI enabled  </li>
+<li>Dependencies preinstalled  </li>
+<li>Inkycal installed &amp; autostart configured  </li>
+<li>Best possible performance on Pi Zero  </li>
+</ul>
+<h3 id="how-to-get-it">📥 How to get it<a class="headerlink" href="#how-to-get-it" title="Permanent link">&para;</a></h3>
+<p>InkycalOS Lite is available to supporters of the project.<br />
+Check the <strong>GitHub Sponsors page</strong> or use the PayPal link provided in the repository README.</p>
+<h3 id="installation-steps">▶️ Installation steps<a class="headerlink" href="#installation-steps" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Flash the downloaded <code>.img</code> file using <strong>Raspberry Pi Imager</strong>.</li>
+<li>Copy your <code>settings.json</code> to the boot partition.</li>
+<li>Insert the SD card and power the Pi.</li>
+<li>Inkycal boots automatically.</li>
+</ol>
+<p>You're done. 🎉</p>
+<hr />
+<h1 id="3-install-on-raspberry-pi-os-manual-installation">🐍 3. Install on Raspberry Pi OS (Manual Installation)<a class="headerlink" href="#3-install-on-raspberry-pi-os-manual-installation" title="Permanent link">&para;</a></h1>
+<p>This method gives you full control.<br />
+Recommended for advanced users, developers, or custom hardware setups.</p>
+<hr />
+<h2 id="step-1-flash-raspberry-pi-os">Step 1 — Flash Raspberry Pi OS<a class="headerlink" href="#step-1-flash-raspberry-pi-os" title="Permanent link">&para;</a></h2>
+<p>Use <strong>Raspberry Pi Imager</strong> and write:</p>
+<blockquote>
+<p>⚠️ Recommended version:<br />
+<strong>Raspberry Pi OS Lite (bookworm)</strong> — the newest release may have kernel issues.</p>
+</blockquote>
+<p>Configure in Imager:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hostname</td>
+<td><code>inkycal</code></td>
+</tr>
+<tr>
+<td>SSH</td>
+<td>Enable</td>
+</tr>
+<tr>
+<td>Username</td>
+<td>choose one</td>
+</tr>
+<tr>
+<td>Password</td>
+<td>choose one</td>
+</tr>
+<tr>
+<td>Wi-Fi</td>
+<td>Configure if needed</td>
+</tr>
+<tr>
+<td>Timezone</td>
+<td>Your local timezone</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="step-2-prepare-the-sd-card">Step 2 — Prepare the SD Card<a class="headerlink" href="#step-2-prepare-the-sd-card" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>Generate your <code>settings.json</code> in the <strong>Inkycal Web UI</strong><br />
+<a href="https://inkycal.aceinnolab.com/ui">https://inkycal.aceinnolab.com/ui</a></p>
+</li>
+<li>
+<p>Copy <code>settings.json</code> to the root of the SD card.</p>
+</li>
+</ol>
+<p>Insert the SD card into the Pi and boot.</p>
+<hr />
+<h2 id="step-3-connect-via-ssh">Step 3 — Connect via SSH<a class="headerlink" href="#step-3-connect-via-ssh" title="Permanent link">&para;</a></h2>
+<p>After ~2–3 minutes, connect:</p>
+<div class="codehilite"><pre><span></span><code>ssh<span class="w"> </span>username@inkycal.local
+</code></pre></div>
+
+<p>(on Windows/macOS you can also use Termius)</p>
+<h2 id="step-4-raspberry-pi-setup">Step 4 — Raspberry Pi Setup<a class="headerlink" href="#step-4-raspberry-pi-setup" title="Permanent link">&para;</a></h2>
+<p>Expand filesystem:</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>raspi-config<span class="w"> </span>--expand-rootfs
+</code></pre></div>
+
+<p>Enable SPI:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># TODO: update ot use raspi-config, non-interactive</span>
+sudo<span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span>s/#dtparam<span class="o">=</span><span class="nv">spi</span><span class="o">=</span>on/dtparam<span class="o">=</span><span class="nv">spi</span><span class="o">=</span>on/<span class="w"> </span>/boot/firmware/config.txt
+<span class="sb">``</span>
+
+Set<span class="w"> </span>timezone<span class="w"> </span><span class="o">(</span>optional<span class="o">)</span>:
+<span class="sb">```</span>sh
+sudo<span class="w"> </span>dpkg-reconfigure<span class="w"> </span>tzdata
+</code></pre></div>
+
+<p>Required for 12.48" only:</p>
+<div class="codehilite"><pre><span></span><code>wget<span class="w"> </span>http://www.airspayce.com/mikem/bcm2835/bcm2835-1.71.tar.gz
+tar<span class="w"> </span>zxvf<span class="w"> </span>bcm2835-1.71.tar.gz
+<span class="nb">cd</span><span class="w"> </span>bcm2835-1.71/
+sudo<span class="w"> </span>./configure<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>make<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>make<span class="w"> </span>check<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>make<span class="w"> </span>install
+</code></pre></div>
+
+<h2 id="step-5-install-dependencies">Step 5 — Install Dependencies<a class="headerlink" href="#step-5-install-dependencies" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Update system:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span>-y
+</code></pre></div>
+
+<ul>
+<li>Enable swap (strongly recommended on the Raspberry Pi Zero)</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;mkdir -p /etc/rpi/swap.conf.d &amp;&amp;</span>
+<span class="s1">cat &lt;&lt;EOF | cmp -s - /etc/rpi/swap.conf.d/80-use-swapfile.conf || cat &lt;&lt;EOF &gt;/etc/rpi/swap.conf.d/80-use-swapfile.conf</span>
+<span class="s1">[Main]</span>
+<span class="s1">Mechanism=swapfile</span>
+
+<span class="s1">[File]</span>
+<span class="s1">FixedSizeMiB=1024</span>
+<span class="s1">EOF</span>
+<span class="s1">EOF&#39;</span>
+</code></pre></div>
+
+<ul>
+<li>Prevent memory overflow while installing:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TMPDIR</span><span class="o">=</span>/var/tmp
+</code></pre></div>
+
+<ul>
+<li>Install apt dependencies:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>git<span class="w"> </span>python3-dev<span class="w"> </span>python3-setuptools<span class="w"> </span>zlib1g-dev<span class="w"> </span><span class="se">\</span>
+libjpeg-dev<span class="w"> </span>libffi-dev<span class="w"> </span>libopenblas-dev<span class="w"> </span>libopenjp2-7<span class="w"> </span>wkhtmltopdf<span class="w"> </span><span class="se">\</span>
+rustc<span class="w"> </span>build-essential<span class="w"> </span>libssl-dev<span class="w"> </span>-y
+</code></pre></div>
+
+<h2 id="step-6-clone-install-inkycal">Step 6 - Clone &amp; Install Inkycal<a class="headerlink" href="#step-6-clone-install-inkycal" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Clone the repo</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/aceinnolab/Inkycal
+<span class="nb">cd</span><span class="w"> </span>Inkycal
+</code></pre></div>
+
+<p>Create virtual environment:</p>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+<span class="nb">source</span><span class="w"> </span>venv/bin/activate
+</code></pre></div>
+
+<p>Install dependencies using piwheels to avoid multi-hour builds:</p>
+<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip<span class="w"> </span>wheel<span class="w"> </span>setuptools<span class="w"> </span>--index-url<span class="w"> </span>https://www.piwheels.org/simple<span class="w"> </span>--extra-index-url<span class="w"> </span>https://pypi.org/simple
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="w"> </span>--index-url<span class="w"> </span>https://www.piwheels.org/simple<span class="w"> </span>--extra-index-url<span class="w"> </span>https://pypi.org/simple
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>raspberry_os_requirements.txt<span class="w"> </span>--index-url<span class="w"> </span>https://www.piwheels.org/simple<span class="w"> </span>--extra-index-url<span class="w"> </span>https://pypi.org/simple
+</code></pre></div>
+
+<h2 id="step-7-enable-autostart">Step 7 — Enable Autostart<a class="headerlink" href="#step-7-enable-autostart" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Add Inkycal to crontab (no sudo):</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="nv">CRON_LINE</span><span class="o">=</span><span class="s1">&#39;@reboot sleep 60 &amp;&amp; cd $HOME/Inkycal &amp;&amp; venv/bin/python inky_run.py &amp;&#39;</span>
+<span class="o">(</span><span class="w"> </span>crontab<span class="w"> </span>-l<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-qxF<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CRON_LINE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="se">\</span>
+<span class="o">(</span><span class="w"> </span>crontab<span class="w"> </span>-l<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CRON_LINE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">)</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>crontab<span class="w"> </span>-
+</code></pre></div>
+
+<h3 id="install-on-non-gpio-devices-development-mode">Install on Non-GPIO Devices (Development Mode)<a class="headerlink" href="#install-on-non-gpio-devices-development-mode" title="Permanent link">&para;</a></h3>
+<p>You can run Inkycal on macOS, Linux, Windows — useful for:</p>
+<ul>
+<li>Debugging</li>
+<li>Developing new modules</li>
+<li>Rendering previews</li>
+</ul>
+<p>You won’t be able to show images on real hardware.</p>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/aceinnolab/Inkycal
+<span class="nb">cd</span><span class="w"> </span>Inkycal
+python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+<span class="nb">source</span><span class="w"> </span>venv/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</code></pre></div>
+
+<p>Run:</p>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>inky_run.py
+</code></pre></div>
+
+<h2 id="pisugar-support">PiSugar Support<a class="headerlink" href="#pisugar-support" title="Permanent link">&para;</a></h2>
+<p>If you’re using a PiSugar battery board, see:</p>
+<p>https://github.com/aceinnolab/Inkycal/wiki/PiSugar-support</p>
+<p>This covers:</p>
+<ul>
+<li>Driver installation</li>
+<li>Configuration</li>
+<li>Auto-shutdown</li>
+<li>Power monitoring</li>
+</ul>
+<h2 id="troubleshooting-summary">🆘 Troubleshooting Summary<a class="headerlink" href="#troubleshooting-summary" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Display stays white</p>
+</blockquote>
+<p>Likely missing BCM2835 driver for 12.48”.</p>
+<p>Slow installation on Pi Zero W</p>
+<p>Use piwheels + swap (already covered above).</p>
+<p>settings.json missing</p>
+<p>Ensure it is placed at:
+* /boot/settings.json
+* Same directory as inky_run.py</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.expand", "navigation.top", "content.code.copy", "content.action.edit", "content.tooltips", "toc.follow"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>

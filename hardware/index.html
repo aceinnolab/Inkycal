@@ -1,0 +1,1232 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://aceinnolab.github.io/Inkycal/hardware/">
+      
+      
+        <link rel="prev" href="../quickstart/">
+      
+      
+        <link rel="next" href="../api/display/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Hardware Setup - Inkycal Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#hardware-setup-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Inkycal Documentation" class="md-header__button md-logo" aria-label="Inkycal Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inkycal Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Hardware Setup
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-hidden="true"  type="radio" name="__palette" id="__palette_1">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Inkycal Documentation" class="md-nav__button md-logo" aria-label="Inkycal Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Inkycal Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Installation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Inkycal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/display/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Display Class
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/calendar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Calendar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/weather.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Weather
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/image.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Image
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inkycal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev_doc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/custom.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Module Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/canvas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Canvas Class
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="hardware-setup-guide">🛠️ Hardware Setup Guide<a class="headerlink" href="#hardware-setup-guide" title="Permanent link">&para;</a></h1>
+<p>This guide explains everything you need to physically assemble, connect, and prepare your hardware for running <strong>Inkycal</strong>.<br />
+It covers supported displays, wiring, tools, troubleshooting, and best practices.</p>
+<p>Whether you're using a <strong>Raspberry Pi Zero</strong>, <strong>Pi 3/4</strong>, or another board, this page ensures your device is safely and correctly connected.</p>
+<hr />
+<h1 id="supported-hardware">📦 Supported Hardware<a class="headerlink" href="#supported-hardware" title="Permanent link">&para;</a></h1>
+<p>Inkycal works with:</p>
+<h3 id="raspberry-pi-boards">✔ Raspberry Pi boards<a class="headerlink" href="#raspberry-pi-boards" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Raspberry Pi Zero / Zero W / Zero 2 W  </li>
+<li>Raspberry Pi 3 (all models)  </li>
+<li>Raspberry Pi 4 (all models)  </li>
+<li>Raspberry Pi 5 (supported; SPI must be enabled)  </li>
+</ul>
+<blockquote>
+<p><strong>Tip:</strong> Zero W and Zero 2 W are most popular due to low power usage.</p>
+</blockquote>
+<hr />
+<h3 id="supported-epaper-displays">✔ Supported ePaper Displays<a class="headerlink" href="#supported-epaper-displays" title="Permanent link">&para;</a></h3>
+<p>Inkycal works with Waveshare ePaper displays using the official drivers.<br />
+Common supported models include (but are not limited to):</p>
+<table>
+<thead>
+<tr>
+<th>Size</th>
+<th>Type</th>
+<th>Colour support</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.7"</td>
+<td>BW</td>
+<td>No</td>
+<td>Simple and fast refresh</td>
+</tr>
+<tr>
+<td>4.2"</td>
+<td>BW or Red</td>
+<td>Some models support red/yellow</td>
+<td></td>
+</tr>
+<tr>
+<td>5.83"</td>
+<td>BW or Colour</td>
+<td>Popular choice</td>
+<td></td>
+</tr>
+<tr>
+<td>7.5"</td>
+<td>BW or Colour</td>
+<td>Recommended for Inkycal</td>
+<td></td>
+</tr>
+<tr>
+<td>9.7"</td>
+<td>BW</td>
+<td>Requires optimization disabled</td>
+<td></td>
+</tr>
+<tr>
+<td>12.48"</td>
+<td>BW</td>
+<td>Requires bcm2835 drivers</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Full list is returned by:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">inkycal.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Display</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Display</span><span class="o">.</span><span class="n">get_display_names</span><span class="p">())</span>
+</code></pre></div>
+
+<hr />
+<h1 id="pins-wiring">🔌 Pins &amp; Wiring<a class="headerlink" href="#pins-wiring" title="Permanent link">&para;</a></h1>
+<p>Most Waveshare ePaper displays connect via the <strong>40-pin GPIO header</strong> using SPI.</p>
+<h3 id="standard-spi-wiring-waveshare-hat-or-breakout">Standard SPI Wiring (Waveshare HAT or breakout)<a class="headerlink" href="#standard-spi-wiring-waveshare-hat-or-breakout" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Pi Pin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VCC</td>
+<td>3.3V</td>
+<td>Power supply</td>
+</tr>
+<tr>
+<td>GND</td>
+<td>GND</td>
+<td>Ground</td>
+</tr>
+<tr>
+<td>DIN</td>
+<td>GPIO 10</td>
+<td>MOSI</td>
+</tr>
+<tr>
+<td>CLK</td>
+<td>GPIO 11</td>
+<td>SCLK</td>
+</tr>
+<tr>
+<td>CS</td>
+<td>GPIO 8</td>
+<td>Chip select</td>
+</tr>
+<tr>
+<td>DC</td>
+<td>GPIO 25</td>
+<td>Data/Command</td>
+</tr>
+<tr>
+<td>RST</td>
+<td>GPIO 17</td>
+<td>Reset</td>
+</tr>
+<tr>
+<td>BUSY</td>
+<td>GPIO 24</td>
+<td>Busy status</td>
+</tr>
+</tbody>
+</table>
+<p>If you're using a <strong>Waveshare ePaper HAT</strong>, these connections are already made—no soldering needed.</p>
+<hr />
+<h1 id="enabling-spi-on-raspberry-pi">🔧 Enabling SPI on Raspberry Pi<a class="headerlink" href="#enabling-spi-on-raspberry-pi" title="Permanent link">&para;</a></h1>
+<p>The ePaper display <em>will not work</em> unless SPI is enabled.</p>
+<p>Enable it using either:</p>
+<h3 id="option-a-raspberry-pi-os-bookworm-bullseye">Option A — Raspberry Pi OS (Bookworm / Bullseye)<a class="headerlink" href="#option-a-raspberry-pi-os-bookworm-bullseye" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>raspi-config
+</code></pre></div>
+
+<p>Navigate to:</p>
+<div class="codehilite"><pre><span></span><code>Interface Options → SPI → Enable
+</code></pre></div>
+
+<p>Reboot when prompted.</p>
+<h3 id="option-b-modify-config-manually">Option B — Modify config manually<a class="headerlink" href="#option-b-modify-config-manually" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span>s/#dtparam<span class="o">=</span><span class="nv">spi</span><span class="o">=</span>on/dtparam<span class="o">=</span><span class="nv">spi</span><span class="o">=</span>on/<span class="w"> </span>/boot/firmware/config.txt
+</code></pre></div>
+
+<hr />
+<h1 id="optional-pisugar-support">🔋 Optional: PiSugar Support<a class="headerlink" href="#optional-pisugar-support" title="Permanent link">&para;</a></h1>
+<p>PiSugar boards allow battery-powered Inkycal devices with deep-sleep scheduling.</p>
+<p>Benefits:
+- Weeks of battery life<br />
+- Auto-shutdown on low battery<br />
+- Auto-wake timer<br />
+- Cleaner cable-free installation  </p>
+<p>Enable PiSugar support in settings.json:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">&quot;use_pi_sugar&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+</code></pre></div>
+
+<p>More info:<br />
+https://github.com/aceinnolab/Inkycal/wiki/PiSugar-support</p>
+<hr />
+<h1 id="power-requirements">⚡ Power Requirements<a class="headerlink" href="#power-requirements" title="Permanent link">&para;</a></h1>
+<p>Different displays draw significantly different power.</p>
+<table>
+<thead>
+<tr>
+<th>Display size</th>
+<th>Power usage</th>
+<th>Recommended power source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2–5"</td>
+<td>Very low</td>
+<td>Pi Zero USB power</td>
+</tr>
+<tr>
+<td>7.5"</td>
+<td>Moderate</td>
+<td>1A+ power supply</td>
+</tr>
+<tr>
+<td>9.7"</td>
+<td>High on refresh</td>
+<td>2A power supply</td>
+</tr>
+<tr>
+<td>12.48"</td>
+<td>Highest</td>
+<td>Official Pi PSU strongly recommended</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Never power the display from the Pi’s 5V pin unless the manufacturer specifically instructs you to.</strong></p>
+<hr />
+<h1 id="hardware-testing">🧪 Hardware Testing<a class="headerlink" href="#hardware-testing" title="Permanent link">&para;</a></h1>
+<p>After installation you can test SPI access:</p>
+<div class="codehilite"><pre><span></span><code>ls<span class="w"> </span>/dev/spi*
+</code></pre></div>
+
+<p>Expected output:</p>
+<div class="codehilite"><pre><span></span><code>/dev/spidev0.0
+/dev/spidev0.1
+</code></pre></div>
+
+<p>Then test display access via Inkycal:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">inkycal.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Display</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">&quot;waveshare_7in5_colour&quot;</span><span class="p">)</span>
+<span class="n">d</span><span class="o">.</span><span class="n">render_text</span><span class="p">(</span><span class="s2">&quot;Display works!&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<h1 id="troubleshooting">🚨 Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h1>
+<h3 id="display-stays-white">❌ Display stays white<a class="headerlink" href="#display-stays-white" title="Permanent link">&para;</a></h3>
+<ul>
+<li>SPI is disabled → enable via <code>raspi-config</code></li>
+<li>Incorrect wiring (BUSY / RST often reversed on clones)</li>
+<li>Wrong display model selected in settings.json</li>
+</ul>
+<hr />
+<h3 id="importerror-driver-not-found">❌ ImportError: driver not found<a class="headerlink" href="#importerror-driver-not-found" title="Permanent link">&para;</a></h3>
+<p>Model name isn't in <code>supported_models</code>.</p>
+<p>Check available names:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">inkycal.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Display</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Display</span><span class="o">.</span><span class="n">get_display_names</span><span class="p">())</span>
+</code></pre></div>
+
+<hr />
+<h3 id="filenotfounderror-spi-device-not-found">❌ FileNotFoundError: SPI device not found<a class="headerlink" href="#filenotfounderror-spi-device-not-found" title="Permanent link">&para;</a></h3>
+<p>User is running <strong>Raspberry Pi OS inside a virtual machine</strong><br />
+→ Use real hardware.</p>
+<p>Or:</p>
+<p>SPI disabled → enable it.</p>
+<hr />
+<h3 id="display-refreshes-but-shows-messyghosted-text">❌ Display refreshes but shows messy/ghosted text<a class="headerlink" href="#display-refreshes-but-shows-messyghosted-text" title="Permanent link">&para;</a></h3>
+<p>Run calibration:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">d</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">&quot;waveshare_7in5_colour&quot;</span><span class="p">)</span>
+<span class="n">d</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<h3 id="1248-display-does-not-work">❌ 12.48" display does not work<a class="headerlink" href="#1248-display-does-not-work" title="Permanent link">&para;</a></h3>
+<p>Requires bcm2835 driver:</p>
+<div class="codehilite"><pre><span></span><code>wget<span class="w"> </span>http://www.airspayce.com/mikem/bcm2835/bcm2835-1.71.tar.gz
+tar<span class="w"> </span>zxvf<span class="w"> </span>bcm2835-1.71.tar.gz
+<span class="nb">cd</span><span class="w"> </span>bcm2835-1.71/
+sudo<span class="w"> </span>./configure<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>make<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>make<span class="w"> </span>check<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>make<span class="w"> </span>install
+</code></pre></div>
+
+<hr />
+<h1 id="mounting-enclosures">🖼️ Mounting &amp; Enclosures<a class="headerlink" href="#mounting-enclosures" title="Permanent link">&para;</a></h1>
+<p>Many users mount their ePaper display:</p>
+<ul>
+<li>in a picture frame  </li>
+<li>behind acrylic glass  </li>
+<li>inside a custom 3D-printed enclosure  </li>
+<li>on a wall using adhesive strips  </li>
+</ul>
+<h3 id="tips">Tips<a class="headerlink" href="#tips" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Do <strong>not</strong> press hard on the front surface.  </li>
+<li>Avoid static electricity (ePaper is sensitive).  </li>
+<li>Keep the flat flex cable relaxed — sharp bends can damage it.</li>
+</ul>
+<hr />
+<h1 id="maintenance">🧼 Maintenance<a class="headerlink" href="#maintenance" title="Permanent link">&para;</a></h1>
+<p>ePaper displays last many years with proper use.</p>
+<p>Best practices:</p>
+<ul>
+<li>Calibrate every <strong>5–7 refresh cycles</strong>  </li>
+<li>Do not refresh excessively (avoid &gt;100 updates/day)  </li>
+<li>Use <code>optimize=False</code> for 9.7" displays to avoid artefacts  </li>
+</ul>
+<hr />
+<h1 id="summary">🎉 Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h1>
+<p>You now know how to:</p>
+<ul>
+<li>select and wire a compatible ePaper display  </li>
+<li>enable SPI and prepare Raspberry Pi OS  </li>
+<li>test the display using Inkycal  </li>
+<li>troubleshoot common hardware issues  </li>
+<li>safely mount and maintain your hardware  </li>
+</ul>
+<p>Once your hardware is ready, continue to:</p>
+<p>👉 <a href="../installation/"><code>installation</code></a><br />
+👉 <a href="../quickstart/"><code>quickstart</code></a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.expand", "navigation.top", "content.code.copy", "content.action.edit", "content.tooltips", "toc.follow"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>
