@@ -5,23 +5,19 @@ Copyright by aceinnolab
 import decimal
 import logging
 import math
-from typing import Tuple
-
 import arrow
-from PIL import Image
-from PIL import ImageDraw
-from PIL import ImageFont
-
-from inkycal.utils.functions import get_system_tz, fonts, internet_available, write, draw_border
+from inkycal.utils.canvas import Canvas
+from inkycal.utils.enums import FONTS
+from inkycal.utils.functions import get_system_tz, internet_available, draw_border
 from inkycal.utils.inkycal_exceptions import NetworkNotReachableError
 from inkycal.utils.openweathermap_wrapper import OpenWeatherMap
-from inkycal.modules.template import inkycal_module
+from inkycal.modules.template import InkycalModule
 
 logger = logging.getLogger(__name__)
 logger.setLevel(level=logging.INFO)
 
 
-class Weather(inkycal_module):
+class Weather(InkycalModule):
     """Weather class
     parses weather details from openweathermap
     """
@@ -120,8 +116,7 @@ class Weather(inkycal_module):
             tz_name=self.timezone
         )
 
-        self.weatherfont = ImageFont.truetype(
-            fonts['weathericons-regular-webfont'], size=self.fontsize)
+        self.weatherfont= FONTS.weather_icons
 
         if self.wind_unit == "beaufort":
             self.windDispUnit = "bft"
@@ -151,8 +146,7 @@ class Weather(inkycal_module):
         logger.debug(f'Image size: {im_size}')
 
         # Create an image for black pixels and one for coloured pixels
-        im_black = Image.new('RGB', size=im_size, color='white')
-        im_colour = Image.new('RGB', size=im_size, color='white')
+        canvas = Canvas(im_size=im_size, font=self.font, font_size=self.fontsize)
 
         # Check if internet is available
         if internet_available():
@@ -218,86 +212,6 @@ class Weather(inkycal_module):
             '50n': '\uf023'
         }
 
-        def draw_icon(image: Image, xy: Tuple[int, int], box_size: Tuple[int, int], icon: str, rotation=None):
-            """Custom function to add icons of weather font on the image.
-
-            Args:
-                - image:
-                    the image on which image should the text be added
-                - xy:
-                    coordinates as tuple -> (x,y)
-                - box_size:
-                    size of text-box -> (width,height)
-                - icon:
-                    icon-unicode, looks this up in weather-icons dictionary
-
-            """
-
-            icon_size_correction = {
-                '\uf00d': 10 / 60,
-                '\uf02e': 51 / 150,
-                '\uf019': 21 / 60,
-                '\uf01b': 21 / 60,
-                '\uf0b5': 51 / 150,
-                '\uf050': 25 / 60,
-                '\uf013': 51 / 150,
-                '\uf002': 0,
-                '\uf031': 29 / 100,
-                '\uf015': 21 / 60,
-                '\uf01e': 52 / 150,
-                '\uf056': 51 / 150,
-                '\uf053': 14 / 150,
-                '\uf012': 51 / 150,
-                '\uf01a': 51 / 150,
-                '\uf014': 51 / 150,
-                '\uf037': 42 / 150,
-                '\uf036': 42 / 150,
-                '\uf03b': 42 / 150,
-                '\uf038': 42 / 150,
-                '\uf023': 35 / 150,
-                '\uf07a': 35 / 150,
-                '\uf051': 18 / 150,
-                '\uf052': 18 / 150,
-                '\uf0aa': 0,
-                '\uf095': 0,
-                '\uf099': 0,
-                '\uf09c': 0,
-                '\uf0a0': 0,
-                '\uf0a3': 0,
-                '\uf0a7': 0,
-                '\uf0ae': 0
-            }
-
-            x, y = xy
-            box_width, box_height = box_size
-            text = icon
-            font = self.weatherfont
-
-            # Increase fontsize to fit specified height and width of text box
-            size = 8
-            font = ImageFont.truetype(font.path, size)
-            text_width, text_height = font.getbbox(text)[2:]
-
-            while text_width < int(box_width * 0.9) and text_height < int(box_height * 0.9):
-                size += 1
-                font = ImageFont.truetype(font.path, size)
-                text_width, text_height = font.getbbox(text)[2:]
-
-            text_width, text_height = font.getbbox(text)[2:]
-
-            # Align text to desired position
-            x = int((box_width / 2) - (text_width / 2))
-            y = int((box_height / 2) - (text_height / 2))
-
-            space = Image.new('RGBA', (box_width, box_height))
-            ImageDraw.Draw(space).text((x, y), text, fill='black', font=font)
-
-            if rotation:
-                space.rotate(rotation, expand=True)
-
-            # Update only region with text (add text with transparent background)
-            image.paste(space, xy, space)
-
         #   column1    column2    column3    column4    column5    column6    column7
         # |----------|----------|----------|----------|----------|----------|----------|
         # |  time    | temperat.| moonphase| forecast1| forecast2| forecast3| forecast4|
@@ -323,12 +237,9 @@ class Weather(inkycal_module):
 
         # Calculate spacings for better centering
         spacing_top = int((im_width % col_width) / 2)
-        spacing_left = int((im_height % row_height) / 2)
 
         # Define sizes for weather icons
         icon_small = int(col_width / 3)
-        icon_medium = icon_small * 2
-        icon_large = icon_small * 3
 
         # Calculate the x-axis position of each col
         col1 = spacing_top
@@ -347,17 +258,15 @@ class Weather(inkycal_module):
         row3 = row2 + line_gap + row_height
 
         # Draw lines on each row and border
-        ###########################################################################
-        #    draw = ImageDraw.Draw(im_black)
-        #    draw.line((0, 0, im_width, 0), fill='red')
-        #    draw.line((0, im_height-1, im_width, im_height-1), fill='red')
-        #    draw.line((0, row1, im_width, row1), fill='black')
-        #    draw.line((0, row1+row_height, im_width, row1+row_height), fill='black')
-        #    draw.line((0, row2, im_width, row2), fill='black')
-        #    draw.line((0, row2+row_height, im_width, row2+row_height), fill='black')
-        #    draw.line((0, row3, im_width, row3), fill='black')
-        #    draw.line((0, row3+row_height, im_width, row3+row_height), fill='black')
-        ###########################################################################
+        # draw = ImageDraw.Draw(canvas.image_black)
+        # draw.line((0, 0, im_width, 0), fill='red')
+        # draw.line((0, im_height-1, im_width, im_height-1), fill='red')
+        # draw.line((0, row1, im_width, row1), fill='black')
+        # draw.line((0, row1+row_height, im_width, row1+row_height), fill='black')
+        # draw.line((0, row2, im_width, row2), fill='black')
+        # draw.line((0, row2+row_height, im_width, row2+row_height), fill='black')
+        # draw.line((0, row3, im_width, row3), fill='black')
+        # draw.line((0, row3+row_height, im_width, row3+row_height), fill='black')
 
         # Positions for current weather details
         weather_icon_pos = (col1, 0)
@@ -422,7 +331,7 @@ class Weather(inkycal_module):
                 fc_data['fc' + str(index + 1)] = {
                     'temp': f"{forecast['temp']:.{dec_temp}f}{self.tempDispUnit}",
                     'icon': forecast["icon"],
-                    'stamp': forecast["datetime"].strftime("%I %p" if self.hour_format == 12 else "%H:%M")
+                    'stamp': arrow.get(forecast["datetime"]).format("h a" if self.hour_format == 12 else "H:mm")
                 }
 
         elif self.forecast_interval == 'daily':
@@ -435,7 +344,7 @@ class Weather(inkycal_module):
                 fc_data['fc' + str(index + 1)] = {
                     'temp': f'{forecast["temp_min"]:.{dec_temp}f}{self.tempDispUnit}/{forecast["temp_max"]:.{dec_temp}f}{self.tempDispUnit}',
                     'icon': forecast['icon'],
-                    'stamp': forecast['datetime'].strftime("%A")
+                    'stamp': arrow.get(forecast['datetime']).format("ddd", locale=self.locale)
                 }
         else:
             logger.error(f"Invalid forecast interval specified: {self.forecast_interval}. Check your settings!")
@@ -472,43 +381,93 @@ class Weather(inkycal_module):
         moon_phase = get_moon_phase()
 
         # Fill weather details in col 1 (current weather icon)
-        draw_icon(im_colour, weather_icon_pos, (col_width, im_height),
-                  weather_icons[weather_icon])
+        canvas.draw_icon(
+            xy=weather_icon_pos,
+            box_size=(col_width, im_height),
+            icon=weather_icons[weather_icon],
+            colour="colour",
+            font=self.weatherfont
+        )
 
         # Fill weather details in col 2 (temp, humidity, wind)
-        draw_icon(im_colour, temperature_icon_pos, (icon_small, row_height),
-                  '\uf053')
+        canvas.draw_icon(
+            xy=temperature_icon_pos,
+            box_size=(icon_small, row_height),
+            icon='\uf053',
+            colour="colour",
+            font=self.weatherfont
+        )
+        canvas.write(
+            xy=temperature_pos,
+            box_size=(col_width - icon_small, row_height),
+            text=temperature,
+            colour="colour" if is_negative(temperature) else "black"
+        )
 
-        if is_negative(temperature):
-            write(im_black, temperature_pos, (col_width - icon_small, row_height),
-                  temperature, font=self.font)
-        else:
-            write(im_black, temperature_pos, (col_width - icon_small, row_height),
-                  temperature, font=self.font)
+        canvas.draw_icon(
+            xy=humidity_icon_pos,
+            box_size=(icon_small, row_height),
+            icon='\uf07a',
+            colour="colour",
+            font=self.weatherfont
+        )
 
-        draw_icon(im_colour, humidity_icon_pos, (icon_small, row_height),
-                  '\uf07a')
+        canvas.write(
+            xy=humidity_pos,
+            box_size=(col_width - icon_small, row_height),
+            text=f"{humidity} %",
+        )
 
-        write(im_black, humidity_pos, (col_width - icon_small, row_height),
-              humidity + '%', font=self.font)
+        canvas.draw_icon(
+            xy=windspeed_icon_pos,
+            box_size=(icon_small, icon_small),
+            icon='\uf050',
+            colour="colour",
+            font=self.weatherfont
+        )
 
-        draw_icon(im_colour, windspeed_icon_pos, (icon_small, icon_small),
-                  '\uf050')
-
-        write(im_black, windspeed_pos, (col_width - icon_small, row_height),
-              wind, font=self.font)
+        canvas.write(
+            xy=windspeed_pos,
+            box_size=(col_width - icon_small, row_height),
+            text=wind
+        )
 
         # Fill weather details in col 3 (moonphase, sunrise, sunset)
-        draw_icon(im_colour, moonphase_pos, (col_width, row_height), moon_phase)
+        canvas.draw_icon(
+            xy=moonphase_pos,
+            box_size=(col_width, row_height),
+            icon=moon_phase,
+            colour="colour",
+            font=self.weatherfont
+        )
 
-        draw_icon(im_colour, sunrise_icon_pos, (icon_small, icon_small), '\uf051')
-        write(im_black, sunrise_time_pos, (col_width - icon_small, row_height),
-              sunrise, font=self.font)
+        canvas.draw_icon(
+            xy=sunrise_icon_pos,
+            box_size=(icon_small, icon_small),
+            icon='\uf051',
+            colour="colour",
+            font=self.weatherfont
+        )
 
-        draw_icon(im_colour, sunset_icon_pos, (icon_small, icon_small), '\uf052')
-        write(im_black, sunset_time_pos, (col_width - icon_small, row_height), sunset,
-              font=self.font)
+        canvas.write(
+            xy=sunrise_time_pos,
+            box_size=(col_width - icon_small, row_height),
+            text=sunrise
+        )
 
+        canvas.draw_icon(
+            xy=sunset_icon_pos,
+            box_size=(icon_small, icon_small),
+            icon='\uf052',
+            colour="colour",
+            font=self.weatherfont
+        )
+
+        canvas.write(
+            xy=sunset_time_pos,
+            box_size=(col_width - icon_small, row_height),
+            text=sunset
+        )
         # Add the forecast data to the correct places
         for pos in range(1, len(fc_data) + 1):
             stamp = fc_data[f'fc{pos}']['stamp']
@@ -519,26 +478,39 @@ class Weather(inkycal_module):
             icon = weather_icons[fc_data[f'fc{pos}']['icon']]
             temp = fc_data[f'fc{pos}']['temp']
 
-            write(im_black, eval(f'stamp_fc{pos}'), (col_width, row_height),
-                  stamp, font=self.font)
-            draw_icon(im_colour, eval(f'icon_fc{pos}'), (col_width, row_height + line_gap * 2),
-                      icon)
-            write(im_black, eval(f'temp_fc{pos}'), (col_width, row_height),
-                  temp, font=self.font)
+            canvas.write(
+                xy=eval(f'stamp_fc{pos}'),
+                box_size=(col_width, row_height),
+                text=stamp
+            )
+
+            canvas.draw_icon(
+                xy=eval(f'icon_fc{pos}'),
+                box_size=(col_width, row_height + line_gap * 2),
+                icon=icon,
+                colour="colour",
+                font=self.weatherfont
+            )
+
+            canvas.write(
+                xy=eval(f'temp_fc{pos}'),
+                box_size=(col_width, row_height),
+                text=temp
+            )
 
         border_h = row3 + row_height
         border_w = col_width - 3  # leave 3 pixels gap
 
         # Add borders around each subsection
-        draw_border(im_black, (col1, row1), (col_width * 3 - 3, border_h),
+        draw_border(canvas.image_black, (col1, row1), (col_width * 3 - 3, border_h),
                     shrinkage=(0, 0))
 
         for _ in range(4, 8):
-            draw_border(im_black, (eval(f'col{_}'), row1), (border_w, border_h),
+            draw_border(canvas.image_black, (eval(f'col{_}'), row1), (border_w, border_h),
                         shrinkage=(0, 0))
 
         # return the images ready for the display
-        return im_black, im_colour
+        return canvas.image_black, canvas.image_colour
 
 
 if __name__ == '__main__':

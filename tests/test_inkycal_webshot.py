@@ -19,45 +19,45 @@ tests = [
         "position": 1,
         "name": "Webshot",
         "config": {
-            "size": [400, 200],
-            "url": "https://aceinnolab.com",
+            "size": [480, 800],
+            "url": "https://weaaqi-web.vercel.app",
             "palette": "bwr",
             "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
         }
     },
-    {
-        "position": 1,
-        "name": "Webshot",
-        "config": {
-            "size": [400, 400],
-            "url": "https://aceinnolab.com",
-            "palette": "bwy",
-            "rotation": 0,
-            "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
-        }
-    },
-    {
-        "position": 1,
-        "name": "Webshot",
-        "config": {
-            "size": [400, 600],
-            "url": "https://aceinnolab.com",
-            "palette": "bw",
-            "rotation": 90,
-            "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
-        }
-    },
-    {
-        "position": 1,
-        "name": "Webshot",
-        "config": {
-            "size": [400, 800],
-            "url": "https://aceinnolab.com",
-            "palette": "bwr",
-            "rotation": 180,
-            "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
-        }
-    }
+    # {
+    #     "position": 1,
+    #     "name": "Webshot",
+    #     "config": {
+    #         "size": [400, 400],
+    #         "url": "https://aceinnolab.com",
+    #         "palette": "bwy",
+    #         "rotation": 0,
+    #         "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
+    #     }
+    # },
+    # {
+    #     "position": 1,
+    #     "name": "Webshot",
+    #     "config": {
+    #         "size": [400, 600],
+    #         "url": "https://aceinnolab.com",
+    #         "palette": "bw",
+    #         "rotation": 90,
+    #         "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
+    #     }
+    # },
+    # {
+    #     "position": 1,
+    #     "name": "Webshot",
+    #     "config": {
+    #         "size": [400, 800],
+    #         "url": "https://aceinnolab.com",
+    #         "palette": "bwr",
+    #         "rotation": 180,
+    #         "padding_x": 10, "padding_y": 10, "fontsize": 12, "language": "en"
+    #     }
+    # }
 ]
 
 

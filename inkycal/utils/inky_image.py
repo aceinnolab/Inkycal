@@ -178,31 +178,39 @@ class Inkyimage:
                 self.image = image
 
     @staticmethod
-    def merge(image1, image2):
-        """Merges two images into one.
-
-        Replaces white pixels of the first image with transparent ones. Then pastes
-        the first image on the second one.
-
-        Args:
-          - image1: A PIL Image object in 'RGBA' mode.
-          - image2: A PIL Image object in 'RGBA' mode.
-
-        Returns:
-          - A single image.
+    def color_to_red(img: Image.Image) -> Image.Image:
         """
+        Convert any non-white pixels to red with transparency.
+        Used for generating preview images that simulate colour e-paper.
+        """
+        arr = numpy.asarray(img.convert("RGBA")).copy()
 
-        def clear_white(img):
-            """Replace all white pixels from image with transparent pixels"""
-            x = numpy.asarray(img.convert("RGBA")).copy()
-            x[:, :, 3] = (255 * (x[:, :, :3] != 255).any(axis=2)).astype(numpy.uint8)
-            return Image.fromarray(x)
+        # Detect all non-white pixels (RGB != 255,255,255)
+        mask = (arr[:, :, :3] != 255).any(axis=2)
 
-        image2 = clear_white(image2)
-        image1.paste(image2, (0, 0), image2)
-        logger.info("merged given images into one")
+        # Set RGB to pure red where mask is true
+        arr[mask, 0] = 255  # R
+        arr[mask, 1] = 0  # G
+        arr[mask, 2] = 0  # B
 
-        return image1
+        # Alpha: fully opaque where coloured, fully transparent otherwise
+        arr[:, :, 3] = (mask * 255).astype(numpy.uint8)
+
+        return Image.fromarray(arr)
+
+    @staticmethod
+    def merge(image1, image2):
+        """
+        Return preview image where the colour-layer pixels render as red.
+        """
+        image_black = image1
+        image_colour_red = Inkyimage.color_to_red(image2)
+
+        # Overlay red pixels
+        image_black.paste(image_colour_red, (0, 0), image_colour_red)
+
+        logger.info("Preview image created (black + red composite)")
+        return image_black
 
 
 def image_to_palette(

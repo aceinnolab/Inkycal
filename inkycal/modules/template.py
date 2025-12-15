@@ -3,10 +3,10 @@ import abc
 
 from PIL import ImageFont
 
-from inkycal.utils.functions import fonts
+from inkycal.utils.enums import FONTS
 
 
-class inkycal_module(metaclass=abc.ABCMeta):
+class InkycalModule(metaclass=abc.ABCMeta):
     """Generic base class for inkycal modules"""
 
     @classmethod
@@ -27,8 +27,7 @@ class inkycal_module(metaclass=abc.ABCMeta):
         self.padding_top = self.padding_bottom = conf['padding_y']
 
         self.fontsize = conf["fontsize"]
-        self.font = ImageFont.truetype(
-            fonts['NotoSansUI-Regular'], size=self.fontsize)
+        self.font = FONTS.default
 
     def set(self, help=False, **kwargs):
         """Set attributes of class, e.g. class.set(key=value)
