@@ -33,8 +33,10 @@ jobs:
 
       # Build Documentation (sanity check)
       - name: Build documentation
+        working-directory: docs
         run: mkdocs build --strict
 
       # Deploy to gh-pages branch
       - name: Deploy docs
+        working-directory: docs
         run: mkdocs gh-deploy --force
