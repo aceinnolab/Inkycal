@@ -310,9 +310,17 @@ class Todoist(InkycalModule):
             # Check if task is overdue
             # Parse date in local timezone to ensure correct comparison
             try:
-                due_date = arrow.get(task.due.date, "YYYY-MM-DD").replace(tzinfo='local') if task.due else None
+                due_date = (
+                    arrow.get(task.due.date, "YYYY-MM-DD").replace(tzinfo="local")
+                    if task.due
+                    else None
+                )
             except Exception as e:
-                logger.warning(f"Could not parse due date of task: {task} with due date: {str(task.due)} reason: ", e)
+                logger.warning(
+                    "Could not parse due date of task %r: %s",
+                    task,
+                    e,
+                )
                 continue
             today = arrow.now('local').floor('day')
             is_overdue = due_date and due_date < today if due_date else False
