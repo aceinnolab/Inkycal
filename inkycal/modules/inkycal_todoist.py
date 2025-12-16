@@ -311,7 +311,7 @@ class Todoist(InkycalModule):
             # Parse date in local timezone to ensure correct comparison
             try:
                 due_date = (
-                    arrow.get(task.due.date, "YYYY-MM-DD").replace(tzinfo="local")
+                    arrow.get(task.due.date).replace(tzinfo="local")
                     if task.due
                     else None
                 )
