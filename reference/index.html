@@ -10344,7 +10344,7 @@ parses todos from the todoist api.</p>
             <span class="c1"># Parse date in local timezone to ensure correct comparison</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">due_date</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">arrow</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">due</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="s2">&quot;YYYY-MM-DD&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">)</span>
+                    <span class="n">arrow</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">due</span><span class="o">.</span><span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">due</span>
                     <span class="k">else</span> <span class="kc">None</span>
                 <span class="p">)</span>
@@ -10934,7 +10934,7 @@ parses todos from the todoist api.</p>
         <span class="c1"># Parse date in local timezone to ensure correct comparison</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">due_date</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">arrow</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">due</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="s2">&quot;YYYY-MM-DD&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">)</span>
+                <span class="n">arrow</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">due</span><span class="o">.</span><span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">due</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">)</span>
