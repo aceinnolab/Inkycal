@@ -5,7 +5,7 @@ class InkycalModuleImporter(Enum):
     Agenda = "inkycal.modules.inkycal_agenda.Agenda"
     Calendar = "inkycal.modules.inkycal_calendar.Calendar"
     Feeds = "inkycal.modules.inkycal_feeds.Feeds"
-    Inkyimage = "inkycal.modules.inky_image.Inkyimage"
+    Inkyimage = "inkycal.modules.inkycal_image.Inkyimage"
     Jokes = "inkycal.modules.inkycal_jokes.Jokes"
     Inkyserver = "inkycal.modules.inkycal_server.Inkyserver"
     Slideshow = "inkycal.modules.inkycal_slideshow.Slideshow"
