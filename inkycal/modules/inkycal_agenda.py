@@ -203,7 +203,7 @@ class Agenda(InkycalModule):
             y_pos = 0
             last_date_title = None
             
-            for item in agenda_events:
+            for i, item in enumerate(agenda_events):
                 # Determine type and content
                 if 'end' not in item: # Date
                     text = item['title']
@@ -220,13 +220,21 @@ class Agenda(InkycalModule):
                     item_height = num_lines * line_height
 
                 # Check if fits in current column
-                # If it's a date, we want to ensure there's space for at least one more line (the event)
-                # to avoid orphaned headers at the bottom of a column
-                check_height = item_height
-                if not is_event:
-                    check_height += line_height
+                # Look ahead logic for Date to prevent orphaned headers
+                force_next_col = False
+                if not is_event and i + 1 < len(agenda_events):
+                    next_item = agenda_events[i+1]
+                    if 'end' in next_item: # Next is event
+                        # Calculate next item height
+                        next_text = next_item['title']
+                        next_lines = canvas.text_wrap(next_text, title_width)
+                        next_height = max(1, len(next_lines)) * line_height
+                        
+                        # Check if BOTH fit
+                        if y_pos + item_height + next_height > im_height:
+                            force_next_col = True
 
-                if y_pos + check_height > im_height:
+                if force_next_col or y_pos + item_height > im_height:
                     # Move to next column
                     col += 1
                     y_pos = 0
