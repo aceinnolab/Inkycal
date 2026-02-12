@@ -46,6 +46,11 @@ class Agenda(InkycalModule):
                      "see https://arrow.readthedocs.io/en/stable/#supported-tokens, e.g. HH:mm",
             "default": "HH:mm",
         },
+        
+        "columns": {
+            "label": "Number of columns to display events in (1 or 2 columns supported)",
+            "default": 1,
+        }
 
     }
 
@@ -65,6 +70,11 @@ class Agenda(InkycalModule):
         self.date_format = config['date_format']
         self.time_format = config['time_format']
         self.language = config['language']
+        self.columns = config.get('columns', 1)
+        
+        # Validate columns
+        if self.columns < 1 or self.columns > 2:
+            raise ValueError(f"Columns must be 1 or 2, got {self.columns}")
 
         # Check if ical_files is an empty string
         if config['ical_urls'] and isinstance(config['ical_urls'], str):
@@ -100,16 +110,23 @@ class Agenda(InkycalModule):
 
         # Calculate the max number of lines that can fit on the image
         line_spacing = 1
-
         line_height = canvas.get_line_height() + line_spacing
-        max_lines = im_height // line_height
-        logger.debug(f'max lines: {max_lines}')
+        
+        # Calculate column layout
+        gutter = 10 if self.columns > 1 else 0
+        col_width = (im_width - (self.columns - 1) * gutter) // self.columns
+        
+        lines_per_col = im_height // line_height
+        max_lines = lines_per_col * self.columns
+        
+        logger.debug(f'max lines: {max_lines} ({lines_per_col} per column)')
 
         # Create timeline for agenda
         now = arrow.now()
         today = now.floor('day')
 
         # Create a list of dates for the next days
+        # We need enough dates to potentially fill all columns
         agenda_events = [
             {
                 'begin': today.shift(days=+_),
@@ -140,11 +157,9 @@ class Agenda(InkycalModule):
         longest_date = max(date_strings, key=len)
 
         date_width = canvas.get_text_width(longest_date)
+        # Ensure date width doesn't exceed column width
+        date_width = min(date_width, col_width)
         logger.debug(f'date_width: {date_width}')
-
-        # Calculate positions for each line
-        line_pos = [(0, int(line * line_height)) for line in range(max_lines)]
-        logger.debug(f'line_pos: {line_pos}')
 
         # Check if any events were filtered
         if upcoming_events:
@@ -161,12 +176,17 @@ class Agenda(InkycalModule):
             logger.debug(f'x-time: {x_time}')
 
             # Find out how much space is left for event titles
-            event_width = im_width - time_width 
+            event_width = col_width - time_width 
             logger.debug(f'width for events: {event_width}')
 
             # Calculate x-pos for event titles
             x_event = int(date_width/3) + time_width
             logger.debug(f'x-event: {x_event}')
+            
+            # Calculate bullet width
+            bullet = " • "
+            bullet_width = canvas.get_text_width(bullet)
+            title_width = event_width - bullet_width
 
             # Merge list of dates and list of events
             agenda_events += upcoming_events
@@ -176,34 +196,84 @@ class Agenda(InkycalModule):
             agenda_events.sort(key=by_date)
 
             # Delete more entries than can be displayed (max lines)
-            del agenda_events[max_lines:]
+            # We keep them for now, but will stop rendering when full
+            # del agenda_events[max_lines:]
 
-            cursor = 0
-            for _ in agenda_events:
-                title = _['title']
+            col = 0
+            y_pos = 0
+            last_date_title = None
+            
+            for item in agenda_events:
+                # Determine type and content
+                if 'end' not in item: # Date
+                    text = item['title']
+                    is_event = False
+                    # Dates are assumed to be 1 line
+                    item_height = line_height
+                    last_date_title = text
+                else: # Event
+                    text = item['title']
+                    is_event = True
+                    # Calculate required height for event title
+                    lines = canvas.text_wrap(text, title_width)
+                    num_lines = max(1, len(lines))
+                    item_height = num_lines * line_height
 
-                # Check if item is a date
-                if 'end' not in _:
+                # Check if fits in current column
+                # If it's a date, we want to ensure there's space for at least one more line (the event)
+                # to avoid orphaned headers at the bottom of a column
+                check_height = item_height
+                if not is_event:
+                    check_height += line_height
+
+                if y_pos + check_height > im_height:
+                    # Move to next column
+                    col += 1
+                    y_pos = 0
+                    
+                    # Check if we have run out of columns
+                    if col >= self.columns:
+                        break
+                    
+                    # If this is an event and we have a date context, repeat the date header
+                    if is_event and last_date_title:
+                        x_offset = col * (col_width + gutter)
+                        
+                        # Draw line
+                        ImageDraw.Draw(canvas.image_colour).line(
+                            (x_offset, y_pos, x_offset + col_width, y_pos),
+                            fill='black')
+
+                        canvas.write(
+                            xy=(x_offset, y_pos),
+                            box_size=(date_width, line_height),
+                            text=last_date_title,
+                            alignment="left")
+                        
+                        y_pos += line_height
+                
+                # Calculate offsets
+                x_offset = col * (col_width + gutter)
+                
+                if not is_event:
+                    # Render Date
                     ImageDraw.Draw(canvas.image_colour).line(
-                        (0, line_pos[cursor][1], im_width, line_pos[cursor][1]),
+                        (x_offset, y_pos, x_offset + col_width, y_pos),
                         fill='black')
 
                     canvas.write(
-                        xy=line_pos[cursor],
-                        box_size=(date_width, line_height),
-                        text=title,
+                        xy=(x_offset, y_pos),
+                        box_size=(date_width, item_height),
+                        text=text,
                         alignment="left")
-
-                    cursor += 1
-
-                # Check if item is an event
-                if 'end' in _:
-                    time = _['begin'].format(self.time_format, locale=self.language)
-
-                    # Check if event is all day, if not, add the time
-                    if not ical.all_day(_):
+                else:
+                    # Render Event
+                    # Time (always 1 line, aligned to top)
+                    time = item['begin'].format(self.time_format, locale=self.language)
+                    
+                    if not ical.all_day(item):
                         canvas.write(
-                            xy=(x_time, line_pos[cursor][1]),
+                            xy=(x_offset + x_time, y_pos),
                             box_size=(time_width, line_height),
                             text=time,
                             alignment="right")
@@ -211,36 +281,63 @@ class Agenda(InkycalModule):
                         canvas.set_font(font=self.icon_font, font_size=self.fontsize)
 
                         canvas.write(
-                            xy=(x_time, line_pos[cursor][1]),
+                            xy=(x_offset + x_time, y_pos),
                             box_size=(time_width, line_height),
                             text="\ue878",
                             alignment="right")
+                        
+                        canvas.set_font(font=self.font, font_size=self.fontsize)
 
-                    canvas.set_font(font=self.font, font_size=self.fontsize)
+                    # Bullet
                     canvas.write(
-                        xy=(x_event, line_pos[cursor][1]),
-                        box_size=(event_width, line_height),
-                        text=' • ' + title,
+                        xy=(x_offset + x_event, y_pos),
+                        box_size=(bullet_width, line_height),
+                        text=bullet,
                         alignment="left")
-                    cursor += 1
+
+                    # Title (multi-line)
+                    canvas.write(
+                        xy=(x_offset + x_event + bullet_width, y_pos),
+                        box_size=(title_width, item_height),
+                        text=text,
+                        alignment="left")
+                
+                # Advance cursor
+                y_pos += item_height
 
         # If no events were found, write only dates and lines
         else:
             logger.info('no events found')
 
-            cursor = 0
-            for _ in agenda_events:
-                title = _['title']
+            col = 0
+            y_pos = 0
+            
+            for item in agenda_events:
+                title = item['title']
+                item_height = line_height
+                
+                # Orphan check for dates in empty agenda
+                check_height = item_height + line_height
+                
+                if y_pos + check_height > im_height:
+                    col += 1
+                    y_pos = 0
+                    if col >= self.columns:
+                        break
+                
+                x_offset = col * (col_width + gutter)
+                
                 ImageDraw.Draw(canvas.image_colour).line(
-                    (0, line_pos[cursor][1], im_width, line_pos[cursor][1]),
+                    (x_offset, y_pos, x_offset + col_width, y_pos),
                     fill='black')
 
                 canvas.write(
-                    xy=line_pos[cursor],
-                    box_size=(date_width, line_height),
+                    xy=(x_offset, y_pos),
+                    box_size=(date_width, item_height),
                     text=title,
                     alignment="left")
-                cursor += 1
+                
+                y_pos += item_height
 
         # return the images ready for the display
         return canvas.image_black, canvas.image_colour
