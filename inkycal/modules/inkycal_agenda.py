@@ -48,7 +48,7 @@ class Agenda(InkycalModule):
         },
         
         "columns": {
-            "label": "Number of columns to display events in (1 or 2 columns supported)",
+            "label": "Number of columns to display events in",
             "default": 1,
         }
 
@@ -175,13 +175,13 @@ class Agenda(InkycalModule):
             x_time = int(date_width/3)
             logger.debug(f'x-time: {x_time}')
 
-            # Find out how much space is left for event titles
-            event_width = col_width - time_width 
-            logger.debug(f'width for events: {event_width}')
-
             # Calculate x-pos for event titles
-            x_event = int(date_width/3) + time_width
+            x_event = x_time + time_width
             logger.debug(f'x-event: {x_event}')
+
+            # Find out how much space is left for event titles
+            event_width = col_width - x_event 
+            logger.debug(f'width for events: {event_width}')
             
             # Calculate bullet width
             bullet = " • "
