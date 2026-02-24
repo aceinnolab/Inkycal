@@ -286,15 +286,19 @@ class Agenda(InkycalModule):
                             text=time,
                             alignment="right")
                     else:
-                        canvas.set_font(font=self.icon_font, font_size=self.fontsize)
-
-                        canvas.write(
-                            xy=(x_offset + x_time, y_pos),
-                            box_size=(time_width, line_height),
-                            text="\ue878",
-                            alignment="right")
+                        # Use draw_icon for better centering and scaling
+                        # We want it right-aligned in the time column
+                        # So we define a square box at the right end of the time column
+                        icon_size = line_height
+                        icon_x = x_offset + x_time + time_width - icon_size
                         
-                        canvas.set_font(font=self.font, font_size=self.fontsize)
+                        canvas.draw_icon(
+                            xy=(icon_x, y_pos),
+                            box_size=(icon_size, icon_size),
+                            icon="\ue878",
+                            font=self.icon_font,
+                            fill_ratio=0.8
+                        )
 
                     # Bullet
                     canvas.write(
