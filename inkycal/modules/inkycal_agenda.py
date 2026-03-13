@@ -190,10 +190,20 @@ class Agenda(InkycalModule):
 
             # Merge list of dates and list of events
             agenda_events += upcoming_events
+            
+            # Use view start to clamp older events for sorting
+            view_start = today
 
             # Sort the combined list in chronological order of dates
-            by_date = lambda event: event['begin']
-            agenda_events.sort(key=by_date)
+            # If times are equal (e.g. all-day events vs date header), prioritize date header
+            def sort_key(event):
+                is_event = 'end' in event
+                # Clamp start time to view_start for sorting purposes
+                # This ensures multi-day events starting before today appear under today's header
+                sort_time = max(event['begin'], view_start)
+                return (sort_time, is_event)
+
+            agenda_events.sort(key=sort_key)
 
             # Delete more entries than can be displayed (max lines)
             # We keep them for now, but will stop rendering when full
