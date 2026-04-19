@@ -59,6 +59,69 @@ tests = [
             "language": "en"
         }
     },
+    {
+        "name": "Agenda (2 Columns)",
+        "config": {
+            "size": [800, 600],
+            "ical_urls": sample_url,
+            "ical_files": None,
+            "date_format": "ddd D MMM",
+            "time_format": "HH:mm",
+            "padding_x": 10,
+            "padding_y": 10,
+            "fontsize": 12,
+            "language": "en",
+            "columns": 2
+        }
+    },
+    {
+        "name": "Agenda (Wrapping)",
+        "config": {
+            "size": [200, 600], # Narrow width to force wrapping
+            "ical_urls": sample_url,
+            "ical_files": None,
+            "date_format": "ddd D MMM",
+            "time_format": "HH:mm",
+            "padding_x": 10,
+            "padding_y": 10,
+            "fontsize": 12,
+            "language": "en",
+            "columns": 1
+        }
+    },
+]
+
+invalid_tests = [
+    {
+        "name": "Agenda (0 Columns)",
+        "config": {
+            "size": [800, 600],
+            "ical_urls": sample_url,
+            "ical_files": None,
+            "date_format": "ddd D MMM",
+            "time_format": "HH:mm",
+            "padding_x": 10,
+            "padding_y": 10,
+            "fontsize": 12,
+            "language": "en",
+            "columns": 0
+        }
+    },
+    {
+        "name": "Agenda (3 Columns)",
+        "config": {
+            "size": [800, 600],
+            "ical_urls": sample_url,
+            "ical_files": None,
+            "date_format": "ddd D MMM",
+            "time_format": "HH:mm",
+            "padding_x": 10,
+            "padding_y": 10,
+            "fontsize": 12,
+            "language": "en",
+            "columns": 3
+        }
+    },
 ]
 
 
@@ -72,3 +135,10 @@ class TestAgenda(unittest.TestCase):
             logger.info('OK')
             if Config.USE_PREVIEW:
                 merge(im_black, im_colour).show()
+
+    def test_invalid_columns(self):
+        for test in invalid_tests:
+            logger.info(f'Testing invalid columns: {test["config"]["columns"]}')
+            with self.assertRaises(ValueError):
+                Module(test)
+            logger.info('Caught expected ValueError')
