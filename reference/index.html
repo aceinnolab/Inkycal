@@ -8892,7 +8892,126 @@ Create agenda and show events from given icalendars</p>
 <span class="normal">243</span>
 <span class="normal">244</span>
 <span class="normal">245</span>
-<span class="normal">246</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Agenda</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Agenda</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Agenda class</span>
 <span class="sd">    Create agenda and show events from given icalendars</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -8923,6 +9042,11 @@ Create agenda and show events from given icalendars</p>
             <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;HH:mm&quot;</span><span class="p">,</span>
         <span class="p">},</span>
 
+        <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Number of columns to display events in&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">}</span>
+
     <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
@@ -8941,6 +9065,11 @@ Create agenda and show events from given icalendars</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">date_format</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;date_format&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_format</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;time_format&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;language&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;columns&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Validate columns</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Columns must be 1 or 2, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># Check if ical_files is an empty string</span>
         <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;ical_urls&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;ical_urls&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
@@ -8976,16 +9105,23 @@ Create agenda and show events from given icalendars</p>
 
         <span class="c1"># Calculate the max number of lines that can fit on the image</span>
         <span class="n">line_spacing</span> <span class="o">=</span> <span class="mi">1</span>
-
         <span class="n">line_height</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">get_line_height</span><span class="p">()</span> <span class="o">+</span> <span class="n">line_spacing</span>
-        <span class="n">max_lines</span> <span class="o">=</span> <span class="n">im_height</span> <span class="o">//</span> <span class="n">line_height</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;max lines: </span><span class="si">{</span><span class="n">max_lines</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Calculate column layout</span>
+        <span class="n">gutter</span> <span class="o">=</span> <span class="mi">10</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">col_width</span> <span class="o">=</span> <span class="p">(</span><span class="n">im_width</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">gutter</span><span class="p">)</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>
+
+        <span class="n">lines_per_col</span> <span class="o">=</span> <span class="n">im_height</span> <span class="o">//</span> <span class="n">line_height</span>
+        <span class="n">max_lines</span> <span class="o">=</span> <span class="n">lines_per_col</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;max lines: </span><span class="si">{</span><span class="n">max_lines</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">lines_per_col</span><span class="si">}</span><span class="s1"> per column)&#39;</span><span class="p">)</span>
 
         <span class="c1"># Create timeline for agenda</span>
         <span class="n">now</span> <span class="o">=</span> <span class="n">arrow</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
         <span class="n">today</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="s1">&#39;day&#39;</span><span class="p">)</span>
 
         <span class="c1"># Create a list of dates for the next days</span>
+        <span class="c1"># We need enough dates to potentially fill all columns</span>
         <span class="n">agenda_events</span> <span class="o">=</span> <span class="p">[</span>
             <span class="p">{</span>
                 <span class="s1">&#39;begin&#39;</span><span class="p">:</span> <span class="n">today</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">days</span><span class="o">=+</span><span class="n">_</span><span class="p">),</span>
@@ -9016,11 +9152,9 @@ Create agenda and show events from given icalendars</p>
         <span class="n">longest_date</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">date_strings</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">)</span>
 
         <span class="n">date_width</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">get_text_width</span><span class="p">(</span><span class="n">longest_date</span><span class="p">)</span>
+        <span class="c1"># Ensure date width doesn&#39;t exceed column width</span>
+        <span class="n">date_width</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">date_width</span><span class="p">,</span> <span class="n">col_width</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;date_width: </span><span class="si">{</span><span class="n">date_width</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-        <span class="c1"># Calculate positions for each line</span>
-        <span class="n">line_pos</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span> <span class="o">*</span> <span class="n">line_height</span><span class="p">))</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_lines</span><span class="p">)]</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;line_pos: </span><span class="si">{</span><span class="n">line_pos</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="c1"># Check if any events were filtered</span>
         <span class="k">if</span> <span class="n">upcoming_events</span><span class="p">:</span>
@@ -9036,87 +9170,191 @@ Create agenda and show events from given icalendars</p>
             <span class="n">x_time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date_width</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;x-time: </span><span class="si">{</span><span class="n">x_time</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
+            <span class="c1"># Calculate x-pos for event titles</span>
+            <span class="n">x_event</span> <span class="o">=</span> <span class="n">x_time</span> <span class="o">+</span> <span class="n">time_width</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;x-event: </span><span class="si">{</span><span class="n">x_event</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
             <span class="c1"># Find out how much space is left for event titles</span>
-            <span class="n">event_width</span> <span class="o">=</span> <span class="n">im_width</span> <span class="o">-</span> <span class="n">time_width</span> 
+            <span class="n">event_width</span> <span class="o">=</span> <span class="n">col_width</span> <span class="o">-</span> <span class="n">x_event</span> 
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;width for events: </span><span class="si">{</span><span class="n">event_width</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-            <span class="c1"># Calculate x-pos for event titles</span>
-            <span class="n">x_event</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date_width</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">time_width</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;x-event: </span><span class="si">{</span><span class="n">x_event</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="c1"># Calculate bullet width</span>
+            <span class="n">bullet</span> <span class="o">=</span> <span class="s2">&quot; • &quot;</span>
+            <span class="n">bullet_width</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">get_text_width</span><span class="p">(</span><span class="n">bullet</span><span class="p">)</span>
+            <span class="n">title_width</span> <span class="o">=</span> <span class="n">event_width</span> <span class="o">-</span> <span class="n">bullet_width</span>
 
             <span class="c1"># Merge list of dates and list of events</span>
             <span class="n">agenda_events</span> <span class="o">+=</span> <span class="n">upcoming_events</span>
 
+            <span class="c1"># Use view start to clamp older events for sorting</span>
+            <span class="n">view_start</span> <span class="o">=</span> <span class="n">today</span>
+
             <span class="c1"># Sort the combined list in chronological order of dates</span>
-            <span class="n">by_date</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span>
-            <span class="n">agenda_events</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">by_date</span><span class="p">)</span>
+            <span class="c1"># If times are equal (e.g. all-day events vs date header), prioritize date header</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">sort_key</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+                <span class="n">is_event</span> <span class="o">=</span> <span class="s1">&#39;end&#39;</span> <span class="ow">in</span> <span class="n">event</span>
+                <span class="c1"># Clamp start time to view_start for sorting purposes</span>
+                <span class="c1"># This ensures multi-day events starting before today appear under today&#39;s header</span>
+                <span class="n">sort_time</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">],</span> <span class="n">view_start</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">sort_time</span><span class="p">,</span> <span class="n">is_event</span><span class="p">)</span>
+
+            <span class="n">agenda_events</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">sort_key</span><span class="p">)</span>
 
             <span class="c1"># Delete more entries than can be displayed (max lines)</span>
-            <span class="k">del</span> <span class="n">agenda_events</span><span class="p">[</span><span class="n">max_lines</span><span class="p">:]</span>
+            <span class="c1"># We keep them for now, but will stop rendering when full</span>
+            <span class="c1"># del agenda_events[max_lines:]</span>
 
-            <span class="n">cursor</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">agenda_events</span><span class="p">:</span>
-                <span class="n">title</span> <span class="o">=</span> <span class="n">_</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">y_pos</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">last_date_title</span> <span class="o">=</span> <span class="kc">None</span>
 
-                <span class="c1"># Check if item is a date</span>
-                <span class="k">if</span> <span class="s1">&#39;end&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">agenda_events</span><span class="p">):</span>
+                <span class="c1"># Determine type and content</span>
+                <span class="k">if</span> <span class="s1">&#39;end&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span> <span class="c1"># Date</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+                    <span class="n">is_event</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="c1"># Dates are assumed to be 1 line</span>
+                    <span class="n">item_height</span> <span class="o">=</span> <span class="n">line_height</span>
+                    <span class="n">last_date_title</span> <span class="o">=</span> <span class="n">text</span>
+                <span class="k">else</span><span class="p">:</span> <span class="c1"># Event</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+                    <span class="n">is_event</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="c1"># Calculate required height for event title</span>
+                    <span class="n">lines</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">text_wrap</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">title_width</span><span class="p">)</span>
+                    <span class="n">num_lines</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">))</span>
+                    <span class="n">item_height</span> <span class="o">=</span> <span class="n">num_lines</span> <span class="o">*</span> <span class="n">line_height</span>
+
+                <span class="c1"># Check if fits in current column</span>
+                <span class="c1"># Look ahead logic for Date to prevent orphaned headers</span>
+                <span class="n">force_next_col</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">is_event</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">agenda_events</span><span class="p">):</span>
+                    <span class="n">next_item</span> <span class="o">=</span> <span class="n">agenda_events</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="s1">&#39;end&#39;</span> <span class="ow">in</span> <span class="n">next_item</span><span class="p">:</span> <span class="c1"># Next is event</span>
+                        <span class="c1"># Calculate next item height</span>
+                        <span class="n">next_text</span> <span class="o">=</span> <span class="n">next_item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+                        <span class="n">next_lines</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">text_wrap</span><span class="p">(</span><span class="n">next_text</span><span class="p">,</span> <span class="n">title_width</span><span class="p">)</span>
+                        <span class="n">next_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">next_lines</span><span class="p">))</span> <span class="o">*</span> <span class="n">line_height</span>
+
+                        <span class="c1"># Check if BOTH fit</span>
+                        <span class="k">if</span> <span class="n">y_pos</span> <span class="o">+</span> <span class="n">item_height</span> <span class="o">+</span> <span class="n">next_height</span> <span class="o">&gt;</span> <span class="n">im_height</span><span class="p">:</span>
+                            <span class="n">force_next_col</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="k">if</span> <span class="n">force_next_col</span> <span class="ow">or</span> <span class="n">y_pos</span> <span class="o">+</span> <span class="n">item_height</span> <span class="o">&gt;</span> <span class="n">im_height</span><span class="p">:</span>
+                    <span class="c1"># Move to next column</span>
+                    <span class="n">col</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">y_pos</span> <span class="o">=</span> <span class="mi">0</span>
+
+                    <span class="c1"># Check if we have run out of columns</span>
+                    <span class="k">if</span> <span class="n">col</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                        <span class="k">break</span>
+
+                    <span class="c1"># If this is an event and we have a date context, repeat the date header</span>
+                    <span class="k">if</span> <span class="n">is_event</span> <span class="ow">and</span> <span class="n">last_date_title</span><span class="p">:</span>
+                        <span class="n">x_offset</span> <span class="o">=</span> <span class="n">col</span> <span class="o">*</span> <span class="p">(</span><span class="n">col_width</span> <span class="o">+</span> <span class="n">gutter</span><span class="p">)</span>
+
+                        <span class="c1"># Draw line</span>
+                        <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">image_colour</span><span class="p">)</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+                            <span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">x_offset</span> <span class="o">+</span> <span class="n">col_width</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
+                            <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+                        <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                            <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
+                            <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">date_width</span><span class="p">,</span> <span class="n">line_height</span><span class="p">),</span>
+                            <span class="n">text</span><span class="o">=</span><span class="n">last_date_title</span><span class="p">,</span>
+                            <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+
+                        <span class="n">y_pos</span> <span class="o">+=</span> <span class="n">line_height</span>
+
+                <span class="c1"># Calculate offsets</span>
+                <span class="n">x_offset</span> <span class="o">=</span> <span class="n">col</span> <span class="o">*</span> <span class="p">(</span><span class="n">col_width</span> <span class="o">+</span> <span class="n">gutter</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">is_event</span><span class="p">:</span>
+                    <span class="c1"># Render Date</span>
                     <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">image_colour</span><span class="p">)</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-                        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">im_width</span><span class="p">,</span> <span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+                        <span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">x_offset</span> <span class="o">+</span> <span class="n">col_width</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
                         <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 
                     <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                        <span class="n">xy</span><span class="o">=</span><span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">],</span>
-                        <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">date_width</span><span class="p">,</span> <span class="n">line_height</span><span class="p">),</span>
-                        <span class="n">text</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+                        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
+                        <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">date_width</span><span class="p">,</span> <span class="n">item_height</span><span class="p">),</span>
+                        <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
                         <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Render Event</span>
+                    <span class="c1"># Time (always 1 line, aligned to top)</span>
+                    <span class="n">time</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
 
-                    <span class="n">cursor</span> <span class="o">+=</span> <span class="mi">1</span>
-
-                <span class="c1"># Check if item is an event</span>
-                <span class="k">if</span> <span class="s1">&#39;end&#39;</span> <span class="ow">in</span> <span class="n">_</span><span class="p">:</span>
-                    <span class="n">time</span> <span class="o">=</span> <span class="n">_</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
-
-                    <span class="c1"># Check if event is all day, if not, add the time</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">ical</span><span class="o">.</span><span class="n">all_day</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">ical</span><span class="o">.</span><span class="n">all_day</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
                         <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                            <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_time</span><span class="p">,</span> <span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_offset</span> <span class="o">+</span> <span class="n">x_time</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
                             <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">time_width</span><span class="p">,</span> <span class="n">line_height</span><span class="p">),</span>
                             <span class="n">text</span><span class="o">=</span><span class="n">time</span><span class="p">,</span>
                             <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">canvas</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">icon_font</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="p">)</span>
+                        <span class="c1"># Use draw_icon for better centering and scaling</span>
+                        <span class="c1"># We want it right-aligned in the time column</span>
+                        <span class="c1"># So we define a square box at the right end of the time column</span>
+                        <span class="n">icon_size</span> <span class="o">=</span> <span class="n">line_height</span>
+                        <span class="n">icon_x</span> <span class="o">=</span> <span class="n">x_offset</span> <span class="o">+</span> <span class="n">x_time</span> <span class="o">+</span> <span class="n">time_width</span> <span class="o">-</span> <span class="n">icon_size</span>
 
-                        <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                            <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_time</span><span class="p">,</span> <span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
-                            <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">time_width</span><span class="p">,</span> <span class="n">line_height</span><span class="p">),</span>
-                            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\ue878</span><span class="s2">&quot;</span><span class="p">,</span>
-                            <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+                        <span class="n">canvas</span><span class="o">.</span><span class="n">draw_icon</span><span class="p">(</span>
+                            <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">icon_x</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
+                            <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">icon_size</span><span class="p">,</span> <span class="n">icon_size</span><span class="p">),</span>
+                            <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\ue878</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="n">font</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">icon_font</span><span class="p">,</span>
+                            <span class="n">fill_ratio</span><span class="o">=</span><span class="mf">0.8</span>
+                        <span class="p">)</span>
 
-                    <span class="n">canvas</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="p">)</span>
+                    <span class="c1"># Bullet</span>
                     <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_event</span><span class="p">,</span> <span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
-                        <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">event_width</span><span class="p">,</span> <span class="n">line_height</span><span class="p">),</span>
-                        <span class="n">text</span><span class="o">=</span><span class="s1">&#39; • &#39;</span> <span class="o">+</span> <span class="n">title</span><span class="p">,</span>
+                        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_offset</span> <span class="o">+</span> <span class="n">x_event</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
+                        <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">bullet_width</span><span class="p">,</span> <span class="n">line_height</span><span class="p">),</span>
+                        <span class="n">text</span><span class="o">=</span><span class="n">bullet</span><span class="p">,</span>
                         <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
-                    <span class="n">cursor</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                    <span class="c1"># Title (multi-line)</span>
+                    <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_offset</span> <span class="o">+</span> <span class="n">x_event</span> <span class="o">+</span> <span class="n">bullet_width</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
+                        <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">title_width</span><span class="p">,</span> <span class="n">item_height</span><span class="p">),</span>
+                        <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+                        <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+
+                <span class="c1"># Advance cursor</span>
+                <span class="n">y_pos</span> <span class="o">+=</span> <span class="n">item_height</span>
 
         <span class="c1"># If no events were found, write only dates and lines</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;no events found&#39;</span><span class="p">)</span>
 
-            <span class="n">cursor</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">agenda_events</span><span class="p">:</span>
-                <span class="n">title</span> <span class="o">=</span> <span class="n">_</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">y_pos</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">agenda_events</span><span class="p">:</span>
+                <span class="n">title</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+                <span class="n">item_height</span> <span class="o">=</span> <span class="n">line_height</span>
+
+                <span class="c1"># Orphan check for dates in empty agenda</span>
+                <span class="n">check_height</span> <span class="o">=</span> <span class="n">item_height</span> <span class="o">+</span> <span class="n">line_height</span>
+
+                <span class="k">if</span> <span class="n">y_pos</span> <span class="o">+</span> <span class="n">check_height</span> <span class="o">&gt;</span> <span class="n">im_height</span><span class="p">:</span>
+                    <span class="n">col</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">y_pos</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">if</span> <span class="n">col</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                        <span class="k">break</span>
+
+                <span class="n">x_offset</span> <span class="o">=</span> <span class="n">col</span> <span class="o">*</span> <span class="p">(</span><span class="n">col_width</span> <span class="o">+</span> <span class="n">gutter</span><span class="p">)</span>
+
                 <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">image_colour</span><span class="p">)</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-                    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">im_width</span><span class="p">,</span> <span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+                    <span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">x_offset</span> <span class="o">+</span> <span class="n">col_width</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
                     <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 
                 <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                    <span class="n">xy</span><span class="o">=</span><span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">],</span>
-                    <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">date_width</span><span class="p">,</span> <span class="n">line_height</span><span class="p">),</span>
+                    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
+                    <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">date_width</span><span class="p">,</span> <span class="n">item_height</span><span class="p">),</span>
                     <span class="n">text</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
                     <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
-                <span class="n">cursor</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="n">y_pos</span> <span class="o">+=</span> <span class="n">item_height</span>
 
         <span class="c1"># return the images ready for the display</span>
         <span class="k">return</span> <span class="n">canvas</span><span class="o">.</span><span class="n">image_black</span><span class="p">,</span> <span class="n">canvas</span><span class="o">.</span><span class="n">image_colour</span>
@@ -9152,12 +9390,7 @@ Create agenda and show events from given icalendars</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>inkycal/modules/inkycal_agenda.py</code></summary>
-              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">57</span>
 <span class="normal">58</span>
 <span class="normal">59</span>
 <span class="normal">60</span>
@@ -9187,7 +9420,17 @@ Create agenda and show events from given icalendars</p>
 <span class="normal">84</span>
 <span class="normal">85</span>
 <span class="normal">86</span>
-<span class="normal">87</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize inkycal_agenda module&quot;&quot;&quot;</span>
 
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -9203,6 +9446,11 @@ Create agenda and show events from given icalendars</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">date_format</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;date_format&#39;</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">time_format</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;time_format&#39;</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;language&#39;</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;columns&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Validate columns</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Columns must be 1 or 2, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># Check if ical_files is an empty string</span>
     <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;ical_urls&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;ical_urls&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
@@ -9245,17 +9493,7 @@ Create agenda and show events from given icalendars</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>inkycal/modules/inkycal_agenda.py</code></summary>
-              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 99</span>
 <span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
@@ -9402,7 +9640,126 @@ Create agenda and show events from given icalendars</p>
 <span class="normal">243</span>
 <span class="normal">244</span>
 <span class="normal">245</span>
-<span class="normal">246</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate image for this module&quot;&quot;&quot;</span>
 
     <span class="c1"># Define new image size with respect to padding</span>
@@ -9416,16 +9773,23 @@ Create agenda and show events from given icalendars</p>
 
     <span class="c1"># Calculate the max number of lines that can fit on the image</span>
     <span class="n">line_spacing</span> <span class="o">=</span> <span class="mi">1</span>
-
     <span class="n">line_height</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">get_line_height</span><span class="p">()</span> <span class="o">+</span> <span class="n">line_spacing</span>
-    <span class="n">max_lines</span> <span class="o">=</span> <span class="n">im_height</span> <span class="o">//</span> <span class="n">line_height</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;max lines: </span><span class="si">{</span><span class="n">max_lines</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Calculate column layout</span>
+    <span class="n">gutter</span> <span class="o">=</span> <span class="mi">10</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">col_width</span> <span class="o">=</span> <span class="p">(</span><span class="n">im_width</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">gutter</span><span class="p">)</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>
+
+    <span class="n">lines_per_col</span> <span class="o">=</span> <span class="n">im_height</span> <span class="o">//</span> <span class="n">line_height</span>
+    <span class="n">max_lines</span> <span class="o">=</span> <span class="n">lines_per_col</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;max lines: </span><span class="si">{</span><span class="n">max_lines</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">lines_per_col</span><span class="si">}</span><span class="s1"> per column)&#39;</span><span class="p">)</span>
 
     <span class="c1"># Create timeline for agenda</span>
     <span class="n">now</span> <span class="o">=</span> <span class="n">arrow</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
     <span class="n">today</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="s1">&#39;day&#39;</span><span class="p">)</span>
 
     <span class="c1"># Create a list of dates for the next days</span>
+    <span class="c1"># We need enough dates to potentially fill all columns</span>
     <span class="n">agenda_events</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">{</span>
             <span class="s1">&#39;begin&#39;</span><span class="p">:</span> <span class="n">today</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">days</span><span class="o">=+</span><span class="n">_</span><span class="p">),</span>
@@ -9456,11 +9820,9 @@ Create agenda and show events from given icalendars</p>
     <span class="n">longest_date</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">date_strings</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">)</span>
 
     <span class="n">date_width</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">get_text_width</span><span class="p">(</span><span class="n">longest_date</span><span class="p">)</span>
+    <span class="c1"># Ensure date width doesn&#39;t exceed column width</span>
+    <span class="n">date_width</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">date_width</span><span class="p">,</span> <span class="n">col_width</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;date_width: </span><span class="si">{</span><span class="n">date_width</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Calculate positions for each line</span>
-    <span class="n">line_pos</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span> <span class="o">*</span> <span class="n">line_height</span><span class="p">))</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_lines</span><span class="p">)]</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;line_pos: </span><span class="si">{</span><span class="n">line_pos</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="c1"># Check if any events were filtered</span>
     <span class="k">if</span> <span class="n">upcoming_events</span><span class="p">:</span>
@@ -9476,87 +9838,191 @@ Create agenda and show events from given icalendars</p>
         <span class="n">x_time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date_width</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;x-time: </span><span class="si">{</span><span class="n">x_time</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
+        <span class="c1"># Calculate x-pos for event titles</span>
+        <span class="n">x_event</span> <span class="o">=</span> <span class="n">x_time</span> <span class="o">+</span> <span class="n">time_width</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;x-event: </span><span class="si">{</span><span class="n">x_event</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
         <span class="c1"># Find out how much space is left for event titles</span>
-        <span class="n">event_width</span> <span class="o">=</span> <span class="n">im_width</span> <span class="o">-</span> <span class="n">time_width</span> 
+        <span class="n">event_width</span> <span class="o">=</span> <span class="n">col_width</span> <span class="o">-</span> <span class="n">x_event</span> 
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;width for events: </span><span class="si">{</span><span class="n">event_width</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-        <span class="c1"># Calculate x-pos for event titles</span>
-        <span class="n">x_event</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date_width</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">time_width</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;x-event: </span><span class="si">{</span><span class="n">x_event</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="c1"># Calculate bullet width</span>
+        <span class="n">bullet</span> <span class="o">=</span> <span class="s2">&quot; • &quot;</span>
+        <span class="n">bullet_width</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">get_text_width</span><span class="p">(</span><span class="n">bullet</span><span class="p">)</span>
+        <span class="n">title_width</span> <span class="o">=</span> <span class="n">event_width</span> <span class="o">-</span> <span class="n">bullet_width</span>
 
         <span class="c1"># Merge list of dates and list of events</span>
         <span class="n">agenda_events</span> <span class="o">+=</span> <span class="n">upcoming_events</span>
 
+        <span class="c1"># Use view start to clamp older events for sorting</span>
+        <span class="n">view_start</span> <span class="o">=</span> <span class="n">today</span>
+
         <span class="c1"># Sort the combined list in chronological order of dates</span>
-        <span class="n">by_date</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span>
-        <span class="n">agenda_events</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">by_date</span><span class="p">)</span>
+        <span class="c1"># If times are equal (e.g. all-day events vs date header), prioritize date header</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">sort_key</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+            <span class="n">is_event</span> <span class="o">=</span> <span class="s1">&#39;end&#39;</span> <span class="ow">in</span> <span class="n">event</span>
+            <span class="c1"># Clamp start time to view_start for sorting purposes</span>
+            <span class="c1"># This ensures multi-day events starting before today appear under today&#39;s header</span>
+            <span class="n">sort_time</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">],</span> <span class="n">view_start</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">sort_time</span><span class="p">,</span> <span class="n">is_event</span><span class="p">)</span>
+
+        <span class="n">agenda_events</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">sort_key</span><span class="p">)</span>
 
         <span class="c1"># Delete more entries than can be displayed (max lines)</span>
-        <span class="k">del</span> <span class="n">agenda_events</span><span class="p">[</span><span class="n">max_lines</span><span class="p">:]</span>
+        <span class="c1"># We keep them for now, but will stop rendering when full</span>
+        <span class="c1"># del agenda_events[max_lines:]</span>
 
-        <span class="n">cursor</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">agenda_events</span><span class="p">:</span>
-            <span class="n">title</span> <span class="o">=</span> <span class="n">_</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">y_pos</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">last_date_title</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="c1"># Check if item is a date</span>
-            <span class="k">if</span> <span class="s1">&#39;end&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">agenda_events</span><span class="p">):</span>
+            <span class="c1"># Determine type and content</span>
+            <span class="k">if</span> <span class="s1">&#39;end&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span> <span class="c1"># Date</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+                <span class="n">is_event</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="c1"># Dates are assumed to be 1 line</span>
+                <span class="n">item_height</span> <span class="o">=</span> <span class="n">line_height</span>
+                <span class="n">last_date_title</span> <span class="o">=</span> <span class="n">text</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c1"># Event</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+                <span class="n">is_event</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="c1"># Calculate required height for event title</span>
+                <span class="n">lines</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">text_wrap</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">title_width</span><span class="p">)</span>
+                <span class="n">num_lines</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">))</span>
+                <span class="n">item_height</span> <span class="o">=</span> <span class="n">num_lines</span> <span class="o">*</span> <span class="n">line_height</span>
+
+            <span class="c1"># Check if fits in current column</span>
+            <span class="c1"># Look ahead logic for Date to prevent orphaned headers</span>
+            <span class="n">force_next_col</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_event</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">agenda_events</span><span class="p">):</span>
+                <span class="n">next_item</span> <span class="o">=</span> <span class="n">agenda_events</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s1">&#39;end&#39;</span> <span class="ow">in</span> <span class="n">next_item</span><span class="p">:</span> <span class="c1"># Next is event</span>
+                    <span class="c1"># Calculate next item height</span>
+                    <span class="n">next_text</span> <span class="o">=</span> <span class="n">next_item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+                    <span class="n">next_lines</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">text_wrap</span><span class="p">(</span><span class="n">next_text</span><span class="p">,</span> <span class="n">title_width</span><span class="p">)</span>
+                    <span class="n">next_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">next_lines</span><span class="p">))</span> <span class="o">*</span> <span class="n">line_height</span>
+
+                    <span class="c1"># Check if BOTH fit</span>
+                    <span class="k">if</span> <span class="n">y_pos</span> <span class="o">+</span> <span class="n">item_height</span> <span class="o">+</span> <span class="n">next_height</span> <span class="o">&gt;</span> <span class="n">im_height</span><span class="p">:</span>
+                        <span class="n">force_next_col</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="n">force_next_col</span> <span class="ow">or</span> <span class="n">y_pos</span> <span class="o">+</span> <span class="n">item_height</span> <span class="o">&gt;</span> <span class="n">im_height</span><span class="p">:</span>
+                <span class="c1"># Move to next column</span>
+                <span class="n">col</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">y_pos</span> <span class="o">=</span> <span class="mi">0</span>
+
+                <span class="c1"># Check if we have run out of columns</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+                <span class="c1"># If this is an event and we have a date context, repeat the date header</span>
+                <span class="k">if</span> <span class="n">is_event</span> <span class="ow">and</span> <span class="n">last_date_title</span><span class="p">:</span>
+                    <span class="n">x_offset</span> <span class="o">=</span> <span class="n">col</span> <span class="o">*</span> <span class="p">(</span><span class="n">col_width</span> <span class="o">+</span> <span class="n">gutter</span><span class="p">)</span>
+
+                    <span class="c1"># Draw line</span>
+                    <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">image_colour</span><span class="p">)</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">x_offset</span> <span class="o">+</span> <span class="n">col_width</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
+                        <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+                    <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
+                        <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">date_width</span><span class="p">,</span> <span class="n">line_height</span><span class="p">),</span>
+                        <span class="n">text</span><span class="o">=</span><span class="n">last_date_title</span><span class="p">,</span>
+                        <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+
+                    <span class="n">y_pos</span> <span class="o">+=</span> <span class="n">line_height</span>
+
+            <span class="c1"># Calculate offsets</span>
+            <span class="n">x_offset</span> <span class="o">=</span> <span class="n">col</span> <span class="o">*</span> <span class="p">(</span><span class="n">col_width</span> <span class="o">+</span> <span class="n">gutter</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_event</span><span class="p">:</span>
+                <span class="c1"># Render Date</span>
                 <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">image_colour</span><span class="p">)</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-                    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">im_width</span><span class="p">,</span> <span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+                    <span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">x_offset</span> <span class="o">+</span> <span class="n">col_width</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
                     <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 
                 <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                    <span class="n">xy</span><span class="o">=</span><span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">],</span>
-                    <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">date_width</span><span class="p">,</span> <span class="n">line_height</span><span class="p">),</span>
-                    <span class="n">text</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+                    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
+                    <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">date_width</span><span class="p">,</span> <span class="n">item_height</span><span class="p">),</span>
+                    <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
                     <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Render Event</span>
+                <span class="c1"># Time (always 1 line, aligned to top)</span>
+                <span class="n">time</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
 
-                <span class="n">cursor</span> <span class="o">+=</span> <span class="mi">1</span>
-
-            <span class="c1"># Check if item is an event</span>
-            <span class="k">if</span> <span class="s1">&#39;end&#39;</span> <span class="ow">in</span> <span class="n">_</span><span class="p">:</span>
-                <span class="n">time</span> <span class="o">=</span> <span class="n">_</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
-
-                <span class="c1"># Check if event is all day, if not, add the time</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">ical</span><span class="o">.</span><span class="n">all_day</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">ical</span><span class="o">.</span><span class="n">all_day</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
                     <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_time</span><span class="p">,</span> <span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+                        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_offset</span> <span class="o">+</span> <span class="n">x_time</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
                         <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">time_width</span><span class="p">,</span> <span class="n">line_height</span><span class="p">),</span>
                         <span class="n">text</span><span class="o">=</span><span class="n">time</span><span class="p">,</span>
                         <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">canvas</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">icon_font</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="p">)</span>
+                    <span class="c1"># Use draw_icon for better centering and scaling</span>
+                    <span class="c1"># We want it right-aligned in the time column</span>
+                    <span class="c1"># So we define a square box at the right end of the time column</span>
+                    <span class="n">icon_size</span> <span class="o">=</span> <span class="n">line_height</span>
+                    <span class="n">icon_x</span> <span class="o">=</span> <span class="n">x_offset</span> <span class="o">+</span> <span class="n">x_time</span> <span class="o">+</span> <span class="n">time_width</span> <span class="o">-</span> <span class="n">icon_size</span>
 
-                    <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_time</span><span class="p">,</span> <span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
-                        <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">time_width</span><span class="p">,</span> <span class="n">line_height</span><span class="p">),</span>
-                        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\ue878</span><span class="s2">&quot;</span><span class="p">,</span>
-                        <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+                    <span class="n">canvas</span><span class="o">.</span><span class="n">draw_icon</span><span class="p">(</span>
+                        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">icon_x</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
+                        <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">icon_size</span><span class="p">,</span> <span class="n">icon_size</span><span class="p">),</span>
+                        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\ue878</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="n">font</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">icon_font</span><span class="p">,</span>
+                        <span class="n">fill_ratio</span><span class="o">=</span><span class="mf">0.8</span>
+                    <span class="p">)</span>
 
-                <span class="n">canvas</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="p">)</span>
+                <span class="c1"># Bullet</span>
                 <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_event</span><span class="p">,</span> <span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
-                    <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">event_width</span><span class="p">,</span> <span class="n">line_height</span><span class="p">),</span>
-                    <span class="n">text</span><span class="o">=</span><span class="s1">&#39; • &#39;</span> <span class="o">+</span> <span class="n">title</span><span class="p">,</span>
+                    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_offset</span> <span class="o">+</span> <span class="n">x_event</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
+                    <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">bullet_width</span><span class="p">,</span> <span class="n">line_height</span><span class="p">),</span>
+                    <span class="n">text</span><span class="o">=</span><span class="n">bullet</span><span class="p">,</span>
                     <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
-                <span class="n">cursor</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="c1"># Title (multi-line)</span>
+                <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_offset</span> <span class="o">+</span> <span class="n">x_event</span> <span class="o">+</span> <span class="n">bullet_width</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
+                    <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">title_width</span><span class="p">,</span> <span class="n">item_height</span><span class="p">),</span>
+                    <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+                    <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Advance cursor</span>
+            <span class="n">y_pos</span> <span class="o">+=</span> <span class="n">item_height</span>
 
     <span class="c1"># If no events were found, write only dates and lines</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;no events found&#39;</span><span class="p">)</span>
 
-        <span class="n">cursor</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">agenda_events</span><span class="p">:</span>
-            <span class="n">title</span> <span class="o">=</span> <span class="n">_</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">y_pos</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">agenda_events</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+            <span class="n">item_height</span> <span class="o">=</span> <span class="n">line_height</span>
+
+            <span class="c1"># Orphan check for dates in empty agenda</span>
+            <span class="n">check_height</span> <span class="o">=</span> <span class="n">item_height</span> <span class="o">+</span> <span class="n">line_height</span>
+
+            <span class="k">if</span> <span class="n">y_pos</span> <span class="o">+</span> <span class="n">check_height</span> <span class="o">&gt;</span> <span class="n">im_height</span><span class="p">:</span>
+                <span class="n">col</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">y_pos</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+            <span class="n">x_offset</span> <span class="o">=</span> <span class="n">col</span> <span class="o">*</span> <span class="p">(</span><span class="n">col_width</span> <span class="o">+</span> <span class="n">gutter</span><span class="p">)</span>
+
             <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">image_colour</span><span class="p">)</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">im_width</span><span class="p">,</span> <span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">x_offset</span> <span class="o">+</span> <span class="n">col_width</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
                 <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 
             <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                <span class="n">xy</span><span class="o">=</span><span class="n">line_pos</span><span class="p">[</span><span class="n">cursor</span><span class="p">],</span>
-                <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">date_width</span><span class="p">,</span> <span class="n">line_height</span><span class="p">),</span>
+                <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">),</span>
+                <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">date_width</span><span class="p">,</span> <span class="n">item_height</span><span class="p">),</span>
                 <span class="n">text</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
                 <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
-            <span class="n">cursor</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">y_pos</span> <span class="o">+=</span> <span class="n">item_height</span>
 
     <span class="c1"># return the images ready for the display</span>
     <span class="k">return</span> <span class="n">canvas</span><span class="o">.</span><span class="n">image_black</span><span class="p">,</span> <span class="n">canvas</span><span class="o">.</span><span class="n">image_colour</span>
