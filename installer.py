@@ -7,6 +7,7 @@ import argparse
 import json
 import os
 import pwd
+import shutil
 import select
 import subprocess
 import sys
@@ -24,6 +25,7 @@ except ImportError:  # pragma: no cover - non-POSIX only
 
 DEFAULT_APT_PACKAGES = [
     "git",
+    "python3-venv",
     "python3-dev",
     "python3-setuptools",
     "zlib1g-dev",
@@ -37,7 +39,25 @@ DEFAULT_APT_PACKAGES = [
     "build-essential",
     "libssl-dev",
     "liblgpio-dev",
+    "systemd-swap",
 ]
+
+PIP_INDEX_ARGS = [
+    "--index-url", "https://www.piwheels.org/simple",
+    "--extra-index-url", "https://pypi.org/simple",
+]
+
+SWAP_CONF_DIR = Path("/etc/rpi/swap.conf.d")
+SWAP_CONF_PATH = SWAP_CONF_DIR / "80-use-swapfile.conf"
+SWAP_CONF_CONTENT = textwrap.dedent(
+    """
+    [Main]
+    Mechanism=swapfile
+
+    [File]
+    FixedSizeMiB=1024
+    """
+).strip() + "\n"
 
 
 INKYCAL_SERVICE_TEMPLATE = """[Unit]
@@ -93,7 +113,6 @@ class InstallerContext:
     repo_root: Path
     user: str
     group: str
-    home: Path
     venv_dir: Path
     python_bin: Path
     state_file: Path
@@ -127,6 +146,112 @@ def print_command_result(result: subprocess.CompletedProcess) -> None:
         print(result.stderr.strip())
 
 
+def _read_text_if_exists(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    try:
+        return path.read_text(encoding="utf-8")
+    except Exception:
+        return None
+
+
+def _normalize_text(value: str) -> str:
+    return "\n".join(line.strip() for line in value.strip().splitlines() if line.strip())
+
+
+def is_raspberry_pi_zero() -> bool:
+    model = _read_text_if_exists(Path("/proc/device-tree/model"))
+    if model and "zero" in model.lower():
+        return True
+    machine = os.uname().machine.lower() if hasattr(os, "uname") else ""
+    return machine == "armv6l"
+
+
+def swap_is_configured() -> bool:
+    existing = _read_text_if_exists(SWAP_CONF_PATH)
+    return existing is not None and _normalize_text(existing) == _normalize_text(SWAP_CONF_CONTENT)
+
+
+def setup_swap(ctx: InstallerContext, prompt: bool = True) -> None:
+    if not is_raspberry_pi_zero():
+        return
+    if swap_is_configured():
+        print(f"Swap already configured at {SWAP_CONF_PATH}; skipping.")
+        return
+    if prompt and not timed_yes_no("Set up the recommended Pi Zero swap file now?", timeout_seconds=60):
+        print("Skipping swap setup.")
+        return
+
+    print("Setting up Pi Zero swap...")
+    result = run_command(["mkdir", "-p", str(SWAP_CONF_DIR)], use_sudo=True)
+    print_command_result(result)
+    with tempfile.TemporaryDirectory(prefix="inkycal-swap-") as temp_dir:
+        temp_path = Path(temp_dir) / SWAP_CONF_PATH.name
+        temp_path.write_text(SWAP_CONF_CONTENT, encoding="utf-8")
+        result = run_command(["install", "-m", "644", str(temp_path), str(SWAP_CONF_PATH)], use_sudo=True)
+        print_command_result(result)
+    result = run_command(["systemctl", "daemon-reexec"], use_sudo=True, check=False)
+    print_command_result(result)
+    result = run_command(["systemctl", "restart", "systemd-swap"], use_sudo=True, check=False)
+    print_command_result(result)
+    save_state(ctx, "swap", "ok")
+    print("Swap setup complete.")
+
+
+def remove_swap_setup() -> None:
+    result = run_command(["systemctl", "disable", "--now", "systemd-swap"], use_sudo=True, check=False)
+    print_command_result(result)
+    result = run_command(["rm", "-f", str(SWAP_CONF_PATH)], use_sudo=True, check=False)
+    print_command_result(result)
+    result = run_command(["systemctl", "daemon-reexec"], use_sudo=True, check=False)
+    print_command_result(result)
+
+
+def remove_systemd_units() -> None:
+    for service in ["inkycal.service", "inkycal-webui.service"]:
+        result = run_command(["systemctl", "disable", "--now", service], use_sudo=True, check=False)
+        print_command_result(result)
+        result = run_command(["rm", "-f", f"/etc/systemd/system/{service}"], use_sudo=True, check=False)
+        print_command_result(result)
+    result = run_command(["systemctl", "daemon-reload"], use_sudo=True, check=False)
+    print_command_result(result)
+
+
+def purge_apt_dependencies() -> None:
+    result = run_command(["apt-get", "remove", "--purge", "-y", *DEFAULT_APT_PACKAGES], use_sudo=True, check=False)
+    print_command_result(result)
+    result = run_command(["apt-get", "autoremove", "--purge", "-y"], use_sudo=True, check=False)
+    print_command_result(result)
+
+
+def full_wipe(ctx: InstallerContext) -> None:
+    if not timed_yes_no("This will remove installer-managed system changes. Continue?", timeout_seconds=60):
+        print("Full wipe cancelled.")
+        return
+
+    remove_systemd_units()
+    remove_swap_setup()
+
+    if ctx.state_file.exists():
+        try:
+            ctx.state_file.unlink()
+        except Exception:
+            pass
+    try:
+        ctx.state_file.parent.rmdir()
+    except Exception:
+        pass
+
+    if timed_yes_no("Purge installer-managed apt packages too?", timeout_seconds=60):
+        purge_apt_dependencies()
+
+    if timed_yes_no("Delete the cloned Inkycal folder permanently?", timeout_seconds=60):
+        shutil.rmtree(ctx.repo_root, ignore_errors=True)
+        print("Inkycal folder deleted.")
+    else:
+        print("Keeping the cloned Inkycal folder.")
+
+
 def detect_context(repo_root: Path) -> InstallerContext:
     if os.geteuid() == 0:
         sudo_user = os.environ.get("SUDO_USER")
@@ -148,7 +273,6 @@ def detect_context(repo_root: Path) -> InstallerContext:
         repo_root=repo_root,
         user=username,
         group=username,
-        home=home,
         venv_dir=venv_dir,
         python_bin=python_bin,
         state_file=state_file,
@@ -195,20 +319,22 @@ def install_or_repair(ctx: InstallerContext) -> None:
     except Exception as error:
         print(f"Warning: apt dependency step failed: {error}")
 
+    setup_swap(ctx, prompt=True)
+
     if not ctx.venv_dir.exists():
         result = run_command(["python3", "-m", "venv", str(ctx.venv_dir)], cwd=ctx.repo_root)
         print_command_result(result)
 
     pip = str(ctx.venv_dir / "bin" / "pip")
-    result = run_command([pip, "install", "--upgrade", "pip", "wheel", "setuptools"], cwd=ctx.repo_root)
+    result = run_command([pip, "install", "--upgrade", "pip", "wheel", "setuptools", *PIP_INDEX_ARGS], cwd=ctx.repo_root)
     print_command_result(result)
 
-    result = run_command([pip, "install", "-e", "."], cwd=ctx.repo_root)
+    result = run_command([pip, "install", "-e", ".", *PIP_INDEX_ARGS], cwd=ctx.repo_root)
     print_command_result(result)
 
     raspberry_reqs = ctx.repo_root / "raspberry_os_requirements.txt"
     if raspberry_reqs.exists():
-        result = run_command([pip, "install", "-r", str(raspberry_reqs)], cwd=ctx.repo_root)
+        result = run_command([pip, "install", "-r", str(raspberry_reqs), *PIP_INDEX_ARGS], cwd=ctx.repo_root)
         print_command_result(result)
 
     save_state(ctx, "install", "ok")
@@ -408,6 +534,8 @@ def run_menu(ctx: InstallerContext) -> None:
                 ["127.0.0.1", "0.0.0.0"][choose_option("Web UI bind host", ["127.0.0.1 (localhost only)", "0.0.0.0 (LAN exposed)"])],
             ),
         ),
+        ("Configure Pi Zero swap", lambda: setup_swap(ctx, prompt=True)),
+        ("Full wipe", lambda: full_wipe(ctx)),
         ("Start services", lambda: service_action("start")),
         ("Stop services", lambda: service_action("stop")),
         ("Restart services", lambda: service_action("restart")),
@@ -472,4 +600,5 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
