@@ -98,9 +98,8 @@ sudo raspi-config --expand-rootfs
 
 Enable SPI:
 ```sh
-# TODO: update ot use raspi-config, non-interactive
-sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/firmware/config.txt
-``
+sudo raspi-config nonint do_spi 0
+```
 
 Set timezone (optional):
 ```sh
@@ -143,8 +142,8 @@ export TMPDIR=/var/tmp
 - Install apt dependencies:
 ```sh
 sudo apt-get install git python3-dev python3-setuptools zlib1g-dev \
-libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 wkhtmltopdf \
-rustc build-essential libssl-dev -y
+libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 chromium chromium-driver \
+rustc build-essential libssl-dev liblgpio-dev -y
 ```
 
 ## Step 6 - Clone & Install Inkycal
@@ -168,14 +167,46 @@ pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url h
 pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
 ```
 
-## Step 7 — Enable Autostart
+### Optional: run the interactive installer/repair tool
 
-- Add Inkycal to crontab (no sudo):
-```shell
-CRON_LINE='@reboot sleep 60 && cd $HOME/Inkycal && venv/bin/python inky_run.py &'
-( crontab -l 2>/dev/null | grep -qxF "$CRON_LINE" ) || \
-( crontab -l 2>/dev/null; echo "$CRON_LINE" ) | crontab -
+The installer is Python-only and provides an arrow-key menu:
+
+```sh
+cd $HOME/Inkycal
+python3 installer.py
 ```
+
+It covers:
+- install/repair
+- update flow
+- service generation for your real username and path
+- permission repair (common sudo mishaps)
+- timed display test with model selection
+
+## Step 7 — Enable Autostart (systemd)
+
+Install and start the main service:
+
+```sh
+cd $HOME/Inkycal
+sudo cp inkycal.service /etc/systemd/system/inkycal.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now inkycal.service
+sudo systemctl status inkycal.service --no-pager
+```
+
+Optional web UI service (status, controls, logs):
+
+```sh
+cd $HOME/Inkycal
+sudo cp inkycal-webui.service /etc/systemd/system/inkycal-webui.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now inkycal-webui.service
+sudo systemctl status inkycal-webui.service --no-pager
+```
+
+Inkycal now creates `Inkycal/logs/inkycal.log` and rotates logs daily (max 14 rotations).
+The service uses `/tmp/inkycal.lock`, ensuring only one instance runs at a time.
 
 
 ### Install on Non-GPIO Devices (Development Mode)

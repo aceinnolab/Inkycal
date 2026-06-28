@@ -1,6 +1,6 @@
-pytest
-twine
+pytest~=9.1.1
+twine~=6.2.0
 
-mkdocs
-mkdocs-material
-mkdocstrings[python]
+mkdocs~=1.6.1
+mkdocs-material~=9.7.6
+mkdocstrings[python]~=1.0.4

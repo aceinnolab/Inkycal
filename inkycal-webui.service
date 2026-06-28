@@ -1,0 +1,21 @@
+[Unit]
+Description=Inkycal local web UI
+After=network-online.target inkycal.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/Inkycal
+Environment=PYTHONUNBUFFERED=1
+Environment=INKYCAL_WEBUI_HOST=0.0.0.0
+Environment=INKYCAL_WEBUI_PORT=8080
+ExecStart=/home/pi/Inkycal/venv/bin/python /home/pi/Inkycal/inky_webui.py
+Restart=always
+RestartSec=15
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -290,7 +290,7 @@ class Inkycal:
                 self.info += f"module {number}: Error!  "
 
         if errors:
-            logger.error('Error/s in modules:', *errors)
+            logger.error("Error/s in modules: %s", ", ".join(str(err) for err in errors))
         del errors
 
         self._assemble()
@@ -374,7 +374,7 @@ class Inkycal:
                     self.info += f"im {number}: X  "
 
             if errors:
-                logger.error("Error/s in modules:", *errors)
+                logger.error("Error/s in modules: %s", ", ".join(str(err) for err in errors))
                 self.counter = 0
                 self.cache_data["counter"] = 0
             else:

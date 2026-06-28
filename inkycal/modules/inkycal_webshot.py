@@ -4,10 +4,11 @@ by https://github.com/worstface
 """
 import logging
 import os
-import traceback
+import shutil
+import subprocess
+from typing import Optional
 
 from PIL import Image
-from htmlwebshot import WebShot
 
 from inkycal.settings import Settings
 from inkycal.utils.functions import internet_available
@@ -17,6 +18,44 @@ from inkycal.modules.template import InkycalModule
 logger = logging.getLogger(__name__)
 
 settings = Settings()
+
+
+def _find_browser_binary() -> Optional[str]:
+    candidates = [
+        os.getenv("INKYCAL_BROWSER_BIN"),
+        "chromium",
+        "chromium-browser",
+        "google-chrome",
+        "google-chrome-stable",
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    ]
+
+    for candidate in candidates:
+        if not candidate:
+            continue
+        if os.path.isabs(candidate) and os.path.exists(candidate):
+            return candidate
+        resolved = shutil.which(candidate)
+        if resolved:
+            return resolved
+    return None
+
+
+def _find_chromedriver_binary() -> Optional[str]:
+    candidates = [
+        os.getenv("INKYCAL_CHROMEDRIVER_BIN"),
+        "chromedriver",
+        "/usr/bin/chromedriver",
+    ]
+    for candidate in candidates:
+        if not candidate:
+            continue
+        if os.path.isabs(candidate) and os.path.exists(candidate):
+            return candidate
+        resolved = shutil.which(candidate)
+        if resolved:
+            return resolved
+    return None
 
 class Webshot(InkycalModule):
     name = "Webshot - Displays screenshots of webpages"
@@ -49,6 +88,9 @@ class Webshot(InkycalModule):
         },
         "rotation": {
             "label": "Please enter the rotation. Must be either 0, 90, 180 or 270",
+        },
+        "wait_time": {
+            "label": "Wait time in seconds for JS-heavy pages before screenshot",
         },
     }
 
@@ -87,8 +129,109 @@ class Webshot(InkycalModule):
             if self.rotation not in [0, 90, 180, 270]:
                 raise Exception("Rotation must be either 0, 90, 180 or 270")
 
+        self.wait_time = 2
+        if "wait_time" in config and config["wait_time"]:
+            self.wait_time = int(config["wait_time"])
+
         # give an OK message
         logger.debug(f'Inkycal webshot loaded')
+
+    @staticmethod
+    def is_backend_available() -> bool:
+        return _find_browser_binary() is not None
+
+    def _capture_webshot(self, output_path: str) -> None:
+        browser = _find_browser_binary()
+
+        if browser is None:
+            logger.warning("No Chromium/Chrome executable found; trying Selenium fallback")
+            self._capture_webshot_with_selenium(output_path)
+            return
+
+        # Render a larger viewport first, then crop to keep previous behavior.
+        viewport_w = max(self.crop_w + self.crop_x, 320)
+        viewport_h = max(self.crop_h + self.crop_y, 320)
+
+        command = [
+            browser,
+            "--headless",
+            "--disable-gpu",
+            "--hide-scrollbars",
+            "--no-first-run",
+            "--no-default-browser-check",
+            "--disable-extensions",
+            "--run-all-compositor-stages-before-draw",
+            f"--virtual-time-budget={max(1000, self.wait_time * 1000)}",
+            f"--window-size={viewport_w},{viewport_h}",
+            f"--screenshot={output_path}",
+            self.url,
+        ]
+
+        if os.name != "nt":
+            command.insert(1, "--no-sandbox")
+
+        try:
+            subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        except subprocess.CalledProcessError:
+            logger.warning("Direct headless browser capture failed; trying Selenium fallback")
+            self._capture_webshot_with_selenium(output_path)
+            return
+
+        with Image.open(output_path) as shot:
+            x0 = min(max(0, self.crop_x), shot.width)
+            y0 = min(max(0, self.crop_y), shot.height)
+            x1 = min(shot.width, max(x0 + 1, x0 + self.crop_w))
+            y1 = min(shot.height, max(y0 + 1, y0 + self.crop_h))
+            shot.crop((x0, y0, x1, y1)).save(output_path, "PNG")
+
+    def _capture_webshot_with_selenium(self, output_path: str) -> None:
+        try:
+            from selenium import webdriver
+            from selenium.webdriver.chrome.options import Options
+            from selenium.webdriver.chrome.service import Service
+        except ImportError as error:
+            raise FileNotFoundError(
+                "Selenium fallback is unavailable. Install selenium and chromium/chromedriver "
+                "or set INKYCAL_BROWSER_BIN to a Chromium executable."
+            ) from error
+
+        browser = _find_browser_binary()
+        driver_bin = _find_chromedriver_binary()
+        if not browser or not driver_bin:
+            raise FileNotFoundError(
+                "No usable Chromium + chromedriver setup found. Install chromium and chromedriver "
+                "or set INKYCAL_BROWSER_BIN and INKYCAL_CHROMEDRIVER_BIN."
+            )
+
+        viewport_w = max(self.crop_w + self.crop_x, 320)
+        viewport_h = max(self.crop_h + self.crop_y, 320)
+
+        options = Options()
+        options.binary_location = browser
+        options.add_argument("--headless=new")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--hide-scrollbars")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument(f"--window-size={viewport_w},{viewport_h}")
+
+        service = Service(executable_path=driver_bin)
+        driver = webdriver.Chrome(service=service, options=options)
+        try:
+            driver.get(self.url)
+            if self.wait_time > 0:
+                import time
+                time.sleep(self.wait_time)
+            driver.save_screenshot(output_path)
+        finally:
+            driver.quit()
+
+        with Image.open(output_path) as shot:
+            x0 = min(max(0, self.crop_x), shot.width)
+            y0 = min(max(0, self.crop_y), shot.height)
+            x1 = min(shot.width, max(x0 + 1, x0 + self.crop_w))
+            y1 = min(shot.height, max(y0 + 1, y0 + self.crop_h))
+            shot.crop((x0, y0, x1, y1)).save(output_path, "PNG")
 
     def generate_image(self):
         """Generate image for this module"""
@@ -122,23 +265,15 @@ class Webshot(InkycalModule):
         logger.info(
             f'preparing webshot from {self.url}... cropH{self.crop_h} cropW{self.crop_w} cropX{self.crop_x} cropY{self.crop_y}')
 
-        shot = WebShot(size=(im_height, im_width))
-
-        shot.params = {
-            "--crop-x": self.crop_x,
-            "--crop-y": self.crop_y,
-            "--crop-w": self.crop_w,
-            "--crop-h": self.crop_h,
-        }
-
         logger.info(f'getting webshot from {self.url}...')
 
         try:
-            shot.create_pic(url=self.url, output=f"{tmpFolder}/webshot.png")
-        except:
-            print(traceback.format_exc())
-            print("If you have not already installed wkhtmltopdf, please use: sudo apt-get install wkhtmltopdf. See here for more details: https://github.com/1Danish-00/htmlwebshot/")
-            raise Exception('Could not get webshot :/')
+            self._capture_webshot(f"{tmpFolder}/webshot.png")
+        except subprocess.CalledProcessError as error:
+            logger.error(error.stderr.decode("utf-8", errors="ignore"))
+            raise Exception("Could not get webshot. Make sure Chromium can run in headless mode.")
+        except FileNotFoundError as error:
+            raise Exception(str(error))
 
 
         logger.info(f'got webshot...')
