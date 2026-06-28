@@ -180,33 +180,22 @@ It covers:
 - install/repair
 - update flow
 - service generation for your real username and path
+- swap setup on Raspberry Pi Zero, with confirmation and duplicate detection
 - permission repair (common sudo mishaps)
 - timed display test with model selection
+- a full wipe option that removes installer-managed system changes and can delete the cloned folder
 
-## Step 7 — Enable Autostart (systemd)
+## Step 7 — Finish with the installer
 
-Install and start the main service:
-
-```sh
-cd $HOME/Inkycal
-sudo cp inkycal.service /etc/systemd/system/inkycal.service
-sudo systemctl daemon-reload
-sudo systemctl enable --now inkycal.service
-sudo systemctl status inkycal.service --no-pager
-```
-
-Optional web UI service (status, controls, logs):
+Run the installer to complete service installation, swap setup, and the display test:
 
 ```sh
-cd $HOME/Inkycal
-sudo cp inkycal-webui.service /etc/systemd/system/inkycal-webui.service
-sudo systemctl daemon-reload
-sudo systemctl enable --now inkycal-webui.service
-sudo systemctl status inkycal-webui.service --no-pager
+python3 installer.py
 ```
 
-Inkycal now creates `Inkycal/logs/inkycal.log` and rotates logs daily (max 14 rotations).
-The service uses `/tmp/inkycal.lock`, ensuring only one instance runs at a time.
+If you are on a Raspberry Pi Zero, the installer will ask whether to set up swap and will skip it if it already exists.
+
+Inkycal creates `Inkycal/logs/inkycal.log` and rotates logs daily (max 14 rotations). The installer-managed service uses `/tmp/inkycal.lock`, ensuring only one instance runs at a time.
 
 
 ### Install on Non-GPIO Devices (Development Mode)

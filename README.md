@@ -150,7 +150,7 @@ Follow the steps in `Installation` (see below) on how to install Inkycal.
 
 ### Interactive installer (recommended)
 
-If you prefer a guided setup with menu navigation (arrow keys), use the Python installer:
+If you want the simplest setup path, use the Python installer. It handles dependencies, permissions, service installation, and the display test menu.
 
 ```bash
 cd $HOME/Inkycal
@@ -158,11 +158,16 @@ python3 installer.py
 ```
 
 The installer can:
-- install/repair dependencies and venv
-- fix broken file permissions from accidental sudo usage
-- generate portable `systemd` service files for your actual username/path
+- install or repair dependencies and the virtual environment
+- fix broken file permissions after accidental `sudo` use
+- install portable `systemd` services for your actual user and path
+- set up the recommended swap configuration automatically on Raspberry Pi Zero after asking for confirmation
 - run a display test with model selection and a 60-second timeout
 - update Inkycal safely and re-run dependency sync
+- perform a full wipe that removes installer-managed changes and optionally deletes the cloned folder
+
+If you already have Inkycal installed, you can re-run the installer any time to repair or update it.
+If you’re on a Raspberry Pi Zero, the installer will ask whether to set up swap and will skip the step if it is already configured.
 
 ⚠️ Please note that although the developers try to keep the installation as simple as possible, the full installation
 can sometimes take hours on the Raspberry Pi Zero W and is not guaranteed to go smoothly each time. This is because
@@ -179,14 +184,14 @@ amount as GitHub sponsors to get access to InkycalOS-Lite!
 This will help keep this project growing and cover the ongoing expenses too! Win-win for everyone! 🎊
 
 ### Bonus: PiSugar support
-The PiSugar is a battery pack for the Raspberry Pi Zero W. It can be used to power the Raspberry Pi and the e-paper, allowing battery life up to several weeks.
+The PiSugar is a battery pack for the Raspberry Pi Zero W. It can power the Raspberry Pi and the e-paper, allowing battery life up to several weeks.
 If you have a PiSugar board, please see the wiki page on how to install the PiSugar driver and configure Inkycal to work with it:
 [PiSugar support](https://github.com/aceinnolab/Inkycal/wiki/PiSugar-support)
 
 
 ### Installing on Raspberry Pi
 
-Run the following steps to install Inkycal. Do **not** use sudo for this, except where explicitly specified.
+Run the following steps to install Inkycal. Do **not** use `sudo` for the installer itself unless explicitly told to do so.
 
 - update the system
 ```bash
@@ -219,7 +224,7 @@ sudo systemctl restart systemd-swap
 export TMPDIR=/var/tmp
 ```
 
-- Install apt dependencies
+- Install apt dependencies:
 ```bash
 sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 chromium chromium-driver rustc build-essential libssl-dev liblgpio-dev -y
 ```
@@ -231,7 +236,7 @@ git clone https://github.com/aceinnolab/Inkycal
 cd Inkycal
 ```
 
-- set-up virtual environment & install dependencies
+- Set up the virtual environment & install dependencies
 ```bash
 # defaults to python3.13 on trixie
 python -m venv venv
@@ -244,33 +249,26 @@ pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url h
 pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
 ```
 
-- Enable auto-start with systemd (recommended over crontab)
-
-If you used the installer, this step is already handled automatically.
+Then run the installer to finish the setup, install services, and perform a display test:
 
 ```bash
-cd $HOME/Inkycal
-sudo cp inkycal.service /etc/systemd/system/inkycal.service
-sudo systemctl daemon-reload
-sudo systemctl enable --now inkycal.service
-sudo systemctl status inkycal.service --no-pager
+python3 installer.py
 ```
 
-- Optional: Enable the local web UI service on port `8080`
+The installer will install the `systemd` services for you and ensure only one Inkycal instance runs at a time.
+
+It also uses PiWheels-friendly pip flags to avoid unnecessary local builds:
 
 ```bash
-cd $HOME/Inkycal
-sudo cp inkycal-webui.service /etc/systemd/system/inkycal-webui.service
-sudo systemctl daemon-reload
-sudo systemctl enable --now inkycal-webui.service
-sudo systemctl status inkycal-webui.service --no-pager
+pip install --upgrade pip wheel setuptools --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
+pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
 ```
 
-The main service uses a lock file (`/tmp/inkycal.lock`) so only one Inkycal instance runs at a time.
+You can use the installer again later to repair, update, configure swap, or perform a wipe.
 
 ## Logging
 
-Inkycal writes logs to `Inkycal/logs/inkycal.log` and rotates logs daily.
+Inkycal writes logs to `Inkycal/logs/inkycal.log` and rotates them daily.
 
 - 1 active log + up to 14 rotated logs
 - configurable via `INKYCAL_LOG_DIR` or `INKYCAL_LOG_FILE`
@@ -347,9 +345,8 @@ To update Inkycal to the latest version, navigate to the Inkycal folder, then ru
 git pull
 ```
 
-Yep. It's actually that simple!
-But, if you have made changes to Inkycal, those will be overwritten.
-If that is the case, backup your modified files somewhere else if you need them. Then run:
+That’s it. If you have made local changes, they will be overwritten.
+If that is the case, back up any modified files first and then run:
 
 ```bash
 git reset --hard
@@ -361,14 +358,11 @@ git pull
 We'll miss you, but we don't want to make it hard for you to leave.
 Just delete the Inkycal folder, and you're good to go!
 
-Additionally, if you enabled the systemd services and want to remove them:
+If you installed the `systemd` services, re-run the installer or remove them via `systemctl` before deleting the folder.
 
-```bash
-sudo systemctl disable --now inkycal.service
-sudo systemctl disable --now inkycal-webui.service
-sudo rm -f /etc/systemd/system/inkycal.service /etc/systemd/system/inkycal-webui.service
-sudo systemctl daemon-reload
-```
+### Full wipe
+
+The installer includes a full wipe option that removes installer-managed system changes first. It can also delete the cloned `Inkycal` folder if you confirm that too.
 
 ## Modifying Inkycal
 

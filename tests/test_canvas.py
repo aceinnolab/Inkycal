@@ -51,8 +51,8 @@ class TestCanvas(unittest.TestCase):
         after = self.canvas.image_black
 
         # The two images should differ
-        before_pixels = list(before.getdata())
-        after_pixels = list(after.getdata())
+        before_pixels = list(before.get_flattened_data())
+        after_pixels = list(after.get_flattened_data())
         self.assertNotEqual(before_pixels, after_pixels)
 
     def test_write_wrapped_multiline(self):
@@ -62,7 +62,7 @@ class TestCanvas(unittest.TestCase):
 
         # Check if non-white pixels appear in upper region
         img = self.canvas.image_black
-        non_white = any(px != (255, 255, 255) for px in img.getdata())
+        non_white = any(px != (255, 255, 255) for px in img.get_flattened_data())
         self.assertTrue(non_white)
 
     def test_auto_fontsize(self):
