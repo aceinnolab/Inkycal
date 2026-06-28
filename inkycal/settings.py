@@ -4,12 +4,13 @@ Used to initialize the settings for the application.
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+project_root = os.path.abspath(os.path.join(basedir, os.pardir))
 
 
 class Settings:
     """Settings class to initialize the settings for the application."""
     CACHE_PATH = os.path.join(basedir, "cache")
-    LOG_PATH = os.path.join(basedir, "logs")
+    LOG_PATH = os.path.join(project_root, "logs")
     INKYCAL_LOG_PATH = os.path.join(LOG_PATH, "inkycal.log")
     FONT_PATH = os.path.join(basedir, "fonts")
     IMAGE_FOLDER = os.path.join(basedir, "image_folder")

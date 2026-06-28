@@ -1,0 +1,21 @@
+[Unit]
+Description=Inkycal dashboard service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/Inkycal
+Environment=PYTHONUNBUFFERED=1
+Environment=INKYCAL_LOG_DIR=/home/pi/Inkycal/logs
+Environment=INKYCAL_LOCK_FILE=/tmp/inkycal.lock
+ExecStart=/usr/bin/flock -n /tmp/inkycal.lock /home/pi/Inkycal/venv/bin/python /home/pi/Inkycal/inky_run.py --mode run
+Restart=on-failure
+RestartSec=20
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

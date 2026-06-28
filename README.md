@@ -148,6 +148,22 @@ Follow the steps in `Installation` (see below) on how to install Inkycal.
 
 ## Installing Inkycal
 
+### Interactive installer (recommended)
+
+If you prefer a guided setup with menu navigation (arrow keys), use the Python installer:
+
+```bash
+cd $HOME/Inkycal
+python3 installer.py
+```
+
+The installer can:
+- install/repair dependencies and venv
+- fix broken file permissions from accidental sudo usage
+- generate portable `systemd` service files for your actual username/path
+- run a display test with model selection and a 60-second timeout
+- update Inkycal safely and re-run dependency sync
+
 ⚠️ Please note that although the developers try to keep the installation as simple as possible, the full installation
 can sometimes take hours on the Raspberry Pi Zero W and is not guaranteed to go smoothly each time. This is because
 installing dependencies on the zero w takes a long time and is prone to copy-paste-, permission- and configuration
@@ -205,7 +221,7 @@ export TMPDIR=/var/tmp
 
 - Install apt dependencies
 ```bash
-sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 wkhtmltopdf rustc build-essential libssl-dev liblgpio-dev -y
+sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 chromium chromium-driver rustc build-essential libssl-dev liblgpio-dev -y
 ```
 
 - clone the repo in the home directory
@@ -228,13 +244,77 @@ pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url h
 pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
 ```
 
-- To make inkycal run on each boot automatically, you can use crontab. Do not use sudo for this
+- Enable auto-start with systemd (recommended over crontab)
+
+If you used the installer, this step is already handled automatically.
 
 ```bash
-crontab -e
-# choose nano (easiest) and add the following line. Do not remove the & sign at the end, this is required!
-@reboot sleep 60 && cd $HOME/Inkycal && venv/bin/python inky_run.py &
+cd $HOME/Inkycal
+sudo cp inkycal.service /etc/systemd/system/inkycal.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now inkycal.service
+sudo systemctl status inkycal.service --no-pager
 ```
+
+- Optional: Enable the local web UI service on port `8080`
+
+```bash
+cd $HOME/Inkycal
+sudo cp inkycal-webui.service /etc/systemd/system/inkycal-webui.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now inkycal-webui.service
+sudo systemctl status inkycal-webui.service --no-pager
+```
+
+The main service uses a lock file (`/tmp/inkycal.lock`) so only one Inkycal instance runs at a time.
+
+## Logging
+
+Inkycal writes logs to `Inkycal/logs/inkycal.log` and rotates logs daily.
+
+- 1 active log + up to 14 rotated logs
+- configurable via `INKYCAL_LOG_DIR` or `INKYCAL_LOG_FILE`
+
+Examples:
+
+```bash
+# follow app log
+tail -f $HOME/Inkycal/logs/inkycal.log
+
+# inspect service logs
+journalctl -u inkycal.service -f
+```
+
+## Webshot backend notes (Pi Zero)
+
+The Webshot module uses native Chromium headless mode by default (no Google Chrome required).
+If that fails, it falls back to Selenium + Chromium/Chromedriver.
+
+You can override binaries with:
+
+```bash
+export INKYCAL_BROWSER_BIN=/usr/bin/chromium
+export INKYCAL_CHROMEDRIVER_BIN=/usr/bin/chromedriver
+```
+
+## Local web UI
+
+You can run the local web UI manually:
+
+```bash
+cd $HOME/Inkycal
+source venv/bin/activate
+python3 inky_webui.py
+```
+
+Then open `http://<raspberry-pi-ip>:8080`.
+
+Features include:
+- Inkycal service status
+- hardware overview (temp/load/memory/uptime)
+- start/stop/restart + dry-run buttons
+- log viewer for `inkycal.log*`
+- PayPal donation QR code
 
 ## Installing on devices without GPIO
 - Get the most of InkyCal by using more powerful IDE, for debugging and creating own modules etc. 
@@ -281,10 +361,13 @@ git pull
 We'll miss you, but we don't want to make it hard for you to leave.
 Just delete the Inkycal folder, and you're good to go!
 
-Additionally, if you want to reset your crontab file, which runs inkycal at boot, run:
+Additionally, if you enabled the systemd services and want to remove them:
 
 ```bash
-crontab -r
+sudo systemctl disable --now inkycal.service
+sudo systemctl disable --now inkycal-webui.service
+sudo rm -f /etc/systemd/system/inkycal.service /etc/systemd/system/inkycal-webui.service
+sudo systemctl daemon-reload
 ```
 
 ## Modifying Inkycal
