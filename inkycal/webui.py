@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from zoneinfo import available_timezones
 
+from inkycal.display.supported_models import supported_models
 from inkycal.settings import Settings
 
 settings = Settings()
@@ -29,11 +30,11 @@ PAYPAL_URL = os.getenv("INKYCAL_PAYPAL_URL", "https://www.paypal.com/paypalme/Ac
 HARDWARE_REFRESH_SECONDS = int(os.getenv("INKYCAL_WEBUI_HW_REFRESH_SECONDS", "10"))
 PYTHON_BIN = os.getenv("INKYCAL_PYTHON_BIN", str(PROJECT_ROOT / "venv" / "bin" / "python"))
 INKY_RUN = os.getenv("INKYCAL_RUNNER", str(PROJECT_ROOT / "inky_run.py"))
-DISPLAY_TEST_SCRIPT = os.getenv("INKYCAL_DISPLAY_TEST_SCRIPT", str(PROJECT_ROOT / "test_display.py"))
 SETTINGS_GENERATOR_URL = "https://inkycal.aceinnolab.com/ui"
 INKYCAL_OS_LITE_URL = "https://inkycal.aceinnolab.com/inkycal-os-lite"
 DISCORD_SUPPORT_URL = "https://discord.gg/sHYKeSM"
 DISCORD_LOGO_URL = "https://cdn.simpleicons.org/discord/5865F2"
+DEMO_IMAGE_URL = "https://raw.githubusercontent.com/aceinnolab/Inkycal/refs/heads/assets/tests/Inkycal_cover.png"
 
 
 def _run_command(command: List[str], timeout: int = 10) -> Tuple[int, str, str]:
@@ -209,6 +210,100 @@ def _read_settings_json() -> Dict[str, object]:
         return {}
 
 
+def _iter_leaf_paths(value: object, path: Tuple[str, ...] = ()) -> List[Tuple[Tuple[str, ...], object]]:
+    leaves: List[Tuple[Tuple[str, ...], object]] = []
+    if isinstance(value, dict):
+        for key in sorted(value.keys()):
+            leaves.extend(_iter_leaf_paths(value[key], path + (str(key),)))
+        return leaves
+
+    if isinstance(value, list):
+        for index, item in enumerate(value):
+            leaves.extend(_iter_leaf_paths(item, path + (str(index),)))
+        return leaves
+
+    leaves.append((path, value))
+    return leaves
+
+
+def _path_to_label(path: Tuple[str, ...]) -> str:
+    return ".".join(path)
+
+
+def _path_from_label(path: str) -> List[object]:
+    parts: List[object] = []
+    for segment in path.split("."):
+        if segment.isdigit():
+            parts.append(int(segment))
+        else:
+            parts.append(segment)
+    return parts
+
+
+def _get_nested_value(container: object, path: List[object]) -> object:
+    current = container
+    for segment in path:
+        current = current[segment]  # type: ignore[index]
+    return current
+
+
+def _set_nested_value(container: object, path: List[object], value: object) -> None:
+    current = container
+    for segment in path[:-1]:
+        current = current[segment]  # type: ignore[index]
+    current[path[-1]] = value  # type: ignore[index]
+
+
+def _coerce_value(raw_value: str, existing_value: object) -> object:
+    raw = raw_value.strip()
+
+    if isinstance(existing_value, bool):
+        lowered = raw.lower()
+        if lowered in {"true", "1", "yes", "on"}:
+            return True
+        if lowered in {"false", "0", "no", "off"}:
+            return False
+        raise ValueError("expected boolean")
+
+    if isinstance(existing_value, int) and not isinstance(existing_value, bool):
+        return int(raw)
+
+    if isinstance(existing_value, float):
+        return float(raw)
+
+    if existing_value is None:
+        if raw.lower() in {"none", "null", ""}:
+            return None
+        return json.loads(raw)
+
+    if isinstance(existing_value, str):
+        return raw_value
+
+    return json.loads(raw)
+
+
+def _save_settings_kv(path_labels: List[str], values: List[str]) -> str:
+    if len(path_labels) != len(values):
+        return "Settings save failed: malformed key/value payload."
+
+    data = _read_settings_json()
+    if not isinstance(data, dict):
+        return "Settings save failed: root JSON must be an object."
+
+    for path_label, new_value in zip(path_labels, values):
+        path = _path_from_label(path_label)
+        try:
+            existing = _get_nested_value(data, path)
+            parsed_value = _coerce_value(new_value, existing)
+            _set_nested_value(data, path, parsed_value)
+        except Exception as error:
+            return f"Settings save failed at '{path_label}': {error}"
+
+    SETTINGS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    SETTINGS_FILE.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return f"Saved settings to {SETTINGS_FILE}"
+
+
 def _save_settings_text(content: str) -> str:
     try:
         parsed = json.loads(content)
@@ -244,7 +339,110 @@ def _set_timezone(timezone_name: str) -> str:
     return f"Timezone update failed: {err or out or 'unknown error'}"
 
 
-def _run_action(action: str, display_test_name: str = "calibration") -> str:
+def _service_is_active() -> bool:
+    code, out, _ = _run_command(["systemctl", "is-active", SERVICE_NAME])
+    return code == 0 and out == "active"
+
+
+DISPLAY_ACTIONS = {
+    "display_calibration": "calibration",
+    "display_clear": "clear",
+    "display_demo": "demo",
+}
+
+DISPLAY_TASK_RUNNER = """
+import certifi
+import requests
+import sys
+import tempfile
+from pathlib import Path
+
+from PIL import Image
+
+from inkycal.display.display import Display
+from inkycal.modules.inkycal_image import Inkyimage
+
+action = sys.argv[1]
+model = sys.argv[2]
+demo_url = sys.argv[3]
+
+display = Display(model)
+size = display.get_display_size(model)
+
+if action == "calibration":
+    display.calibrate(cycles=1)
+
+elif action == "clear":
+    white = Image.new("1", size, "white")
+    if display.supports_colour:
+        display.render(white, Image.new("1", size, "white"))
+    else:
+        display.render(white)
+
+elif action == "demo":
+    response = requests.get(demo_url, timeout=20, verify=certifi.where())
+    response.raise_for_status()
+
+    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_file:
+        temp_file.write(response.content)
+        image_path = temp_file.name
+
+    module_config = {
+        "config": {
+            "size": [size[0], size[1]],
+            "padding_x": 0,
+            "padding_y": 0,
+            "fontsize": 14,
+            "path": image_path,
+            "palette": "bwr" if display.supports_colour else "bw",
+            "autoflip": True,
+            "orientation": "horizontal",
+        }
+    }
+
+    try:
+        image_module = Inkyimage(module_config)
+        image_black, image_colour = image_module.generate_image()
+        if display.supports_colour:
+            display.render(image_black, image_colour)
+        else:
+            display.render(image_black)
+    finally:
+        Path(image_path).unlink(missing_ok=True)
+
+else:
+    raise ValueError(f"Unknown display action: {action}")
+""".strip()
+
+
+def _run_display_action(display_action: str, display_model: str) -> str:
+    if display_action not in DISPLAY_ACTIONS:
+        return "Unknown display action."
+
+    if display_model not in supported_models:
+        return f"Display action failed: unsupported model '{display_model}'."
+
+    was_active = _service_is_active()
+    if was_active:
+        code, out, err = _run_command(["sudo", "systemctl", "stop", SERVICE_NAME], timeout=20)
+        if code != 0:
+            return f"Display action failed: could not stop service ({err or out or 'unknown error'})."
+
+    mapped_action = DISPLAY_ACTIONS[display_action]
+    timeout = 60 if mapped_action in {"demo", "clear"} else 600
+    command = [PYTHON_BIN, "-c", DISPLAY_TASK_RUNNER, mapped_action, display_model, DEMO_IMAGE_URL]
+
+    try:
+        code, out, err = _run_command(command, timeout=timeout)
+        if code == 0:
+            return f"Display action '{mapped_action}' for '{display_model}' finished."
+        return f"Display action '{mapped_action}' failed: {err or out or 'unknown error'}"
+    finally:
+        if was_active:
+            _run_command(["sudo", "systemctl", "start", SERVICE_NAME], timeout=30)
+
+
+def _run_action(action: str) -> str:
     if action in {"start", "stop", "restart"}:
         code, out, err = _run_command(["sudo", "systemctl", action, SERVICE_NAME])
         if code == 0:
@@ -256,17 +454,6 @@ def _run_action(action: str, display_test_name: str = "calibration") -> str:
         if code == 0:
             return "Dry run finished."
         return f"Dry run failed: {err or out or 'unknown error'}"
-
-    if action == "display_test":
-        allowed_tests = {"all", "solid", "sections", "checkerboard", "shapes", "text", "gradient", "calibration", "cycles"}
-        requested_test = display_test_name if display_test_name in allowed_tests else "calibration"
-        code, out, err = _run_command(
-            [PYTHON_BIN, DISPLAY_TEST_SCRIPT, "--test", requested_test],
-            timeout=600,
-        )
-        if code == 0:
-            return f"Display test '{requested_test}' finished."
-        return f"Display test '{requested_test}' failed: {err or out or 'unknown error'}"
 
     return "Unknown action."
 
@@ -309,6 +496,9 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         settings_content = _read_settings_text()
         settings_data = _read_settings_json()
         selected_display = str(settings_data.get("model", "n/a"))
+        display_models = sorted(supported_models.keys())
+        selected_display_model = self._query.get("display_model", [selected_display if selected_display in supported_models else (display_models[0] if display_models else "")])[0]
+        settings_leaf_entries = _iter_leaf_paths(settings_data) if isinstance(settings_data, dict) else []
 
         qr_path = _ensure_paypal_qr(PAYPAL_URL)
         qr_uri = _qr_data_uri(PAYPAL_URL)
@@ -317,6 +507,23 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
             f"<option value='{html.escape(item.name)}'"
             f" {'selected' if item.name == selected_name else ''}>{html.escape(item.name)}</option>"
             for item in logs
+        )
+
+        display_options = "".join(
+            f"<option value='{html.escape(model_name)}'"
+            f" {'selected' if model_name == selected_display_model else ''}>{html.escape(model_name)}</option>"
+            for model_name in display_models
+        )
+
+        key_value_rows = "".join(
+            (
+                "<div class='kv-row'>"
+                f"<input class='kv-key' value='{html.escape(_path_to_label(path))}' readonly>"
+                f"<input type='hidden' name='kv_path' value='{html.escape(_path_to_label(path))}'>"
+                f"<input class='kv-value' name='kv_value' value='{html.escape(json.dumps(value, ensure_ascii=False) if value is None else str(value))}'>"
+                "</div>"
+            )
+            for path, value in settings_leaf_entries
         )
 
         if qr_path:
@@ -412,10 +619,15 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
     .link-list a:hover {{ text-decoration: underline; }}
     .discord-link {{ display: inline-flex; align-items: center; gap: 0.55rem; margin-top: 0.4rem; }}
     .discord-logo {{ width: 22px; height: 22px; display: inline-block; }}
+    .kv-grid {{ display: grid; gap: 0.5rem; }}
+    .kv-row {{ display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }}
+    .kv-key {{ background: #f8fafc; color: #334155; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }}
+    .kv-value {{ font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }}
     @media (max-width: 640px) {{
       .wrapper {{ padding: 0.75rem; }}
       .card {{ padding: 0.85rem; border-radius: 12px; }}
       pre {{ max-height: 38vh; }}
+      .kv-row {{ grid-template-columns: 1fr; }}
     }}
   </style>
 </head>
@@ -440,21 +652,16 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
           </div>
         </form>
         <form method='post'>
-          <label for='display_test_name'>Display test</label>
-          <select id='display_test_name' name='display_test_name'>
-            <option value='calibration'>Calibration</option>
-            <option value='solid'>Solid colors</option>
-            <option value='sections'>Sections</option>
-            <option value='checkerboard'>Checkerboard</option>
-            <option value='shapes'>Shapes</option>
-            <option value='text'>Text</option>
-            <option value='gradient'>Gradient</option>
-            <option value='cycles'>Cycles</option>
-            <option value='all'>All tests</option>
+          <label for='display_model'>Display model</label>
+          <select id='display_model' name='display_model'>
+            {display_options}
           </select>
           <div class='button-row'>
-            <button name='action' value='display_test'>Run display test</button>
+            <button name='action' value='display_calibration'>Run calibration</button>
+            <button name='action' value='display_clear' class='secondary'>Clear</button>
+            <button name='action' value='display_demo'>Show demo image</button>
           </div>
+          <p class='muted'>Display action stops <code>{html.escape(SERVICE_NAME)}</code> temporarily and restores its previous state after completion.</p>
         </form>
       </section>
 
@@ -519,6 +726,19 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         </div>
       </form>
       <pre>{html.escape(log_content)}</pre>
+    </section>
+
+    <section class='card' style='margin-top: 1rem;'>
+      <h2>Settings Key/Value Editor</h2>
+      <p class='muted'>Keys are read-only paths. Values are editable and saved with original types where possible.</p>
+      <form method='post'>
+        <div class='kv-grid'>
+          {key_value_rows}
+        </div>
+        <div class='button-row'>
+          <button name='action' value='save_settings_kv'>Save key/value settings</button>
+        </div>
+      </form>
     </section>
 
     <section class='card' style='margin-top: 1rem;'>
@@ -595,14 +815,18 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         body = self.rfile.read(length).decode("utf-8")
         form = urllib.parse.parse_qs(body)
         action = form.get("action", [""])[0]
-        display_test_name = form.get("display_test_name", ["calibration"])[0]
+        display_model = form.get("display_model", [""])[0]
         if action == "save_settings":
             message = _save_settings_text(form.get("settings_content", [""])[0])
+        elif action == "save_settings_kv":
+            message = _save_settings_kv(form.get("kv_path", []), form.get("kv_value", []))
         elif action == "set_timezone":
             message = _set_timezone(form.get("timezone", [""])[0])
+        elif action in DISPLAY_ACTIONS:
+            message = _run_display_action(action, display_model)
         else:
-            message = _run_action(action, display_test_name=display_test_name)
-        self._query = {}
+            message = _run_action(action)
+        self._query = {"display_model": [display_model]} if display_model else {}
         self._send_html(self._render_dashboard(message=message))
 
 
