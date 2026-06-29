@@ -355,6 +355,8 @@ class Weather(InkycalModule):
         # Get some current weather details
 
         temperature = f"{current_weather['temp']:.{dec_temp}f}{self.tempDispUnit}"
+        max_temperature_today = f"{current_weather['max_temp']:.{dec_temp}f}{self.tempDispUnit}"
+        temperature = f"{temperature}/{max_temperature_today}"
 
         weather_icon = current_weather["weather_icon_name"]
         humidity = str(current_weather["humidity"])
