@@ -395,6 +395,7 @@ elif action == "demo":
             "fontsize": 14,
             "path": image_path,
             "palette": "bwr" if display.supports_colour else "bw",
+            "dither": False,
             "autoflip": True,
             "orientation": "horizontal",
         }
@@ -518,12 +519,12 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         key_value_rows = "".join(
             (
                 "<div class='kv-row'>"
-                f"<input class='kv-key' value='{html.escape(_path_to_label(path))}' readonly>"
+                f"<label class='kv-key' for='kv_{index}'>{html.escape(_path_to_label(path))}</label>"
                 f"<input type='hidden' name='kv_path' value='{html.escape(_path_to_label(path))}'>"
-                f"<input class='kv-value' name='kv_value' value='{html.escape(json.dumps(value, ensure_ascii=False) if value is None else str(value))}'>"
+                f"<input id='kv_{index}' class='kv-value' name='kv_value' value='{html.escape(json.dumps(value, ensure_ascii=False) if value is None else str(value))}'>"
                 "</div>"
             )
-            for path, value in settings_leaf_entries
+            for index, (path, value) in enumerate(settings_leaf_entries)
         )
 
         if qr_path:
@@ -621,7 +622,19 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
     .discord-logo {{ width: 22px; height: 22px; display: inline-block; }}
     .kv-grid {{ display: grid; gap: 0.5rem; }}
     .kv-row {{ display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }}
-    .kv-key {{ background: #f8fafc; color: #334155; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }}
+    .kv-key {{
+      display: flex;
+      align-items: center;
+      min-height: 2.4rem;
+      padding: 0.45rem 0.65rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #f8fafc;
+      color: #334155;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88rem;
+      word-break: break-word;
+    }}
     .kv-value {{ font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }}
     @media (max-width: 640px) {{
       .wrapper {{ padding: 0.75rem; }}

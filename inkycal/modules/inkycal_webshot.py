@@ -92,6 +92,10 @@ class Webshot(InkycalModule):
         "wait_time": {
             "label": "Wait time in seconds for JS-heavy pages before screenshot",
         },
+        "dither": {
+            "label": "Use dithering when mapping the screenshot to the selected palette?",
+            "options": [True, False],
+        },
     }
 
     def __init__(self, config):
@@ -132,6 +136,14 @@ class Webshot(InkycalModule):
         self.wait_time = 2
         if "wait_time" in config and config["wait_time"]:
             self.wait_time = int(config["wait_time"])
+
+        self.dither = True
+        if "dither" in config:
+            dither_value = config["dither"]
+            if isinstance(dither_value, str):
+                self.dither = dither_value.strip().lower() in {"true", "1", "yes", "on"}
+            else:
+                self.dither = bool(dither_value)
 
         # give an OK message
         logger.debug(f'Inkycal webshot loaded')
@@ -297,7 +309,11 @@ class Webshot(InkycalModule):
 
         im.resize(width=int(im.image.width * imageScale), height=webshotHeight)
 
-        im_webshot_black, im_webshot_colour = image_to_palette(im.image.convert("RGB"), self.palette)
+        im_webshot_black, im_webshot_colour = image_to_palette(
+            im.image.convert("RGB"),
+            self.palette,
+            dither=self.dither,
+        )
 
         webshotCenterPosY = int((im_height / 2) - (im.image.height / 2))
 
