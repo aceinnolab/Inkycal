@@ -264,7 +264,13 @@ def detect_context(repo_root: Path) -> InstallerContext:
     else:
         username = pwd.getpwuid(os.getuid()).pw_name
 
-    pw = pwd.getpwnam(username)
+    try:
+        pw = pwd.getpwnam(username)
+    except KeyError:
+        # Some CI environments provide SUDO_USER values that don't exist inside
+        # the runtime image. Fall back to the current uid's account instead.
+        pw = pwd.getpwuid(os.getuid())
+        username = pw.pw_name
     home = Path(pw.pw_dir)
     venv_dir = repo_root / "venv"
     python_bin = venv_dir / "bin" / "python"
