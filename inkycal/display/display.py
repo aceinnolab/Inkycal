@@ -313,6 +313,48 @@ class Display:
 
         self.render(img_bw, img_colour)
 
+    def render_startup_splash(
+        self,
+        title: str,
+        version: str,
+        title_font_size: int = 88,
+        version_font_size: int = 36,
+        line_gap: int = 20,
+    ) -> None:
+        """Render a two-line monochrome startup splash centered on screen."""
+        from PIL import ImageDraw, ImageFont
+        from inkycal.utils.enums import FONTS
+
+        height, width = self.get_display_size(self.model_name)
+        image_bw = Image.new("1", (width, height), "white")
+        draw = ImageDraw.Draw(image_bw)
+
+        # Use the same family that is used for the Inkycal logotype styling.
+        title_font = ImageFont.truetype(FONTS.noto_sans_ui_bold.value, title_font_size)
+        version_font = ImageFont.truetype(FONTS.noto_sans_ui_regular.value, version_font_size)
+
+        title_bbox = draw.textbbox((0, 0), title, font=title_font)
+        version_bbox = draw.textbbox((0, 0), version, font=version_font)
+
+        title_w = title_bbox[2] - title_bbox[0]
+        title_h = title_bbox[3] - title_bbox[1]
+        version_w = version_bbox[2] - version_bbox[0]
+        version_h = version_bbox[3] - version_bbox[1]
+
+        total_h = title_h + line_gap + version_h
+        y_start = (height - total_h) // 2
+
+        title_x = (width - title_w) // 2
+        title_y = y_start
+        version_x = (width - version_w) // 2
+        version_y = title_y + title_h + line_gap
+
+        draw.text((title_x, title_y), title, fill="black", font=title_font)
+        draw.text((version_x, version_y), version, fill="black", font=version_font)
+
+        image_colour = Image.new("1", (width, height), "white")
+        self.render(image_bw, image_colour)
+
 
 if __name__ == "__main__":
     print("Running Display class in standalone mode")

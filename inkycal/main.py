@@ -271,7 +271,13 @@ class Inkycal:
             return
 
         try:
-            self.Display.render_text(f"Inkycal\nv{self._release}", font_size=42, max_width_ratio=0.9)
+            self.Display.render_startup_splash(
+                title="Inkycal",
+                version=f"v{self._release}",
+                title_font_size=88,
+                version_font_size=36,
+                line_gap=20,
+            )
             logger.info("Displayed startup splash screen.")
         except Exception as error:
             logger.warning(f"Could not render startup splash screen: {error}")
