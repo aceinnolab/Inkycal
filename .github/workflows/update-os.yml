@@ -2,6 +2,15 @@ name: Build & Release InkycalOS Lite
 
 on:
   workflow_dispatch:
+    inputs:
+      target_branch:
+        description: "Branch to build into InkycalOS Lite"
+        required: true
+        default: "main"
+        type: choice
+        options:
+          - dev
+          - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -10,7 +19,7 @@ concurrency:
 jobs:
   test-on-arm:
     name: Update OS
-    if: github.event_name == 'workflow_dispatch' && (github.ref_name == 'main' || github.ref_name == 'dev')
+    if: github.event_name == 'workflow_dispatch' && (github.event.inputs.target_branch == 'main' || github.event.inputs.target_branch == 'dev')
     runs-on: ubuntu-latest
     timeout-minutes: 120
     permissions:
@@ -21,6 +30,7 @@ jobs:
         uses: pguyot/arm-runner-action@v2
         id: build_image
         env:
+          GIT_BRANCH: ${{ github.event.inputs.target_branch }}
           INKY_INITAL_PASSWORD: ${{ secrets.INKY_INITAL_PASSWORD }}
           OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
           SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
@@ -43,7 +53,19 @@ jobs:
             uname -srm
             cd /home/inky
             sudo apt-get update -y
-            sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 chromium rustc build-essential libssl-dev liblgpio-dev -y
+            sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 chromium chromium-driver rustc build-essential libssl-dev liblgpio-dev systemd-swap -y
+
+            # installer parity: configure swap on small-memory targets
+            sudo mkdir -p /etc/rpi/swap.conf.d
+            sudo tee /etc/rpi/swap.conf.d/80-use-swapfile.conf >/dev/null <<'EOF'
+            [Main]
+            Mechanism=swapfile
+
+            [File]
+            FixedSizeMiB=1024
+            EOF
+            sudo systemctl daemon-reexec || true
+            sudo systemctl restart systemd-swap || true
 
             echo $PWD && ls
             # --depth 1: shallow clone – full history is not needed for the OS image
@@ -98,12 +120,63 @@ jobs:
             # enable SPI - SPI enabled via user-data file in bootfs
             # sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/config.txt
 
-            # enable inkycal start at boot
-            sudo -u inky bash -c 'echo "@reboot sleep 60 && cd /home/inky/Inkycal && venv/bin/python inky_run.py &" | crontab -'
-            sudo chown inky:crontab /var/spool/cron/crontabs/inky
+            # installer parity: create systemd services instead of crontab
+            sudo tee /etc/systemd/system/inkycal.service >/dev/null <<'EOF'
+            [Unit]
+            Description=Inkycal dashboard service
+            After=network-online.target
+            Wants=network-online.target
+
+            [Service]
+            Type=simple
+            User=inky
+            Group=inky
+            WorkingDirectory=/home/inky/Inkycal
+            Environment=PYTHONUNBUFFERED=1
+            Environment=INKYCAL_LOG_DIR=/home/inky/Inkycal/logs
+            Environment=INKYCAL_LOCK_FILE=/tmp/inkycal.lock
+            ExecStart=/home/inky/Inkycal/venv/bin/python /home/inky/Inkycal/inky_run.py --mode run
+            Restart=on-failure
+            RestartSec=20
+            StandardOutput=journal
+            StandardError=journal
+
+            [Install]
+            WantedBy=multi-user.target
+            EOF
+
+            sudo tee /etc/systemd/system/inkycal-webui.service >/dev/null <<'EOF'
+            [Unit]
+            Description=Inkycal local web UI
+            After=network-online.target inkycal.service
+            Wants=network-online.target
+
+            [Service]
+            Type=simple
+            User=inky
+            Group=inky
+            WorkingDirectory=/home/inky/Inkycal
+            Environment=PYTHONUNBUFFERED=1
+            Environment=INKYCAL_WEBUI_HOST=127.0.0.1
+            Environment=INKYCAL_WEBUI_PORT=8080
+            ExecStart=/home/inky/Inkycal/venv/bin/python /home/inky/Inkycal/inky_webui.py
+            Restart=always
+            RestartSec=15
+            StandardOutput=journal
+            StandardError=journal
+
+            [Install]
+            WantedBy=multi-user.target
+            EOF
+
+            sudo systemctl daemon-reload
+            sudo systemctl enable inkycal.service
+            sudo systemctl enable inkycal-webui.service
 
             # fix permissions of Inkycal folder recursively
             sudo chown -R inky:inky /home/inky/Inkycal
+            sudo mkdir -p /home/inky/Inkycal/logs /home/inky/Inkycal/tmp /home/inky/Inkycal/inkycal/tmp
+            sudo chown -R inky:inky /home/inky/Inkycal/logs /home/inky/Inkycal/tmp /home/inky/Inkycal/inkycal/tmp
 
             # allow some time to unmount
             sleep 10
