@@ -105,6 +105,34 @@ def _git_local_branches() -> List[str]:
     return sorted({line.strip() for line in out.splitlines() if line.strip()})
 
 
+def _git_remote_branches() -> List[str]:
+    code, out, _ = _run_command(
+        ["git", "for-each-ref", "--format=%(refname:short)", "refs/remotes/origin"],
+        cwd=PROJECT_ROOT,
+    )
+    if code != 0 or not out:
+        return []
+
+    branches: List[str] = []
+    for line in out.splitlines():
+        ref = line.strip()
+        if not ref or ref == "origin/HEAD" or not ref.startswith("origin/"):
+            continue
+        branches.append(ref.replace("origin/", "", 1))
+    return sorted(set(branches))
+
+
+def _git_refresh_refs() -> None:
+    # Best effort only; branch listing still works with cached refs if fetch fails.
+    _run_command(["git", "fetch", "--all", "--prune"], cwd=PROJECT_ROOT, timeout=60)
+
+
+def _git_available_branches() -> List[str]:
+    local = _git_local_branches()
+    remote = _git_remote_branches()
+    return sorted(set(local) | set(remote))
+
+
 def _git_pull() -> ActionOutcome:
     code, out, err = _run_command(["git", "pull", "--ff-only"], cwd=PROJECT_ROOT, timeout=90)
     if code == 0:
@@ -613,8 +641,9 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         display_models = sorted(supported_models.keys())
         selected_display_model = self._query.get("display_model", [selected_display if selected_display in supported_models else (display_models[0] if display_models else "")])[0]
         settings_leaf_entries = _iter_leaf_paths(settings_data) if isinstance(settings_data, dict) else []
+        _git_refresh_refs()
         git_current_branch = _git_current_branch()
-        git_branches = _git_local_branches()
+        git_branches = _git_available_branches()
         git_selected = selected_git_branch or self._query.get("git_branch", [git_current_branch])[0]
         if git_selected not in git_branches and git_branches:
             git_selected = git_current_branch if git_current_branch in git_branches else git_branches[0]

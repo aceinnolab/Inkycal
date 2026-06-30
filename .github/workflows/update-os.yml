@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       target_branch:
-        description: "Branch to build into InkycalOS Lite"
+        description: "Which Inkycal branch to install in the OS image (main = stable, dev = latest development)"
         required: true
         default: "main"
         type: choice
@@ -70,9 +70,10 @@ jobs:
             fi
 
             echo $PWD && ls
-            # --depth 1: shallow clone – full history is not needed for the OS image
-            git clone --depth 1 https://github.com/aceinnolab/Inkycal
+            # Fetch all branch refs (shallow) so local web UI can switch branches later.
+            git clone --depth 1 --no-single-branch https://github.com/aceinnolab/Inkycal
             cd Inkycal
+            git switch "$GIT_BRANCH"
             # in trixie, defaults to python 3.13
             python3 -m venv venv
             . venv/bin/activate
