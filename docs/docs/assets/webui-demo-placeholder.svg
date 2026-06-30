@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500">
+  <rect width="1200" height="500" fill="#111827"/>
+  <rect x="90" y="70" width="1020" height="360" rx="28" fill="#1f2937" stroke="#334155" stroke-width="4"/>
+  <polygon points="520,180 520,320 660,250" fill="#60a5fa"/>
+  <text x="90" y="40" font-family="Arial, sans-serif" font-size="28" fill="#e5e7eb">Animated walkthrough placeholder</text>
+  <text x="260" y="390" font-family="Arial, sans-serif" font-size="30" fill="#cbd5e1">Future GIF / screen recording: hardware refresh + display demo flow</text>
+</svg>

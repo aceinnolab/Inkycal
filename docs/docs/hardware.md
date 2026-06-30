@@ -28,12 +28,13 @@ Common supported models include (but are not limited to):
 
 | Size | Type | Colour support | Notes |
 |------|------|----------------|-------|
-| 2.7" | BW | No | Simple and fast refresh |
-| 4.2" | BW or Red | Some models support red/yellow |
-| 5.83" | BW or Colour | Popular choice |
-| 7.5" | BW or Colour | Recommended for Inkycal |
-| 9.7" | BW | Requires optimization disabled |
-| 12.48" | BW | Requires bcm2835 drivers |
+| 4.2" | SPI | BW / Colour | `epd_4_in_2`, `epd_4_in_2_colour` |
+| 5.83" | SPI | BW / Colour | `epd_5_in_83`, `epd_5_in_83_colour`, `epd_5_in_83_V2` |
+| 7.5" | SPI | BW / Colour | `epd_7_in_5`, `epd_7_in_5_colour`, `epd_7_in_5_v2`, `epd_7_in_5_v3_colour` |
+| 9.7" | Parallel | BW | `9_in_7` |
+| 10.3" | Parallel | BW | `10_in_3` |
+| 12.48" | Parallel | BW / Colour | `epd_12_in_48`, `epd_12_in_48_colour`, `epd_12_in_48_colour_V2` |
+| 13.3" | Parallel | BW / Colour | `epd_13_in_3`, `epd_13_in_3_colour` |
 
 Full list is returned by:
 
@@ -41,6 +42,8 @@ Full list is returned by:
 from inkycal.display import Display
 print(Display.get_display_names())
 ```
+
+The exact mapping lives in `inkycal/display/supported_models.py`.
 
 ---
 
@@ -148,7 +151,7 @@ Then test display access via Inkycal:
 
 ```python
 from inkycal.display import Display
-d = Display("waveshare_7in5_colour")
+d = Display("epd_7_in_5_colour")
 d.render_text("Display works!")
 ```
 
@@ -189,7 +192,7 @@ SPI disabled → enable it.
 Run calibration:
 
 ```python
-d = Display("waveshare_7in5_colour")
+d = Display("epd_7_in_5_colour")
 d.calibrate(3)
 ```
 

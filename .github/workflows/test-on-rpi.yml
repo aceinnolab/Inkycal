@@ -5,11 +5,17 @@ on:
   push:
     branches: [main]
   pull_request:
-      branches: [main]
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test-on-rpi-os:
     name: Run Tests on Raspberry Pi OS
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     permissions:
       contents: write
 
@@ -28,7 +34,7 @@ jobs:
         with:
           # Set the base_image to the desired Raspberry Pi OS version
           base_image: https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-11-24/2025-11-24-raspios-trixie-armhf-lite.img.xz
-          image_additional_mb: 3072 # enlarge free space to 3GB
+          image_additional_mb: 3072 # enlarge free space to 3 GB
           optimize_image: true
           commands: |
             cd /home
@@ -39,10 +45,10 @@ jobs:
             whoami
             cd /home/inky
             sudo apt-get update -y
-            # sudo apt-get install git zlib1g libjpeg-dev libatlas-base-dev rustc libopenjp2-7 python-dev-is-python3 scons libssl-dev python3-venv python3-pip git libfreetype6-dev chromium libopenblas-dev build-essential libxml2-dev libxslt1-dev python3-dev -y
             sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 chromium rustc build-essential libssl-dev -y
             echo $PWD && ls
-            git clone -b main --single-branch https://github.com/aceinnolab/Inkycal 
+            # --depth 1: shallow clone – full history is not needed for CI
+            git clone -b main --single-branch --depth 1 https://github.com/aceinnolab/Inkycal
             cd Inkycal
             # in trixie, defaults to python 3.13
             python3 -m venv venv
@@ -51,8 +57,7 @@ jobs:
             # to ensure we don't reach the max timeout for GitHub Actions and making it faster to install Inkycal, we're depending on piwheels
             # for the wheels we need
             pip install --upgrade pip wheel setuptools --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
-            pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
+            pip install -e ".[dev]" pytest --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
             pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
-            wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
-            pip install pytest
-            python -m pytest 
+            wget -q https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
+            python -m pytest --tb=short -v

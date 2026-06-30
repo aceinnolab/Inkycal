@@ -77,7 +77,7 @@ sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/firmware/config.txt
 sudo dpkg-reconfigure tzdata
 ```
 
-Then install Inkycal
+Then install Inkycal:
 ```shell
 cd $HOME
 git clone https://github.com/aceinnolab/Inkycal
@@ -89,7 +89,23 @@ pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url h
 pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
 ```
 
-## 6. Start Inkycal
+## 6. Finish with the installer
+
+Run the interactive installer to finish setup, create services and run the display test flow:
+
+```shell
+python3 installer.py
+```
+
+The installer can:
+
+- install or repair dependencies
+- create `inkycal.service`
+- create `inkycal-webui.service`
+- guide you through a timed display test
+- repair common permission mistakes
+
+## 7. Start Inkycal
 ```shell
 venv/bin/python inky_run.py
 ```
@@ -98,14 +114,21 @@ If everything is set up correctly:
 * Renders a full e-paper image
 * Displays it on your hardware
 
-## 7. Auto-Start on Boot (optional)
-```sh
-CRON_LINE='@reboot sleep 60 && cd $HOME/Inkycal && venv/bin/python inky_run.py &'
-( crontab -l 2>/dev/null | grep -qxF "$CRON_LINE" ) || \
-( crontab -l 2>/dev/null; echo "$CRON_LINE" ) | crontab -
+You can also validate the config without touching the display:
+
+```shell
+venv/bin/python inky_run.py --mode dry-run
 ```
 
-## 8. Updating Inkycal
+## 8. Open the Local Web UI
+
+If you used the installer-managed service setup, the local web UI is available separately from the main display service.
+
+See the dedicated page:
+
+- [Local Web UI](webui.md)
+
+## 9. Updating Inkycal
 ```shell
 cd ~/Inkycal
 git pull
@@ -113,7 +136,13 @@ source venv/bin/activate
 pip install -e .
 ```
 
-## 9. Want the Easy Way? (Recommended)
+Then re-run the installer if you want services and dependencies reconciled after an update:
+
+```shell
+python3 installer.py
+```
+
+## 10. Want the Easy Way? (Recommended)
 
 If you’re using a Pi Zero (slow installation), consider InkycalOS Lite.
 

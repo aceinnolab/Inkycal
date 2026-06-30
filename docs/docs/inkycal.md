@@ -286,12 +286,12 @@ Inkycal/
 │   ├── modules/          # Built-in modules
 │   ├── utils/            # Canvas, fonts, helpers
 │   ├── settings.py       # Constants & defaults
-│   └── web/              # Web UI (optional)
+│   └── webui.py          # Local lightweight web UI
 │
 ├── tests/                # Unit tests
-├── docsource/            # Documentation
+├── docs/                 # MkDocs source + generated site
 ├── inky_run.py           # Main entrypoint
-└── setup.py / pyproject   # Packaging
+└── pyproject.toml        # Packaging metadata
 ```
 
 ---

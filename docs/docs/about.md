@@ -32,14 +32,16 @@ You choose the modules, configure their sizes, and Inkycal renders the final ima
 
 # 🧩 How It Works
 
-### 1. **Configuration via Web UI**
-Users visit the Inkycal Web UI and generate a `settings.json` file, which defines:
+### 1. **Configuration via the settings generator**
+Users visit the hosted Inkycal settings generator and create a `settings.json` file, which defines:
 
 - Display type  
 - Registered modules  
 - Ordering & layout  
 - Module-specific settings  
 - Timezone + locale  
+
+On the device itself, Inkycal also ships with a separate **local web UI** for logs, hardware details, timezone management, settings editing and display actions.
 
 ### 2. **Rendering on Raspberry Pi**
 Inkycal loads the configuration, creates a canvas, and asks each module to draw its content.
@@ -74,16 +76,17 @@ Modules are small Python classes that each render a part of the final screen.
 Built-in modules include:
 
 - `Calendar`
-- `WeatherForecast`
-- `RSSReader`
-- `ImageFrame`
-- `Clock`
-- `CustomText`
+- `Agenda`
+- `Weather`
+- `Feeds`
+- `Image`
+- `Slideshow`
+- `Webshot`
 
 You can write your own module by subclassing:
 
 ```python
-from inkycal.modules.base import InkycalModule
+from inkycal.modules.template import InkycalModule
 
 class MyModule(InkycalModule):
     def generate_image(self):

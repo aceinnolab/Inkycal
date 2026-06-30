@@ -38,6 +38,8 @@ Inkycal ships with the following modules, available via the Web-UI and automatic
 inkycal.modules.__init__.py
 ```
 
+The local device administration interface is implemented separately in `inkycal/webui.py` and described in `webui.md`.
+
 ### Module Index
 
 | Name                   | Class           | Import Path                                                 |
@@ -45,7 +47,7 @@ inkycal.modules.__init__.py
 | **Agenda**             | `Agenda`        | `inkycal.modules.inkycal_agenda.Agenda`                     |
 | **Calendar**           | `Calendar`      | `inkycal.modules.inkycal_calendar.Calendar`                 |
 | **Feeds**              | `Feeds`         | `inkycal.modules.inkycal_feeds.Feeds`                       |
-| **Image**              | `Inkyimage`     | `inkycal.modules.inky_image.Inkyimage`                      |
+| **Image**              | `Inkyimage`     | `inkycal.modules.inkycal_image.Inkyimage`                   |
 | **Jokes**              | `Jokes`         | `inkycal.modules.inkycal_jokes.Jokes`                       |
 | **Server Status**      | `Inkyserver`    | `inkycal.modules.inkycal_server.Inkyserver`                 |
 | **Slideshow**          | `Slideshow`     | `inkycal.modules.inkycal_slideshow.Slideshow`               |

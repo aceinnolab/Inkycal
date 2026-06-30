@@ -226,7 +226,7 @@ class Calendar(InkycalModule):
         # --- Larger circle (properly centered) ---
         cx = icon_width // 2
         cy = icon_height // 2
-        radius = int(icon_width * 0.40)
+        radius = int(icon_width * 0.25)
 
         draw.ellipse(
             (cx - radius, cy - radius, cx + radius, cy + radius),
