@@ -70,9 +70,10 @@ jobs:
             fi
 
             echo $PWD && ls
-            # --depth 1: shallow clone – full history is not needed for the OS image
-            git clone -b "$GIT_BRANCH" --single-branch --depth 1 https://github.com/aceinnolab/Inkycal
+            # Fetch all branch refs (shallow) so local web UI can switch branches later.
+            git clone --depth 1 --no-single-branch https://github.com/aceinnolab/Inkycal
             cd Inkycal
+            git switch "$GIT_BRANCH"
             # in trixie, defaults to python 3.13
             python3 -m venv venv
             . venv/bin/activate
