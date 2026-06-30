@@ -302,6 +302,21 @@ The Canvas provides `draw_icon()` to render SVG-style icons cleanly and centered
 ### 4. Enhanced performance  
 Cache API responses to speed up repeated renders.
 
+### 5. Docs toolchain safety (MkDocs 2 warning)
+
+Inkycal currently targets the MkDocs 1.x ecosystem.
+
+- `dev_requirements.txt` constrains docs dependencies to MkDocs 1.x-compatible major versions.
+- CI validates the installed major versions for `mkdocs`, `mkdocs-material`, and `mkdocstrings` before deploying docs.
+- Use a strict local build when changing docs structure or API docs:
+
+```bash
+cd docs
+mkdocs build --clean --strict
+```
+
+When migrating to MkDocs 2 in the future, do it in a dedicated branch with a full docs smoke-test pass.
+
 ---
 
 ## 🎉 You're Ready to Build Modules!

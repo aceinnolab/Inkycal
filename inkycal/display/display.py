@@ -42,8 +42,7 @@ class Display:
             Name of the display model, e.g. ``"waveshare_7in5_colour"``.
 
     Raises:
-        Exception: If the driver module cannot be imported or if SPI appears
-        unavailable.
+        Exception: If the driver module cannot be imported or if SPI is unavailable.
     """
 
     # ----------------------------------------------------------------------
