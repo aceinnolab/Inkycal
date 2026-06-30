@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -14,6 +12,9 @@ concurrency:
 jobs:
   test-on-rpi-os:
     name: Run Tests on Raspberry Pi OS
+    if: >-
+      (github.event_name == 'push' && github.ref_name == 'main') ||
+      (github.event_name == 'workflow_dispatch' && (github.ref_name == 'main' || github.ref_name == 'dev'))
     runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions:
@@ -24,6 +25,7 @@ jobs:
         uses: pguyot/arm-runner-action@v2
         id: build_image
         env:
+          GIT_BRANCH: ${{ github.ref_name }}
           INKY_INITAL_PASSWORD: ${{ secrets.INKY_INITAL_PASSWORD }}
           OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
           SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}
@@ -48,7 +50,7 @@ jobs:
             sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 chromium rustc build-essential libssl-dev -y
             echo $PWD && ls
             # --depth 1: shallow clone – full history is not needed for CI
-            git clone -b main --single-branch --depth 1 https://github.com/aceinnolab/Inkycal
+            git clone -b "$GIT_BRANCH" --single-branch --depth 1 https://github.com/aceinnolab/Inkycal
             cd Inkycal
             # in trixie, defaults to python 3.13
             python3 -m venv venv
