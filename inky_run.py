@@ -6,8 +6,10 @@ set render=True to render the display, set render=False to only run the modules.
 import asyncio
 import argparse
 import contextlib
+import json
 import os
 import sys
+from pathlib import Path
 
 try:
     import fcntl
@@ -15,8 +17,81 @@ except ImportError:  # pragma: no cover - non-POSIX only
     fcntl = None
 
 from inkycal.main import Inkycal
+from inkycal.display import Display
+from inkycal.settings import Settings
+from inkycal.utils.functions import get_inkycal_version
 
 LOCK_PATH = os.getenv("INKYCAL_LOCK_FILE", "/tmp/inkycal.lock")
+
+
+def _read_boot_id() -> str:
+    try:
+        with open("/proc/sys/kernel/random/boot_id", "r", encoding="utf-8") as boot_file:
+            return boot_file.read().strip()
+    except Exception:
+        return "unknown-boot"
+
+
+def _splash_flag_path(version: str) -> str:
+    splash_dir = os.getenv("INKYCAL_SPLASH_STATE_DIR", "/tmp")
+    version_safe = str(version).replace("/", "-")
+    return os.path.join(splash_dir, f"inkycal-splash-{_read_boot_id()}-{version_safe}.flag")
+
+
+def _resolve_settings_path() -> Path:
+    configured = os.getenv("INKYCAL_SETTINGS_PATH")
+    if configured:
+        path = Path(configured)
+        if path.exists() and path.is_file():
+            return path
+
+    settings = Settings()
+    for location in settings.SETTINGS_JSON_PATHS:
+        path = Path(location)
+        if path.exists() and path.is_file():
+            return path
+
+    fallback = Path(__file__).resolve().parent / "inkycal" / "settings.json"
+    return fallback
+
+
+def _show_startup_splash_if_needed() -> None:
+    settings_path = _resolve_settings_path()
+    if not settings_path.exists():
+        return
+
+    try:
+        settings_data = json.loads(settings_path.read_text(encoding="utf-8"))
+    except Exception:
+        return
+
+    if not settings_data.get("show_startup_splash", True):
+        return
+
+    model = settings_data.get("model")
+    if not isinstance(model, str) or not model:
+        return
+
+    version = get_inkycal_version()
+    flag_path = _splash_flag_path(version)
+    if os.path.exists(flag_path):
+        return
+
+    try:
+        display = Display(model)
+        display.render_startup_splash(
+            title="Inkycal",
+            version=f"v{version}",
+            title_font_size=88,
+            version_font_size=30,
+            line_gap=28,
+        )
+        os.makedirs(os.path.dirname(flag_path), exist_ok=True)
+        with open(flag_path, "w", encoding="utf-8") as marker:
+            marker.write("1")
+    except Exception:
+        # Splash must never block startup if hardware/config is not ready.
+        return
 
 
 @contextlib.contextmanager
@@ -44,6 +119,7 @@ async def run():
 
     # when using experimental PiSugar support:
     # inky = Inkycal(render=True, use_pi_sugar=True, shutdown_after_run=False)
+    _show_startup_splash_if_needed()
     inky = Inkycal(render=True)
     await inky.run()  # If there were no issues, you can run Inkycal nonstop
 

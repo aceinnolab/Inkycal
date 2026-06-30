@@ -20,6 +20,7 @@ from zoneinfo import available_timezones
 
 from inkycal.display.supported_models import supported_models
 from inkycal.settings import Settings
+from inkycal.utils.functions import get_inkycal_version
 
 settings = Settings()
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -35,6 +36,7 @@ INKYCAL_OS_LITE_URL = "https://inkycal.aceinnolab.com/inkycal-os-lite"
 DISCORD_SUPPORT_URL = "https://discord.gg/sHYKeSM"
 DISCORD_LOGO_URL = "https://cdn.simpleicons.org/discord/5865F2"
 DEMO_IMAGE_URL = "https://raw.githubusercontent.com/aceinnolab/Inkycal/refs/heads/assets/tests/Inkycal_cover.png"
+INKYCAL_VERSION = get_inkycal_version()
 
 
 def _run_command(command: List[str], timeout: int = 10) -> Tuple[int, str, str]:
@@ -653,6 +655,7 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
     <div class='grid'>
       <section class='card'>
         <h2>Status</h2>
+        <p><strong>Version:</strong> v{html.escape(INKYCAL_VERSION)}</p>
         <p><strong>Inkycal:</strong> {html.escape(state)}</p>
         <p><strong>Service:</strong> {html.escape(SERVICE_NAME)}</p>
         <p><strong>Selected display:</strong> {html.escape(selected_display)}</p>

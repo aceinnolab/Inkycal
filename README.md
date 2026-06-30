@@ -165,6 +165,7 @@ The installer can:
 - fix broken file permissions after accidental `sudo` use
 - install portable `systemd` services for your actual user and path
 - set up the recommended swap configuration automatically on Raspberry Pi Zero after asking for confirmation
+- set timezone via `raspi-config` from the installer menu
 - run a display test with model selection and a 60-second timeout
 - update Inkycal safely and re-run dependency sync
 - perform a full wipe that removes installer-managed changes and optionally deletes the cloned folder
@@ -340,6 +341,7 @@ python3 inky_webui.py
 Then open `http://<raspberry-pi-ip>:8080`.
 
 Features include:
+- Inkycal version display
 - Inkycal service status
 - hardware overview (temp/load/memory/uptime)
 - start/stop/restart + dry-run buttons
@@ -347,6 +349,23 @@ Features include:
 - PayPal donation QR code
 - settings.json editors
 - display actions (calibration, clear, demo image)
+
+## Startup splash
+
+On first start after boot, Inkycal renders a monochrome startup splash before loading modules:
+
+- `Inkycal` (centered, large text)
+- `v<version>` below it (smaller text)
+
+The splash is independent from module rendering and only uses `settings.json` to determine the display model.
+
+You can disable it by adding this key in `settings.json`:
+
+```json
+{
+  "show_startup_splash": false
+}
+```
 
 ## Installing on devices without GPIO
 - Get the most of InkyCal by using more powerful IDE, for debugging and creating own modules etc. 
