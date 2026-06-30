@@ -416,6 +416,42 @@ def show_service_status() -> None:
     print_command_result(result)
 
 
+def _current_timezone() -> str:
+    result = run_command(["timedatectl", "show", "--property=Timezone", "--value"], check=False)
+    tz = result.stdout.strip()
+    return tz if tz else "UTC"
+
+
+def configure_timezone_via_raspi_config() -> None:
+    if shutil.which("raspi-config") is None:
+        print("raspi-config was not found on this system.")
+        return
+
+    current_tz = _current_timezone()
+    print(f"Current timezone: {current_tz}")
+    requested_tz = input("Enter timezone (e.g. Europe/Berlin) or leave empty to cancel: ").strip()
+    if not requested_tz:
+        print("Timezone update cancelled.")
+        return
+
+    print(f"Applying timezone via raspi-config: {requested_tz}")
+    result = run_command(
+        ["raspi-config", "nonint", "do_change_timezone", requested_tz],
+        use_sudo=True,
+        check=False,
+    )
+    print_command_result(result)
+
+    if result.returncode != 0:
+        print("Non-interactive timezone update failed.")
+        print("Please run the interactive tool manually:")
+        print("  sudo raspi-config")
+        print("Then open: Localisation Options -> Timezone")
+        return
+
+    print(f"Timezone is now: {_current_timezone()}")
+
+
 def choose_with_curses(title: str, options: list[str]) -> int:
     import curses
 
@@ -540,6 +576,7 @@ def run_menu(ctx: InstallerContext) -> None:
         ("Stop services", lambda: service_action("stop")),
         ("Restart services", lambda: service_action("restart")),
         ("Display test (60s timeout)", lambda: display_test(ctx, timeout_seconds=60)),
+        ("Set timezone (raspi-config)", configure_timezone_via_raspi_config),
         ("Repair permissions", lambda: repair_permissions(ctx)),
         ("Show service status", show_service_status),
         ("Exit", lambda: (_ for _ in ()).throw(SystemExit(0))),

@@ -12,6 +12,7 @@ Use the installer when you want to:
 - create or repair the virtual environment
 - install or refresh `systemd` services
 - set up swap on Raspberry Pi Zero devices
+- set system timezone via `raspi-config`
 - repair file-permission mistakes caused by accidental `sudo`
 - run the built-in display test flow
 - update an existing installation safely
@@ -46,6 +47,14 @@ It writes:
 - `/etc/rpi/swap.conf.d/80-use-swapfile.conf`
 
 and restarts `systemd-swap` if needed.
+
+### Timezone setup
+
+The installer menu includes:
+
+- `Set timezone (raspi-config)`
+
+This runs `raspi-config nonint do_change_timezone <TZ>` and applies the selected timezone without leaving the installer.
 
 ### Portable `systemd` services
 

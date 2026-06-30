@@ -14,6 +14,9 @@ This document explains the software architecture, the life-cycle of a typical In
 | (CLI entrypoint / startup)  |
 +--------------+--------------+
                |
+               +--> Optional startup splash (name + version)
+               |    independent from module loading
+               |
                v
 +-----------------------------+
 |          Inkycal            |
@@ -199,20 +202,21 @@ Every Inkycal run follows the same flow:
 User starts inky_run.py
         |
         v
-1. Inkycal loads settings.json
-2. Inkycal loads modules
-3. Each module generates:
+1. Optional startup splash is rendered (uses only display model from settings)
+2. Inkycal loads settings.json
+3. Inkycal loads modules
+4. Each module generates:
        image_black, image_colour
-4. Inkycal assembles module images into final canvas
-5. Display.init()
-6. Display.render(black, colour)
-7. Display.sleep()
+5. Inkycal assembles module images into final canvas
+6. Display.init()
+7. Display.render(black, colour)
+8. Display.sleep()
 ```
 
 If calibration is due:
 
 ```
-8. Display.calibrate()
+9. Display.calibrate()
 ```
 
 ---

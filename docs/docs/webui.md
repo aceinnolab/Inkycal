@@ -14,6 +14,7 @@ The current local web UI supports:
 - view recent log files
 - auto-refresh hardware details while the page is open
 - show host, platform, Python version, timezone, load, memory and uptime
+- show the running Inkycal version in the status card
 - update the system timezone
 - inspect and edit `settings.json`
 - edit settings as key/value fields with read-only keys

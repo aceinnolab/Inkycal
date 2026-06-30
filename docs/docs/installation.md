@@ -163,6 +163,10 @@ Set timezone (optional):
 sudo dpkg-reconfigure tzdata
 ```
 
+Or set it later from the installer menu with:
+
+- `Set timezone (raspi-config)`
+
 Required for 12.48" only:
 ```shell
 wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.71.tar.gz
@@ -238,10 +242,13 @@ It covers:
 - update flow
 - service generation for your real username and path
 - swap setup on Raspberry Pi Zero, with confirmation and duplicate detection
+- timezone updates via `raspi-config`
 - permission repair (common sudo mishaps)
 - timed display test with model selection
 - local web UI service setup
 - a full wipe option that removes installer-managed system changes and can delete the cloned folder
+
+By default, first startup after boot also shows a monochrome splash with `Inkycal` and the current version before modules render. You can disable this via `"show_startup_splash": false` in `settings.json`.
 
 For a dedicated walkthrough, see:
 
