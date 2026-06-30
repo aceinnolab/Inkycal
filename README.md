@@ -97,7 +97,10 @@ display!**
 
 ## Configuring the Raspberry Pi
 
-Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://www.raspberrypi.com/software/). Please use this version of [Raspberry Pi OS - trixie]([https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz](https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-11-24/2025-11-24-raspios-trixie-armhf-lite.img.xz))
+Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://www.raspberrypi.com/software/).
+The exact image currently used in the Raspberry Pi GitHub Actions test workflow is:
+
+- [Raspberry Pi OS Lite (Trixie, armhf, 2025-11-24)](https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-11-24/2025-11-24-raspios-trixie-armhf-lite.img.xz)
 
 | option                    |            value            |
 |:--------------------------|:---------------------------:|
@@ -148,6 +151,28 @@ Follow the steps in `Installation` (see below) on how to install Inkycal.
 
 ## Installing Inkycal
 
+### Interactive installer (recommended)
+
+If you want the simplest setup path on Raspberry Pi OS, use the Python installer. It handles dependencies, permissions, service installation, and the display test menu.
+
+```bash
+cd $HOME/Inkycal
+python3 installer.py
+```
+
+The installer can:
+- install or repair dependencies and the virtual environment
+- fix broken file permissions after accidental `sudo` use
+- install portable `systemd` services for your actual user and path
+- set up the recommended swap configuration automatically on Raspberry Pi Zero after asking for confirmation
+- set timezone via `raspi-config` from the installer menu
+- run a display test with model selection and a 60-second timeout
+- update Inkycal safely and re-run dependency sync
+- perform a full wipe that removes installer-managed changes and optionally deletes the cloned folder
+
+If you already have Inkycal installed, you can re-run the installer any time to repair or update it.
+If you’re on a Raspberry Pi Zero, the installer will ask whether to set up swap and will skip the step if it is already configured.
+
 ⚠️ Please note that although the developers try to keep the installation as simple as possible, the full installation
 can sometimes take hours on the Raspberry Pi Zero W and is not guaranteed to go smoothly each time. This is because
 installing dependencies on the zero w takes a long time and is prone to copy-paste-, permission- and configuration
@@ -162,15 +187,39 @@ top of the repo to get access to Inkycal-OS-Lite. Alternatively, you can also us
 amount as GitHub sponsors to get access to InkycalOS-Lite!
 This will help keep this project growing and cover the ongoing expenses too! Win-win for everyone! 🎊
 
+### InkycalOS-Lite setup
+
+Once you have access to InkycalOS-Lite:
+
+1. Download the image from [https://inkycal.aceinnolab.com/inkycal-os-lite](https://inkycal.aceinnolab.com/inkycal-os-lite)
+2. Flash it with [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
+3. Reinsert the SD card so the `bootfs` partition becomes visible
+4. Generate Raspberry Pi config files from [https://inkycal.aceinnolab.com/rpi-config](https://inkycal.aceinnolab.com/rpi-config)
+5. Copy those generated files into `bootfs`
+6. Generate `settings.json` from [https://inkycal.aceinnolab.com/ui](https://inkycal.aceinnolab.com/ui)
+7. Copy `settings.json` into `bootfs`
+8. Boot the Raspberry Pi and let Inkycal render automatically
+
+If something goes wrong, connect with SSH:
+
+```bash
+ssh inky@inkycal.local
+cd $HOME/Inkycal
+source venv/bin/activate
+python inky_run.py
+```
+
+Community help is available on Discord: [https://discord.gg/sHYKeSM](https://discord.gg/sHYKeSM)
+
 ### Bonus: PiSugar support
-The PiSugar is a battery pack for the Raspberry Pi Zero W. It can be used to power the Raspberry Pi and the e-paper, allowing battery life up to several weeks.
+The PiSugar is a battery pack for the Raspberry Pi Zero W. It can power the Raspberry Pi and the e-paper, allowing battery life up to several weeks.
 If you have a PiSugar board, please see the wiki page on how to install the PiSugar driver and configure Inkycal to work with it:
 [PiSugar support](https://github.com/aceinnolab/Inkycal/wiki/PiSugar-support)
 
 
 ### Installing on Raspberry Pi
 
-Run the following steps to install Inkycal. Do **not** use sudo for this, except where explicitly specified.
+Run the following steps to install Inkycal. Do **not** use `sudo` for the installer itself unless explicitly told to do so.
 
 - update the system
 ```bash
@@ -203,9 +252,9 @@ sudo systemctl restart systemd-swap
 export TMPDIR=/var/tmp
 ```
 
-- Install apt dependencies
+- Install apt dependencies:
 ```bash
-sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 wkhtmltopdf rustc build-essential libssl-dev liblgpio-dev -y
+sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 chromium chromium-driver rustc build-essential libssl-dev liblgpio-dev -y
 ```
 
 - clone the repo in the home directory
@@ -215,7 +264,7 @@ git clone https://github.com/aceinnolab/Inkycal
 cd Inkycal
 ```
 
-- set-up virtual environment & install dependencies
+- Set up the virtual environment & install dependencies
 ```bash
 # defaults to python3.13 on trixie
 python -m venv venv
@@ -228,12 +277,94 @@ pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url h
 pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
 ```
 
-- To make inkycal run on each boot automatically, you can use crontab. Do not use sudo for this
+Then run the installer to finish the setup, install services, and perform a display test:
 
 ```bash
-crontab -e
-# choose nano (easiest) and add the following line. Do not remove the & sign at the end, this is required!
-@reboot sleep 60 && cd $HOME/Inkycal && venv/bin/python inky_run.py &
+python3 installer.py
+```
+
+The installer will install the `systemd` services for you and ensure only one Inkycal instance runs at a time.
+
+That includes:
+
+- `inkycal.service`
+- `inkycal-webui.service`
+
+It also uses PiWheels-friendly pip flags to avoid unnecessary local builds:
+
+```bash
+pip install --upgrade pip wheel setuptools --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
+pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
+```
+
+You can use the installer again later to repair, update, configure swap, or perform a wipe.
+
+## Logging
+
+Inkycal writes logs to `Inkycal/logs/inkycal.log` and rotates them daily.
+
+- 1 active log + up to 14 rotated logs
+- configurable via `INKYCAL_LOG_DIR` or `INKYCAL_LOG_FILE`
+
+Examples:
+
+```bash
+# follow app log
+tail -f $HOME/Inkycal/logs/inkycal.log
+
+# inspect service logs
+journalctl -u inkycal.service -f
+```
+
+## Webshot backend notes (Pi Zero)
+
+The Webshot module uses native Chromium headless mode by default (no Google Chrome required).
+If that fails, it falls back to Selenium + Chromium/Chromedriver.
+
+You can override binaries with:
+
+```bash
+export INKYCAL_BROWSER_BIN=/usr/bin/chromium
+export INKYCAL_CHROMEDRIVER_BIN=/usr/bin/chromedriver
+```
+
+## Local web UI
+
+You can run the local web UI manually:
+
+```bash
+cd $HOME/Inkycal
+source venv/bin/activate
+python3 inky_webui.py
+```
+
+Then open `http://<raspberry-pi-ip>:8080`.
+
+Features include:
+- Inkycal version display
+- Inkycal service status
+- hardware overview (temp/load/memory/uptime)
+- start/stop/restart + dry-run buttons
+- log viewer for `inkycal.log*`
+- PayPal donation QR code
+- settings.json editors
+- display actions (calibration, clear, demo image)
+
+## Startup splash
+
+On first start after boot, Inkycal renders a monochrome startup splash before loading modules:
+
+- `Inkycal` (centered, large text)
+- `v<version>` below it (smaller text)
+
+The splash is independent from module rendering and only uses `settings.json` to determine the display model.
+
+You can disable it by adding this key in `settings.json`:
+
+```json
+{
+  "show_startup_splash": false
+}
 ```
 
 ## Installing on devices without GPIO
@@ -267,9 +398,16 @@ To update Inkycal to the latest version, navigate to the Inkycal folder, then ru
 git pull
 ```
 
-Yep. It's actually that simple!
-But, if you have made changes to Inkycal, those will be overwritten.
-If that is the case, backup your modified files somewhere else if you need them. Then run:
+Then refresh the environment and re-run the installer if needed:
+
+```bash
+source venv/bin/activate
+pip install -e .
+python3 installer.py
+```
+
+That’s it. If you have made local changes, they will be overwritten.
+If that is the case, back up any modified files first and then run:
 
 ```bash
 git reset --hard
@@ -281,11 +419,11 @@ git pull
 We'll miss you, but we don't want to make it hard for you to leave.
 Just delete the Inkycal folder, and you're good to go!
 
-Additionally, if you want to reset your crontab file, which runs inkycal at boot, run:
+If you installed the `systemd` services, re-run the installer or remove them via `systemctl` before deleting the folder.
 
-```bash
-crontab -r
-```
+### Full wipe
+
+The installer includes a full wipe option that removes installer-managed system changes first. It can also delete the cloned `Inkycal` folder if you confirm that too.
 
 ## Modifying Inkycal
 
@@ -324,6 +462,8 @@ to have some faster responses, please use Discord (link below)
 
 We're happy to help, to beginners and developers alike. In fact, you are more likely to get faster support on Discord
 than on GitHub.
+
+Join here: [https://discord.gg/sHYKeSM](https://discord.gg/sHYKeSM)
 
 <a href="https://discord.gg/sHYKeSM">
         <img src="https://github.com/aceinnolab/Inkycal/blob/assets/Repo/discord-logo.png?raw=true" alt="Inkycal chatroom Discord" width=200>

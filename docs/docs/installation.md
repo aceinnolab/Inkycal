@@ -30,22 +30,81 @@ If you want the **fastest, most reliable installation**, use the prebuilt Inkyca
 
 ### 📥 How to get it
 InkycalOS Lite is available to supporters of the project.  
-Check the **GitHub Sponsors page** or use the PayPal link provided in the repository README.
 
-### ▶️ Installation steps
-1. Flash the downloaded `.img` file using **Raspberry Pi Imager**.
-2. Copy your `settings.json` to the boot partition.
-3. Insert the SD card and power the Pi.
-4. Inkycal boots automatically.
+- Sponsor the repo through the [GitHub Sponsors button](https://github.com/sponsors/aceisace). Use the one-time option for InkycalOS-Lite.
+- Forward the sponsor confirmation email to the address shown after sponsoring.
+- Once your email is registered, visit the [InkycalOS-Lite download page](https://inkycal.aceinnolab.com/inkycal-os-lite) to retrieve your download link.
+- New releases are distributed to registered supporters by email.
+
+### ▶️ Flashing InkycalOS-Lite
+
+1. Install [Raspberry Pi Imager](https://www.raspberrypi.com/software/).
+2. Insert your microSD card.
+3. Flash the downloaded InkycalOS-Lite image.
+4. Reinsert the card so the boot partition (`bootfs`) becomes visible on your computer.
+
+### 🌐 Setting up user-data and network
+
+Raspberry Pi Imager does not pre-fill the custom InkycalOS-Lite user-data/network setup, so prepare those files separately:
+
+1. Open the [Inkycal Raspberry Pi config page](https://inkycal.aceinnolab.com/rpi-config).
+2. Fill in your network and login details.
+3. Generate and download the configuration files.
+4. Copy both files into the visible `bootfs` partition on the SD card and allow overwrite if prompted.
+
+### 🧩 Add `settings.json`
+
+1. Generate your config from the [settings.json generator](https://inkycal.aceinnolab.com/ui).
+2. Make sure you add at least one module.
+3. Copy `settings.json` into the `bootfs` partition as well.
+
+### ▶️ First boot
+
+1. Insert the microSD card into the Raspberry Pi.
+2. Power on the device.
+3. Inkycal will look for `settings.json` in the boot partition and render automatically if the file is valid.
+
+If you want to adjust the layout later, simply generate a new `settings.json` and replace the existing file.
+
+For a focused walkthrough, see:
+
+- [InkycalOS-Lite Setup](inkycalos-lite.md)
+
+### 🔐 SSH access (if something goes wrong)
+
+If the display does not show the expected dashboard, connect over SSH:
+
+```sh
+ssh inky@inkycal.local
+```
+
+Use the password you configured in the Raspberry Pi config step.
+
+Then run:
+
+```sh
+cd $HOME/Inkycal
+source venv/bin/activate
+python inky_run.py
+```
+
+This prints the real error instead of leaving you with a blank screen.
+
+### 🆘 InkycalOS-Lite troubleshooting
+
+- Some flicker during refresh is normal for e-paper displays.
+- If the screen stays blank, double-check wiring/orientation on the display connector.
+- If rendering fails, regenerate `settings.json` or debug over SSH.
+- If you need help, join the community Discord: [https://discord.gg/sHYKeSM](https://discord.gg/sHYKeSM)
 
 You're done. 🎉
 
 ---
 
-# 🐍 3. Install on Raspberry Pi OS (Manual Installation)
+# 🐍 3. Install on Raspberry Pi OS
 
-This method gives you full control.  
-Recommended for advanced users, developers, or custom hardware setups.
+This path gives you full control while still using the current Python installer for the final setup steps.
+It is recommended for advanced users, developers, and custom hardware setups.
 
 ---
 
@@ -53,8 +112,10 @@ Recommended for advanced users, developers, or custom hardware setups.
 
 Use **Raspberry Pi Imager** and write:
 
-> ⚠️ Recommended version:  
-> **Raspberry Pi OS Lite (bookworm)** — the newest release may have kernel issues.
+> ✅ Recommended version used in the automated Raspberry Pi test workflow:  
+> [Raspberry Pi OS Lite (Trixie, armhf, 2025-11-24)](https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-11-24/2025-11-24-raspios-trixie-armhf-lite.img.xz)
+
+This is the exact base image referenced in `.github/workflows/test-on-rpi.yml`.
 
 Configure in Imager:
 
@@ -98,14 +159,17 @@ sudo raspi-config --expand-rootfs
 
 Enable SPI:
 ```sh
-# TODO: update ot use raspi-config, non-interactive
-sudo sed -i s/#dtparam=spi=on/dtparam=spi=on/ /boot/firmware/config.txt
-``
+sudo raspi-config nonint do_spi 0
+```
 
 Set timezone (optional):
 ```sh
 sudo dpkg-reconfigure tzdata
 ```
+
+Or set it later from the installer menu with:
+
+- `Set timezone (raspi-config)`
 
 Required for 12.48" only:
 ```shell
@@ -143,11 +207,11 @@ export TMPDIR=/var/tmp
 - Install apt dependencies:
 ```sh
 sudo apt-get install git python3-dev python3-setuptools zlib1g-dev \
-libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 wkhtmltopdf \
-rustc build-essential libssl-dev -y
+libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 chromium chromium-driver \
+rustc build-essential libssl-dev liblgpio-dev -y
 ```
 
-## Step 6 - Clone & Install Inkycal
+## Step 6 — Clone & Install Inkycal
 
 - Clone the repo
 ```shell
@@ -168,14 +232,52 @@ pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url h
 pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
 ```
 
-## Step 7 — Enable Autostart
+### The installer on Raspberry Pi OS
 
-- Add Inkycal to crontab (no sudo):
-```shell
-CRON_LINE='@reboot sleep 60 && cd $HOME/Inkycal && venv/bin/python inky_run.py &'
-( crontab -l 2>/dev/null | grep -qxF "$CRON_LINE" ) || \
-( crontab -l 2>/dev/null; echo "$CRON_LINE" ) | crontab -
+The installer is Python-only and provides an arrow-key menu on Raspberry Pi OS:
+
+```sh
+cd $HOME/Inkycal
+python3 installer.py
 ```
+
+It covers:
+- install/repair
+- update flow
+- service generation for your real username and path
+- swap setup on Raspberry Pi Zero, with confirmation and duplicate detection
+- timezone updates via `raspi-config`
+- permission repair (common sudo mishaps)
+- timed display test with model selection
+- local web UI service setup
+- a full wipe option that removes installer-managed system changes and can delete the cloned folder
+
+By default, first startup after boot also shows a monochrome splash with `Inkycal` and the current version before modules render. You can disable this via `"show_startup_splash": false` in `settings.json`.
+
+For a dedicated walkthrough, see:
+
+- [Installer Guide](installer.md)
+
+## Step 7 — Finish with the installer
+
+Run the installer to complete service installation, swap setup, and the display test:
+
+```sh
+python3 installer.py
+```
+
+If you are on a Raspberry Pi Zero, the installer will ask whether to set up swap and will skip it if it already exists.
+
+Inkycal creates `Inkycal/logs/inkycal.log` and rotates logs daily (max 14 rotations). The installer-managed service uses `/tmp/inkycal.lock`, ensuring only one instance runs at a time.
+
+The installer can also set up the lightweight local web UI service:
+
+- `inkycal.service` → main dashboard runtime
+- `inkycal-webui.service` → local control panel
+
+For the web UI workflow, see:
+
+- [Local Web UI](webui.md)
 
 
 ### Install on Non-GPIO Devices (Development Mode)
@@ -213,6 +315,14 @@ This covers:
 * Configuration
 * Auto-shutdown
 * Power monitoring
+
+## 🤝 Community support
+
+If you get stuck during installation, the community is happy to help.
+
+- Join the Discord support server: [https://discord.gg/sHYKeSM](https://discord.gg/sHYKeSM)
+- Open GitHub issues for reproducible bugs
+- Include logs or the exact terminal error when asking for help
 
 ## 🆘 Troubleshooting Summary
 > Display stays white

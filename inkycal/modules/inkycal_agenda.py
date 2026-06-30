@@ -154,9 +154,8 @@ class Agenda(InkycalModule):
 
         # Set the width for date, time and event titles
         date_strings = [date['begin'].format(self.date_format, locale=self.language) for date in agenda_events]
-        longest_date = max(date_strings, key=len)
-
-        date_width = canvas.get_text_width(longest_date)
+        # Use rendered pixel width instead of character count to avoid clipping.
+        date_width = max(canvas.get_text_width(date_text) for date_text in date_strings)
         # Ensure date width doesn't exceed column width
         date_width = min(date_width, col_width)
         logger.debug(f'date_width: {date_width}')

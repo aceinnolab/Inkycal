@@ -238,16 +238,20 @@ You must tell Inkycal where to find your new module.
 ### 1. Update `inkycal/modules/__init__.py`
 
 ```python
-from .simple import Simple
+class InkycalModuleImporter(Enum):
+    ...
+    Simple = "inkycal.modules.simple.Simple"
 ```
 
-### 2. Update `inkycal/__init__.py`
+Inkycal resolves module classes through `InkycalModuleImporter`, so your custom module needs a unique enum entry there.
+
+### 2. Ensure the module is importable
 
 ```python
-import inkycal.modules.simple
+from inkycal.modules.simple import Simple
 ```
 
-Your module is now available inside the Web-UI.
+If you are also exposing the module through a generator or UI layer, make sure the module name matches the enum key used in `settings.json`.
 
 ---
 
@@ -277,8 +281,10 @@ logger.debug("Value is %s", my_value)
 Logs on the Pi are stored at:
 
 ```
-/var/log/inkycal.log
+logs/inkycal.log
 ```
+
+The installer-managed service also sets `INKYCAL_LOG_DIR` so logs stay inside the project folder by default.
 
 ---
 
@@ -295,6 +301,21 @@ The Canvas provides `draw_icon()` to render SVG-style icons cleanly and centered
 
 ### 4. Enhanced performance  
 Cache API responses to speed up repeated renders.
+
+### 5. Docs toolchain safety (MkDocs 2 warning)
+
+Inkycal currently targets the MkDocs 1.x ecosystem.
+
+- `dev_requirements.txt` constrains docs dependencies to MkDocs 1.x-compatible major versions.
+- CI validates the installed major versions for `mkdocs`, `mkdocs-material`, and `mkdocstrings` before deploying docs.
+- Use a strict local build when changing docs structure or API docs:
+
+```bash
+cd docs
+mkdocs build --clean --strict
+```
+
+When migrating to MkDocs 2 in the future, do it in a dedicated branch with a full docs smoke-test pass.
 
 ---
 

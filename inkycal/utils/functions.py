@@ -14,7 +14,7 @@ import math
 import time
 import traceback
 from importlib.metadata import PackageNotFoundError, version as pkg_version
-from importlib.resources import files
+from pathlib import Path
 from typing import Tuple, Sequence
 
 import arrow
@@ -254,15 +254,15 @@ def get_inkycal_version() -> str:
     """
     Resolve Inkycal version.
 
-    Priority:
-    1. Installed package metadata (preferred, matches pyproject.toml)
-    2. _version.txt inside the package (editable / dev fallback)
+    Single source of truth:
+    1. Project-root ``_version.txt`` (source checkout and editable workflows)
+    2. Installed package metadata (fallback for wheel/sdist installs)
     """
     try:
-        return pkg_version("inkycal")
-    except PackageNotFoundError:
+        version_file = Path(__file__).resolve().parents[2] / "_version.txt"
+        return version_file.read_text(encoding="utf-8").strip()
+    except Exception:
         try:
-            version_file = files("inkycal").joinpath("_version.txt")
-            return version_file.read_text().strip()
-        except Exception:
+            return pkg_version("inkycal")
+        except PackageNotFoundError:
             return "unknown"

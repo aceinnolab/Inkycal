@@ -42,17 +42,22 @@ nav:
   - Home: index.md
   - Installation:
       - Install Inkycal: installation.md
+      - InkycalOS-Lite Setup: inkycalos-lite.md
+      - Installer Guide: installer.md
       - Quickstart: quickstart.md
       - Hardware Setup: hardware.md
+      - Local Web UI: webui.md
   - Modules:
+      - Modules Overview: modules.md
+      - Agenda: modules/agenda.md
       - Display Class: api/display.md
       - Calendar: modules/calendar.md
       - Weather: modules/weather.md
       - Image: modules/image.md
+      - Custom Modules: modules/custom.md
   - Development:
       - Architecture Overview: inkycal.md
       - Developer Guide: dev_doc.md
-      - Custom Module Guide: modules/custom.md
       - Canvas Class: api/canvas.md
       - Utils: api/utils.md
       - API Reference: reference.md  # optional if using mkdocstrings

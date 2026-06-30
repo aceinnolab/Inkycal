@@ -33,7 +33,7 @@ You **never** need to import drivers manually — only the `Display` class.
 ```python
 from inkycal.display import Display
 
-display = Display("waveshare_7in5_colour")
+display = Display("epd_7_in_5_colour")
 ```
 
 If the model name exists in `supported_models`, the display initializes successfully.
@@ -41,13 +41,13 @@ If the model name exists in `supported_models`, the display initializes successf
 If not, you will see:
 
 ```
-Exception: This module is not supported. Check your spellings?
+Exception: Display model '<model>' is not supported. Check spelling or supported models list.
 ```
 
 Or if SPI is unavailable:
 
 ```
-Exception: SPI could not be found. Please check if SPI is enabled
+Exception: SPI interface could not be initialized. Ensure SPI is enabled on your system.
 ```
 
 ---
@@ -104,7 +104,7 @@ from PIL import Image
 from inkycal.display import Display
 
 img = Image.open("hello.png")
-display = Display("waveshare_7in5")
+display = Display("epd_7_in_5")
 display.render(img)
 ```
 
@@ -114,7 +114,7 @@ display.render(img)
 black = Image.open("black.png")
 colour = Image.open("colour.png")
 
-display = Display("waveshare_7in5_colour")
+display = Display("epd_7_in_5_colour")
 display.render(black, colour)
 ```
 
@@ -153,7 +153,7 @@ black → white
 ### Example
 
 ```python
-display = Display("waveshare_7in5_colour")
+display = Display("epd_7_in_5_colour")
 display.calibrate(cycles=2)
 ```
 
@@ -166,7 +166,7 @@ Returns the model's width and height in pixels.
 ### Example
 
 ```python
-w, h = Display.get_display_size("waveshare_7in5")
+w, h = Display.get_display_size("epd_7_in_5")
 print(w, h)  # e.g.: 640 384
 ```
 
@@ -198,7 +198,7 @@ Renders centered text to the display without needing to manually create images.
 Great for troubleshooting:
 
 ```python
-Display("waveshare_7in5").render_text("Hello world!")
+Display("epd_7_in_5").render_text("Hello world!")
 ```
 
 Features:

@@ -1,6 +1,7 @@
-pytest
-twine
+pytest~=9.1.1
+twine~=6.2.0
 
-mkdocs
-mkdocs-material
-mkdocstrings[python]
+# Keep docs stack on MkDocs 1.x until an explicit MkDocs 2 migration is planned.
+mkdocs>=1.6,<2
+mkdocs-material>=9.7,<10
+mkdocstrings[python]>=1.0,<2

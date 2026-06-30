@@ -63,6 +63,7 @@ tests = [
 
 class TestWebshot(unittest.TestCase):
 
+    @unittest.skipUnless(Module.is_backend_available(), "No headless Chromium/Chrome backend found")
     def test_generate_image(self):
         for test in tests:
             logger.info(f'test {tests.index(test) + 1} generating image..')
