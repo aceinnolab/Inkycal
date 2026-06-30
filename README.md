@@ -97,7 +97,10 @@ display!**
 
 ## Configuring the Raspberry Pi
 
-Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://www.raspberrypi.com/software/). Please use this version of [Raspberry Pi OS - trixie]([https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-lite.img.xz](https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-11-24/2025-11-24-raspios-trixie-armhf-lite.img.xz))
+Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://www.raspberrypi.com/software/).
+The exact image currently used in the Raspberry Pi GitHub Actions test workflow is:
+
+- [Raspberry Pi OS Lite (Trixie, armhf, 2025-11-24)](https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-11-24/2025-11-24-raspios-trixie-armhf-lite.img.xz)
 
 | option                    |            value            |
 |:--------------------------|:---------------------------:|
@@ -150,7 +153,7 @@ Follow the steps in `Installation` (see below) on how to install Inkycal.
 
 ### Interactive installer (recommended)
 
-If you want the simplest setup path, use the Python installer. It handles dependencies, permissions, service installation, and the display test menu.
+If you want the simplest setup path on Raspberry Pi OS, use the Python installer. It handles dependencies, permissions, service installation, and the display test menu.
 
 ```bash
 cd $HOME/Inkycal
@@ -182,6 +185,30 @@ dependencies in advance. Pretty neat right? Check the [sponsor button](https://g
 top of the repo to get access to Inkycal-OS-Lite. Alternatively, you can also use the PayPal.me link and send the same
 amount as GitHub sponsors to get access to InkycalOS-Lite!
 This will help keep this project growing and cover the ongoing expenses too! Win-win for everyone! 🎊
+
+### InkycalOS-Lite setup
+
+Once you have access to InkycalOS-Lite:
+
+1. Download the image from [https://inkycal.aceinnolab.com/inkycal-os-lite](https://inkycal.aceinnolab.com/inkycal-os-lite)
+2. Flash it with [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
+3. Reinsert the SD card so the `bootfs` partition becomes visible
+4. Generate Raspberry Pi config files from [https://inkycal.aceinnolab.com/rpi-config](https://inkycal.aceinnolab.com/rpi-config)
+5. Copy those generated files into `bootfs`
+6. Generate `settings.json` from [https://inkycal.aceinnolab.com/ui](https://inkycal.aceinnolab.com/ui)
+7. Copy `settings.json` into `bootfs`
+8. Boot the Raspberry Pi and let Inkycal render automatically
+
+If something goes wrong, connect with SSH:
+
+```bash
+ssh inky@inkycal.local
+cd $HOME/Inkycal
+source venv/bin/activate
+python inky_run.py
+```
+
+Community help is available on Discord: [https://discord.gg/sHYKeSM](https://discord.gg/sHYKeSM)
 
 ### Bonus: PiSugar support
 The PiSugar is a battery pack for the Raspberry Pi Zero W. It can power the Raspberry Pi and the e-paper, allowing battery life up to several weeks.
@@ -257,6 +284,11 @@ python3 installer.py
 
 The installer will install the `systemd` services for you and ensure only one Inkycal instance runs at a time.
 
+That includes:
+
+- `inkycal.service`
+- `inkycal-webui.service`
+
 It also uses PiWheels-friendly pip flags to avoid unnecessary local builds:
 
 ```bash
@@ -313,6 +345,8 @@ Features include:
 - start/stop/restart + dry-run buttons
 - log viewer for `inkycal.log*`
 - PayPal donation QR code
+- settings.json editors
+- display actions (calibration, clear, demo image)
 
 ## Installing on devices without GPIO
 - Get the most of InkyCal by using more powerful IDE, for debugging and creating own modules etc. 
@@ -343,6 +377,14 @@ To update Inkycal to the latest version, navigate to the Inkycal folder, then ru
 
 ```bash
 git pull
+```
+
+Then refresh the environment and re-run the installer if needed:
+
+```bash
+source venv/bin/activate
+pip install -e .
+python3 installer.py
 ```
 
 That’s it. If you have made local changes, they will be overwritten.
@@ -401,6 +443,8 @@ to have some faster responses, please use Discord (link below)
 
 We're happy to help, to beginners and developers alike. In fact, you are more likely to get faster support on Discord
 than on GitHub.
+
+Join here: [https://discord.gg/sHYKeSM](https://discord.gg/sHYKeSM)
 
 <a href="https://discord.gg/sHYKeSM">
         <img src="https://github.com/aceinnolab/Inkycal/blob/assets/Repo/discord-logo.png?raw=true" alt="Inkycal chatroom Discord" width=200>

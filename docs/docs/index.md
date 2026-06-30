@@ -58,7 +58,7 @@ Install Inkycal manually on Raspberry Pi OS (Lite recommended).
 
 ### **2. Install via pip (no e-paper, dev mode)**
 Ideal for development or testing modules.  
-→ See: [Installing on non-GPIO devices](installation.md#installing-on-devices-without-gpio)
+→ See: [Install on Non-GPIO Devices](installation.md#install-on-non-gpio-devices-development-mode)
 
 ### **3. InkycalOS Lite (Recommended)**
 Preconfigured SD card image with everything set up:  
@@ -74,6 +74,7 @@ This documentation is divided into the following sections:
 |--------|-------------|
 | **Installation** | Set up Inkycal on Raspberry Pi or another device |
 | **Quickstart** | Your first Inkycal run in 3 minutes |
+| **Local Web UI** | Manage the running device, logs, settings and display tools |
 | **Modules** | Full API and configuration docs for all built-in modules |
 | **Developing Modules** | Learn how to build your own custom modules |
 | **Display Drivers** | Supported e-paper models and driver notes |
@@ -89,7 +90,7 @@ Inkycal supports most **Waveshare E-Paper** displays:
 - Black/White and Black/White/Red or Yellow or 16 grayscale displays
 - SPI interface required  
 
-For a full list, see: [Supported Displays](inkycal.md#supported-displays)
+For architecture and driver details, see: [Architecture Overview](inkycal.md)
 
 ---
 
@@ -121,7 +122,7 @@ python inky_run.py
 Or let Inkycal start automatically on boot.
 
 ➡️ Continue to the full Quickstart Guide:
-👉 Quickstart￼
+👉 [Quickstart](quickstart.md)
 
 ---
 
@@ -142,6 +143,6 @@ If you run into problems:
 
 * See the Troubleshooting section 
 * Open an issue on GitHub 
-* Or join the community discussions
+* Or join the Discord support server: [https://discord.gg/sHYKeSM](https://discord.gg/sHYKeSM)
 
 ---
