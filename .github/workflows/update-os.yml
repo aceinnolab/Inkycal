@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       target_branch:
-        description: "Branch to build into InkycalOS Lite"
+        description: "Which Inkycal branch to install in the OS image (main = stable, dev = latest development)"
         required: true
         default: "main"
         type: choice
