@@ -6,6 +6,7 @@ import asyncio
 import glob
 import hashlib
 import json
+import os
 import os.path
 import time
 from typing import Optional
@@ -138,6 +139,9 @@ class Inkycal:
             # init calibration state
             self._calibration_state = False
 
+            # Show a simple startup splash once per boot (or first run).
+            self._render_startup_splash_if_needed()
+
         # Load and initialise modules specified in the settings file
         self._module_number = 1
 
@@ -225,6 +229,52 @@ class Inkycal:
 
         # Give an OK message
         logger.info('Inkycal initialised successfully!')
+
+    def _read_boot_id(self) -> str:
+        """Best-effort boot ID used to make splash display one-time-per-boot."""
+        try:
+            with open("/proc/sys/kernel/random/boot_id", "r", encoding="utf-8") as boot_file:
+                return boot_file.read().strip()
+        except Exception:
+            return "unknown-boot"
+
+    def _splash_flag_path(self) -> str:
+        """Path to the marker file indicating splash already shown for this boot/version."""
+        splash_dir = os.getenv("INKYCAL_SPLASH_STATE_DIR", "/tmp")
+        version_safe = str(self._release).replace("/", "-")
+        return os.path.join(splash_dir, f"inkycal-splash-{self._read_boot_id()}-{version_safe}.flag")
+
+    def _should_show_startup_splash(self) -> bool:
+        """Return True when startup splash should be shown."""
+        if not self.settings.get("show_startup_splash", True):
+            return False
+
+        flag_path = self._splash_flag_path()
+        if os.path.exists(flag_path):
+            return False
+
+        try:
+            os.makedirs(os.path.dirname(flag_path), exist_ok=True)
+            with open(flag_path, "w", encoding="utf-8") as marker:
+                marker.write(str(time.time()))
+        except Exception as error:
+            logger.warning(f"Could not persist splash marker file '{flag_path}': {error}")
+
+        return True
+
+    def _render_startup_splash_if_needed(self) -> None:
+        """Render a monochrome splash (name + version) once per boot."""
+        if not self.render or not hasattr(self, "Display"):
+            return
+
+        if not self._should_show_startup_splash():
+            return
+
+        try:
+            self.Display.render_text(f"Inkycal\nv{self._release}", font_size=42, max_width_ratio=0.9)
+            logger.info("Displayed startup splash screen.")
+        except Exception as error:
+            logger.warning(f"Could not render startup splash screen: {error}")
 
     def countdown(self, interval_mins: int = None) -> int:
         """Returns the remaining time in seconds until the next display update based on the interval.
