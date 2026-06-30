@@ -2,6 +2,15 @@ name: Test on Raspberry Pi OS
 
 on:
   workflow_dispatch:
+    inputs:
+      target_branch:
+        description: "Branch to test when manually dispatched"
+        required: true
+        default: "main"
+        type: choice
+        options:
+          - dev
+          - main
   push:
     branches: [main]
 
@@ -14,7 +23,7 @@ jobs:
     name: Run Tests on Raspberry Pi OS
     if: >-
       (github.event_name == 'push' && github.ref_name == 'main') ||
-      (github.event_name == 'workflow_dispatch' && (github.ref_name == 'main' || github.ref_name == 'dev'))
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.target_branch == 'main' || github.event.inputs.target_branch == 'dev'))
     runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions:
@@ -25,7 +34,7 @@ jobs:
         uses: pguyot/arm-runner-action@v2
         id: build_image
         env:
-          GIT_BRANCH: ${{ github.ref_name }}
+          GIT_BRANCH: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.target_branch || github.ref_name }}
           INKY_INITAL_PASSWORD: ${{ secrets.INKY_INITAL_PASSWORD }}
           OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
           SAMPLE_ICAL_URL: ${{ secrets.SAMPLE_ICAL_URL }}

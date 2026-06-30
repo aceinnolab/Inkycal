@@ -12,6 +12,7 @@ import sys
 import time
 import urllib.parse
 from base64 import b64encode
+from dataclasses import dataclass
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -39,13 +40,95 @@ DEMO_IMAGE_URL = "https://raw.githubusercontent.com/aceinnolab/Inkycal/refs/head
 INKYCAL_VERSION = get_inkycal_version()
 
 
-def _run_command(command: List[str], timeout: int = 10) -> Tuple[int, str, str]:
+class SudoPasswordRequiredError(RuntimeError):
+    """Raised when a sudo command needs an interactive password."""
+
+
+@dataclass
+class ActionOutcome:
+    message: str
+    sudo_required: bool = False
+
+
+def _run_command(
+    command: List[str],
+    timeout: int = 10,
+    cwd: Optional[Path] = None,
+    stdin_text: Optional[str] = None,
+) -> Tuple[int, str, str]:
     """Run a command and return code/stdout/stderr without raising."""
     try:
-        result = subprocess.run(command, capture_output=True, text=True, timeout=timeout)
+        result = subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            cwd=str(cwd) if cwd else None,
+            input=stdin_text,
+        )
         return result.returncode, result.stdout.strip(), result.stderr.strip()
     except Exception as error:  # pragma: no cover - defensive
         return 1, "", str(error)
+
+
+def _is_sudo_password_error(stderr: str, stdout: str = "") -> bool:
+    combined = f"{stderr}\n{stdout}".lower()
+    markers = [
+        "a password is required",
+        "a terminal is required",
+        "no tty present",
+        "sorry, try again",
+        "incorrect password",
+    ]
+    return any(marker in combined for marker in markers)
+
+
+def _run_sudo_command(command: List[str], sudo_password: str = "", timeout: int = 20) -> Tuple[int, str, str]:
+    if sudo_password:
+        return _run_command(["sudo", "-S", "-p", "", *command], timeout=timeout, stdin_text=f"{sudo_password}\n")
+
+    code, out, err = _run_command(["sudo", "-n", *command], timeout=timeout)
+    if code != 0 and _is_sudo_password_error(err, out):
+        raise SudoPasswordRequiredError("sudo password required")
+    return code, out, err
+
+
+def _git_current_branch() -> str:
+    code, out, _ = _run_command(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=PROJECT_ROOT)
+    return out if code == 0 and out else "unknown"
+
+
+def _git_local_branches() -> List[str]:
+    code, out, _ = _run_command(["git", "for-each-ref", "--format=%(refname:short)", "refs/heads"], cwd=PROJECT_ROOT)
+    if code != 0 or not out:
+        return []
+    return sorted({line.strip() for line in out.splitlines() if line.strip()})
+
+
+def _git_pull() -> ActionOutcome:
+    code, out, err = _run_command(["git", "pull", "--ff-only"], cwd=PROJECT_ROOT, timeout=90)
+    if code == 0:
+        return ActionOutcome(f"Git pull successful: {out or 'up to date.'}")
+    return ActionOutcome(f"Git pull failed: {err or out or 'unknown error'}")
+
+
+def _git_checkout(target_branch: str) -> ActionOutcome:
+    target = target_branch.strip()
+    if not target:
+        return ActionOutcome("Branch switch failed: branch name is required.")
+
+    local_branches = _git_local_branches()
+    if target in local_branches:
+        code, out, err = _run_command(["git", "checkout", target], cwd=PROJECT_ROOT, timeout=40)
+        if code == 0:
+            return ActionOutcome(f"Switched to branch '{target}'.")
+        return ActionOutcome(f"Branch switch failed: {err or out or 'unknown error'}")
+
+    _run_command(["git", "fetch", "origin", target], cwd=PROJECT_ROOT, timeout=90)
+    code, out, err = _run_command(["git", "checkout", "-b", target, f"origin/{target}"], cwd=PROJECT_ROOT, timeout=40)
+    if code == 0:
+        return ActionOutcome(f"Created and switched to branch '{target}' from origin/{target}.")
+    return ActionOutcome(f"Branch switch failed: {err or out or 'unknown error'}")
 
 
 def _service_state() -> str:
@@ -327,18 +410,23 @@ def _current_timezone() -> str:
     return "UTC"
 
 
-def _set_timezone(timezone_name: str) -> str:
+def _set_timezone(timezone_name: str, sudo_password: str = "") -> ActionOutcome:
     timezone_name = timezone_name.strip()
     if not timezone_name:
-        return "Timezone update failed: value is required."
+        return ActionOutcome("Timezone update failed: value is required.")
 
     if timezone_name not in available_timezones():
-        return "Timezone update failed: unknown timezone name."
+        return ActionOutcome("Timezone update failed: unknown timezone name.")
 
-    code, out, err = _run_command(["sudo", "timedatectl", "set-timezone", timezone_name], timeout=20)
+    try:
+        code, out, err = _run_sudo_command(["timedatectl", "set-timezone", timezone_name], timeout=20, sudo_password=sudo_password)
+    except SudoPasswordRequiredError:
+        return ActionOutcome("Timezone update requires sudo password.", sudo_required=True)
     if code == 0:
-        return f"Timezone set to {timezone_name}."
-    return f"Timezone update failed: {err or out or 'unknown error'}"
+        return ActionOutcome(f"Timezone set to {timezone_name}.")
+    if _is_sudo_password_error(err, out):
+        return ActionOutcome("Timezone update failed: incorrect sudo password.", sudo_required=True)
+    return ActionOutcome(f"Timezone update failed: {err or out or 'unknown error'}")
 
 
 def _service_is_active() -> bool:
@@ -418,18 +506,23 @@ else:
 """.strip()
 
 
-def _run_display_action(display_action: str, display_model: str) -> str:
+def _run_display_action(display_action: str, display_model: str, sudo_password: str = "") -> ActionOutcome:
     if display_action not in DISPLAY_ACTIONS:
-        return "Unknown display action."
+        return ActionOutcome("Unknown display action.")
 
     if display_model not in supported_models:
-        return f"Display action failed: unsupported model '{display_model}'."
+        return ActionOutcome(f"Display action failed: unsupported model '{display_model}'.")
 
     was_active = _service_is_active()
     if was_active:
-        code, out, err = _run_command(["sudo", "systemctl", "stop", SERVICE_NAME], timeout=20)
+        try:
+            code, out, err = _run_sudo_command(["systemctl", "stop", SERVICE_NAME], timeout=20, sudo_password=sudo_password)
+        except SudoPasswordRequiredError:
+            return ActionOutcome("Display action requires sudo password.", sudo_required=True)
         if code != 0:
-            return f"Display action failed: could not stop service ({err or out or 'unknown error'})."
+            if _is_sudo_password_error(err, out):
+                return ActionOutcome("Display action failed: incorrect sudo password.", sudo_required=True)
+            return ActionOutcome(f"Display action failed: could not stop service ({err or out or 'unknown error'}).")
 
     mapped_action = DISPLAY_ACTIONS[display_action]
     timeout = 60 if mapped_action in {"demo", "clear"} else 600
@@ -438,27 +531,38 @@ def _run_display_action(display_action: str, display_model: str) -> str:
     try:
         code, out, err = _run_command(command, timeout=timeout)
         if code == 0:
-            return f"Display action '{mapped_action}' for '{display_model}' finished."
-        return f"Display action '{mapped_action}' failed: {err or out or 'unknown error'}"
+            return ActionOutcome(f"Display action '{mapped_action}' for '{display_model}' finished.")
+        return ActionOutcome(f"Display action '{mapped_action}' failed: {err or out or 'unknown error'}")
     finally:
         if was_active:
-            _run_command(["sudo", "systemctl", "start", SERVICE_NAME], timeout=30)
+            if sudo_password:
+                _run_sudo_command(["systemctl", "start", SERVICE_NAME], timeout=30, sudo_password=sudo_password)
+            else:
+                _run_command(["sudo", "-n", "systemctl", "start", SERVICE_NAME], timeout=30)
 
 
-def _run_action(action: str) -> str:
+def _run_action(action: str, sudo_password: str = "") -> ActionOutcome:
     if action in {"start", "stop", "restart"}:
-        code, out, err = _run_command(["sudo", "systemctl", action, SERVICE_NAME])
+        try:
+            code, out, err = _run_sudo_command(["systemctl", action, SERVICE_NAME], sudo_password=sudo_password)
+        except SudoPasswordRequiredError:
+            return ActionOutcome(f"Service action '{action}' requires sudo password.", sudo_required=True)
         if code == 0:
-            return f"Service action '{action}' done."
-        return f"Service action '{action}' failed: {err or out or 'unknown error'}"
+            return ActionOutcome(f"Service action '{action}' done.")
+        if _is_sudo_password_error(err, out):
+            return ActionOutcome(f"Service action '{action}' failed: incorrect sudo password.", sudo_required=True)
+        return ActionOutcome(f"Service action '{action}' failed: {err or out or 'unknown error'}")
 
     if action == "run_once":
         code, out, err = _run_command([PYTHON_BIN, INKY_RUN, "--mode", "dry-run"], timeout=180)
         if code == 0:
-            return "Dry run finished."
-        return f"Dry run failed: {err or out or 'unknown error'}"
+            return ActionOutcome("Dry run finished.")
+        return ActionOutcome(f"Dry run failed: {err or out or 'unknown error'}")
 
-    return "Unknown action."
+    if action == "git_pull":
+        return _git_pull()
+
+    return ActionOutcome("Unknown action.")
 
 
 class InkycalWebUiHandler(BaseHTTPRequestHandler):
@@ -489,7 +593,14 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(payload)
 
-    def _render_dashboard(self, message: str = "") -> str:
+    def _render_dashboard(
+        self,
+        message: str = "",
+        sudo_prompt_action: str = "",
+        sudo_prompt_display_model: str = "",
+        sudo_prompt_timezone: str = "",
+        selected_git_branch: str = "",
+    ) -> str:
         state = _service_state()
         hardware = _hardware_details()
         logs = _list_logs()
@@ -502,6 +613,11 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         display_models = sorted(supported_models.keys())
         selected_display_model = self._query.get("display_model", [selected_display if selected_display in supported_models else (display_models[0] if display_models else "")])[0]
         settings_leaf_entries = _iter_leaf_paths(settings_data) if isinstance(settings_data, dict) else []
+        git_current_branch = _git_current_branch()
+        git_branches = _git_local_branches()
+        git_selected = selected_git_branch or self._query.get("git_branch", [git_current_branch])[0]
+        if git_selected not in git_branches and git_branches:
+            git_selected = git_current_branch if git_current_branch in git_branches else git_branches[0]
 
         qr_path = _ensure_paypal_qr(PAYPAL_URL)
         qr_uri = _qr_data_uri(PAYPAL_URL)
@@ -516,6 +632,12 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
             f"<option value='{html.escape(model_name)}'"
             f" {'selected' if model_name == selected_display_model else ''}>{html.escape(model_name)}</option>"
             for model_name in display_models
+        )
+
+        git_branch_options = "".join(
+            f"<option value='{html.escape(branch_name)}'"
+            f" {'selected' if branch_name == git_selected else ''}>{html.escape(branch_name)}</option>"
+            for branch_name in git_branches
         )
 
         key_value_rows = "".join(
@@ -638,6 +760,26 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
       word-break: break-word;
     }}
     .kv-value {{ font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }}
+    .modal-backdrop {{
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 1000;
+    }}
+    .modal-backdrop.open {{ display: flex; }}
+    .modal {{
+      width: min(460px, 100%);
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 1rem;
+    }}
+    .modal h3 {{ margin: 0 0 0.65rem; }}
     @media (max-width: 640px) {{
       .wrapper {{ padding: 0.75rem; }}
       .card {{ padding: 0.85rem; border-radius: 12px; }}
@@ -678,6 +820,22 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
             <button name='action' value='display_demo'>Show demo image</button>
           </div>
           <p class='muted'>Display action stops <code>{html.escape(SERVICE_NAME)}</code> temporarily and restores its previous state after completion.</p>
+        </form>
+      </section>
+
+      <section class='card'>
+        <h2>Git</h2>
+        <p><strong>Current branch:</strong> {html.escape(git_current_branch)}</p>
+        <form method='post'>
+          <label for='git_branch'>Target branch</label>
+          <select id='git_branch' name='git_branch'>
+            {git_branch_options}
+          </select>
+          <div class='button-row'>
+            <button name='action' value='git_checkout'>Switch branch</button>
+            <button name='action' value='git_pull' class='secondary'>Git pull --ff-only</button>
+          </div>
+          <p class='muted'>Switching branch or pulling may require restarting services if dependencies changed.</p>
         </form>
       </section>
 
@@ -770,6 +928,23 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
     </section>
   </main>
 
+  <div id='sudoModal' class='modal-backdrop {'open' if sudo_prompt_action else ''}'>
+    <div class='modal'>
+      <h3>Sudo password required</h3>
+      <p class='muted'>Enter your Linux user password to continue this action.</p>
+      <form method='post'>
+        <input type='hidden' name='action' value='{html.escape(sudo_prompt_action)}'>
+        <input type='hidden' name='display_model' value='{html.escape(sudo_prompt_display_model)}'>
+        <input type='hidden' name='timezone' value='{html.escape(sudo_prompt_timezone)}'>
+        <label for='sudo_password'>Password</label>
+        <input id='sudo_password' name='sudo_password' type='password' autocomplete='current-password' required>
+        <div class='button-row'>
+          <button type='submit'>Run action</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     (function() {{
       const intervalMs = {HARDWARE_REFRESH_SECONDS} * 1000;
@@ -794,6 +969,12 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
 
       refreshHardware();
       window.setInterval(refreshHardware, intervalMs);
+
+      const sudoModal = document.getElementById('sudoModal');
+      const sudoPasswordInput = document.getElementById('sudo_password');
+      if (sudoModal && sudoModal.classList.contains('open') && sudoPasswordInput) {{
+        window.setTimeout(() => sudoPasswordInput.focus(), 20);
+      }}
     }})();
   </script>
 </body>
@@ -832,18 +1013,35 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         form = urllib.parse.parse_qs(body)
         action = form.get("action", [""])[0]
         display_model = form.get("display_model", [""])[0]
+        timezone_name = form.get("timezone", [""])[0]
+        sudo_password = form.get("sudo_password", [""])[0]
+        git_branch = form.get("git_branch", [""])[0].strip()
+
         if action == "save_settings":
-            message = _save_settings_text(form.get("settings_content", [""])[0])
+            outcome = ActionOutcome(_save_settings_text(form.get("settings_content", [""])[0]))
         elif action == "save_settings_kv":
-            message = _save_settings_kv(form.get("kv_path", []), form.get("kv_value", []))
+            outcome = ActionOutcome(_save_settings_kv(form.get("kv_path", []), form.get("kv_value", [])))
         elif action == "set_timezone":
-            message = _set_timezone(form.get("timezone", [""])[0])
+            outcome = _set_timezone(timezone_name, sudo_password=sudo_password)
         elif action in DISPLAY_ACTIONS:
-            message = _run_display_action(action, display_model)
+            outcome = _run_display_action(action, display_model, sudo_password=sudo_password)
+        elif action == "git_checkout":
+            outcome = _git_checkout(git_branch)
+        elif action == "git_pull":
+            outcome = _git_pull()
         else:
-            message = _run_action(action)
+            outcome = _run_action(action, sudo_password=sudo_password)
+
         self._query = {"display_model": [display_model]} if display_model else {}
-        self._send_html(self._render_dashboard(message=message))
+        self._send_html(
+            self._render_dashboard(
+                message=outcome.message,
+                sudo_prompt_action=action if outcome.sudo_required else "",
+                sudo_prompt_display_model=display_model if outcome.sudo_required else "",
+                sudo_prompt_timezone=timezone_name if outcome.sudo_required else "",
+                selected_git_branch=git_branch,
+            )
+        )
 
 
 def serve_webui(host: str = WEBUI_HOST, port: int = WEBUI_PORT) -> None:

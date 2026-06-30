@@ -16,6 +16,8 @@ The current local web UI supports:
 - show host, platform, Python version, timezone, load, memory and uptime
 - show the running Inkycal version in the status card
 - update the system timezone
+ - switch Git branches from local branch list
+- run `git pull --ff-only` from the UI
 - inspect and edit `settings.json`
 - edit settings as key/value fields with read-only keys
 - show the currently selected display model from `settings.json`
@@ -102,4 +104,5 @@ If you need help while changing settings or testing the display, you can also jo
 
 - The local web UI is intentionally simple and has no heavy frontend framework.
 - Timezone changes and service actions may require `sudo` privileges depending on your system.
+- If a `sudo` action needs authentication, the UI opens a password modal and retries the same action with the provided password.
 - The UI edits the real `settings.json`, so treat it as an admin interface on trusted networks.
