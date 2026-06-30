@@ -21,7 +21,15 @@
          <lastmod>2026-06-30</lastmod>
     </url>
     <url>
+         <loc>https://aceinnolab.github.io/Inkycal/inkycalos-lite/</loc>
+         <lastmod>2026-06-30</lastmod>
+    </url>
+    <url>
          <loc>https://aceinnolab.github.io/Inkycal/installation/</loc>
+         <lastmod>2026-06-30</lastmod>
+    </url>
+    <url>
+         <loc>https://aceinnolab.github.io/Inkycal/installer/</loc>
          <lastmod>2026-06-30</lastmod>
     </url>
     <url>
@@ -34,6 +42,14 @@
     </url>
     <url>
          <loc>https://aceinnolab.github.io/Inkycal/reference/</loc>
+         <lastmod>2026-06-30</lastmod>
+    </url>
+    <url>
+         <loc>https://aceinnolab.github.io/Inkycal/troubleshooting/</loc>
+         <lastmod>2026-06-30</lastmod>
+    </url>
+    <url>
+         <loc>https://aceinnolab.github.io/Inkycal/webui/</loc>
          <lastmod>2026-06-30</lastmod>
     </url>
     <url>
@@ -54,6 +70,18 @@
     </url>
     <url>
          <loc>https://aceinnolab.github.io/Inkycal/modules/calendar/</loc>
+         <lastmod>2026-06-30</lastmod>
+    </url>
+    <url>
+         <loc>https://aceinnolab.github.io/Inkycal/modules/custom/</loc>
+         <lastmod>2026-06-30</lastmod>
+    </url>
+    <url>
+         <loc>https://aceinnolab.github.io/Inkycal/modules/image/</loc>
+         <lastmod>2026-06-30</lastmod>
+    </url>
+    <url>
+         <loc>https://aceinnolab.github.io/Inkycal/modules/weather/</loc>
          <lastmod>2026-06-30</lastmod>
     </url>
 </urlset>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" fill="#f3f6fb"/>
+  <rect x="40" y="40" width="1120" height="620" rx="22" fill="#ffffff" stroke="#d7dfeb" stroke-width="4"/>
+  <text x="80" y="95" font-family="Arial, sans-serif" font-size="34" fill="#1f2937">Inkycal Local Web UI</text>
+  <text x="80" y="130" font-family="Arial, sans-serif" font-size="18" fill="#64748b">Placeholder preview for dashboard layout</text>
+  <rect x="80" y="170" width="320" height="180" rx="18" fill="#eef4ff" stroke="#bfd3ff"/>
+  <rect x="440" y="170" width="320" height="180" rx="18" fill="#f8fafc" stroke="#dbe2ef"/>
+  <rect x="800" y="170" width="320" height="180" rx="18" fill="#f8fafc" stroke="#dbe2ef"/>
+  <rect x="80" y="380" width="1040" height="110" rx="18" fill="#f8fafc" stroke="#dbe2ef"/>
+  <rect x="80" y="520" width="1040" height="100" rx="18" fill="#f8fafc" stroke="#dbe2ef"/>
+  <text x="110" y="215" font-family="Arial, sans-serif" font-size="24" fill="#1f2937">Status</text>
+  <text x="470" y="215" font-family="Arial, sans-serif" font-size="24" fill="#1f2937">Hardware</text>
+  <text x="830" y="215" font-family="Arial, sans-serif" font-size="24" fill="#1f2937">Timezone / Display</text>
+  <text x="110" y="430" font-family="Arial, sans-serif" font-size="24" fill="#1f2937">Logs</text>
+  <text x="110" y="570" font-family="Arial, sans-serif" font-size="24" fill="#1f2937">Settings editors</text>
+</svg>

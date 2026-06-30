@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://aceinnolab.github.io/Inkycal/inkycal/">
       
       
-        <link rel="prev" href="../modules/calendar/">
+        <link rel="prev" href="../modules/custom/">
       
       
         <link rel="next" href="../dev_doc/">
@@ -332,6 +332,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../inkycalos-lite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    InkycalOS-Lite Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installer Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../quickstart/" class="md-nav__link">
         
   
@@ -368,6 +424,34 @@
     
   
     Hardware Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Local Web UI
   
 
     
@@ -444,6 +528,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/agenda/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agenda
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../api/display/" class="md-nav__link">
         
   
@@ -500,7 +640,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../modules/weather.md" class="md-nav__link">
+      <a href="../modules/weather/" class="md-nav__link">
         
   
   
@@ -528,7 +668,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../modules/image.md" class="md-nav__link">
+      <a href="../modules/image/" class="md-nav__link">
         
   
   
@@ -536,6 +676,34 @@
     
   
     Image
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/custom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Modules
   
 
     
@@ -886,34 +1054,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../modules/custom.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Custom Module Guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../api/canvas/" class="md-nav__link">
         
   
@@ -1005,7 +1145,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../troubleshooting.md" class="md-nav__link">
+      <a href="../troubleshooting/" class="md-nav__link">
         
   
   
@@ -1276,6 +1416,9 @@
 <span class="c">| (CLI entrypoint / startup)  |</span>
 <span class="nb">+--------------+--------------+</span>
 <span class="c">               |</span>
+<span class="c">               </span><span class="nb">+--</span><span class="nv">&gt;</span><span class="c"> Optional startup splash (name </span><span class="nb">+</span><span class="c"> version)</span>
+<span class="c">               |    independent from module loading</span>
+<span class="c">               |</span>
 <span class="c">               v</span>
 <span class="nb">+-----------------------------+</span>
 <span class="c">|          Inkycal            |</span>
@@ -1444,18 +1587,19 @@ image_colour
 <div class="codehilite"><pre><span></span><code><span class="n">User</span><span class="w"> </span><span class="n">starts</span><span class="w"> </span><span class="n">inky_run</span><span class="o">.</span><span class="n">py</span>
 <span class="w">        </span><span class="o">|</span>
 <span class="w">        </span><span class="n">v</span>
-<span class="mf">1.</span><span class="w"> </span><span class="n">Inkycal</span><span class="w"> </span><span class="n">loads</span><span class="w"> </span><span class="n">settings</span><span class="o">.</span><span class="n">json</span>
-<span class="mf">2.</span><span class="w"> </span><span class="n">Inkycal</span><span class="w"> </span><span class="n">loads</span><span class="w"> </span><span class="n">modules</span>
-<span class="mf">3.</span><span class="w"> </span><span class="n">Each</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">generates</span><span class="p">:</span>
+<span class="mf">1.</span><span class="w"> </span><span class="n">Optional</span><span class="w"> </span><span class="n">startup</span><span class="w"> </span><span class="n">splash</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">rendered</span><span class="w"> </span><span class="p">(</span><span class="n">uses</span><span class="w"> </span><span class="n">only</span><span class="w"> </span><span class="n">display</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">settings</span><span class="p">)</span>
+<span class="mf">2.</span><span class="w"> </span><span class="n">Inkycal</span><span class="w"> </span><span class="n">loads</span><span class="w"> </span><span class="n">settings</span><span class="o">.</span><span class="n">json</span>
+<span class="mf">3.</span><span class="w"> </span><span class="n">Inkycal</span><span class="w"> </span><span class="n">loads</span><span class="w"> </span><span class="n">modules</span>
+<span class="mf">4.</span><span class="w"> </span><span class="n">Each</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">generates</span><span class="p">:</span>
 <span class="w">       </span><span class="n">image_black</span><span class="p">,</span><span class="w"> </span><span class="n">image_colour</span>
-<span class="mf">4.</span><span class="w"> </span><span class="n">Inkycal</span><span class="w"> </span><span class="n">assembles</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">images</span><span class="w"> </span><span class="n">into</span><span class="w"> </span><span class="n">final</span><span class="w"> </span><span class="n">canvas</span>
-<span class="mf">5.</span><span class="w"> </span><span class="n">Display</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
-<span class="mf">6.</span><span class="w"> </span><span class="n">Display</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">black</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="p">)</span>
-<span class="mf">7.</span><span class="w"> </span><span class="n">Display</span><span class="o">.</span><span class="n">sleep</span><span class="p">()</span>
+<span class="mf">5.</span><span class="w"> </span><span class="n">Inkycal</span><span class="w"> </span><span class="n">assembles</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">images</span><span class="w"> </span><span class="n">into</span><span class="w"> </span><span class="n">final</span><span class="w"> </span><span class="n">canvas</span>
+<span class="mf">6.</span><span class="w"> </span><span class="n">Display</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="mf">7.</span><span class="w"> </span><span class="n">Display</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">black</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="p">)</span>
+<span class="mf">8.</span><span class="w"> </span><span class="n">Display</span><span class="o">.</span><span class="n">sleep</span><span class="p">()</span>
 </code></pre></div>
 
 <p>If calibration is due:</p>
-<div class="codehilite"><pre><span></span><code><span class="mf">8.</span><span class="w"> </span><span class="n">Display</span><span class="mf">.</span><span class="n">calibrate</span><span class="p">()</span>
+<div class="codehilite"><pre><span></span><code><span class="mf">9.</span><span class="w"> </span><span class="n">Display</span><span class="mf">.</span><span class="n">calibrate</span><span class="p">()</span>
 </code></pre></div>
 
 <hr />
@@ -1515,12 +1659,12 @@ image_colour
 │   ├── modules/          # Built-in modules
 │   ├── utils/            # Canvas, fonts, helpers
 │   ├── settings.py       # Constants &amp; defaults
-│   └── web/              # Web UI (optional)
+│   └── webui.py          # Local lightweight web UI
 │
 ├── tests/                # Unit tests
-├── docsource/            # Documentation
+├── docs/                 # MkDocs source + generated site
 ├── inky_run.py           # Main entrypoint
-└── setup.py / pyproject   # Packaging
+└── pyproject.toml        # Packaging metadata
 </code></pre></div>
 
 <hr />

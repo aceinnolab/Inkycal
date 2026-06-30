@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://aceinnolab.github.io/Inkycal/installation/">
+        <link rel="canonical" href="https://aceinnolab.github.io/Inkycal/installer/">
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../inkycalos-lite/">
       
       
-        <link rel="next" href="../inkycalos-lite/">
+        <link rel="next" href="../quickstart/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>Install Inkycal - Inkycal Documentation</title>
+        <title>Installer Guide - Inkycal Documentation</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#installation-guide" class="md-skip">
+        <a href="#installer-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Install Inkycal
+              Installer Guide
             
           </span>
         </div>
@@ -301,19 +301,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
         
   
   
@@ -329,7 +320,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -367,10 +357,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../installer/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installer Guide
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -386,6 +403,214 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-the-installer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to use the installer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-installer-currently-manages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the installer currently manages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What the installer currently manages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dependency-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependency setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raspberry-pi-zero-swap-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raspberry Pi Zero swap setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timezone-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timezone setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#portable-systemd-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portable systemd services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#locking-and-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Locking and logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-test-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Display test support
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Update workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#permission-repair" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permission repair
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-wipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full wipe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installer-says-not-to-run-as-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installer says not to run as root
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-starts-but-nothing-appears-on-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service starts but nothing appears on display
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#need-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Need help?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1004,6 +1229,202 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-the-installer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to use the installer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-installer-currently-manages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the installer currently manages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What the installer currently manages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dependency-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependency setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raspberry-pi-zero-swap-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raspberry Pi Zero swap setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timezone-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timezone setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#portable-systemd-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portable systemd services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#locking-and-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Locking and logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-test-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Display test support
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Update workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#permission-repair" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permission repair
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-wipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full wipe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installer-says-not-to-run-as-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installer says not to run as root
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-starts-but-nothing-appears-on-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service starts but nothing appears on display
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#need-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Need help?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1019,343 +1440,132 @@
 
 
 
-<h1 id="installation-guide">📦 Installation Guide<a class="headerlink" href="#installation-guide" title="Permanent link">&para;</a></h1>
-<p>Welcome to the Inkycal installation guide.<br />
-Whether you're installing Inkycal on a <strong>Raspberry Pi</strong>, setting it up on a <strong>desktop system</strong>, or using the preconfigured <strong>InkycalOS Lite</strong> image, this guide will walk you through each step.</p>
-<hr />
-<h1 id="1-choose-your-installation-method">🚀 1. Choose Your Installation Method<a class="headerlink" href="#1-choose-your-installation-method" title="Permanent link">&para;</a></h1>
-<p>Inkycal can be installed in <strong>three different ways</strong>:</p>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Recommended For</th>
-<th>Difficulty</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>InkycalOS Lite (preconfigured)</strong></td>
-<td>Raspberry Pi Zero / Zero W</td>
-<td>⭐ Very Easy</td>
-<td>Fastest and most reliable method</td>
-</tr>
-<tr>
-<td><strong>Install on Raspberry Pi OS</strong></td>
-<td>Full control, custom setups</td>
-<td>⭐⭐ Medium</td>
-<td>Requires manual configuration</td>
-</tr>
-<tr>
-<td><strong>Install on non-GPIO devices</strong></td>
-<td>Development, preview, debugging</td>
-<td>⭐ Easy</td>
-<td>No display output</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h1 id="2-using-inkycalos-lite-recommended">🎯 2. Using InkycalOS Lite (Recommended)<a class="headerlink" href="#2-using-inkycalos-lite-recommended" title="Permanent link">&para;</a></h1>
-<p>If you want the <strong>fastest, most reliable installation</strong>, use the prebuilt InkycalOS Lite image.</p>
-<h3 id="what-you-get">✅ What you get:<a class="headerlink" href="#what-you-get" title="Permanent link">&para;</a></h3>
+<h1 id="installer-guide">Installer Guide<a class="headerlink" href="#installer-guide" title="Permanent link">&para;</a></h1>
+<p>The Python installer is the recommended way to finish setting up Inkycal on Raspberry Pi OS and to maintain an existing installation.</p>
+<p>It is designed to reduce manual systemd, permission and dependency mistakes while keeping the installation portable to your real username and path.</p>
+<h2 id="when-to-use-the-installer">When to use the installer<a class="headerlink" href="#when-to-use-the-installer" title="Permanent link">&para;</a></h2>
+<p>Use the installer when you want to:</p>
 <ul>
-<li>Fully configured Raspberry Pi OS Lite  </li>
-<li>SPI enabled  </li>
-<li>Dependencies preinstalled  </li>
-<li>Inkycal installed &amp; autostart configured  </li>
-<li>Best possible performance on Pi Zero  </li>
+<li>perform a first-time setup after cloning the repo</li>
+<li>create or repair the virtual environment</li>
+<li>install or refresh <code>systemd</code> services</li>
+<li>set up swap on Raspberry Pi Zero devices</li>
+<li>set system timezone via <code>raspi-config</code></li>
+<li>repair file-permission mistakes caused by accidental <code>sudo</code></li>
+<li>run the built-in display test flow</li>
+<li>update an existing installation safely</li>
+<li>remove installer-managed changes with the full wipe option</li>
 </ul>
-<h3 id="how-to-get-it">📥 How to get it<a class="headerlink" href="#how-to-get-it" title="Permanent link">&para;</a></h3>
-<p>InkycalOS Lite is available to supporters of the project.  </p>
-<ul>
-<li>Sponsor the repo through the <a href="https://github.com/sponsors/aceisace">GitHub Sponsors button</a>. Use the one-time option for InkycalOS-Lite.</li>
-<li>Forward the sponsor confirmation email to the address shown after sponsoring.</li>
-<li>Once your email is registered, visit the <a href="https://inkycal.aceinnolab.com/inkycal-os-lite">InkycalOS-Lite download page</a> to retrieve your download link.</li>
-<li>New releases are distributed to registered supporters by email.</li>
-</ul>
-<h3 id="flashing-inkycalos-lite">▶️ Flashing InkycalOS-Lite<a class="headerlink" href="#flashing-inkycalos-lite" title="Permanent link">&para;</a></h3>
-<ol>
-<li>Install <a href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a>.</li>
-<li>Insert your microSD card.</li>
-<li>Flash the downloaded InkycalOS-Lite image.</li>
-<li>Reinsert the card so the boot partition (<code>bootfs</code>) becomes visible on your computer.</li>
-</ol>
-<h3 id="setting-up-user-data-and-network">🌐 Setting up user-data and network<a class="headerlink" href="#setting-up-user-data-and-network" title="Permanent link">&para;</a></h3>
-<p>Raspberry Pi Imager does not pre-fill the custom InkycalOS-Lite user-data/network setup, so prepare those files separately:</p>
-<ol>
-<li>Open the <a href="https://inkycal.aceinnolab.com/rpi-config">Inkycal Raspberry Pi config page</a>.</li>
-<li>Fill in your network and login details.</li>
-<li>Generate and download the configuration files.</li>
-<li>Copy both files into the visible <code>bootfs</code> partition on the SD card and allow overwrite if prompted.</li>
-</ol>
-<h3 id="add-settingsjson">🧩 Add <code>settings.json</code><a class="headerlink" href="#add-settingsjson" title="Permanent link">&para;</a></h3>
-<ol>
-<li>Generate your config from the <a href="https://inkycal.aceinnolab.com/ui">settings.json generator</a>.</li>
-<li>Make sure you add at least one module.</li>
-<li>Copy <code>settings.json</code> into the <code>bootfs</code> partition as well.</li>
-</ol>
-<h3 id="first-boot">▶️ First boot<a class="headerlink" href="#first-boot" title="Permanent link">&para;</a></h3>
-<ol>
-<li>Insert the microSD card into the Raspberry Pi.</li>
-<li>Power on the device.</li>
-<li>Inkycal will look for <code>settings.json</code> in the boot partition and render automatically if the file is valid.</li>
-</ol>
-<p>If you want to adjust the layout later, simply generate a new <code>settings.json</code> and replace the existing file.</p>
-<p>For a focused walkthrough, see:</p>
-<ul>
-<li><a href="../inkycalos-lite/">InkycalOS-Lite Setup</a></li>
-</ul>
-<h3 id="ssh-access-if-something-goes-wrong">🔐 SSH access (if something goes wrong)<a class="headerlink" href="#ssh-access-if-something-goes-wrong" title="Permanent link">&para;</a></h3>
-<p>If the display does not show the expected dashboard, connect over SSH:</p>
-<div class="codehilite"><pre><span></span><code>ssh<span class="w"> </span>inky@inkycal.local
-</code></pre></div>
-
-<p>Use the password you configured in the Raspberry Pi config step.</p>
-<p>Then run:</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/Inkycal
-<span class="nb">source</span><span class="w"> </span>venv/bin/activate
-python<span class="w"> </span>inky_run.py
-</code></pre></div>
-
-<p>This prints the real error instead of leaving you with a blank screen.</p>
-<h3 id="inkycalos-lite-troubleshooting">🆘 InkycalOS-Lite troubleshooting<a class="headerlink" href="#inkycalos-lite-troubleshooting" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Some flicker during refresh is normal for e-paper displays.</li>
-<li>If the screen stays blank, double-check wiring/orientation on the display connector.</li>
-<li>If rendering fails, regenerate <code>settings.json</code> or debug over SSH.</li>
-<li>If you need help, join the community Discord: <a href="https://discord.gg/sHYKeSM">https://discord.gg/sHYKeSM</a></li>
-</ul>
-<p>You're done. 🎉</p>
-<hr />
-<h1 id="3-install-on-raspberry-pi-os">🐍 3. Install on Raspberry Pi OS<a class="headerlink" href="#3-install-on-raspberry-pi-os" title="Permanent link">&para;</a></h1>
-<p>This path gives you full control while still using the current Python installer for the final setup steps.
-It is recommended for advanced users, developers, and custom hardware setups.</p>
-<hr />
-<h2 id="step-1-flash-raspberry-pi-os">Step 1 — Flash Raspberry Pi OS<a class="headerlink" href="#step-1-flash-raspberry-pi-os" title="Permanent link">&para;</a></h2>
-<p>Use <strong>Raspberry Pi Imager</strong> and write:</p>
-<blockquote>
-<p>✅ Recommended version used in the automated Raspberry Pi test workflow:<br />
-<a href="https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-11-24/2025-11-24-raspios-trixie-armhf-lite.img.xz">Raspberry Pi OS Lite (Trixie, armhf, 2025-11-24)</a></p>
-</blockquote>
-<p>This is the exact base image referenced in <code>.github/workflows/test-on-rpi.yml</code>.</p>
-<p>Configure in Imager:</p>
-<table>
-<thead>
-<tr>
-<th>Setting</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Hostname</td>
-<td><code>inkycal</code></td>
-</tr>
-<tr>
-<td>SSH</td>
-<td>Enable</td>
-</tr>
-<tr>
-<td>Username</td>
-<td>choose one</td>
-</tr>
-<tr>
-<td>Password</td>
-<td>choose one</td>
-</tr>
-<tr>
-<td>Wi-Fi</td>
-<td>Configure if needed</td>
-</tr>
-<tr>
-<td>Timezone</td>
-<td>Your local timezone</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="step-2-prepare-the-sd-card">Step 2 — Prepare the SD Card<a class="headerlink" href="#step-2-prepare-the-sd-card" title="Permanent link">&para;</a></h2>
-<ol>
-<li>
-<p>Generate your <code>settings.json</code> in the <strong>Inkycal Web UI</strong><br />
-<a href="https://inkycal.aceinnolab.com/ui">https://inkycal.aceinnolab.com/ui</a></p>
-</li>
-<li>
-<p>Copy <code>settings.json</code> to the root of the SD card.</p>
-</li>
-</ol>
-<p>Insert the SD card into the Pi and boot.</p>
-<hr />
-<h2 id="step-3-connect-via-ssh">Step 3 — Connect via SSH<a class="headerlink" href="#step-3-connect-via-ssh" title="Permanent link">&para;</a></h2>
-<p>After ~2–3 minutes, connect:</p>
-<div class="codehilite"><pre><span></span><code>ssh<span class="w"> </span>username@inkycal.local
-</code></pre></div>
-
-<p>(on Windows/macOS you can also use Termius)</p>
-<h2 id="step-4-raspberry-pi-setup">Step 4 — Raspberry Pi Setup<a class="headerlink" href="#step-4-raspberry-pi-setup" title="Permanent link">&para;</a></h2>
-<p>Expand filesystem:</p>
-<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>raspi-config<span class="w"> </span>--expand-rootfs
-</code></pre></div>
-
-<p>Enable SPI:</p>
-<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>raspi-config<span class="w"> </span>nonint<span class="w"> </span>do_spi<span class="w"> </span><span class="m">0</span>
-</code></pre></div>
-
-<p>Set timezone (optional):</p>
-<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>dpkg-reconfigure<span class="w"> </span>tzdata
-</code></pre></div>
-
-<p>Or set it later from the installer menu with:</p>
-<ul>
-<li><code>Set timezone (raspi-config)</code></li>
-</ul>
-<p>Required for 12.48" only:</p>
-<div class="codehilite"><pre><span></span><code>wget<span class="w"> </span>http://www.airspayce.com/mikem/bcm2835/bcm2835-1.71.tar.gz
-tar<span class="w"> </span>zxvf<span class="w"> </span>bcm2835-1.71.tar.gz
-<span class="nb">cd</span><span class="w"> </span>bcm2835-1.71/
-sudo<span class="w"> </span>./configure<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>make<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>make<span class="w"> </span>check<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>make<span class="w"> </span>install
-</code></pre></div>
-
-<h2 id="step-5-install-dependencies">Step 5 — Install Dependencies<a class="headerlink" href="#step-5-install-dependencies" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Update system:</li>
-</ul>
-<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span>-y
-</code></pre></div>
-
-<ul>
-<li>Enable swap (strongly recommended on the Raspberry Pi Zero)</li>
-</ul>
-<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;mkdir -p /etc/rpi/swap.conf.d &amp;&amp;</span>
-<span class="s1">cat &lt;&lt;EOF | cmp -s - /etc/rpi/swap.conf.d/80-use-swapfile.conf || cat &lt;&lt;EOF &gt;/etc/rpi/swap.conf.d/80-use-swapfile.conf</span>
-<span class="s1">[Main]</span>
-<span class="s1">Mechanism=swapfile</span>
-
-<span class="s1">[File]</span>
-<span class="s1">FixedSizeMiB=1024</span>
-<span class="s1">EOF</span>
-<span class="s1">EOF&#39;</span>
-</code></pre></div>
-
-<ul>
-<li>Prevent memory overflow while installing:</li>
-</ul>
-<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TMPDIR</span><span class="o">=</span>/var/tmp
-</code></pre></div>
-
-<ul>
-<li>Install apt dependencies:</li>
-</ul>
-<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>git<span class="w"> </span>python3-dev<span class="w"> </span>python3-setuptools<span class="w"> </span>zlib1g-dev<span class="w"> </span><span class="se">\</span>
-libjpeg-dev<span class="w"> </span>libffi-dev<span class="w"> </span>libopenblas-dev<span class="w"> </span>libopenjp2-7<span class="w"> </span>chromium<span class="w"> </span>chromium-driver<span class="w"> </span><span class="se">\</span>
-rustc<span class="w"> </span>build-essential<span class="w"> </span>libssl-dev<span class="w"> </span>liblgpio-dev<span class="w"> </span>-y
-</code></pre></div>
-
-<h2 id="step-6-clone-install-inkycal">Step 6 — Clone &amp; Install Inkycal<a class="headerlink" href="#step-6-clone-install-inkycal" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Clone the repo</li>
-</ul>
-<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>
-git<span class="w"> </span>clone<span class="w"> </span>https://github.com/aceinnolab/Inkycal
-<span class="nb">cd</span><span class="w"> </span>Inkycal
-</code></pre></div>
-
-<p>Create virtual environment:</p>
-<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
-<span class="nb">source</span><span class="w"> </span>venv/bin/activate
-</code></pre></div>
-
-<p>Install dependencies using piwheels to avoid multi-hour builds:</p>
-<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip<span class="w"> </span>wheel<span class="w"> </span>setuptools<span class="w"> </span>--index-url<span class="w"> </span>https://www.piwheels.org/simple<span class="w"> </span>--extra-index-url<span class="w"> </span>https://pypi.org/simple
-pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="w"> </span>--index-url<span class="w"> </span>https://www.piwheels.org/simple<span class="w"> </span>--extra-index-url<span class="w"> </span>https://pypi.org/simple
-pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>raspberry_os_requirements.txt<span class="w"> </span>--index-url<span class="w"> </span>https://www.piwheels.org/simple<span class="w"> </span>--extra-index-url<span class="w"> </span>https://pypi.org/simple
-</code></pre></div>
-
-<h3 id="the-installer-on-raspberry-pi-os">The installer on Raspberry Pi OS<a class="headerlink" href="#the-installer-on-raspberry-pi-os" title="Permanent link">&para;</a></h3>
-<p>The installer is Python-only and provides an arrow-key menu on Raspberry Pi OS:</p>
+<h2 id="run-it">Run it<a class="headerlink" href="#run-it" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/Inkycal
 python3<span class="w"> </span>installer.py
 </code></pre></div>
 
-<p>It covers:
-- install/repair
-- update flow
-- service generation for your real username and path
-- swap setup on Raspberry Pi Zero, with confirmation and duplicate detection
-- timezone updates via <code>raspi-config</code>
-- permission repair (common sudo mishaps)
-- timed display test with model selection
-- local web UI service setup
-- a full wipe option that removes installer-managed system changes and can delete the cloned folder</p>
-<p>By default, first startup after boot also shows a monochrome splash with <code>Inkycal</code> and the current version before modules render. You can disable this via <code>"show_startup_splash": false</code> in <code>settings.json</code>.</p>
-<p>For a dedicated walkthrough, see:</p>
+<blockquote>
+<p>Do not run the installer directly as root. Run it as your normal user and let it elevate only when required.</p>
+</blockquote>
+<h2 id="what-the-installer-currently-manages">What the installer currently manages<a class="headerlink" href="#what-the-installer-currently-manages" title="Permanent link">&para;</a></h2>
+<h3 id="dependency-setup">Dependency setup<a class="headerlink" href="#dependency-setup" title="Permanent link">&para;</a></h3>
+<p>The installer can:</p>
 <ul>
-<li><a href="../installer/">Installer Guide</a></li>
+<li>create the <code>venv</code></li>
+<li>install or refresh Python dependencies</li>
+<li>install or repair apt-side prerequisites when needed</li>
+<li>use the PiWheels-friendly package flow already documented in the main installation guide</li>
 </ul>
-<h2 id="step-7-finish-with-the-installer">Step 7 — Finish with the installer<a class="headerlink" href="#step-7-finish-with-the-installer" title="Permanent link">&para;</a></h2>
-<p>Run the installer to complete service installation, swap setup, and the display test:</p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>installer.py
+<h3 id="raspberry-pi-zero-swap-setup">Raspberry Pi Zero swap setup<a class="headerlink" href="#raspberry-pi-zero-swap-setup" title="Permanent link">&para;</a></h3>
+<p>On Raspberry Pi Zero devices, the installer can configure the recommended swap file automatically after asking for confirmation.</p>
+<p>It writes:</p>
+<ul>
+<li><code>/etc/rpi/swap.conf.d/80-use-swapfile.conf</code></li>
+</ul>
+<p>and restarts <code>systemd-swap</code> if needed.</p>
+<h3 id="timezone-setup">Timezone setup<a class="headerlink" href="#timezone-setup" title="Permanent link">&para;</a></h3>
+<p>The installer menu includes:</p>
+<ul>
+<li><code>Set timezone (raspi-config)</code></li>
+</ul>
+<p>This runs <code>raspi-config nonint do_change_timezone &lt;TZ&gt;</code> and applies the selected timezone without leaving the installer.</p>
+<h3 id="portable-systemd-services">Portable <code>systemd</code> services<a class="headerlink" href="#portable-systemd-services" title="Permanent link">&para;</a></h3>
+<p>The installer creates services using your real username and repo path.</p>
+<p>Managed services:</p>
+<ul>
+<li><code>inkycal.service</code></li>
+<li><code>inkycal-webui.service</code></li>
+</ul>
+<p>The main service runs:</p>
+<div class="codehilite"><pre><span></span><code>inky_run.py --mode run
 </code></pre></div>
 
-<p>If you are on a Raspberry Pi Zero, the installer will ask whether to set up swap and will skip it if it already exists.</p>
-<p>Inkycal creates <code>Inkycal/logs/inkycal.log</code> and rotates logs daily (max 14 rotations). The installer-managed service uses <code>/tmp/inkycal.lock</code>, ensuring only one instance runs at a time.</p>
-<p>The installer can also set up the lightweight local web UI service:</p>
+<p>The web UI service runs:</p>
+<div class="codehilite"><pre><span></span><code>inky_webui.py
+</code></pre></div>
+
+<h3 id="locking-and-logs">Locking and logs<a class="headerlink" href="#locking-and-logs" title="Permanent link">&para;</a></h3>
+<p>The installer-managed service setup uses:</p>
 <ul>
-<li><code>inkycal.service</code> → main dashboard runtime</li>
-<li><code>inkycal-webui.service</code> → local control panel</li>
+<li><code>/tmp/inkycal.lock</code> to prevent concurrent runtime instances</li>
+<li><code>logs/inkycal.log</code> for rotating file logs inside the project folder</li>
 </ul>
-<p>For the web UI workflow, see:</p>
+<h2 id="display-test-support">Display test support<a class="headerlink" href="#display-test-support" title="Permanent link">&para;</a></h2>
+<p>The installer includes a timed display-test flow with display-model selection.</p>
+<p>This is useful for validating:</p>
+<ul>
+<li>SPI access</li>
+<li>display driver selection</li>
+<li>basic render success before relying on your full <code>settings.json</code></li>
+</ul>
+<p>For additional display checks after installation, the local web UI also provides:</p>
+<ul>
+<li>calibration</li>
+<li>clear</li>
+<li>demo image display</li>
+</ul>
+<p>See also:</p>
 <ul>
 <li><a href="../webui/">Local Web UI</a></li>
 </ul>
-<h3 id="install-on-non-gpio-devices-development-mode">Install on Non-GPIO Devices (Development Mode)<a class="headerlink" href="#install-on-non-gpio-devices-development-mode" title="Permanent link">&para;</a></h3>
-<p>You can run Inkycal on macOS, Linux, Windows — useful for:</p>
-<ul>
-<li>Debugging</li>
-<li>Developing new modules</li>
-<li>Rendering previews</li>
-</ul>
-<p>You won’t be able to show images on real hardware.</p>
-<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/aceinnolab/Inkycal
-<span class="nb">cd</span><span class="w"> </span>Inkycal
-python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+<h2 id="update-workflow">Update workflow<a class="headerlink" href="#update-workflow" title="Permanent link">&para;</a></h2>
+<p>You can re-run the installer after pulling new changes:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/Inkycal
+git<span class="w"> </span>pull
 <span class="nb">source</span><span class="w"> </span>venv/bin/activate
 pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+python3<span class="w"> </span>installer.py
 </code></pre></div>
 
-<p>Run:</p>
-<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>inky_run.py
+<p>This helps reconcile services, dependencies and common environment drift after updates.</p>
+<h2 id="permission-repair">Permission repair<a class="headerlink" href="#permission-repair" title="Permanent link">&para;</a></h2>
+<p>If you previously used <code>sudo</code> in the repo and now hit ownership or write errors, the installer can repair those common permission problems.</p>
+<h2 id="full-wipe">Full wipe<a class="headerlink" href="#full-wipe" title="Permanent link">&para;</a></h2>
+<p>The installer also includes a full wipe option that can:</p>
+<ul>
+<li>remove installer-managed <code>systemd</code> units</li>
+<li>remove swap setup created by the installer</li>
+<li>optionally purge installer-managed apt packages</li>
+<li>optionally delete the cloned <code>Inkycal</code> folder</li>
+</ul>
+<p>Use this if you want a cleaner uninstall path than deleting files manually.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="installer-says-not-to-run-as-root">Installer says not to run as root<a class="headerlink" href="#installer-says-not-to-run-as-root" title="Permanent link">&para;</a></h3>
+<p>That is intentional. Run:</p>
+<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>installer.py
 </code></pre></div>
 
-<h2 id="pisugar-support">PiSugar Support<a class="headerlink" href="#pisugar-support" title="Permanent link">&para;</a></h2>
-<p>If you’re using a PiSugar battery board, see:</p>
-<p>https://github.com/aceinnolab/Inkycal/wiki/PiSugar-support</p>
-<p>This covers:</p>
+<p>as your normal user instead of <code>sudo python3 installer.py</code>.</p>
+<h3 id="service-starts-but-nothing-appears-on-display">Service starts but nothing appears on display<a class="headerlink" href="#service-starts-but-nothing-appears-on-display" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Driver installation</li>
-<li>Configuration</li>
-<li>Auto-shutdown</li>
-<li>Power monitoring</li>
+<li>verify the display model in <code>settings.json</code></li>
+<li>run the installer display test</li>
+<li>check <code>logs/inkycal.log</code></li>
+<li>confirm SPI is enabled</li>
 </ul>
-<h2 id="community-support">🤝 Community support<a class="headerlink" href="#community-support" title="Permanent link">&para;</a></h2>
-<p>If you get stuck during installation, the community is happy to help.</p>
+<h3 id="need-help">Need help?<a class="headerlink" href="#need-help" title="Permanent link">&para;</a></h3>
+<p>The community is happy to help:</p>
 <ul>
-<li>Join the Discord support server: <a href="https://discord.gg/sHYKeSM">https://discord.gg/sHYKeSM</a></li>
-<li>Open GitHub issues for reproducible bugs</li>
-<li>Include logs or the exact terminal error when asking for help</li>
+<li>Discord: <a href="https://discord.gg/sHYKeSM">https://discord.gg/sHYKeSM</a></li>
+<li>GitHub Issues: <a href="https://github.com/aceinnolab/Inkycal/issues">https://github.com/aceinnolab/Inkycal/issues</a></li>
 </ul>
-<h2 id="troubleshooting-summary">🆘 Troubleshooting Summary<a class="headerlink" href="#troubleshooting-summary" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p>Display stays white</p>
-</blockquote>
-<p>Likely missing BCM2835 driver for 12.48”.</p>
-<p>Slow installation on Pi Zero W</p>
-<p>Use piwheels + swap (already covered above).</p>
-<p>settings.json missing</p>
-<p>Ensure it is placed at:
-* /boot/settings.json
-* Same directory as inky_run.py</p>
 
 
 

@@ -14,7 +14,7 @@
         <link rel="prev" href="../quickstart/">
       
       
-        <link rel="next" href="../api/display/">
+        <link rel="next" href="../webui/">
       
       
         
@@ -332,6 +332,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../inkycalos-lite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    InkycalOS-Lite Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installer Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../quickstart/" class="md-nav__link">
         
   
@@ -386,6 +442,34 @@
 
       </a>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Local Web UI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -454,6 +538,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/agenda/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agenda
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../api/display/" class="md-nav__link">
         
   
@@ -510,7 +650,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../modules/weather.md" class="md-nav__link">
+      <a href="../modules/weather/" class="md-nav__link">
         
   
   
@@ -538,7 +678,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../modules/image.md" class="md-nav__link">
+      <a href="../modules/image/" class="md-nav__link">
         
   
   
@@ -546,6 +686,34 @@
     
   
     Image
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/custom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Modules
   
 
     
@@ -678,34 +846,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../modules/custom.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Custom Module Guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../api/canvas/" class="md-nav__link">
         
   
@@ -797,7 +937,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../troubleshooting.md" class="md-nav__link">
+      <a href="../troubleshooting/" class="md-nav__link">
         
   
   
@@ -911,40 +1051,46 @@ Common supported models include (but are not limited to):</p>
 </thead>
 <tbody>
 <tr>
-<td>2.7"</td>
-<td>BW</td>
-<td>No</td>
-<td>Simple and fast refresh</td>
-</tr>
-<tr>
 <td>4.2"</td>
-<td>BW or Red</td>
-<td>Some models support red/yellow</td>
-<td></td>
+<td>SPI</td>
+<td>BW / Colour</td>
+<td><code>epd_4_in_2</code>, <code>epd_4_in_2_colour</code></td>
 </tr>
 <tr>
 <td>5.83"</td>
-<td>BW or Colour</td>
-<td>Popular choice</td>
-<td></td>
+<td>SPI</td>
+<td>BW / Colour</td>
+<td><code>epd_5_in_83</code>, <code>epd_5_in_83_colour</code>, <code>epd_5_in_83_V2</code></td>
 </tr>
 <tr>
 <td>7.5"</td>
-<td>BW or Colour</td>
-<td>Recommended for Inkycal</td>
-<td></td>
+<td>SPI</td>
+<td>BW / Colour</td>
+<td><code>epd_7_in_5</code>, <code>epd_7_in_5_colour</code>, <code>epd_7_in_5_v2</code>, <code>epd_7_in_5_v3_colour</code></td>
 </tr>
 <tr>
 <td>9.7"</td>
+<td>Parallel</td>
 <td>BW</td>
-<td>Requires optimization disabled</td>
-<td></td>
+<td><code>9_in_7</code></td>
+</tr>
+<tr>
+<td>10.3"</td>
+<td>Parallel</td>
+<td>BW</td>
+<td><code>10_in_3</code></td>
 </tr>
 <tr>
 <td>12.48"</td>
-<td>BW</td>
-<td>Requires bcm2835 drivers</td>
-<td></td>
+<td>Parallel</td>
+<td>BW / Colour</td>
+<td><code>epd_12_in_48</code>, <code>epd_12_in_48_colour</code>, <code>epd_12_in_48_colour_V2</code></td>
+</tr>
+<tr>
+<td>13.3"</td>
+<td>Parallel</td>
+<td>BW / Colour</td>
+<td><code>epd_13_in_3</code>, <code>epd_13_in_3_colour</code></td>
 </tr>
 </tbody>
 </table>
@@ -953,6 +1099,7 @@ Common supported models include (but are not limited to):</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">Display</span><span class="o">.</span><span class="n">get_display_names</span><span class="p">())</span>
 </code></pre></div>
 
+<p>The exact mapping lives in <code>inkycal/display/supported_models.py</code>.</p>
 <hr />
 <h1 id="pins-wiring">🔌 Pins &amp; Wiring<a class="headerlink" href="#pins-wiring" title="Permanent link">&para;</a></h1>
 <p>Most Waveshare ePaper displays connect via the <strong>40-pin GPIO header</strong> using SPI.</p>
@@ -1088,7 +1235,7 @@ https://github.com/aceinnolab/Inkycal/wiki/PiSugar-support</p>
 
 <p>Then test display access via Inkycal:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">inkycal.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Display</span>
-<span class="n">d</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">&quot;waveshare_7in5_colour&quot;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">&quot;epd_7_in_5_colour&quot;</span><span class="p">)</span>
 <span class="n">d</span><span class="o">.</span><span class="n">render_text</span><span class="p">(</span><span class="s2">&quot;Display works!&quot;</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1117,7 +1264,7 @@ https://github.com/aceinnolab/Inkycal/wiki/PiSugar-support</p>
 <hr />
 <h3 id="display-refreshes-but-shows-messyghosted-text">❌ Display refreshes but shows messy/ghosted text<a class="headerlink" href="#display-refreshes-but-shows-messyghosted-text" title="Permanent link">&para;</a></h3>
 <p>Run calibration:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">d</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">&quot;waveshare_7in5_colour&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">d</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">&quot;epd_7_in_5_colour&quot;</span><span class="p">)</span>
 <span class="n">d</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
 

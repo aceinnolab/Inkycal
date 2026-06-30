@@ -14,7 +14,7 @@
         <link rel="prev" href="../api/utils/">
       
       
-        <link rel="next" href="../about/">
+        <link rel="next" href="../troubleshooting/">
       
       
         
@@ -332,6 +332,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../inkycalos-lite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    InkycalOS-Lite Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installer Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../quickstart/" class="md-nav__link">
         
   
@@ -368,6 +424,34 @@
     
   
     Hardware Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Local Web UI
   
 
     
@@ -444,6 +528,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/agenda/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agenda
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../api/display/" class="md-nav__link">
         
   
@@ -500,7 +640,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../modules/weather.md" class="md-nav__link">
+      <a href="../modules/weather/" class="md-nav__link">
         
   
   
@@ -528,7 +668,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../modules/image.md" class="md-nav__link">
+      <a href="../modules/image/" class="md-nav__link">
         
   
   
@@ -536,6 +676,34 @@
     
   
     Image
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/custom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Modules
   
 
     
@@ -648,34 +816,6 @@
     
   
     Developer Guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../modules/custom.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Custom Module Guide
   
 
     
@@ -1733,7 +1873,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../troubleshooting.md" class="md-nav__link">
+      <a href="../troubleshooting/" class="md-nav__link">
         
   
   
@@ -2775,6 +2915,7 @@
 <div class="codehilite"><pre><span></span><code>inkycal.modules.__init__.py
 </code></pre></div>
 
+<p>The local device administration interface is implemented separately in <code>inkycal/webui.py</code> and described in <code>webui.md</code>.</p>
 <h3 id="module-index">Module Index<a class="headerlink" href="#module-index" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2803,7 +2944,7 @@
 <tr>
 <td><strong>Image</strong></td>
 <td><code>Inkyimage</code></td>
-<td><code>inkycal.modules.inky_image.Inkyimage</code></td>
+<td><code>inkycal.modules.inkycal_image.Inkyimage</code></td>
 </tr>
 <tr>
 <td><strong>Jokes</strong></td>
@@ -3544,7 +3685,7 @@ Create monthly calendar and show events from given iCalendars</p>
         <span class="c1"># --- Larger circle (properly centered) ---</span>
         <span class="n">cx</span> <span class="o">=</span> <span class="n">icon_width</span> <span class="o">//</span> <span class="mi">2</span>
         <span class="n">cy</span> <span class="o">=</span> <span class="n">icon_height</span> <span class="o">//</span> <span class="mi">2</span>
-        <span class="n">radius</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">icon_width</span> <span class="o">*</span> <span class="mf">0.40</span><span class="p">)</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">icon_width</span> <span class="o">*</span> <span class="mf">0.25</span><span class="p">)</span>
 
         <span class="n">draw</span><span class="o">.</span><span class="n">ellipse</span><span class="p">(</span>
             <span class="p">(</span><span class="n">cx</span> <span class="o">-</span> <span class="n">radius</span><span class="p">,</span> <span class="n">cy</span> <span class="o">-</span> <span class="n">radius</span><span class="p">,</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">radius</span><span class="p">,</span> <span class="n">cy</span> <span class="o">+</span> <span class="n">radius</span><span class="p">),</span>
@@ -4369,7 +4510,7 @@ Create monthly calendar and show events from given iCalendars</p>
     <span class="c1"># --- Larger circle (properly centered) ---</span>
     <span class="n">cx</span> <span class="o">=</span> <span class="n">icon_width</span> <span class="o">//</span> <span class="mi">2</span>
     <span class="n">cy</span> <span class="o">=</span> <span class="n">icon_height</span> <span class="o">//</span> <span class="mi">2</span>
-    <span class="n">radius</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">icon_width</span> <span class="o">*</span> <span class="mf">0.40</span><span class="p">)</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">icon_width</span> <span class="o">*</span> <span class="mf">0.25</span><span class="p">)</span>
 
     <span class="n">draw</span><span class="o">.</span><span class="n">ellipse</span><span class="p">(</span>
         <span class="p">(</span><span class="n">cx</span> <span class="o">-</span> <span class="n">radius</span><span class="p">,</span> <span class="n">cy</span> <span class="o">-</span> <span class="n">radius</span><span class="p">,</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">radius</span><span class="p">,</span> <span class="n">cy</span> <span class="o">+</span> <span class="n">radius</span><span class="p">),</span>
@@ -5147,7 +5288,9 @@ parses weather details from openweathermap</p>
 <span class="normal">510</span>
 <span class="normal">511</span>
 <span class="normal">512</span>
-<span class="normal">513</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Weather</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Weather</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Weather class</span>
 <span class="sd">    parses weather details from openweathermap</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -5485,6 +5628,8 @@ parses weather details from openweathermap</p>
         <span class="c1"># Get some current weather details</span>
 
         <span class="n">temperature</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_weather</span><span class="p">[</span><span class="s1">&#39;temp&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">dec_temp</span><span class="si">}</span><span class="s2">f</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">tempDispUnit</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">max_temperature_today</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_weather</span><span class="p">[</span><span class="s1">&#39;max_temp&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">dec_temp</span><span class="si">}</span><span class="s2">f</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">tempDispUnit</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">temperature</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">temperature</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">max_temperature_today</span><span class="si">}</span><span class="s2">&quot;</span>
 
         <span class="n">weather_icon</span> <span class="o">=</span> <span class="n">current_weather</span><span class="p">[</span><span class="s2">&quot;weather_icon_name&quot;</span><span class="p">]</span>
         <span class="n">humidity</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_weather</span><span class="p">[</span><span class="s2">&quot;humidity&quot;</span><span class="p">])</span>
@@ -6198,7 +6343,9 @@ parses weather details from openweathermap</p>
 <span class="normal">510</span>
 <span class="normal">511</span>
 <span class="normal">512</span>
-<span class="normal">513</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate image for this module&quot;&quot;&quot;</span>
 
     <span class="c1"># Define new image size with respect to padding</span>
@@ -6417,6 +6564,8 @@ parses weather details from openweathermap</p>
     <span class="c1"># Get some current weather details</span>
 
     <span class="n">temperature</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_weather</span><span class="p">[</span><span class="s1">&#39;temp&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">dec_temp</span><span class="si">}</span><span class="s2">f</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">tempDispUnit</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">max_temperature_today</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_weather</span><span class="p">[</span><span class="s1">&#39;max_temp&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">dec_temp</span><span class="si">}</span><span class="s2">f</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">tempDispUnit</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">temperature</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">temperature</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">max_temperature_today</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="n">weather_icon</span> <span class="o">=</span> <span class="n">current_weather</span><span class="p">[</span><span class="s2">&quot;weather_icon_name&quot;</span><span class="p">]</span>
     <span class="n">humidity</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_weather</span><span class="p">[</span><span class="s2">&quot;humidity&quot;</span><span class="p">])</span>
@@ -9010,8 +9159,7 @@ Create agenda and show events from given icalendars</p>
 <span class="normal">361</span>
 <span class="normal">362</span>
 <span class="normal">363</span>
-<span class="normal">364</span>
-<span class="normal">365</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Agenda</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
+<span class="normal">364</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Agenda</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Agenda class</span>
 <span class="sd">    Create agenda and show events from given icalendars</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -9149,9 +9297,8 @@ Create agenda and show events from given icalendars</p>
 
         <span class="c1"># Set the width for date, time and event titles</span>
         <span class="n">date_strings</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">)</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">agenda_events</span><span class="p">]</span>
-        <span class="n">longest_date</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">date_strings</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">)</span>
-
-        <span class="n">date_width</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">get_text_width</span><span class="p">(</span><span class="n">longest_date</span><span class="p">)</span>
+        <span class="c1"># Use rendered pixel width instead of character count to avoid clipping.</span>
+        <span class="n">date_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">get_text_width</span><span class="p">(</span><span class="n">date_text</span><span class="p">)</span> <span class="k">for</span> <span class="n">date_text</span> <span class="ow">in</span> <span class="n">date_strings</span><span class="p">)</span>
         <span class="c1"># Ensure date width doesn&#39;t exceed column width</span>
         <span class="n">date_width</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">date_width</span><span class="p">,</span> <span class="n">col_width</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;date_width: </span><span class="si">{</span><span class="n">date_width</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -9758,8 +9905,7 @@ Create agenda and show events from given icalendars</p>
 <span class="normal">361</span>
 <span class="normal">362</span>
 <span class="normal">363</span>
-<span class="normal">364</span>
-<span class="normal">365</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">364</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate image for this module&quot;&quot;&quot;</span>
 
     <span class="c1"># Define new image size with respect to padding</span>
@@ -9817,9 +9963,8 @@ Create agenda and show events from given icalendars</p>
 
     <span class="c1"># Set the width for date, time and event titles</span>
     <span class="n">date_strings</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date_format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">)</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">agenda_events</span><span class="p">]</span>
-    <span class="n">longest_date</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">date_strings</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">)</span>
-
-    <span class="n">date_width</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">get_text_width</span><span class="p">(</span><span class="n">longest_date</span><span class="p">)</span>
+    <span class="c1"># Use rendered pixel width instead of character count to avoid clipping.</span>
+    <span class="n">date_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">get_text_width</span><span class="p">(</span><span class="n">date_text</span><span class="p">)</span> <span class="k">for</span> <span class="n">date_text</span> <span class="ow">in</span> <span class="n">date_strings</span><span class="p">)</span>
     <span class="c1"># Ensure date width doesn&#39;t exceed column width</span>
     <span class="n">date_width</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">date_width</span><span class="p">,</span> <span class="n">col_width</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;date_width: </span><span class="si">{</span><span class="n">date_width</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -11608,46 +11753,7 @@ by https://github.com/worstface</p>
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>inkycal/modules/inkycal_webshot.py</code></summary>
-                <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 21</span>
-<span class="normal"> 22</span>
-<span class="normal"> 23</span>
-<span class="normal"> 24</span>
-<span class="normal"> 25</span>
-<span class="normal"> 26</span>
-<span class="normal"> 27</span>
-<span class="normal"> 28</span>
-<span class="normal"> 29</span>
-<span class="normal"> 30</span>
-<span class="normal"> 31</span>
-<span class="normal"> 32</span>
-<span class="normal"> 33</span>
-<span class="normal"> 34</span>
-<span class="normal"> 35</span>
-<span class="normal"> 36</span>
-<span class="normal"> 37</span>
-<span class="normal"> 38</span>
-<span class="normal"> 39</span>
-<span class="normal"> 40</span>
-<span class="normal"> 41</span>
-<span class="normal"> 42</span>
-<span class="normal"> 43</span>
-<span class="normal"> 44</span>
-<span class="normal"> 45</span>
-<span class="normal"> 46</span>
-<span class="normal"> 47</span>
-<span class="normal"> 48</span>
-<span class="normal"> 49</span>
-<span class="normal"> 50</span>
-<span class="normal"> 51</span>
-<span class="normal"> 52</span>
-<span class="normal"> 53</span>
-<span class="normal"> 54</span>
-<span class="normal"> 55</span>
-<span class="normal"> 56</span>
-<span class="normal"> 57</span>
-<span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
+                <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 60</span>
 <span class="normal"> 61</span>
 <span class="normal"> 62</span>
 <span class="normal"> 63</span>
@@ -11778,7 +11884,158 @@ by https://github.com/worstface</p>
 <span class="normal">188</span>
 <span class="normal">189</span>
 <span class="normal">190</span>
-<span class="normal">191</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Webshot</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Webshot</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Webshot - Displays screenshots of webpages&quot;</span>
 
     <span class="c1"># required parameters</span>
@@ -11809,6 +12066,13 @@ by https://github.com/worstface</p>
         <span class="p">},</span>
         <span class="s2">&quot;rotation&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Please enter the rotation. Must be either 0, 90, 180 or 270&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;wait_time&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Wait time in seconds for JS-heavy pages before screenshot&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dither&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Use dithering when mapping the screenshot to the selected palette?&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
         <span class="p">},</span>
     <span class="p">}</span>
 
@@ -11847,8 +12111,117 @@ by https://github.com/worstface</p>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">270</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Rotation must be either 0, 90, 180 or 270&quot;</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="s2">&quot;wait_time&quot;</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;wait_time&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;wait_time&quot;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dither</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="s2">&quot;dither&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+            <span class="n">dither_value</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;dither&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dither_value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dither</span> <span class="o">=</span> <span class="n">dither_value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;on&quot;</span><span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dither</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">dither_value</span><span class="p">)</span>
+
         <span class="c1"># give an OK message</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Inkycal webshot loaded&#39;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_backend_available</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_find_browser_binary</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_capture_webshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">browser</span> <span class="o">=</span> <span class="n">_find_browser_binary</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">browser</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No Chromium/Chrome executable found; trying Selenium fallback&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_capture_webshot_with_selenium</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Render a larger viewport first, then crop to keep previous behavior.</span>
+        <span class="n">viewport_w</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_w</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_x</span><span class="p">,</span> <span class="mi">320</span><span class="p">)</span>
+        <span class="n">viewport_h</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_h</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_y</span><span class="p">,</span> <span class="mi">320</span><span class="p">)</span>
+
+        <span class="n">command</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">browser</span><span class="p">,</span>
+            <span class="s2">&quot;--headless&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--disable-gpu&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--hide-scrollbars&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--no-first-run&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--no-default-browser-check&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--disable-extensions&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--run-all-compositor-stages-before-draw&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;--virtual-time-budget=</span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;--window-size=</span><span class="si">{</span><span class="n">viewport_w</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">viewport_h</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;--screenshot=</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>
+            <span class="n">command</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;--no-sandbox&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Direct headless browser capture failed; trying Selenium fallback&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_capture_webshot_with_selenium</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">shot</span><span class="p">:</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_x</span><span class="p">),</span> <span class="n">shot</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+            <span class="n">y0</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_y</span><span class="p">),</span> <span class="n">shot</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">shot</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">x0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_w</span><span class="p">))</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">shot</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">y0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_h</span><span class="p">))</span>
+            <span class="n">shot</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">))</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s2">&quot;PNG&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_capture_webshot_with_selenium</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">selenium</span><span class="w"> </span><span class="kn">import</span> <span class="n">webdriver</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">selenium.webdriver.chrome.options</span><span class="w"> </span><span class="kn">import</span> <span class="n">Options</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">selenium.webdriver.chrome.service</span><span class="w"> </span><span class="kn">import</span> <span class="n">Service</span>
+        <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="s2">&quot;Selenium fallback is unavailable. Install selenium and chromium/chromedriver &quot;</span>
+                <span class="s2">&quot;or set INKYCAL_BROWSER_BIN to a Chromium executable.&quot;</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
+
+        <span class="n">browser</span> <span class="o">=</span> <span class="n">_find_browser_binary</span><span class="p">()</span>
+        <span class="n">driver_bin</span> <span class="o">=</span> <span class="n">_find_chromedriver_binary</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">browser</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">driver_bin</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="s2">&quot;No usable Chromium + chromedriver setup found. Install chromium and chromedriver &quot;</span>
+                <span class="s2">&quot;or set INKYCAL_BROWSER_BIN and INKYCAL_CHROMEDRIVER_BIN.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">viewport_w</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_w</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_x</span><span class="p">,</span> <span class="mi">320</span><span class="p">)</span>
+        <span class="n">viewport_h</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_h</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_y</span><span class="p">,</span> <span class="mi">320</span><span class="p">)</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="n">Options</span><span class="p">()</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">binary_location</span> <span class="o">=</span> <span class="n">browser</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--headless=new&quot;</span><span class="p">)</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--disable-gpu&quot;</span><span class="p">)</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--hide-scrollbars&quot;</span><span class="p">)</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--no-sandbox&quot;</span><span class="p">)</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--disable-dev-shm-usage&quot;</span><span class="p">)</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--window-size=</span><span class="si">{</span><span class="n">viewport_w</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">viewport_h</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">service</span> <span class="o">=</span> <span class="n">Service</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="n">driver_bin</span><span class="p">)</span>
+        <span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span><span class="p">)</span>
+            <span class="n">driver</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+
+        <span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">shot</span><span class="p">:</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_x</span><span class="p">),</span> <span class="n">shot</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+            <span class="n">y0</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_y</span><span class="p">),</span> <span class="n">shot</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">shot</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">x0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_w</span><span class="p">))</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">shot</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">y0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_h</span><span class="p">))</span>
+            <span class="n">shot</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">))</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s2">&quot;PNG&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate image for this module&quot;&quot;&quot;</span>
@@ -11882,23 +12255,15 @@ by https://github.com/worstface</p>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
             <span class="sa">f</span><span class="s1">&#39;preparing webshot from </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s1">... cropH</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_h</span><span class="si">}</span><span class="s1"> cropW</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_w</span><span class="si">}</span><span class="s1"> cropX</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_x</span><span class="si">}</span><span class="s1"> cropY</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_y</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-        <span class="n">shot</span> <span class="o">=</span> <span class="n">WebShot</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">im_height</span><span class="p">,</span> <span class="n">im_width</span><span class="p">))</span>
-
-        <span class="n">shot</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;--crop-x&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_x</span><span class="p">,</span>
-            <span class="s2">&quot;--crop-y&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_y</span><span class="p">,</span>
-            <span class="s2">&quot;--crop-w&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_w</span><span class="p">,</span>
-            <span class="s2">&quot;--crop-h&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_h</span><span class="p">,</span>
-        <span class="p">}</span>
-
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;getting webshot from </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s1">...&#39;</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">shot</span><span class="o">.</span><span class="n">create_pic</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tmpFolder</span><span class="si">}</span><span class="s2">/webshot.png&quot;</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;If you have not already installed wkhtmltopdf, please use: sudo apt-get install wkhtmltopdf. See here for more details: https://github.com/1Danish-00/htmlwebshot/&quot;</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Could not get webshot :/&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_capture_webshot</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tmpFolder</span><span class="si">}</span><span class="s2">/webshot.png&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not get webshot. Make sure Chromium can run in headless mode.&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
 
 
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;got webshot...&#39;</span><span class="p">)</span>
@@ -11922,7 +12287,11 @@ by https://github.com/worstface</p>
 
         <span class="n">im</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">imageScale</span><span class="p">),</span> <span class="n">height</span><span class="o">=</span><span class="n">webshotHeight</span><span class="p">)</span>
 
-        <span class="n">im_webshot_black</span><span class="p">,</span> <span class="n">im_webshot_colour</span> <span class="o">=</span> <span class="n">image_to_palette</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">palette</span><span class="p">)</span>
+        <span class="n">im_webshot_black</span><span class="p">,</span> <span class="n">im_webshot_colour</span> <span class="o">=</span> <span class="n">image_to_palette</span><span class="p">(</span>
+            <span class="n">im</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">palette</span><span class="p">,</span>
+            <span class="n">dither</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dither</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">webshotCenterPosY</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">im_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
 
@@ -11981,105 +12350,101 @@ by https://github.com/worstface</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>inkycal/modules/inkycal_webshot.py</code></summary>
-              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate image for this module&quot;&quot;&quot;</span>
 
     <span class="c1"># Create tmp path</span>
@@ -12111,23 +12476,15 @@ by https://github.com/worstface</p>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
         <span class="sa">f</span><span class="s1">&#39;preparing webshot from </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s1">... cropH</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_h</span><span class="si">}</span><span class="s1"> cropW</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_w</span><span class="si">}</span><span class="s1"> cropX</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_x</span><span class="si">}</span><span class="s1"> cropY</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_y</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-    <span class="n">shot</span> <span class="o">=</span> <span class="n">WebShot</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">im_height</span><span class="p">,</span> <span class="n">im_width</span><span class="p">))</span>
-
-    <span class="n">shot</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;--crop-x&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_x</span><span class="p">,</span>
-        <span class="s2">&quot;--crop-y&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_y</span><span class="p">,</span>
-        <span class="s2">&quot;--crop-w&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_w</span><span class="p">,</span>
-        <span class="s2">&quot;--crop-h&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_h</span><span class="p">,</span>
-    <span class="p">}</span>
-
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;getting webshot from </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s1">...&#39;</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">shot</span><span class="o">.</span><span class="n">create_pic</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tmpFolder</span><span class="si">}</span><span class="s2">/webshot.png&quot;</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;If you have not already installed wkhtmltopdf, please use: sudo apt-get install wkhtmltopdf. See here for more details: https://github.com/1Danish-00/htmlwebshot/&quot;</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Could not get webshot :/&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_capture_webshot</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tmpFolder</span><span class="si">}</span><span class="s2">/webshot.png&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not get webshot. Make sure Chromium can run in headless mode.&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
 
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;got webshot...&#39;</span><span class="p">)</span>
@@ -12151,7 +12508,11 @@ by https://github.com/worstface</p>
 
     <span class="n">im</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">imageScale</span><span class="p">),</span> <span class="n">height</span><span class="o">=</span><span class="n">webshotHeight</span><span class="p">)</span>
 
-    <span class="n">im_webshot_black</span><span class="p">,</span> <span class="n">im_webshot_colour</span> <span class="o">=</span> <span class="n">image_to_palette</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">palette</span><span class="p">)</span>
+    <span class="n">im_webshot_black</span><span class="p">,</span> <span class="n">im_webshot_colour</span> <span class="o">=</span> <span class="n">image_to_palette</span><span class="p">(</span>
+        <span class="n">im</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">palette</span><span class="p">,</span>
+        <span class="n">dither</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dither</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="n">webshotCenterPosY</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">im_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
 
@@ -15030,9 +15391,7 @@ If the content is too long, it will be truncated from the back until it fits</p>
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>inkycal/modules/inkycal_textfile_to_display.py</code></summary>
-                <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 22</span>
-<span class="normal"> 23</span>
-<span class="normal"> 24</span>
+                <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 24</span>
 <span class="normal"> 25</span>
 <span class="normal"> 26</span>
 <span class="normal"> 27</span>
@@ -15111,7 +15470,11 @@ If the content is too long, it will be truncated from the back until it fits</p>
 <span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
-<span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TextToDisplay</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TextToDisplay</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;TextToDisplay module - Display text from a local file on the display</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;TextToDisplay - Display text from a local file on the display&quot;</span>
@@ -15167,7 +15530,9 @@ If the content is too long, it will be truncated from the back until it fits</p>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Connection test passed&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">NetworkNotReachableError</span>
-            <span class="n">file_content</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">certifi</span><span class="o">.</span><span class="n">where</span><span class="p">())</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+            <span class="n">file_content</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Create list containing all lines</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -15225,9 +15590,7 @@ If the content is too long, it will be truncated from the back until it fits</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>inkycal/modules/inkycal_textfile_to_display.py</code></summary>
-              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
@@ -15237,7 +15600,9 @@ If the content is too long, it will be truncated from the back until it fits</p>
 <span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
-<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize inkycal_textfile_to_display module&quot;&quot;&quot;</span>
 
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -15272,9 +15637,7 @@ If the content is too long, it will be truncated from the back until it fits</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>inkycal/modules/inkycal_textfile_to_display.py</code></summary>
-              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 46</span>
-<span class="normal"> 47</span>
-<span class="normal"> 48</span>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 48</span>
 <span class="normal"> 49</span>
 <span class="normal"> 50</span>
 <span class="normal"> 51</span>
@@ -15329,7 +15692,11 @@ If the content is too long, it will be truncated from the back until it fits</p>
 <span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
-<span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate image for this module&quot;&quot;&quot;</span>
 
     <span class="c1"># Define new image size with respect to padding</span>
@@ -15361,7 +15728,9 @@ If the content is too long, it will be truncated from the back until it fits</p>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Connection test passed&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">NetworkNotReachableError</span>
-        <span class="n">file_content</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">certifi</span><span class="o">.</span><span class="n">where</span><span class="p">())</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="n">file_content</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Create list containing all lines</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -15523,7 +15892,7 @@ E-Paper model and offers simplified rendering and calibration routines.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>If the driver module cannot be imported or if SPI appears</p>
+                <p>If the driver module cannot be imported or if SPI is unavailable.</p>
               </div>
             </td>
           </tr>
@@ -15819,7 +16188,48 @@ E-Paper model and offers simplified rendering and calibration routines.</p>
 <span class="normal">311</span>
 <span class="normal">312</span>
 <span class="normal">313</span>
-<span class="normal">314</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Display</span><span class="p">:</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Display</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;High-level interface for rendering images on an ePaper display.</span>
 
 <span class="sd">    The Display class wraps the low-level hardware driver for the selected</span>
@@ -15830,8 +16240,7 @@ E-Paper model and offers simplified rendering and calibration routines.</p>
 <span class="sd">            Name of the display model, e.g. ``&quot;waveshare_7in5_colour&quot;``.</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        Exception: If the driver module cannot be imported or if SPI appears</span>
-<span class="sd">        unavailable.</span>
+<span class="sd">        Exception: If the driver module cannot be imported or if SPI is unavailable.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># ----------------------------------------------------------------------</span>
@@ -16100,6 +16509,48 @@ E-Paper model and offers simplified rendering and calibration routines.</p>
         <span class="n">img_colour</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="s2">&quot;white&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">img_bw</span><span class="p">,</span> <span class="n">img_colour</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_startup_splash</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">title_font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">88</span><span class="p">,</span>
+        <span class="n">version_font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">36</span><span class="p">,</span>
+        <span class="n">line_gap</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a two-line monochrome startup splash centered on screen.&quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">inkycal.utils.enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">FONTS</span>
+
+        <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_display_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="n">image_bw</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="s2">&quot;white&quot;</span><span class="p">)</span>
+        <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">image_bw</span><span class="p">)</span>
+
+        <span class="c1"># Use Noto Sans UI Regular for both splash lines.</span>
+        <span class="n">title_font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">FONTS</span><span class="o">.</span><span class="n">noto_sans_ui_regular</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">title_font_size</span><span class="p">)</span>
+        <span class="n">version_font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">FONTS</span><span class="o">.</span><span class="n">noto_sans_ui_regular</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">version_font_size</span><span class="p">)</span>
+
+        <span class="n">title_bbox</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">textbbox</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">title</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">title_font</span><span class="p">)</span>
+        <span class="n">version_bbox</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">textbbox</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">version</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">version_font</span><span class="p">)</span>
+
+        <span class="n">title_w</span> <span class="o">=</span> <span class="n">title_bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">title_bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">title_h</span> <span class="o">=</span> <span class="n">title_bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">title_bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">version_w</span> <span class="o">=</span> <span class="n">version_bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">version_bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">version_h</span> <span class="o">=</span> <span class="n">version_bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">version_bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">total_h</span> <span class="o">=</span> <span class="n">title_h</span> <span class="o">+</span> <span class="n">line_gap</span> <span class="o">+</span> <span class="n">version_h</span>
+        <span class="n">y_start</span> <span class="o">=</span> <span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="n">total_h</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+        <span class="n">title_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="n">title_w</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">title_y</span> <span class="o">=</span> <span class="n">y_start</span>
+        <span class="n">version_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="n">version_w</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">version_y</span> <span class="o">=</span> <span class="n">title_y</span> <span class="o">+</span> <span class="n">title_h</span> <span class="o">+</span> <span class="n">line_gap</span>
+
+        <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">title_x</span><span class="p">,</span> <span class="n">title_y</span><span class="p">),</span> <span class="n">title</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">title_font</span><span class="p">)</span>
+        <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">version_x</span><span class="p">,</span> <span class="n">version_y</span><span class="p">),</span> <span class="n">version</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">version_font</span><span class="p">)</span>
+
+        <span class="n">image_colour</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="s2">&quot;white&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">image_bw</span><span class="p">,</span> <span class="n">image_colour</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -16132,7 +16583,8 @@ E-Paper model and offers simplified rendering and calibration routines.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>inkycal/display/display.py</code></summary>
-              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">52</span>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">51</span>
+<span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
@@ -16151,8 +16603,7 @@ E-Paper model and offers simplified rendering and calibration routines.</p>
 <span class="normal">68</span>
 <span class="normal">69</span>
 <span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epaper_model</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epaper_model</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load and initialize the driver for the given E-Paper model.&quot;&quot;&quot;</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">supports_colour</span> <span class="o">=</span> <span class="s2">&quot;colour&quot;</span> <span class="ow">in</span> <span class="n">epaper_model</span>
@@ -16261,7 +16712,8 @@ results but take longer.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>inkycal/display/display.py</code></summary>
-              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">141</span>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">140</span>
+<span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span>
 <span class="normal">144</span>
@@ -16312,8 +16764,7 @@ results but take longer.</p>
 <span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calibrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cycles</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">192</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calibrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cycles</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calibrate the display to reduce ghosting and restore contrast.</span>
 
 <span class="sd">    Performs repeated full-screen refresh cycles using black/white or</span>
@@ -16427,7 +16878,8 @@ results but take longer.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>inkycal/display/display.py</code></summary>
-              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">221</span>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">220</span>
+<span class="normal">221</span>
 <span class="normal">222</span>
 <span class="normal">223</span>
 <span class="normal">224</span>
@@ -16437,8 +16889,7 @@ results but take longer.</p>
 <span class="normal">228</span>
 <span class="normal">229</span>
 <span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">231</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_display_names</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of all supported E-Paper model names.</span>
 
@@ -16565,7 +17016,8 @@ results but take longer.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>inkycal/display/display.py</code></summary>
-              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">198</span>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">197</span>
+<span class="normal">198</span>
 <span class="normal">199</span>
 <span class="normal">200</span>
 <span class="normal">201</span>
@@ -16585,8 +17037,7 @@ results but take longer.</p>
 <span class="normal">215</span>
 <span class="normal">216</span>
 <span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">218</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_display_size</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the pixel size of a supported display.</span>
 
@@ -16721,7 +17172,8 @@ becomes coloured.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>inkycal/display/display.py</code></summary>
-              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 77</span>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 76</span>
+<span class="normal"> 77</span>
 <span class="normal"> 78</span>
 <span class="normal"> 79</span>
 <span class="normal"> 80</span>
@@ -16779,8 +17231,7 @@ becomes coloured.</p>
 <span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">im_black</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">im_colour</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">135</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">im_black</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">im_colour</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Render one or two images on the selected E-Paper display.</span>
 
 <span class="sd">    Args:</span>
@@ -16840,6 +17291,109 @@ becomes coloured.</p>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sending E-Paper to deep sleep...&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="n">epaper</span><span class="o">.</span><span class="n">sleep</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="inkycal.display.display.Display.render_startup_splash" class="doc doc-heading">
+            <code class=" language-python"><span class="n">render_startup_splash</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">title_font_size</span><span class="o">=</span><span class="mi">88</span><span class="p">,</span> <span class="n">version_font_size</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">line_gap</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span></code>
+
+<a href="#inkycal.display.display.Display.render_startup_splash" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Render a two-line monochrome startup splash centered on screen.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>inkycal/display/display.py</code></summary>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">render_startup_splash</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">title_font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">88</span><span class="p">,</span>
+    <span class="n">version_font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">36</span><span class="p">,</span>
+    <span class="n">line_gap</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render a two-line monochrome startup splash centered on screen.&quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">inkycal.utils.enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">FONTS</span>
+
+    <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_display_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">)</span>
+    <span class="n">image_bw</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="s2">&quot;white&quot;</span><span class="p">)</span>
+    <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">image_bw</span><span class="p">)</span>
+
+    <span class="c1"># Use Noto Sans UI Regular for both splash lines.</span>
+    <span class="n">title_font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">FONTS</span><span class="o">.</span><span class="n">noto_sans_ui_regular</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">title_font_size</span><span class="p">)</span>
+    <span class="n">version_font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">FONTS</span><span class="o">.</span><span class="n">noto_sans_ui_regular</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">version_font_size</span><span class="p">)</span>
+
+    <span class="n">title_bbox</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">textbbox</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">title</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">title_font</span><span class="p">)</span>
+    <span class="n">version_bbox</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">textbbox</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">version</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">version_font</span><span class="p">)</span>
+
+    <span class="n">title_w</span> <span class="o">=</span> <span class="n">title_bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">title_bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">title_h</span> <span class="o">=</span> <span class="n">title_bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">title_bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">version_w</span> <span class="o">=</span> <span class="n">version_bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">version_bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">version_h</span> <span class="o">=</span> <span class="n">version_bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">version_bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">total_h</span> <span class="o">=</span> <span class="n">title_h</span> <span class="o">+</span> <span class="n">line_gap</span> <span class="o">+</span> <span class="n">version_h</span>
+    <span class="n">y_start</span> <span class="o">=</span> <span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="n">total_h</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+    <span class="n">title_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="n">title_w</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">title_y</span> <span class="o">=</span> <span class="n">y_start</span>
+    <span class="n">version_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="n">version_w</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">version_y</span> <span class="o">=</span> <span class="n">title_y</span> <span class="o">+</span> <span class="n">title_h</span> <span class="o">+</span> <span class="n">line_gap</span>
+
+    <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">title_x</span><span class="p">,</span> <span class="n">title_y</span><span class="p">),</span> <span class="n">title</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">title_font</span><span class="p">)</span>
+    <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">version_x</span><span class="p">,</span> <span class="n">version_y</span><span class="p">),</span> <span class="n">version</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">version_font</span><span class="p">)</span>
+
+    <span class="n">image_colour</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="s2">&quot;white&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">image_bw</span><span class="p">,</span> <span class="n">image_colour</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -16962,7 +17516,8 @@ disp.render_text("Hello world!")</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>inkycal/display/display.py</code></summary>
-              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">237</span>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
+<span class="normal">237</span>
 <span class="normal">238</span>
 <span class="normal">239</span>
 <span class="normal">240</span>
@@ -17038,8 +17593,7 @@ disp.render_text("Hello world!")</p>
 <span class="normal">310</span>
 <span class="normal">311</span>
 <span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">render_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span> <span class="n">max_width_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">313</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">render_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span> <span class="n">max_width_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Render a centered, auto-wrapped text message on the display.</span>
 
 <span class="sd">    This is primarily used for setup messages, error reporting,</span>
@@ -17693,7 +18247,7 @@ It is used to render text, icons, shapes, and previews.</p>
 
         <span class="n">font_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_enum</span><span class="o">.</span><span class="n">value</span>
         <span class="n">font</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font</span>
-        <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font_size</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># always start from a fixed size so shrinking boxes don&#39;t inherit a stale large size</span>
 
         <span class="c1"># ----------------------------</span>
         <span class="c1"># 1) Auto-fit the font size</span>
@@ -17839,7 +18393,7 @@ It is used to render text, icons, shapes, and previews.</p>
 
         <span class="k">return</span> <span class="n">lines</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">auto_fontsize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_height</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sample_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="n">target_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.80</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">auto_fontsize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_height</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sample_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="n">target_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.80</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Automatically scale the canvas&#39; font so its height reaches ~target_ratio</span>
 <span class="sd">        of the given max_height.</span>
@@ -18160,6 +18714,7 @@ of the given max_height.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
+                  <code>None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -18208,7 +18763,7 @@ of the given max_height.</p>
 <span class="normal">250</span>
 <span class="normal">251</span>
 <span class="normal">252</span>
-<span class="normal">253</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">auto_fontsize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_height</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sample_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="n">target_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.80</span><span class="p">):</span>
+<span class="normal">253</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">auto_fontsize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_height</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sample_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="n">target_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.80</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Automatically scale the canvas&#39; font so its height reaches ~target_ratio</span>
 <span class="sd">    of the given max_height.</span>
@@ -18948,7 +19503,7 @@ Based on ascent + descent, with a reliable fallback if unsupported.</p>
 
     <span class="n">font_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_enum</span><span class="o">.</span><span class="n">value</span>
     <span class="n">font</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font</span>
-    <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font_size</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># always start from a fixed size so shrinking boxes don&#39;t inherit a stale large size</span>
 
     <span class="c1"># ----------------------------</span>
     <span class="c1"># 1) Auto-fit the font size</span>
@@ -19437,9 +19992,9 @@ to visually highlight areas such as days with events.</p>
     <div class="doc doc-contents ">
 
         <p>Resolve Inkycal version.</p>
-<p>Priority:
-1. Installed package metadata (preferred, matches pyproject.toml)
-2. _version.txt inside the package (editable / dev fallback)</p>
+<p>Single source of truth:
+1. Project-root <code>_version.txt</code> (source checkout and editable workflows)
+2. Installed package metadata (fallback for wheel/sdist installs)</p>
 
 
             <details class="mkdocstrings-source">
@@ -19463,17 +20018,17 @@ to visually highlight areas such as days with events.</p>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Resolve Inkycal version.</span>
 
-<span class="sd">    Priority:</span>
-<span class="sd">    1. Installed package metadata (preferred, matches pyproject.toml)</span>
-<span class="sd">    2. _version.txt inside the package (editable / dev fallback)</span>
+<span class="sd">    Single source of truth:</span>
+<span class="sd">    1. Project-root ``_version.txt`` (source checkout and editable workflows)</span>
+<span class="sd">    2. Installed package metadata (fallback for wheel/sdist installs)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">pkg_version</span><span class="p">(</span><span class="s2">&quot;inkycal&quot;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="n">PackageNotFoundError</span><span class="p">:</span>
+        <span class="n">version_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;_version.txt&quot;</span>
+        <span class="k">return</span> <span class="n">version_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">version_file</span> <span class="o">=</span> <span class="n">files</span><span class="p">(</span><span class="s2">&quot;inkycal&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;_version.txt&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">version_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pkg_version</span><span class="p">(</span><span class="s2">&quot;inkycal&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">PackageNotFoundError</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;unknown&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>

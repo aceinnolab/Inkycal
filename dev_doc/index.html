@@ -332,6 +332,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../inkycalos-lite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    InkycalOS-Lite Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installer Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../quickstart/" class="md-nav__link">
         
   
@@ -368,6 +424,34 @@
     
   
     Hardware Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Local Web UI
   
 
     
@@ -444,6 +528,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/agenda/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agenda
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../api/display/" class="md-nav__link">
         
   
@@ -500,7 +640,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../modules/weather.md" class="md-nav__link">
+      <a href="../modules/weather/" class="md-nav__link">
         
   
   
@@ -528,7 +668,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../modules/image.md" class="md-nav__link">
+      <a href="../modules/image/" class="md-nav__link">
         
   
   
@@ -536,6 +676,34 @@
     
   
     Image
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/custom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Modules
   
 
     
@@ -956,10 +1124,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-update-inkycal__init__py" class="md-nav__link">
+  <a href="#2-ensure-the-module-is-importable" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Update inkycal/__init__.py
+        2. Ensure the module is importable
       
     </span>
   </a>
@@ -1077,6 +1245,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#5-docs-toolchain-safety-mkdocs-2-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Docs toolchain safety (MkDocs 2 warning)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1097,34 +1276,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../modules/custom.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Custom Module Guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1228,7 +1379,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../troubleshooting.md" class="md-nav__link">
+      <a href="../troubleshooting/" class="md-nav__link">
         
   
   
@@ -1558,10 +1709,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-update-inkycal__init__py" class="md-nav__link">
+  <a href="#2-ensure-the-module-is-importable" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Update inkycal/__init__.py
+        2. Ensure the module is importable
       
     </span>
   </a>
@@ -1673,6 +1824,17 @@
     <span class="md-ellipsis">
       
         4. Enhanced performance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-docs-toolchain-safety-mkdocs-2-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Docs toolchain safety (MkDocs 2 warning)
       
     </span>
   </a>
@@ -1909,14 +2071,17 @@ The image is finally combined with others by Inkycal and rendered on the display
 <h2 id="registering-your-module">➕ Registering Your Module<a class="headerlink" href="#registering-your-module" title="Permanent link">&para;</a></h2>
 <p>You must tell Inkycal where to find your new module.</p>
 <h3 id="1-update-inkycalmodules__init__py">1. Update <code>inkycal/modules/__init__.py</code><a class="headerlink" href="#1-update-inkycalmodules__init__py" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">.simple</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simple</span>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">InkycalModuleImporter</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="n">Simple</span> <span class="o">=</span> <span class="s2">&quot;inkycal.modules.simple.Simple&quot;</span>
 </code></pre></div>
 
-<h3 id="2-update-inkycal__init__py">2. Update <code>inkycal/__init__.py</code><a class="headerlink" href="#2-update-inkycal__init__py" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">inkycal.modules.simple</span>
+<p>Inkycal resolves module classes through <code>InkycalModuleImporter</code>, so your custom module needs a unique enum entry there.</p>
+<h3 id="2-ensure-the-module-is-importable">2. Ensure the module is importable<a class="headerlink" href="#2-ensure-the-module-is-importable" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">inkycal.modules.simple</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simple</span>
 </code></pre></div>
 
-<p>Your module is now available inside the Web-UI.</p>
+<p>If you are also exposing the module through a generator or UI layer, make sure the module name matches the enum key used in <code>settings.json</code>.</p>
 <hr />
 <h2 id="debugging-techniques">🧭 Debugging Techniques<a class="headerlink" href="#debugging-techniques" title="Permanent link">&para;</a></h2>
 <h3 id="preview-without-hardware">Preview without hardware:<a class="headerlink" href="#preview-without-hardware" title="Permanent link">&para;</a></h3>
@@ -1935,9 +2100,10 @@ The image is finally combined with others by Inkycal and rendered on the display
 </code></pre></div>
 
 <p>Logs on the Pi are stored at:</p>
-<div class="codehilite"><pre><span></span><code><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">inkycal</span><span class="o">.</span><span class="n">log</span>
+<div class="codehilite"><pre><span></span><code>logs/inkycal.log
 </code></pre></div>
 
+<p>The installer-managed service also sets <code>INKYCAL_LOG_DIR</code> so logs stay inside the project folder by default.</p>
 <hr />
 <h2 id="advanced-development-tips">🚀 Advanced Development Tips<a class="headerlink" href="#advanced-development-tips" title="Permanent link">&para;</a></h2>
 <h3 id="1-multi-section-layouts">1. Multi-section layouts<a class="headerlink" href="#1-multi-section-layouts" title="Permanent link">&para;</a></h3>
@@ -1948,6 +2114,18 @@ The image is finally combined with others by Inkycal and rendered on the display
 <p>The Canvas provides <code>draw_icon()</code> to render SVG-style icons cleanly and centered.</p>
 <h3 id="4-enhanced-performance">4. Enhanced performance<a class="headerlink" href="#4-enhanced-performance" title="Permanent link">&para;</a></h3>
 <p>Cache API responses to speed up repeated renders.</p>
+<h3 id="5-docs-toolchain-safety-mkdocs-2-warning">5. Docs toolchain safety (MkDocs 2 warning)<a class="headerlink" href="#5-docs-toolchain-safety-mkdocs-2-warning" title="Permanent link">&para;</a></h3>
+<p>Inkycal currently targets the MkDocs 1.x ecosystem.</p>
+<ul>
+<li><code>dev_requirements.txt</code> constrains docs dependencies to MkDocs 1.x-compatible major versions.</li>
+<li>CI validates the installed major versions for <code>mkdocs</code>, <code>mkdocs-material</code>, and <code>mkdocstrings</code> before deploying docs.</li>
+<li>Use a strict local build when changing docs structure or API docs:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>docs
+mkdocs<span class="w"> </span>build<span class="w"> </span>--clean<span class="w"> </span>--strict
+</code></pre></div>
+
+<p>When migrating to MkDocs 2 in the future, do it in a dedicated branch with a full docs smoke-test pass.</p>
 <hr />
 <h2 id="youre-ready-to-build-modules">🎉 You're Ready to Build Modules!<a class="headerlink" href="#youre-ready-to-build-modules" title="Permanent link">&para;</a></h2>
 <p>You now know how to:</p>
