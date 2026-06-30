@@ -10,6 +10,7 @@ concurrency:
 jobs:
   test-on-arm:
     name: Update OS
+    if: github.event_name == 'workflow_dispatch' && (github.ref_name == 'main' || github.ref_name == 'dev')
     runs-on: ubuntu-latest
     timeout-minutes: 120
     permissions:
