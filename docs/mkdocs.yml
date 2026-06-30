@@ -42,6 +42,7 @@ nav:
   - Home: index.md
   - Installation:
       - Install Inkycal: installation.md
+      - InkycalOS-Lite Setup: inkycalos-lite.md
       - Installer Guide: installer.md
       - Quickstart: quickstart.md
       - Hardware Setup: hardware.md
