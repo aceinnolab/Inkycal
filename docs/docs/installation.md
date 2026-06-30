@@ -66,6 +66,10 @@ Raspberry Pi Imager does not pre-fill the custom InkycalOS-Lite user-data/networ
 
 If you want to adjust the layout later, simply generate a new `settings.json` and replace the existing file.
 
+For a focused walkthrough, see:
+
+- [InkycalOS-Lite Setup](inkycalos-lite.md)
+
 ### 🔐 SSH access (if something goes wrong)
 
 If the display does not show the expected dashboard, connect over SSH:
