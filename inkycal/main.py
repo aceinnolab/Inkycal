@@ -226,6 +226,7 @@ class Inkycal:
         # Give an OK message
         logger.info('Inkycal initialised successfully!')
 
+
     def countdown(self, interval_mins: int = None) -> int:
         """Returns the remaining time in seconds until the next display update based on the interval.
 
@@ -290,7 +291,7 @@ class Inkycal:
                 self.info += f"module {number}: Error!  "
 
         if errors:
-            logger.error('Error/s in modules:', *errors)
+            logger.error("Error/s in modules: %s", ", ".join(str(err) for err in errors))
         del errors
 
         self._assemble()
@@ -374,7 +375,7 @@ class Inkycal:
                     self.info += f"im {number}: X  "
 
             if errors:
-                logger.error("Error/s in modules:", *errors)
+                logger.error("Error/s in modules: %s", ", ".join(str(err) for err in errors))
                 self.counter = 0
                 self.cache_data["counter"] = 0
             else:

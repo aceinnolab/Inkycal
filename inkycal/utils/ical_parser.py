@@ -2,12 +2,12 @@
 Inkycal iCalendar parsing module
 Copyright by aceinnolab
 """
-import urllib
 import arrow
-from urllib.request import urlopen
 import logging
 import time
 
+import certifi
+import requests
 import recurring_ical_events
 from icalendar import Calendar
 
@@ -39,23 +39,30 @@ class iCalendar:
         def auth_ical(url, uname, passwd):
             """Authorisation helper for protected ical files"""
 
-            # Credit to Joshka
-            password_mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
-            password_mgr.add_password(None, url, username, password)
-            handler = urllib.request.HTTPBasicAuthHandler(password_mgr)
-            opener = urllib.request.build_opener(handler)
-            ical = Calendar.from_ical(str(opener.open(url).read().decode()))
+            response = requests.get(
+                url,
+                auth=(uname, passwd),
+                timeout=20,
+                verify=certifi.where(),
+            )
+            response.raise_for_status()
+            ical = Calendar.from_ical(str(response.text))
             return ical
 
         if type(url) == list:
             if (username is None) and (password is None):
-                ical = [Calendar.from_ical(str(urlopen(_).read().decode()))
-                        for _ in url]
+                ical = []
+                for each_url in url:
+                    response = requests.get(each_url, timeout=20, verify=certifi.where())
+                    response.raise_for_status()
+                    ical.append(Calendar.from_ical(str(response.text)))
             else:
                 ical = [auth_ical(each_url, username, password) for each_url in url]
         elif type(url) == str:
             if (username is None) and (password is None):
-                ical = [Calendar.from_ical(str(urlopen(url).read().decode()))]
+                response = requests.get(url, timeout=20, verify=certifi.where())
+                response.raise_for_status()
+                ical = [Calendar.from_ical(str(response.text))]
             else:
                 ical = [auth_ical(url, username, password)]
         else:

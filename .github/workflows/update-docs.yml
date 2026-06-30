@@ -6,39 +6,66 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: docs-deploy
+  cancel-in-progress: true
+
 jobs:
   build-deploy:
     name: Build MkDocs Documentation
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0   # required for mkdocs gh-deploy
 
       # Python Setup
       - name: Set up Python 3.13
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+          cache: "pip"
 
       # Install Dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install mkdocs mkdocs-material mkdocstrings[python]
           pip install -r dev_requirements.txt
           pip install -e .
+
+      - name: Guard docs toolchain majors
+        run: |
+          python - <<'PY'
+          from importlib.metadata import version
+
+          checks = {
+              "mkdocs": 1,
+              "mkdocs-material": 9,
+              "mkdocstrings": 1,
+          }
+
+          for pkg, expected_major in checks.items():
+              installed = version(pkg)
+              major = int(installed.split(".", 1)[0])
+              if major != expected_major:
+                  raise SystemExit(
+                      f"Unsupported {pkg} major {major} (installed {installed}). "
+                      f"Expected major {expected_major} until MkDocs 2 migration is complete."
+                  )
+          print("Docs toolchain major versions are compatible with MkDocs 1.x setup.")
+          PY
 
       # Build Documentation (sanity check)
       - name: Build documentation
         working-directory: docs
-        run: mkdocs build
+        run: mkdocs build --clean
         # run: mkdocs build --strict. We're not using strict since some pages are actually wip
         
 
       # Deploy to gh-pages branch
       - name: Deploy docs
         working-directory: docs
-        run: mkdocs gh-deploy --force
+        run: mkdocs gh-deploy --force --clean --verbose

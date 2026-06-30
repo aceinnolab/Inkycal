@@ -7,7 +7,9 @@ If the content is too long, it will be truncated from the back until it fits
 Copyright by aceinnolab
 """
 import logging
-from urllib.request import urlopen
+
+import certifi
+import requests
 
 from PIL import Image
 
@@ -75,7 +77,9 @@ class TextToDisplay(InkycalModule):
                 logger.info('Connection test passed')
             else:
                 raise NetworkNotReachableError
-            file_content = urlopen(self.filepath).read().decode('utf-8')
+            response = requests.get(self.filepath, timeout=15, verify=certifi.where())
+            response.raise_for_status()
+            file_content = response.text
         else:
             # Create list containing all lines
             with open(self.filepath, 'r') as file:
