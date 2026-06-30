@@ -36,6 +36,28 @@ jobs:
           pip install -r dev_requirements.txt
           pip install -e .
 
+      - name: Guard docs toolchain majors
+        run: |
+          python - <<'PY'
+          from importlib.metadata import version
+
+          checks = {
+              "mkdocs": 1,
+              "mkdocs-material": 9,
+              "mkdocstrings": 1,
+          }
+
+          for pkg, expected_major in checks.items():
+              installed = version(pkg)
+              major = int(installed.split(".", 1)[0])
+              if major != expected_major:
+                  raise SystemExit(
+                      f"Unsupported {pkg} major {major} (installed {installed}). "
+                      f"Expected major {expected_major} until MkDocs 2 migration is complete."
+                  )
+          print("Docs toolchain major versions are compatible with MkDocs 1.x setup.")
+          PY
+
       # Build Documentation (sanity check)
       - name: Build documentation
         working-directory: docs

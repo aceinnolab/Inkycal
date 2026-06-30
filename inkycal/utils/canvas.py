@@ -215,7 +215,7 @@ class Canvas:
 
         return lines
 
-    def auto_fontsize(self, max_height: int, sample_text: str = "Ag", target_ratio: float = 0.80):
+    def auto_fontsize(self, max_height: int, sample_text: str = "Ag", target_ratio: float = 0.80) -> None:
         """
         Automatically scale the canvas' font so its height reaches ~target_ratio
         of the given max_height.
