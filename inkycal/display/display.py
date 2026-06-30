@@ -329,8 +329,8 @@ class Display:
         image_bw = Image.new("1", (width, height), "white")
         draw = ImageDraw.Draw(image_bw)
 
-        # Use the same family that is used for the Inkycal logotype styling.
-        title_font = ImageFont.truetype(FONTS.noto_sans_ui_bold.value, title_font_size)
+        # Use Noto Sans UI Regular for both splash lines.
+        title_font = ImageFont.truetype(FONTS.noto_sans_ui_regular.value, title_font_size)
         version_font = ImageFont.truetype(FONTS.noto_sans_ui_regular.value, version_font_size)
 
         title_bbox = draw.textbbox((0, 0), title, font=title_font)
