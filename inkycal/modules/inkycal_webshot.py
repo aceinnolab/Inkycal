@@ -150,7 +150,41 @@ class Webshot(InkycalModule):
 
     @staticmethod
     def is_backend_available() -> bool:
-        return _find_browser_binary() is not None
+        browser = _find_browser_binary()
+        if browser is None:
+            return False
+
+        command = [
+            browser,
+            "--headless",
+            "--disable-gpu",
+            "--no-first-run",
+            "--no-default-browser-check",
+            "--dump-dom",
+            "about:blank",
+        ]
+        if os.name != "nt":
+            command.insert(1, "--no-sandbox")
+
+        try:
+            subprocess.run(
+                command,
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                timeout=15,
+            )
+            return True
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired, FileNotFoundError):
+            return False
+
+    def _crop_captured_webshot(self, output_path: str) -> None:
+        with Image.open(output_path) as shot:
+            x0 = min(max(0, self.crop_x), shot.width)
+            y0 = min(max(0, self.crop_y), shot.height)
+            x1 = min(shot.width, max(x0 + 1, x0 + self.crop_w))
+            y1 = min(shot.height, max(y0 + 1, y0 + self.crop_h))
+            shot.crop((x0, y0, x1, y1)).save(output_path, "PNG")
 
     def _capture_webshot(self, output_path: str) -> None:
         browser = _find_browser_binary()
@@ -164,37 +198,45 @@ class Webshot(InkycalModule):
         viewport_w = max(self.crop_w + self.crop_x, 320)
         viewport_h = max(self.crop_h + self.crop_y, 320)
 
-        command = [
-            browser,
-            "--headless",
-            "--disable-gpu",
-            "--hide-scrollbars",
-            "--no-first-run",
-            "--no-default-browser-check",
-            "--disable-extensions",
-            "--run-all-compositor-stages-before-draw",
-            f"--virtual-time-budget={max(1000, self.wait_time * 1000)}",
-            f"--window-size={viewport_w},{viewport_h}",
-            f"--screenshot={output_path}",
-            self.url,
-        ]
+        direct_errors = []
+        for headless_flag in ("--headless=new", "--headless"):
+            command = [
+                browser,
+                headless_flag,
+                "--disable-gpu",
+                "--hide-scrollbars",
+                "--no-first-run",
+                "--no-default-browser-check",
+                "--disable-extensions",
+                "--disable-dev-shm-usage",
+                "--run-all-compositor-stages-before-draw",
+                f"--virtual-time-budget={max(1000, self.wait_time * 1000)}",
+                f"--window-size={viewport_w},{viewport_h}",
+                f"--screenshot={output_path}",
+                self.url,
+            ]
 
-        if os.name != "nt":
-            command.insert(1, "--no-sandbox")
+            if os.name != "nt":
+                command.insert(1, "--no-sandbox")
 
+            result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if result.returncode == 0:
+                self._crop_captured_webshot(output_path)
+                return
+
+            stderr = result.stderr.decode("utf-8", errors="ignore").strip()
+            direct_errors.append(f"{headless_flag} (code {result.returncode}) {stderr}")
+
+        logger.warning("Direct headless browser capture failed; trying Selenium fallback")
         try:
-            subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        except subprocess.CalledProcessError:
-            logger.warning("Direct headless browser capture failed; trying Selenium fallback")
             self._capture_webshot_with_selenium(output_path)
-            return
-
-        with Image.open(output_path) as shot:
-            x0 = min(max(0, self.crop_x), shot.width)
-            y0 = min(max(0, self.crop_y), shot.height)
-            x1 = min(shot.width, max(x0 + 1, x0 + self.crop_w))
-            y1 = min(shot.height, max(y0 + 1, y0 + self.crop_h))
-            shot.crop((x0, y0, x1, y1)).save(output_path, "PNG")
+        except Exception as error:
+            details = " | ".join(direct_errors) if direct_errors else "no direct-browser error details available"
+            raise RuntimeError(
+                f"Webshot capture failed with Chromium CLI and Selenium fallback. Chromium errors: {details}. "
+                f"Selenium error: {error}"
+            ) from error
+        self._crop_captured_webshot(output_path)
 
     def _capture_webshot_with_selenium(self, output_path: str) -> None:
         try:
@@ -225,10 +267,15 @@ class Webshot(InkycalModule):
         options.add_argument("--hide-scrollbars")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--no-zygote")
+        options.add_argument("--disable-software-rasterizer")
         options.add_argument(f"--window-size={viewport_w},{viewport_h}")
 
         service = Service(executable_path=driver_bin)
-        driver = webdriver.Chrome(service=service, options=options)
+        try:
+            driver = webdriver.Chrome(service=service, options=options)
+        except Exception as error:
+            raise RuntimeError(f"Unable to start chromedriver at {driver_bin}: {error}") from error
         try:
             driver.get(self.url)
             if self.wait_time > 0:
@@ -237,13 +284,6 @@ class Webshot(InkycalModule):
             driver.save_screenshot(output_path)
         finally:
             driver.quit()
-
-        with Image.open(output_path) as shot:
-            x0 = min(max(0, self.crop_x), shot.width)
-            y0 = min(max(0, self.crop_y), shot.height)
-            x1 = min(shot.width, max(x0 + 1, x0 + self.crop_w))
-            y1 = min(shot.height, max(y0 + 1, y0 + self.crop_h))
-            shot.crop((x0, y0, x1, y1)).save(output_path, "PNG")
 
     def generate_image(self):
         """Generate image for this module"""
@@ -283,6 +323,9 @@ class Webshot(InkycalModule):
             self._capture_webshot(f"{tmpFolder}/webshot.png")
         except subprocess.CalledProcessError as error:
             logger.error(error.stderr.decode("utf-8", errors="ignore"))
+            raise Exception("Could not get webshot. Make sure Chromium can run in headless mode.")
+        except RuntimeError as error:
+            logger.error(str(error))
             raise Exception("Could not get webshot. Make sure Chromium can run in headless mode.")
         except FileNotFoundError as error:
             raise Exception(str(error))
