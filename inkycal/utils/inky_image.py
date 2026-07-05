@@ -214,7 +214,7 @@ class Inkyimage:
 
 
 def image_to_palette(
-    image: Image, palette: Literal = ["bwr", "bwy", "bw", "16gray"], dither: bool = True
+    image: Image, palette: Literal = ["bwr", "bwy", "bw", "16gray", "gray16"], dither: bool = True
 ) -> (PIL.Image, PIL.Image):
     """Maps an image to a given colour palette.
 
@@ -237,6 +237,8 @@ def image_to_palette(
     >>> 'bw'  # black-white
     >>> '16gray' # 16 shades of gray
     """
+    if palette == "gray16":
+        palette = "16gray"
 
     if palette == "bwr":
         # black-white-red palette
@@ -249,8 +251,23 @@ def image_to_palette(
     elif palette == "bw":
         pal = None
     elif palette == "16gray":
-        pal = [x for x in range(0, 256, 16)] * 3
-        pal.sort()
+        # Keep grayscale data in the black channel and an empty colour channel.
+        # This is primarily used by IT8951-based parallel displays.
+        grayscale_levels = [int(round(i * 255 / 15)) for i in range(16)]
+        pal = []
+        for value in grayscale_levels:
+            pal.extend([value, value, value])
+        palette_im = Image.new("P", (1, 1))
+        palette_im.putpalette(pal * (256 // len(grayscale_levels)))
+        dither_mode = Image.FLOYDSTEINBERG if dither else Image.NONE
+        im_black = (
+            image.convert("RGB")
+            .quantize(palette=palette_im, dither=dither_mode)
+            .convert("RGB")
+        )
+        im_colour = Image.new(mode="RGB", size=im_black.size, color="white")
+        logger.info("mapped image to specified palette")
+        return im_black, im_colour
 
     else:
         logger.error("The given palette is unsupported.")
