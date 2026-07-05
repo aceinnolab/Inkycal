@@ -1,0 +1,17 @@
+git
+python3-venv
+python3-dev
+python3-setuptools
+zlib1g-dev
+libjpeg-dev
+libffi-dev
+libopenblas-dev
+libopenjp2-7
+chromium
+chromium-driver
+rustc
+build-essential
+libssl-dev
+liblgpio-dev
+swig
+systemd-swap

@@ -82,6 +82,8 @@ Then install Inkycal:
 cd $HOME
 git clone https://github.com/aceinnolab/Inkycal
 cd Inkycal
+sudo apt-get update -y
+sudo apt-get install -y $(tr '\n' ' ' < apt_packages.txt)
 python -m venv venv
 source venv/bin/activate
 pip install --upgrade pip wheel setuptools --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
@@ -153,5 +155,3 @@ If you’re using a Pi Zero (slow installation), consider InkycalOS Lite.
 ✔ Saves hours of installation time
 
 Available via the GitHub Sponsor page.
-
-

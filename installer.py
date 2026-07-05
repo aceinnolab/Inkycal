@@ -23,24 +23,7 @@ except ImportError:  # pragma: no cover - non-POSIX only
     fcntl = None
 
 
-DEFAULT_APT_PACKAGES = [
-    "git",
-    "python3-venv",
-    "python3-dev",
-    "python3-setuptools",
-    "zlib1g-dev",
-    "libjpeg-dev",
-    "libffi-dev",
-    "libopenblas-dev",
-    "libopenjp2-7",
-    "chromium",
-    "chromium-driver",
-    "rustc",
-    "build-essential",
-    "libssl-dev",
-    "liblgpio-dev",
-    "systemd-swap",
-]
+APT_PACKAGES_FILE = "apt_packages.txt"
 
 PIP_INDEX_ARGS = [
     "--index-url", "https://www.piwheels.org/simple",
@@ -116,6 +99,7 @@ class InstallerContext:
     venv_dir: Path
     python_bin: Path
     state_file: Path
+    apt_packages: list[str]
 
 
 def run_command(
@@ -217,8 +201,8 @@ def remove_systemd_units() -> None:
     print_command_result(result)
 
 
-def purge_apt_dependencies() -> None:
-    result = run_command(["apt-get", "remove", "--purge", "-y", *DEFAULT_APT_PACKAGES], use_sudo=True, check=False)
+def purge_apt_dependencies(ctx: InstallerContext) -> None:
+    result = run_command(["apt-get", "remove", "--purge", "-y", *ctx.apt_packages], use_sudo=True, check=False)
     print_command_result(result)
     result = run_command(["apt-get", "autoremove", "--purge", "-y"], use_sudo=True, check=False)
     print_command_result(result)
@@ -243,13 +227,28 @@ def full_wipe(ctx: InstallerContext) -> None:
         pass
 
     if timed_yes_no("Purge installer-managed apt packages too?", timeout_seconds=60):
-        purge_apt_dependencies()
+        purge_apt_dependencies(ctx)
 
     if timed_yes_no("Delete the cloned Inkycal folder permanently?", timeout_seconds=60):
         shutil.rmtree(ctx.repo_root, ignore_errors=True)
         print("Inkycal folder deleted.")
     else:
         print("Keeping the cloned Inkycal folder.")
+
+
+def load_apt_packages(repo_root: Path) -> list[str]:
+    apt_packages_path = repo_root / APT_PACKAGES_FILE
+    if not apt_packages_path.exists():
+        raise RuntimeError(f"Missing required apt package file: {apt_packages_path}")
+
+    apt_packages = [
+        line.strip()
+        for line in apt_packages_path.read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.strip().startswith("#")
+    ]
+    if not apt_packages:
+        raise RuntimeError(f"No apt packages found in {apt_packages_path}")
+    return apt_packages
 
 
 def detect_context(repo_root: Path) -> InstallerContext:
@@ -275,6 +274,7 @@ def detect_context(repo_root: Path) -> InstallerContext:
     venv_dir = repo_root / "venv"
     python_bin = venv_dir / "bin" / "python"
     state_file = home / ".config" / "inkycal-installer" / "state.json"
+    apt_packages = load_apt_packages(repo_root)
     return InstallerContext(
         repo_root=repo_root,
         user=username,
@@ -282,6 +282,7 @@ def detect_context(repo_root: Path) -> InstallerContext:
         venv_dir=venv_dir,
         python_bin=python_bin,
         state_file=state_file,
+        apt_packages=apt_packages,
     )
 
 
@@ -320,7 +321,7 @@ def install_or_repair(ctx: InstallerContext) -> None:
     try:
         result = run_command(["apt-get", "update", "-y"], use_sudo=True)
         print_command_result(result)
-        result = run_command(["apt-get", "install", "-y", *DEFAULT_APT_PACKAGES], use_sudo=True)
+        result = run_command(["apt-get", "install", "-y", *ctx.apt_packages], use_sudo=True)
         print_command_result(result)
     except Exception as error:
         print(f"Warning: apt dependency step failed: {error}")
@@ -643,5 +644,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
-
