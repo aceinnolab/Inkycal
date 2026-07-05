@@ -14,4 +14,3 @@ build-essential
 libssl-dev
 liblgpio-dev
 swig
-systemd-swap
