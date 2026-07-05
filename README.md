@@ -252,16 +252,17 @@ sudo systemctl restart systemd-swap
 export TMPDIR=/var/tmp
 ```
 
-- Install apt dependencies:
-```bash
-sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 chromium chromium-driver rustc build-essential libssl-dev liblgpio-dev -y
-```
-
 - clone the repo in the home directory
 ```bash
 cd $HOME
 git clone https://github.com/aceinnolab/Inkycal
 cd Inkycal
+```
+
+- Install apt dependencies (single source: `apt_packages.txt`):
+```bash
+sudo apt-get update -y
+sudo apt-get install -y $(tr '\n' ' ' < apt_packages.txt)
 ```
 
 - Set up the virtual environment & install dependencies
@@ -506,4 +507,3 @@ perks after confirming 💯
 ## Our Contributors
 
 <table><tr><td align="center"><a href="https://github.com/aceinnolab"><img alt="aceinnolab" src="https://avatars.githubusercontent.com/u/29558518?v=4" width="117" /><br />aceisace</a></td><td align="center"><a href="https://github.com/Atrejoe"><img alt="Atrejoe" src="https://avatars.githubusercontent.com/u/585091?v=4" width="117" /><br />Atrejoe</a></td><td align="center"><a href="https://github.com/actions-user"><img alt="actions-user" src="https://avatars.githubusercontent.com/u/65916846?v=4" width="117" /><br />actions-user</a></td><td align="center"><a href="https://github.com/emilyboda"><img alt="emilyboda" src="https://avatars.githubusercontent.com/u/9170143?v=4" width="117" /><br />emilyboda</a></td><td align="center"><a href="https://github.com/StevenSeifried"><img alt="StevenSeifried" src="https://avatars.githubusercontent.com/u/39765956?v=4" width="117" /><br />StevenSeifried</a></td><td align="center"><a href="https://github.com/mrbwburns"><img alt="mrbwburns" src="https://avatars.githubusercontent.com/u/66523867?v=4" width="117" /><br />mrbwburns</a></td></tr><tr><td align="center"><a href="https://github.com/apps/dependabot"><img alt="dependabot[bot]" src="https://avatars.githubusercontent.com/in/29110?v=4" width="117" /><br />dependabot[bot]</a></td><td align="center"><a href="https://github.com/LakesideMiners"><img alt="LakesideMiners" src="https://avatars.githubusercontent.com/u/23389169?v=4" width="117" /><br />LakesideMiners</a></td><td align="center"><a href="https://github.com/hjiang"><img alt="hjiang" src="https://avatars.githubusercontent.com/u/18527?v=4" width="117" /><br />hjiang</a></td><td align="center"><a href="https://github.com/ch3lmi"><img alt="ch3lmi" src="https://avatars.githubusercontent.com/u/19972012?v=4" width="117" /><br />ch3lmi</a></td><td align="center"><a href="https://github.com/mygrexit"><img alt="mygrexit" src="https://avatars.githubusercontent.com/u/33792951?v=4" width="117" /><br />mygrexit</a></td><td align="center"><a href="https://github.com/tobychui"><img alt="tobychui" src="https://avatars.githubusercontent.com/u/24617523?v=4" width="117" /><br />tobychui</a></td></tr><tr><td align="center"><a href="https://github.com/worstface"><img alt="worstface" src="https://avatars.githubusercontent.com/u/72295005?v=4" width="117" /><br />worstface</a></td><td align="center"><a href="https://github.com/sapostoluk"><img alt="sapostoluk" src="https://avatars.githubusercontent.com/u/7192139?v=4" width="117" /><br />sapostoluk</a></td><td align="center"><a href="https://github.com/freezingDaniel"><img alt="freezingDaniel" src="https://avatars.githubusercontent.com/u/82905307?v=4" width="117" /><br />freezingDaniel</a></td><td align="center"><a href="https://github.com/dealyllama"><img alt="dealyllama" src="https://avatars.githubusercontent.com/u/5891782?v=4" width="117" /><br />dealyllama</a></td><td align="center"><a href="https://github.com/rafaljanicki"><img alt="rafaljanicki" src="https://avatars.githubusercontent.com/u/7746477?v=4" width="117" /><br />rafaljanicki</a></td><td align="center"><a href="https://github.com/priv-kweihmann"><img alt="priv-kweihmann" src="https://avatars.githubusercontent.com/u/46938494?v=4" width="117" /><br />priv-kweihmann</a></td></tr><tr><td align="center"><a href="https://github.com/surak"><img alt="surak" src="https://avatars.githubusercontent.com/u/878399?v=4" width="117" /><br />surak</a></td><td align="center"><a href="https://github.com/AlessandroMandelli"><img alt="AlessandroMandelli" src="https://avatars.githubusercontent.com/u/65062723?v=4" width="117" /><br />AlessandroMandelli</a></td><td align="center"><a href="https://github.com/DavidCamre"><img alt="DavidCamre" src="https://avatars.githubusercontent.com/u/1098069?v=4" width="117" /><br />DavidCamre</a></td><td align="center"><a href="https://github.com/jordanschau"><img alt="jordanschau" src="https://avatars.githubusercontent.com/u/412028?v=4" width="117" /><br />jordanschau</a></td><td align="center"><a href="https://github.com/mshulman"><img alt="mshulman" src="https://avatars.githubusercontent.com/u/1484420?v=4" width="117" /><br />mshulman</a></td><td align="center"><a href="https://github.com/vitasam"><img alt="vitasam" src="https://avatars.githubusercontent.com/u/5597505?v=4" width="117" /><br />vitasam</a></td></tr></table>
-

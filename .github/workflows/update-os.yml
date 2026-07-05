@@ -53,7 +53,8 @@ jobs:
             uname -srm
             cd /home/inky
             sudo apt-get update -y
-            sudo apt-get install git python3-dev python3-setuptools zlib1g-dev libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 chromium chromium-driver rustc build-essential libssl-dev liblgpio-dev -y
+            wget -q "https://raw.githubusercontent.com/aceinnolab/Inkycal/$GIT_BRANCH/apt_packages.txt" -O /tmp/inkycal-apt-packages.txt
+            sudo apt-get install -y $(tr '\n' ' ' < /tmp/inkycal-apt-packages.txt)
 
             # installer parity: configure swap on small-memory targets
             sudo mkdir -p /etc/rpi/swap.conf.d

@@ -204,13 +204,6 @@ EOF'
 export TMPDIR=/var/tmp
 ```
 
-- Install apt dependencies:
-```sh
-sudo apt-get install git python3-dev python3-setuptools zlib1g-dev \
-libjpeg-dev libffi-dev libopenblas-dev libopenjp2-7 chromium chromium-driver \
-rustc build-essential libssl-dev liblgpio-dev -y
-```
-
 ## Step 6 — Clone & Install Inkycal
 
 - Clone the repo
@@ -218,6 +211,11 @@ rustc build-essential libssl-dev liblgpio-dev -y
 cd $HOME
 git clone https://github.com/aceinnolab/Inkycal
 cd Inkycal
+```
+- Install apt dependencies (single source: `apt_packages.txt`)
+```sh
+sudo apt-get update -y
+sudo apt-get install -y $(tr '\n' ' ' < apt_packages.txt)
 ```
 Create virtual environment:
 ```sh
