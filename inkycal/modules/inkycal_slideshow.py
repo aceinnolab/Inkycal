@@ -26,7 +26,7 @@ class Slideshow(InkycalModule):
 
         "palette": {
             "label": "Which palette should be used for converting images?",
-            "options": ["bw", "bwr", "bwy"]
+            "options": ["bw", "bwr", "bwy", "16gray"]
         }
 
     }
