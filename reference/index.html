@@ -8415,82 +8415,102 @@ Copyright by aceinnolab</p>
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>inkycal/modules/inkycal_image.py</code></summary>
-                <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Inkyimage</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
+                <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Inkyimage</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Displays an image from URL or local path&quot;&quot;&quot;</span>
 
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Inkycal Image - show an image from a URL or local path&quot;</span>
@@ -8500,12 +8520,14 @@ Copyright by aceinnolab</p>
             <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Path to a local folder, e.g. /home/pi/Desktop/images. &quot;</span>
             <span class="s2">&quot;Only PNG and JPG/JPEG images are used for the slideshow.&quot;</span>
         <span class="p">},</span>
-        <span class="s2">&quot;palette&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Which palette should be used for converting images?&quot;</span><span class="p">,</span> <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;bw&quot;</span><span class="p">,</span> <span class="s2">&quot;bwr&quot;</span><span class="p">,</span> <span class="s2">&quot;bwy&quot;</span><span class="p">]},</span>
+        <span class="s2">&quot;palette&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Which palette should be used for converting images?&quot;</span><span class="p">,</span> <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;bw&quot;</span><span class="p">,</span> <span class="s2">&quot;bwr&quot;</span><span class="p">,</span> <span class="s2">&quot;bwy&quot;</span><span class="p">,</span> <span class="s2">&quot;16gray&quot;</span><span class="p">]},</span>
     <span class="p">}</span>
 
     <span class="n">optional</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;autoflip&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Should the image be flipped automatically?&quot;</span><span class="p">,</span> <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]},</span>
         <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Please select the desired orientation&quot;</span><span class="p">,</span> <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;vertical&quot;</span><span class="p">,</span> <span class="s2">&quot;horizontal&quot;</span><span class="p">]},</span>
+        <span class="s2">&quot;max_width_percent&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Maximum image width as a percent of module width (1-100).&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;max_height_percent&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Maximum image height as a percent of module height (1-100).&quot;</span><span class="p">},</span>
     <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
@@ -8525,6 +8547,8 @@ Copyright by aceinnolab</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;palette&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">autoflip</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;autoflip&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;orientation&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_width_percent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_percent</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_width_percent&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="s2">&quot;max_width_percent&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_height_percent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_percent</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_height_percent&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="s2">&quot;max_height_percent&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dither</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="s2">&quot;dither&quot;</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;dither&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dither</span> <span class="o">=</span> <span class="kc">False</span>
@@ -8555,8 +8579,14 @@ Copyright by aceinnolab</p>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoflip</span><span class="p">:</span>
             <span class="n">im</span><span class="o">.</span><span class="n">autoflip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">)</span>
 
-        <span class="c1"># resize the image so it can fit on the epaper</span>
-        <span class="n">im</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">im_width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">im_height</span><span class="p">)</span>
+        <span class="c1"># Resize image to fit inside the configured max width/height limits.</span>
+        <span class="n">max_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">im_width</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_width_percent</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)))</span>
+        <span class="n">max_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">im_height</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_height_percent</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)))</span>
+        <span class="n">source_width</span><span class="p">,</span> <span class="n">source_height</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_width</span> <span class="o">/</span> <span class="n">source_width</span><span class="p">,</span> <span class="n">max_height</span> <span class="o">/</span> <span class="n">source_height</span><span class="p">)</span>
+        <span class="n">target_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">source_width</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)))</span>
+        <span class="n">target_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">source_height</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)))</span>
+        <span class="n">im</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">target_width</span><span class="p">,</span> <span class="n">target_height</span><span class="p">),</span> <span class="n">Image</span><span class="o">.</span><span class="n">LANCZOS</span><span class="p">)</span>
 
         <span class="c1"># convert images according to specified palette</span>
         <span class="n">im_black</span><span class="p">,</span> <span class="n">im_colour</span> <span class="o">=</span> <span class="n">image_to_palette</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">im</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">),</span> <span class="n">palette</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">palette</span><span class="p">,</span> <span class="n">dither</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dither</span><span class="p">)</span>
@@ -8566,6 +8596,16 @@ Copyright by aceinnolab</p>
 
         <span class="c1"># return images</span>
         <span class="k">return</span> <span class="n">im_black</span><span class="p">,</span> <span class="n">im_colour</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_percent</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parsed</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2"> must be a number between 1 and 100&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parsed</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">parsed</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2"> must be between 1 and 100&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parsed</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -8598,11 +8638,7 @@ Copyright by aceinnolab</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>inkycal/modules/inkycal_image.py</code></summary>
-              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
@@ -8620,7 +8656,13 @@ Copyright by aceinnolab</p>
 <span class="normal">51</span>
 <span class="normal">52</span>
 <span class="normal">53</span>
-<span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize module&quot;&quot;&quot;</span>
 
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -8637,6 +8679,8 @@ Copyright by aceinnolab</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;palette&quot;</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">autoflip</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;autoflip&quot;</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;orientation&quot;</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">max_width_percent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_percent</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_width_percent&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="s2">&quot;max_width_percent&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">max_height_percent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_percent</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_height_percent&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="s2">&quot;max_height_percent&quot;</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">dither</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">if</span> <span class="s2">&quot;dither&quot;</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;dither&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dither</span> <span class="o">=</span> <span class="kc">False</span>
@@ -8665,40 +8709,46 @@ Copyright by aceinnolab</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>inkycal/modules/inkycal_image.py</code></summary>
-              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate image for this module&quot;&quot;&quot;</span>
 
     <span class="c1"># Define new image size with respect to padding</span>
@@ -8721,8 +8771,14 @@ Copyright by aceinnolab</p>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoflip</span><span class="p">:</span>
         <span class="n">im</span><span class="o">.</span><span class="n">autoflip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">)</span>
 
-    <span class="c1"># resize the image so it can fit on the epaper</span>
-    <span class="n">im</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">im_width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">im_height</span><span class="p">)</span>
+    <span class="c1"># Resize image to fit inside the configured max width/height limits.</span>
+    <span class="n">max_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">im_width</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_width_percent</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)))</span>
+    <span class="n">max_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">im_height</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_height_percent</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)))</span>
+    <span class="n">source_width</span><span class="p">,</span> <span class="n">source_height</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_width</span> <span class="o">/</span> <span class="n">source_width</span><span class="p">,</span> <span class="n">max_height</span> <span class="o">/</span> <span class="n">source_height</span><span class="p">)</span>
+    <span class="n">target_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">source_width</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)))</span>
+    <span class="n">target_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">source_height</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)))</span>
+    <span class="n">im</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">target_width</span><span class="p">,</span> <span class="n">target_height</span><span class="p">),</span> <span class="n">Image</span><span class="o">.</span><span class="n">LANCZOS</span><span class="p">)</span>
 
     <span class="c1"># convert images according to specified palette</span>
     <span class="n">im_black</span><span class="p">,</span> <span class="n">im_colour</span> <span class="o">=</span> <span class="n">image_to_palette</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">im</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">),</span> <span class="n">palette</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">palette</span><span class="p">,</span> <span class="n">dither</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dither</span><span class="p">)</span>
@@ -12841,7 +12897,7 @@ Copyright by aceinnolab</p>
 
         <span class="s2">&quot;palette&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Which palette should be used for converting images?&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;bw&quot;</span><span class="p">,</span> <span class="s2">&quot;bwr&quot;</span><span class="p">,</span> <span class="s2">&quot;bwy&quot;</span><span class="p">]</span>
+            <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;bw&quot;</span><span class="p">,</span> <span class="s2">&quot;bwr&quot;</span><span class="p">,</span> <span class="s2">&quot;bwy&quot;</span><span class="p">,</span> <span class="s2">&quot;16gray&quot;</span><span class="p">]</span>
         <span class="p">}</span>
 
     <span class="p">}</span>

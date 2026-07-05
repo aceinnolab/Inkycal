@@ -1169,7 +1169,7 @@
 </tr>
 <tr>
 <td><code>palette</code></td>
-<td><code>bw</code>, <code>bwr</code>, or <code>bwy</code></td>
+<td><code>bw</code>, <code>bwr</code>, <code>bwy</code>, or <code>16gray</code></td>
 </tr>
 </tbody>
 </table>
@@ -1198,6 +1198,16 @@
 <td><code>true</code> / <code>false</code></td>
 <td>Smooth color mapping; disable for cleaner solid fills</td>
 </tr>
+<tr>
+<td><code>max_width_percent</code></td>
+<td><code>1</code>-<code>100</code></td>
+<td>Max image width relative to module width</td>
+</tr>
+<tr>
+<td><code>max_height_percent</code></td>
+<td><code>1</code>-<code>100</code></td>
+<td>Max image height relative to module height</td>
+</tr>
 </tbody>
 </table>
 <h2 id="behavior">Behavior<a class="headerlink" href="#behavior" title="Permanent link">&para;</a></h2>
@@ -1206,7 +1216,9 @@
 <li>Removes alpha channel if needed</li>
 <li>Optionally auto-rotates</li>
 <li>Resizes to available module area</li>
+<li>Optionally constrains image width/height by percent (<code>max_width_percent</code>, <code>max_height_percent</code>)</li>
 <li>Converts to selected e-paper palette</li>
+<li><code>16gray</code> is intended for parallel IT8951 grayscale-capable displays</li>
 </ul>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -1217,6 +1229,8 @@
 <span class="w">    </span><span class="nt">&quot;palette&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bwr&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;autoflip&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;orientation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;max_width_percent&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">85</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;max_height_percent&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;dither&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;padding_x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;padding_y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
