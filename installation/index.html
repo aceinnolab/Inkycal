@@ -1244,14 +1244,6 @@ sudo<span class="w"> </span>./configure<span class="w"> </span><span class="o">&
 <div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TMPDIR</span><span class="o">=</span>/var/tmp
 </code></pre></div>
 
-<ul>
-<li>Install apt dependencies:</li>
-</ul>
-<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>git<span class="w"> </span>python3-dev<span class="w"> </span>python3-setuptools<span class="w"> </span>zlib1g-dev<span class="w"> </span><span class="se">\</span>
-libjpeg-dev<span class="w"> </span>libffi-dev<span class="w"> </span>libopenblas-dev<span class="w"> </span>libopenjp2-7<span class="w"> </span>chromium<span class="w"> </span>chromium-driver<span class="w"> </span><span class="se">\</span>
-rustc<span class="w"> </span>build-essential<span class="w"> </span>libssl-dev<span class="w"> </span>liblgpio-dev<span class="w"> </span>-y
-</code></pre></div>
-
 <h2 id="step-6-clone-install-inkycal">Step 6 — Clone &amp; Install Inkycal<a class="headerlink" href="#step-6-clone-install-inkycal" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Clone the repo</li>
@@ -1259,6 +1251,13 @@ rustc<span class="w"> </span>build-essential<span class="w"> </span>libssl-dev<s
 <div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/aceinnolab/Inkycal
 <span class="nb">cd</span><span class="w"> </span>Inkycal
+</code></pre></div>
+
+<ul>
+<li>Install apt dependencies (single source: <code>apt_packages.txt</code>)</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span>-y
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="k">$(</span>tr<span class="w"> </span><span class="s1">&#39;\n&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span>&lt;<span class="w"> </span>apt_packages.txt<span class="k">)</span>
 </code></pre></div>
 
 <p>Create virtual environment:</p>

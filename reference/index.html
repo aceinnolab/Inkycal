@@ -12035,7 +12035,50 @@ by https://github.com/worstface</p>
 <span class="normal">339</span>
 <span class="normal">340</span>
 <span class="normal">341</span>
-<span class="normal">342</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Webshot</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Webshot</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Webshot - Displays screenshots of webpages&quot;</span>
 
     <span class="c1"># required parameters</span>
@@ -12128,7 +12171,41 @@ by https://github.com/worstface</p>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_backend_available</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">_find_browser_binary</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">browser</span> <span class="o">=</span> <span class="n">_find_browser_binary</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">browser</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">command</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">browser</span><span class="p">,</span>
+            <span class="s2">&quot;--headless&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--disable-gpu&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--no-first-run&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--no-default-browser-check&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--dump-dom&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;about:blank&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>
+            <span class="n">command</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;--no-sandbox&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="n">command</span><span class="p">,</span>
+                <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">,</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">TimeoutExpired</span><span class="p">,</span> <span class="ne">FileNotFoundError</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_crop_captured_webshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">shot</span><span class="p">:</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_x</span><span class="p">),</span> <span class="n">shot</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+            <span class="n">y0</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_y</span><span class="p">),</span> <span class="n">shot</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">shot</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">x0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_w</span><span class="p">))</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">shot</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">y0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_h</span><span class="p">))</span>
+            <span class="n">shot</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">))</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s2">&quot;PNG&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_capture_webshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">browser</span> <span class="o">=</span> <span class="n">_find_browser_binary</span><span class="p">()</span>
@@ -12142,37 +12219,45 @@ by https://github.com/worstface</p>
         <span class="n">viewport_w</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_w</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_x</span><span class="p">,</span> <span class="mi">320</span><span class="p">)</span>
         <span class="n">viewport_h</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_h</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_y</span><span class="p">,</span> <span class="mi">320</span><span class="p">)</span>
 
-        <span class="n">command</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">browser</span><span class="p">,</span>
-            <span class="s2">&quot;--headless&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;--disable-gpu&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;--hide-scrollbars&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;--no-first-run&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;--no-default-browser-check&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;--disable-extensions&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;--run-all-compositor-stages-before-draw&quot;</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;--virtual-time-budget=</span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;--window-size=</span><span class="si">{</span><span class="n">viewport_w</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">viewport_h</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;--screenshot=</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
-        <span class="p">]</span>
+        <span class="n">direct_errors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">headless_flag</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;--headless=new&quot;</span><span class="p">,</span> <span class="s2">&quot;--headless&quot;</span><span class="p">):</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">browser</span><span class="p">,</span>
+                <span class="n">headless_flag</span><span class="p">,</span>
+                <span class="s2">&quot;--disable-gpu&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;--hide-scrollbars&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;--no-first-run&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;--no-default-browser-check&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;--disable-extensions&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;--disable-dev-shm-usage&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;--run-all-compositor-stages-before-draw&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;--virtual-time-budget=</span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;--window-size=</span><span class="si">{</span><span class="n">viewport_w</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">viewport_h</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;--screenshot=</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
+            <span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>
-            <span class="n">command</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;--no-sandbox&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>
+                <span class="n">command</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;--no-sandbox&quot;</span><span class="p">)</span>
 
+            <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_crop_captured_webshot</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="n">stderr</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">direct_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">headless_flag</span><span class="si">}</span><span class="s2"> (code </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2">) </span><span class="si">{</span><span class="n">stderr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Direct headless browser capture failed; trying Selenium fallback&quot;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Direct headless browser capture failed; trying Selenium fallback&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_capture_webshot_with_selenium</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
-            <span class="k">return</span>
-
-        <span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">shot</span><span class="p">:</span>
-            <span class="n">x0</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_x</span><span class="p">),</span> <span class="n">shot</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
-            <span class="n">y0</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_y</span><span class="p">),</span> <span class="n">shot</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
-            <span class="n">x1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">shot</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">x0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_w</span><span class="p">))</span>
-            <span class="n">y1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">shot</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">y0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_h</span><span class="p">))</span>
-            <span class="n">shot</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">))</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s2">&quot;PNG&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">details</span> <span class="o">=</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">direct_errors</span><span class="p">)</span> <span class="k">if</span> <span class="n">direct_errors</span> <span class="k">else</span> <span class="s2">&quot;no direct-browser error details available&quot;</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Webshot capture failed with Chromium CLI and Selenium fallback. Chromium errors: </span><span class="si">{</span><span class="n">details</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Selenium error: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_crop_captured_webshot</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_capture_webshot_with_selenium</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
@@ -12203,10 +12288,15 @@ by https://github.com/worstface</p>
         <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--hide-scrollbars&quot;</span><span class="p">)</span>
         <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--no-sandbox&quot;</span><span class="p">)</span>
         <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--disable-dev-shm-usage&quot;</span><span class="p">)</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--no-zygote&quot;</span><span class="p">)</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--disable-software-rasterizer&quot;</span><span class="p">)</span>
         <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--window-size=</span><span class="si">{</span><span class="n">viewport_w</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">viewport_h</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">service</span> <span class="o">=</span> <span class="n">Service</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="n">driver_bin</span><span class="p">)</span>
-        <span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to start chromedriver at </span><span class="si">{</span><span class="n">driver_bin</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -12215,13 +12305,6 @@ by https://github.com/worstface</p>
             <span class="n">driver</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
-
-        <span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">shot</span><span class="p">:</span>
-            <span class="n">x0</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_x</span><span class="p">),</span> <span class="n">shot</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
-            <span class="n">y0</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_y</span><span class="p">),</span> <span class="n">shot</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
-            <span class="n">x1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">shot</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">x0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_w</span><span class="p">))</span>
-            <span class="n">y1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">shot</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">y0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_h</span><span class="p">))</span>
-            <span class="n">shot</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">))</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s2">&quot;PNG&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate image for this module&quot;&quot;&quot;</span>
@@ -12261,6 +12344,9 @@ by https://github.com/worstface</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">_capture_webshot</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tmpFolder</span><span class="si">}</span><span class="s2">/webshot.png&quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not get webshot. Make sure Chromium can run in headless mode.&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not get webshot. Make sure Chromium can run in headless mode.&quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
@@ -12350,47 +12436,7 @@ by https://github.com/worstface</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>inkycal/modules/inkycal_webshot.py</code></summary>
-              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">248</span>
-<span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span>
-<span class="normal">269</span>
-<span class="normal">270</span>
-<span class="normal">271</span>
-<span class="normal">272</span>
-<span class="normal">273</span>
-<span class="normal">274</span>
-<span class="normal">275</span>
-<span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
+              <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">288</span>
 <span class="normal">289</span>
 <span class="normal">290</span>
 <span class="normal">291</span>
@@ -12444,7 +12490,50 @@ by https://github.com/worstface</p>
 <span class="normal">339</span>
 <span class="normal">340</span>
 <span class="normal">341</span>
-<span class="normal">342</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate image for this module&quot;&quot;&quot;</span>
 
     <span class="c1"># Create tmp path</span>
@@ -12482,6 +12571,9 @@ by https://github.com/worstface</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_capture_webshot</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tmpFolder</span><span class="si">}</span><span class="s2">/webshot.png&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not get webshot. Make sure Chromium can run in headless mode.&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not get webshot. Make sure Chromium can run in headless mode.&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
