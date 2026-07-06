@@ -1,7 +1,7 @@
 # 📦 Installation Guide
 
 Welcome to the Inkycal installation guide.  
-Whether you're installing Inkycal on a **Raspberry Pi**, setting it up on a **desktop system**, or using the preconfigured **InkycalOS Lite** image, this guide will walk you through each step.
+Whether you're installing Inkycal on a **Raspberry Pi**, setting it up on a **desktop system**, or using the preconfigured **InkycalOS-Lite** image, this guide will walk you through each step.
 
 ---
 
@@ -11,15 +11,15 @@ Inkycal can be installed in **three different ways**:
 
 | Method | Recommended For | Difficulty | Notes |
 |-------|------------------|-----------|-------|
-| **InkycalOS Lite (preconfigured)** | Raspberry Pi Zero / Zero W | ⭐ Very Easy | Fastest and most reliable method |
+| **InkycalOS-Lite (preconfigured)** | Raspberry Pi Zero / Zero W | ⭐ Very Easy | Fastest and most reliable method |
 | **Install on Raspberry Pi OS** | Full control, custom setups | ⭐⭐ Medium | Requires manual configuration |
 | **Install on non-GPIO devices** | Development, preview, debugging | ⭐ Easy | No display output |
 
 ---
 
-# 🎯 2. Using InkycalOS Lite (Recommended)
+# 🎯 2. Using InkycalOS-Lite (Recommended)
 
-If you want the **fastest, most reliable installation**, use the prebuilt InkycalOS Lite image.
+If you want the **fastest, most reliable installation**, use the prebuilt InkycalOS-Lite image.
 
 ### ✅ What you get:
 - Fully configured Raspberry Pi OS Lite  
@@ -29,7 +29,7 @@ If you want the **fastest, most reliable installation**, use the prebuilt Inkyca
 - Best possible performance on Pi Zero  
 
 ### 📥 How to get it
-InkycalOS Lite is available to supporters of the project.  
+InkycalOS-Lite is available to supporters of the project.  
 
 - Sponsor the repo through the [GitHub Sponsors button](https://github.com/sponsors/aceisace). Use the one-time option for InkycalOS-Lite.
 - Forward the sponsor confirmation email to the address shown after sponsoring.
@@ -305,7 +305,7 @@ python inky_run.py
 ## PiSugar Support
 If you’re using a PiSugar battery board, see:
 
-https://github.com/aceinnolab/Inkycal/wiki/PiSugar-support
+[PiSugar Battery Support](https://aceinnolab.github.io/Inkycal/pisugar/)
 
 This covers:
 

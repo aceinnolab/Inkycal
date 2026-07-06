@@ -20,6 +20,22 @@ Inkycal is a software written in python for selected E-Paper displays. It conver
 information dashboards. It's open-source, free for personal use, fully modular and user-friendly. Despite all this,
 Inkycal can run well even on the Raspberry Pi Zero W. Oh, and it's open for third-party modules! Hooray!
 
+## Where should I go?
+
+- **I bought InkyCal v3** → start at the customer hub and follow the setup flow: [inkycal.aceinnolab.com](https://inkycal.aceinnolab.com/)
+- **I want to configure `settings.json`** → use the Web UI generator: [inkycal.aceinnolab.com/ui](https://inkycal.aceinnolab.com/ui)
+- **I want to install manually** → use the technical docs installation guide: [aceinnolab.github.io/Inkycal/installation](https://aceinnolab.github.io/Inkycal/installation/)
+- **I want the source code** → use this repository: [github.com/aceinnolab/Inkycal](https://github.com/aceinnolab/Inkycal)
+- **I need help** → join Discord or open an issue: [Discord](https://discord.gg/sHYKeSM) · [GitHub Issues](https://github.com/aceinnolab/Inkycal/issues)
+
+### Quick links
+
+- **Product/customer hub (InkyCal v3 + InkycalOS-Lite):** [inkycal.aceinnolab.com](https://inkycal.aceinnolab.com/)
+- **Canonical technical documentation:** [aceinnolab.github.io/Inkycal](https://aceinnolab.github.io/Inkycal/)
+- **Releases:** [github.com/aceinnolab/Inkycal/releases](https://github.com/aceinnolab/Inkycal/releases)
+- **InkycalOS-Lite access/download page:** [inkycal.aceinnolab.com/inkycal-os-lite](https://inkycal.aceinnolab.com/inkycal-os-lite)
+- **Assembled hardware (Tindie):** [tindie.com/stores/aceinnolab](https://www.tindie.com/stores/aceinnolab/)
+
 ## ⚠️ Warning: long installation time expected!
 
 Installing Inkycal, particularly on the Raspberry Pi Zero W models can take up to **a few hours**. 
@@ -80,7 +96,7 @@ display!**
 
 | type                                                                            | vendor                  | Where to buy                                                                                                                                                                                                                                                                                                                                                                                                 |
 |---------------------------------------------------------------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 7.5" Inkycal (plug-and-play)                                                    | Aceinnolab (author)     | [Buy on Tindie](https://www.tindie.com/products/aceinnolab/inkycal-create-your-own-e-paper-dashboard/) 7" black-white-red e-paper with custom 3d-printed case, fully pre-assembled (Raspberry Pi Zero W, 7.5" e-paper, microSD card, driver board, custom packaging and 1m of cable). Also grants access to InkyCalOS-Lite. You only need to generate the settings.json file and copy it to the microSD card |
+| 7.5" Inkycal (plug-and-play)                                                    | Aceinnolab (author)     | [Buy on Tindie](https://www.tindie.com/products/aceinnolab/inkycal-create-your-own-e-paper-dashboard/) 7" black-white-red e-paper with custom 3d-printed case, fully pre-assembled (Raspberry Pi Zero W, 7.5" e-paper, microSD card, driver board, custom packaging and 1m of cable). Also grants access to InkycalOS-Lite. You only need to generate the settings.json file and copy it to the microSD card |
 | Inkycal frame (kit -> requires wires, 7.5" Display and Zero W with microSD card | Aceinnolab (author)     | [Buy on Tindie](https://www.tindie.com/products/aceinnolab/inkycal-frame-custom-driver-board-only/) Ultraslim frame with custom-made front and backcover inkl. ultraslim driver board). You will need a Raspberry Pi, microSD card and a 7.5" e-paper display                                                                                                                                                |
 | Driver board                                                                    | Aceinnolab (author)     | [Buy on Tindie](https://www.tindie.com/products/aceinnolab/universal-e-paper-driver-board-for-24-pin-spi/) Ultraslim, 24-pin SPI driver board for many serial e-paper displays.                                                                                                                                                                                                                              |
 | `[serial]`  12.48" (1304×984px) display                                         | waveshare / gooddisplay | Search for `Waveshare 12.48" E-Paper 1304×984` on amazon or similar                                                                                                                                                                                                                                                                                                                                          |
@@ -183,7 +199,7 @@ to prepare a pre-configured image with the latest version of Inkycal for the Ras
 version of Inkycal, is fully tested and uses the Raspberry Pi OS Lite as it's base image. You only need to copy your
 settings.json file, we already took care of the rest, including auto-start at boot, enabling spi and installing all
 dependencies in advance. Pretty neat right? Check the [sponsor button](https://github.com/sponsors/aceisace) at the very
-top of the repo to get access to Inkycal-OS-Lite. Alternatively, you can also use the PayPal.me link and send the same
+top of the repo to get access to InkycalOS-Lite. Alternatively, you can also use the PayPal.me link and send the same
 amount as GitHub sponsors to get access to InkycalOS-Lite!
 This will help keep this project growing and cover the ongoing expenses too! Win-win for everyone! 🎊
 
@@ -213,8 +229,8 @@ Community help is available on Discord: [https://discord.gg/sHYKeSM](https://dis
 
 ### Bonus: PiSugar support
 The PiSugar is a battery pack for the Raspberry Pi Zero W. It can power the Raspberry Pi and the e-paper, allowing battery life up to several weeks.
-If you have a PiSugar board, please see the wiki page on how to install the PiSugar driver and configure Inkycal to work with it:
-[PiSugar support](https://github.com/aceinnolab/Inkycal/wiki/PiSugar-support)
+If you have a PiSugar board, please see the documentation on battery support and configure Inkycal to work with it:
+[PiSugar Battery Support](https://aceinnolab.github.io/Inkycal/pisugar/)
 
 
 ### Installing on Raspberry Pi
@@ -446,7 +462,7 @@ deactivate
 
 With your setup being complete at this stage, you may want to 3d-print a case. The following files were shared by our
 friendly community:
-[3D-printable case](https://github.com/aceinnolab/Inkycal/wiki/3D-printable-files)
+[3D-printable case](https://aceinnolab.github.io/Inkycal/hardware/#3d-printable-cases--accessories)
 
 
 ## Contributing

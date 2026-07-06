@@ -19,6 +19,15 @@ The `Weather` module renders current conditions and a short forecast using OpenW
 | `api_key` | OpenWeatherMap API key |
 | `location` | OWM city id or supported location value |
 
+### Getting Your OpenWeatherMap API Key
+
+1. Create a free account at [openweathermap.org](https://openweathermap.org/api)
+2. Navigate to your **API keys** page
+3. Copy your default API key (or create a new one)
+4. Add it to your `settings.json` under the Weather module's `api_key` field
+
+**Note:** Free tier allows up to 1,000 calls/day, which is sufficient for typical Inkycal usage (1–3 updates per day).
+
 ## Optional config
 
 | Key | Values | Notes |

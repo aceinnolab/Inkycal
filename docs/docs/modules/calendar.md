@@ -159,6 +159,77 @@ Line wrapping is handled by the Canvas engine.
 
 ---
 
+---
+
+## 📖 How to Get iCalendar URLs
+
+### Google Calendar (Recommended)
+
+1. Open [Google Calendar](https://calendar.google.com)
+2. Find the calendar you want to use in the left sidebar
+3. Click the **three-dot menu** next to the calendar name
+4. Select **"Settings and sharing"**
+5. Scroll down to **"Integrate calendar"** section
+6. Copy the link from **"Secret address in iCal format"**
+7. Paste into the Calendar module's `ical_urls` field
+
+**Example:** `https://calendar.google.com/calendar/ical/...%40group.calendar.google.com/public/basic.ics`
+
+### Other Calendar Services
+
+Most services support iCalendar export:
+- **Outlook/Microsoft 365:** Settings → Calendar → iCalendar link
+- **Apple Calendar:** Right-click calendar → Export
+- **CalDAV servers:** Export or subscribe to iCalendar URL
+
+### Validate Your iCalendar URL
+
+Before using, test it works:
+
+```bash
+curl -s "YOUR_ICAL_URL" | head -20
+```
+
+You should see lines starting with `BEGIN:VCALENDAR`. If you get an error, verify:
+- URL is public (not requiring authentication)
+- URL is HTTPS (not HTTP)
+- Calendar actually contains events
+
+### Multiple Calendars
+
+Separate multiple URLs with commas:
+
+```json
+"ical_urls": "https://calendar.google.com/...1.ics, https://calendar.google.com/...2.ics"
+```
+
+---
+
+## 🎂 Adding Birthdays from Google Contacts to iCalendar
+
+By default, Google Contacts birthdays don't sync to iCalendar. You can convert them using a Google Apps Script:
+
+1. Open [Google Apps Script](https://script.google.com/home)
+2. Create a **New project**
+3. Paste this script:
+   ```javascript
+   function addBdayNotifications() {
+     const cal = CalendarApp.getCalendarById("YOUR_CALENDAR_ID");
+     const contacts = ContactsApp.getContactGroup("Contacts");
+     contacts.getContacts().forEach(contact => {
+       const date = contact.getDates(ContactsApp.Field.BIRTHDAY)[0];
+       if (date) {
+         cal.createAllDayEvent(`Birthday: ${contact.getFullName()}`, date);
+       }
+     });
+   }
+   ```
+4. Click **Run** (authorize when prompted)
+5. Go to your Google Calendar → **Settings** → **Calendars** → find "Birthdays" or the calendar you created
+6. Get the iCalendar link (same process as above)
+
+---
+
 ## 🔗 Parsing iCalendar Files
 
 The module uses:

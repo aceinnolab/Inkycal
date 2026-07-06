@@ -6,7 +6,7 @@ Use this guide when you already have access to the prebuilt InkycalOS-Lite image
 
 ## Getting access to InkycalOS-Lite
 
-- Sponsor Inkycal via [GitHub Sponsors](https://github.com/sponsors/aceisace) and select the one-time InkycalOS-Lite option. If you purchased Inkycal on tindie, this is included.
+- Sponsor Inkycal via [GitHub Sponsors](https://github.com/sponsors/aceisace) and select the one-time InkycalOS-Lite option. If you purchased an assembled **InkyCal v3** on Tindie, this is included.
 - Forward your sponsor confirmation email to the address shown after sponsoring.
 - Once your email is registered, download from the [InkycalOS-Lite page](https://inkycal.aceinnolab.com/inkycal-os-lite).
 - You can re-download later from the same page, and new releases are shared with registered supporters.
@@ -73,5 +73,4 @@ python inky_run.py
 ```
 
 Copy the full error output and share it in Discord or in a GitHub issue.
-
 
