@@ -46,6 +46,7 @@ nav:
       - Installer Guide: installer.md
       - Quickstart: quickstart.md
       - Hardware Setup: hardware.md
+      - PiSugar Battery Support: pisugar.md
       - Local Web UI: webui.md
   - Modules:
       - Modules Overview: modules.md

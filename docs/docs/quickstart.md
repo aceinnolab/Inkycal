@@ -15,7 +15,7 @@ If you want a deeper explanation of each step, see the **Installation** and **Us
 
 Optional but recommended:
 
-- **InkycalOS Lite** – a preconfigured plug-and-play OS image  
+- **InkycalOS-Lite** – a preconfigured plug-and-play OS image  
   *(available for GitHub Sponsors)*
 
 ---
@@ -146,7 +146,7 @@ python3 installer.py
 
 ## 10. Want the Easy Way? (Recommended)
 
-If you’re using a Pi Zero (slow installation), consider InkycalOS Lite.
+If you’re using a Pi Zero (slow installation), consider InkycalOS-Lite.
 
 ✔ Preinstalled dependencies
 ✔ SPI enabled
