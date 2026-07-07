@@ -16,6 +16,8 @@ Welcome to the official documentation for **Inkycal** — a modular, customizabl
 - **Canonical technical docs (this site):** [aceinnolab.github.io/Inkycal](https://aceinnolab.github.io/Inkycal/)
 - **Repository:** [github.com/aceinnolab/Inkycal](https://github.com/aceinnolab/Inkycal)
 - **Releases:** [github.com/aceinnolab/Inkycal/releases](https://github.com/aceinnolab/Inkycal/releases)
+- **Community showcase:** [Hall of Fame](hall-of-fame.md)
+- **3D-printable cases:** [3D-printable cases](3d-printable-files.md)
 
 Inkycal turns your E-Paper display into a beautiful always-on dashboard capable of showing:
 
