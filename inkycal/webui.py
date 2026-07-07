@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from zoneinfo import available_timezones
 
-from inkycal.display.supported_models import supported_models
+from inkycal.display.supported_models import is_parallel_display, supported_models
 from inkycal.settings import Settings
 from inkycal.utils.functions import get_inkycal_version
 
@@ -428,6 +428,34 @@ def _save_settings_text(content: str) -> str:
     return f"Saved settings to {SETTINGS_FILE}"
 
 
+def _save_vcom(display_model: str, vcom_value: str) -> str:
+    model = display_model.strip()
+    if not model:
+        return "VCOM save failed: display model is required."
+
+    if not is_parallel_display(model):
+        return "VCOM save failed: selected display is not a parallel model."
+
+    raw = vcom_value.strip()
+    if not raw:
+        return "VCOM save failed: value is required."
+
+    try:
+        numeric_vcom = float(raw)
+    except ValueError:
+        return "VCOM save failed: value must be numeric."
+
+    data = _read_settings_json()
+    if not isinstance(data, dict):
+        return "VCOM save failed: root JSON must be an object."
+
+    data["vcom"] = numeric_vcom
+    SETTINGS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    SETTINGS_FILE.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    settings.VCOM = str(numeric_vcom)
+    return f"Saved VCOM {numeric_vcom} to {SETTINGS_FILE}"
+
+
 def _current_timezone() -> str:
     code, out, _ = _run_command(["timedatectl", "show", "--property=Timezone", "--value"])
     if code == 0 and out:
@@ -640,6 +668,8 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         selected_display = str(settings_data.get("model", "n/a"))
         display_models = sorted(supported_models.keys())
         selected_display_model = self._query.get("display_model", [selected_display if selected_display in supported_models else (display_models[0] if display_models else "")])[0]
+        parallel_display = is_parallel_display(selected_display_model)
+        vcom_value = str(settings_data.get("vcom", settings.VCOM))
         settings_leaf_entries = _iter_leaf_paths(settings_data) if isinstance(settings_data, dict) else []
         _git_refresh_refs()
         git_current_branch = _git_current_branch()
@@ -686,6 +716,21 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
             qr_html = f"<img alt='PayPal QR' class='qr-img' src='{qr_uri}' width='200' height='200'/>"
         else:
             qr_html = "<p>Install segno for offline QR generation.</p>"
+
+        if parallel_display:
+            vcom_section = f"""
+          <form method='post' style='margin-top: 0.85rem;'>
+            <input type='hidden' name='display_model' value='{html.escape(selected_display_model)}'>
+            <label for='vcom'>VCOM</label>
+            <input id='vcom' name='vcom' value='{html.escape(vcom_value)}' inputmode='decimal' placeholder='2.0'>
+            <p class='muted'>Parallel displays use VCOM. Save a value here so Inkycal can render them correctly.</p>
+            <div class='button-row'>
+              <button name='action' value='save_vcom'>Save VCOM</button>
+            </div>
+          </form>
+            """.rstrip()
+        else:
+            vcom_section = "<p class='muted' style='margin-top: 0.85rem;'>VCOM is only needed for parallel displays.</p>"
 
         message_class = "msg error" if "failed" in message.lower() else "msg"
 
@@ -850,6 +895,7 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
           </div>
           <p class='muted'>Display action stops <code>{html.escape(SERVICE_NAME)}</code> temporarily and restores its previous state after completion.</p>
         </form>
+        {vcom_section}
       </section>
 
       <section class='card'>
@@ -1052,6 +1098,8 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
             outcome = ActionOutcome(_save_settings_kv(form.get("kv_path", []), form.get("kv_value", [])))
         elif action == "set_timezone":
             outcome = _set_timezone(timezone_name, sudo_password=sudo_password)
+        elif action == "save_vcom":
+            outcome = ActionOutcome(_save_vcom(display_model, form.get("vcom", [""])[0]))
         elif action in DISPLAY_ACTIONS:
             outcome = _run_display_action(action, display_model, sudo_password=sudo_password)
         elif action == "git_checkout":

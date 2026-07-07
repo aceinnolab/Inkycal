@@ -19,6 +19,7 @@ from PIL import Image
 import importlib
 
 from inkycal.display import Display
+from inkycal.display.supported_models import is_parallel_display
 from inkycal.modules import InkycalModuleImporter
 from inkycal.settings import Settings
 from inkycal.utils.canvas import Canvas
@@ -116,7 +117,7 @@ class Inkycal:
         if not os.path.exists(settings.CACHE_PATH):
             os.mkdir(settings.CACHE_PATH)
 
-        # Option to use epaper image optimisation, reduces colours
+        # Default to on; parallel displays opt out below.
         self.optimize = True
 
         self.show_border = self.settings.get('border_around_modules', False)
@@ -131,6 +132,7 @@ class Inkycal:
 
             # check if colours can be rendered
             self.supports_colour = True if 'colour' in self.settings['model'] else False
+            self.optimize = not is_parallel_display(self.settings["model"])
 
             # get calibration hours
             self._calibration_hours = self.settings['calibration_hours']

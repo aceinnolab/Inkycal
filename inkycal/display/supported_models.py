@@ -22,3 +22,17 @@ supported_models = {
     "image_file": (800, 480),
     "image_file_12_in_48": (1304, 984),
 }
+
+
+# Keep hardware-specific behavior keyed off the model registry instead of
+# driver file names so new parallel displays can be added in one place.
+parallel_display_models = {
+    "7_in_8",
+    "9_in_7",
+    "10_in_3",
+}
+
+
+def is_parallel_display(model_name: str) -> bool:
+    """Return True when the selected model uses a parallel display path."""
+    return model_name in parallel_display_models
