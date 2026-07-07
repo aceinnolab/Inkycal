@@ -159,51 +159,10 @@ d.render_text("Display works!")
 
 # 🖨️ 3D-Printable Cases & Accessories
 
-The community has created several 3D-printable designs to house your InkyCal build. Here are some popular options:
+For printable cases, holders, and frame ideas, see the dedicated page:
 
-## Official Designs
-
-### [Inkycal PiSugar Frame](https://makerworld.com/en/models/622553#profileId-546730)
-**By aceisace** (original InkyCal author)
-
-A custom frame designed specifically for Pi Zero + PiSugar battery + e-paper display. Perfect for a wireless, battery-powered setup.
-
----
-
-## Community Designs
-
-### [IKEA Frame Mounting Parts](https://www.thingiverse.com/thing:4159363)
-**By Ribitsch**
-
-Mount your InkyCal inside a standard IKEA photo frame. Includes corner holders and backing plate for a professional look.
-
----
-
-### [Waveshare E-Paper Display HAT Holder](https://www.thingiverse.com/thing:4256591)
-**By eboda**
-
-A minimalist sleeve/stand for holding your Waveshare e-paper display and Pi at a comfortable viewing angle.
-
----
-
-## How to Use 3D Designs
-
-1. **Download** the `.stl` file from the link above
-2. **Slice** using a slicer software (Prusaslicer, Cura, etc.)
-3. **Print** on your 3D printer (PLA or PETG recommended)
-4. **Assemble** according to the design's instructions
-5. **Mount** your Pi, display, and wiring
-
-## Tips for Printing
-
-- **Layer height:** 0.2 mm (balance quality vs. print time)
-- **Infill:** 15–20% (enough for structural integrity)
-- **Supports:** Use if required by the design
-- **Print time:** Typically 2–6 hours depending on size
-
-## Sharing Your Design
-
-Have a design you'd like to share? Submit a pull request or post in the **#hall-of-fame** channel on our [Discord server](https://discord.gg/sHYKeSM) with photos of your build!
+- [3D-printable cases & accessories](3d-printable-files.md)
+- [Hall of Fame](hall-of-fame.md)
 
 ---
 
