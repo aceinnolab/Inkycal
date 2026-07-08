@@ -319,8 +319,16 @@ class Display:
         title_font_size: int = 88,
         version_font_size: int = 36,
         line_gap: int = 20,
+        orientation: int = 0,
     ) -> None:
-        """Render a two-line monochrome startup splash centered on screen."""
+        """Render a two-line monochrome startup splash centered on screen.
+
+        Args:
+            orientation (int):
+                Rotation angle in degrees to apply to the splash image before
+                rendering. Accepts ``0`` (no rotation) or ``180`` (upside-down).
+                Matches the ``orientation`` field in ``settings.json``.
+        """
         from PIL import ImageDraw, ImageFont
         from inkycal.utils.enums import FONTS
 
@@ -351,7 +359,10 @@ class Display:
         draw.text((title_x, title_y), title, fill="black", font=title_font)
         draw.text((version_x, version_y), version, fill="black", font=version_font)
 
-        image_colour = Image.new("1", (width, height), "white")
+        if orientation:
+            image_bw = image_bw.rotate(orientation, expand=True)
+
+        image_colour = Image.new("1", image_bw.size, "white")
         self.render(image_bw, image_colour)
 
 
