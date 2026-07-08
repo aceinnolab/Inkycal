@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/Repo/logo.png" width="900" alt="aceinnolab logo">
+    <img src="https://inkycal.aceinnolab.com/static/images/inkycal_logo.png" width="900" alt="aceinnolab logo">
 </p>
 <p align="center">
     <img src="https://github.com/aceinnolab/Inkycal/blob/c1c274878ba81ddaee6186561e6ea892da54cd6a/Repo/inkycal-featured-gif.gif" width="900" alt="featured-image">
