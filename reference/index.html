@@ -16573,7 +16573,18 @@ E-Paper model and offers simplified rendering and calibration routines.</p>
 <span class="normal">352</span>
 <span class="normal">353</span>
 <span class="normal">354</span>
-<span class="normal">355</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Display</span><span class="p">:</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Display</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;High-level interface for rendering images on an ePaper display.</span>
 
 <span class="sd">    The Display class wraps the low-level hardware driver for the selected</span>
@@ -16861,8 +16872,16 @@ E-Paper model and offers simplified rendering and calibration routines.</p>
         <span class="n">title_font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">88</span><span class="p">,</span>
         <span class="n">version_font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">36</span><span class="p">,</span>
         <span class="n">line_gap</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a two-line monochrome startup splash centered on screen.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a two-line monochrome startup splash centered on screen.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            orientation (int):</span>
+<span class="sd">                Rotation angle in degrees to apply to the splash image before</span>
+<span class="sd">                rendering. Accepts ``0`` (no rotation) or ``180`` (upside-down).</span>
+<span class="sd">                Matches the ``orientation`` field in ``settings.json``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">inkycal.utils.enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">FONTS</span>
 
@@ -16893,7 +16912,10 @@ E-Paper model and offers simplified rendering and calibration routines.</p>
         <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">title_x</span><span class="p">,</span> <span class="n">title_y</span><span class="p">),</span> <span class="n">title</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">title_font</span><span class="p">)</span>
         <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">version_x</span><span class="p">,</span> <span class="n">version_y</span><span class="p">),</span> <span class="n">version</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">version_font</span><span class="p">)</span>
 
-        <span class="n">image_colour</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="s2">&quot;white&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">orientation</span><span class="p">:</span>
+            <span class="n">image_bw</span> <span class="o">=</span> <span class="n">image_bw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">orientation</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">image_colour</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">image_bw</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">image_bw</span><span class="p">,</span> <span class="n">image_colour</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -17645,7 +17667,7 @@ becomes coloured.</p>
 
 
 <h3 id="inkycal.display.display.Display.render_startup_splash" class="doc doc-heading">
-            <code class=" language-python"><span class="n">render_startup_splash</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">title_font_size</span><span class="o">=</span><span class="mi">88</span><span class="p">,</span> <span class="n">version_font_size</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">line_gap</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span></code>
+            <code class=" language-python"><span class="n">render_startup_splash</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">title_font_size</span><span class="o">=</span><span class="mi">88</span><span class="p">,</span> <span class="n">version_font_size</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">line_gap</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 <a href="#inkycal.display.display.Display.render_startup_splash" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -17653,6 +17675,39 @@ becomes coloured.</p>
     <div class="doc doc-contents ">
 
         <p>Render a two-line monochrome startup splash centered on screen.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>orientation</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Rotation angle in degrees to apply to the splash image before
+rendering. Accepts <code>0</code> (no rotation) or <code>180</code> (upside-down).
+Matches the <code>orientation</code> field in <code>settings.json</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
             <details class="mkdocstrings-source">
@@ -17697,15 +17752,34 @@ becomes coloured.</p>
 <span class="normal">352</span>
 <span class="normal">353</span>
 <span class="normal">354</span>
-<span class="normal">355</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">render_startup_splash</span><span class="p">(</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">render_startup_splash</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">title_font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">88</span><span class="p">,</span>
     <span class="n">version_font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">36</span><span class="p">,</span>
     <span class="n">line_gap</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">orientation</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render a two-line monochrome startup splash centered on screen.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render a two-line monochrome startup splash centered on screen.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        orientation (int):</span>
+<span class="sd">            Rotation angle in degrees to apply to the splash image before</span>
+<span class="sd">            rendering. Accepts ``0`` (no rotation) or ``180`` (upside-down).</span>
+<span class="sd">            Matches the ``orientation`` field in ``settings.json``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">inkycal.utils.enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">FONTS</span>
 
@@ -17736,7 +17810,10 @@ becomes coloured.</p>
     <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">title_x</span><span class="p">,</span> <span class="n">title_y</span><span class="p">),</span> <span class="n">title</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">title_font</span><span class="p">)</span>
     <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">version_x</span><span class="p">,</span> <span class="n">version_y</span><span class="p">),</span> <span class="n">version</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">version_font</span><span class="p">)</span>
 
-    <span class="n">image_colour</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="s2">&quot;white&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">orientation</span><span class="p">:</span>
+        <span class="n">image_bw</span> <span class="o">=</span> <span class="n">image_bw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">orientation</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">image_colour</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">image_bw</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">image_bw</span><span class="p">,</span> <span class="n">image_colour</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
