@@ -18,8 +18,8 @@ if not os.path.exists("tmp"):
     os.mkdir("tmp")
 
 im_urls = [
-    "https://github.com/aceinnolab/Inkycal/raw/assets/Repo/coffee.png",
-    "https://github.com/aceinnolab/Inkycal/raw/assets/Repo/coffee.png"
+    "https://inkycal.aceinnolab.com/static/images/inkycal_logo.png",
+    "https://inkycal.aceinnolab.com/static/images/inkycal_logo.png"
 ]
 
 for count, url in enumerate(im_urls):
