@@ -2,6 +2,23 @@
 
 Welcome to the official documentation for **Inkycal** — a modular, customizable information dashboard for **Raspberry Pi–powered E-Paper displays**.
 
+## Where should I go?
+
+- **I bought InkyCal v3** → start at the product/customer hub and follow setup: [inkycal.aceinnolab.com](https://inkycal.aceinnolab.com/)
+- **I want to configure `settings.json`** → use the Web UI generator: [inkycal.aceinnolab.com/ui](https://inkycal.aceinnolab.com/ui)
+- **I want to install manually** → use the installation docs here: [Installation Guide](installation.md)
+- **I want the source code** → [GitHub repository](https://github.com/aceinnolab/Inkycal)
+- **I need help** → [Discord](https://discord.gg/sHYKeSM) or [GitHub Issues](https://github.com/aceinnolab/Inkycal/issues)
+
+## Documentation entry points
+
+- **Product/customer hub (InkyCal v3 + InkycalOS-Lite):** [inkycal.aceinnolab.com](https://inkycal.aceinnolab.com/)
+- **Canonical technical docs (this site):** [aceinnolab.github.io/Inkycal](https://aceinnolab.github.io/Inkycal/)
+- **Repository:** [github.com/aceinnolab/Inkycal](https://github.com/aceinnolab/Inkycal)
+- **Releases:** [github.com/aceinnolab/Inkycal/releases](https://github.com/aceinnolab/Inkycal/releases)
+- **Community showcase:** [Hall of Fame](hall-of-fame.md)
+- **3D-printable cases:** [3D-printable cases](3d-printable-files.md)
+
 Inkycal turns your E-Paper display into a beautiful always-on dashboard capable of showing:
 
 - Calendars & schedules  
@@ -60,7 +77,7 @@ Install Inkycal manually on Raspberry Pi OS (Lite recommended).
 Ideal for development or testing modules.  
 → See: [Install on Non-GPIO Devices](installation.md#install-on-non-gpio-devices-development-mode)
 
-### **3. InkycalOS Lite (Recommended)**
+### **3. InkycalOS-Lite (Recommended)**
 Preconfigured SD card image with everything set up:  
 Just add your `settings.json` and boot.
 
@@ -133,7 +150,7 @@ If you find this project useful, please consider supporting development:
 
 👉 [https://github.com/sponsors/aceisace](https://github.com/sponsors/aceisace)
 
-Sponsors also get access to InkycalOS Lite, the pre-built SD card image that saves hours of setup time.
+Sponsors also get access to InkycalOS-Lite, the pre-built SD card image that saves hours of setup time.
 
 ---
 

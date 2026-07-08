@@ -165,3 +165,6 @@ dmypy.json
 /inkycal/image_folder/
 *.tmp
 
+# local planning / tooling files
+plan.md
+.pre-commit-config.yaml

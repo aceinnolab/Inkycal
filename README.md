@@ -1,509 +1,71 @@
-# Welcome to inkycal
+# Welcome to InkyCal
 
 <p align="center">
     <a href="https://github.com/aceinnolab/Inkycal/actions/workflows/test-on-rpi.yml"><img src="https://github.com/aceinnolab/Inkycal/actions/workflows/test-on-rpi.yml/badge.svg"></a>
     <a href="https://discord.gg/sHYKeSM"><img src="https://img.shields.io/discord/672082714190544899?style=flat&logo=discord&logoColor=blue&color=lightorange"></a>
-    <a href="https://github.com/aceinnolab/Inkycal/releases"><img alt="Version" src="https://img.shields.io/github/release/aceisace/Inkycal.svg"/></a>
-    <a href="https://github.com/aceinnolab/Inkycal/blob/main/LICENSE"><img alt="Licence" src="https://img.shields.io/github/license/aceisace/Inkycal.svg" /></a>
+    <a href="https://github.com/aceinnolab/Inkycal/releases"><img alt="Version" src="https://img.shields.io/github/release/aceinnolab/Inkycal.svg"/></a>
+    <a href="https://github.com/aceinnolab/Inkycal/blob/main/LICENSE"><img alt="Licence" src="https://img.shields.io/github/license/aceinnolab/Inkycal.svg" /></a>
     <a href="https://github.com/aceinnolab/Inkycal"><img alt="python" src="https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-lightorange"></a>
-    <a href="https://github.com/aceinnolab/Inkycal/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aceisace/Inkycal?color=yellow"></a>
+    <a href="https://github.com/aceinnolab/Inkycal/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/aceinnolab/Inkycal?color=yellow"></a>
 </p>
 
 <p align="center">
-        <img src="https://raw.githubusercontent.com/aceisace/Inkycal/assets/Repo/logo.png" width="900" alt="aceinnolab logo">
+    <img src="https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/Repo/logo.png" width="900" alt="aceinnolab logo">
 </p>
 <p align="center">
-        <img src="https://github.com/aceinnolab/Inkycal/blob/c1c274878ba81ddaee6186561e6ea892da54cd6a/Repo/inkycal-featured-gif.gif" width="900" alt="featured-image">
+    <img src="https://github.com/aceinnolab/Inkycal/blob/c1c274878ba81ddaee6186561e6ea892da54cd6a/Repo/inkycal-featured-gif.gif" width="900" alt="featured-image">
 </p>
 
-Inkycal is a software written in python for selected E-Paper displays. It converts these displays into useful
-information dashboards. It's open-source, free for personal use, fully modular and user-friendly. Despite all this,
-Inkycal can run well even on the Raspberry Pi Zero W. Oh, and it's open for third-party modules! Hooray!
-
-## ⚠️ Warning: long installation time expected!
-
-Installing Inkycal, particularly on the Raspberry Pi Zero W models can take up to **a few hours**. 
-
-The good news is that this is one-time and InkyCal generally runs without an issue for months or even years. 
-
-The bad news is that the Zero W can run out of memory when installing the required packages. A temporary fix for this is to use SWAP (kind of like a file-based RAM) which is slow, but will allow the installation to complete.
-
-
-**TLDR: Skip the wait and several hours of headaches, sponsor InkyCal via [GitHub Sponsors](https://github.com/sponsors/aceisace) and you will shortly receive the download link**
-
-
-## Main features
-
-Inkycal is fully modular, you can mix and match any modules you like and configure them on the web-ui. For now, these
-following built-in modules are supported:
-
-* Calendar - Monthly Calendar with option to sync events from iCalendars, e.g. Google.
-* Agenda - Agenda showing upcoming events from given iCalendar URLs.
-* Image - Display an Image from URL or local file path.
-* Slideshow - Cycle through images in a given folder and show them on the E-Paper.
-* Feeds - Synchronise RSS/ATOM feeds from your favorite providers.
-* Stocks - Display stocks using Tickers from Yahoo! Finance. Special thanks to @worstface
-* Weather - Show current weather, daily or hourly weather forecasts from openweathermap.
-* Todoist - Synchronise with Todoist app or website to show todos.
-* iCanHazDad - Display a random joke from [iCanHazDad.com](iCanhazdad.com).
-* Webshot - Display a website as an image. Special thanks to @worstface
-* Tindie - Show the latest orders from your Tindie store.
-* XKCD - Show XKCD comics. Special thanks to @worstface
-
-## Quickstart
-
-Watch the one-minute video on getting started with Inkycal:
-
-[![Inkycal quickstart](https://img.youtube.com/vi/IiIv_nWE5KI/0.jpg)](https://www.youtube.com/watch?v=IiIv_nWE5KI)
-
-## Hardware guide
-
-Before you can start, please ensure you have one of the supported displays and of the supported Raspberry
-Pi: `|4|3A|3B|3B+|2B|ZeroW|ZeroWH|Zero2W|`. We personally recommend the Raspberry Pi Zero W as this is relatively
-cheaper, uses
-less power and is perfect to fit in a small photo frame once you have assembled everything.
-
-**Serial** displays are usually cheaper, but slower. Their main advantage is ease of use, like being able to communicate
-via SPI. A single update will cause flickering (fully normal on e-paper displays) ranging from a few seconds to half an
-minute. We recommend these for users who want to get started quickly and for more compact setups, e.g. fitting inside a
-photo frame. The resolution of these displays ranges from low to medium. Usually, these displays support 2-3 colours,
-but no colours in between, e.g. fully black, fully red/yellow and fully-white.
-
-**Parallel** displays on the other hand do not understand SPI and require their own dedicated driver boards individually
-configured for these displays. Flickering also takes place here, but an update only takes about one to a few seconds.
-The resolution is much better than serial e-paper displays, but the cost is also higher. These also have 16 different
-grayscale levels, which does not compare to the 256 grayscales of LCDs, but far better than serial displays.
-
-**❗️Important note: e-paper displays cannot be simply connected to the Raspberry Pi, but require a driver board. The
-links below may or may not contain the required driver board. Please ensure you get the correct driver board for the
-display!**
-
-| type                                                                            | vendor                  | Where to buy                                                                                                                                                                                                                                                                                                                                                                                                 |
-|---------------------------------------------------------------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 7.5" Inkycal (plug-and-play)                                                    | Aceinnolab (author)     | [Buy on Tindie](https://www.tindie.com/products/aceinnolab/inkycal-create-your-own-e-paper-dashboard/) 7" black-white-red e-paper with custom 3d-printed case, fully pre-assembled (Raspberry Pi Zero W, 7.5" e-paper, microSD card, driver board, custom packaging and 1m of cable). Also grants access to InkyCalOS-Lite. You only need to generate the settings.json file and copy it to the microSD card |
-| Inkycal frame (kit -> requires wires, 7.5" Display and Zero W with microSD card | Aceinnolab (author)     | [Buy on Tindie](https://www.tindie.com/products/aceinnolab/inkycal-frame-custom-driver-board-only/) Ultraslim frame with custom-made front and backcover inkl. ultraslim driver board). You will need a Raspberry Pi, microSD card and a 7.5" e-paper display                                                                                                                                                |
-| Driver board                                                                    | Aceinnolab (author)     | [Buy on Tindie](https://www.tindie.com/products/aceinnolab/universal-e-paper-driver-board-for-24-pin-spi/) Ultraslim, 24-pin SPI driver board for many serial e-paper displays.                                                                                                                                                                                                                              |
-| `[serial]`  12.48" (1304×984px) display                                         | waveshare / gooddisplay | Search for `Waveshare 12.48" E-Paper 1304×984` on amazon or similar                                                                                                                                                                                                                                                                                                                                          |
-| `[serial]` 7.5" (640x384px) -> v1 display (2/3-colour)                          | waveshare / gooddisplay | Search for `Waveshare 7.5" E-Paper 640x384` on amazon or similar                                                                                                                                                                                                                                                                                                                                             |
-| `[serial]` 7.5" (800x480px) -> v2 display (2/3-colour)                          | waveshare / gooddisplay | Search for `Waveshare 7.5" E-Paper 800x480` on amazon or similar                                                                                                                                                                                                                                                                                                                                             |
-| `[serial]` 7.5" (880x528px) -> v3 display (2/3-colour)                          | waveshare / gooddisplay | Search for `Waveshare 7.5" E-Paper 800x528` on amazon or similar                                                                                                                                                                                                                                                                                                                                             |
-| `[serial]`  5.83" (400x300px) display                                           | waveshare / gooddisplay | Search for `Waveshare 5.83" E-Paper 400x300` on amazon or similar                                                                                                                                                                                                                                                                                                                                            |
-| `[serial]`  4.2" (400x300px)display                                             | waveshare / gooddisplay | Search for `Waveshare 4.2" E-Paper 400x300` on amazon or similar                                                                                                                                                                                                                                                                                                                                             |                                                                                         |
-| `[parallel]` 10.3" (1872×1404px) display                                        | waveshare / gooddisplay | Search for `Waveshare 10.3" E-Paper 1872×1404` on amazon or similar                                                                                                                                                                                                                                                                                                                                          |
-| `[parallel]` 9.7" (1200×825px) display                                          | waveshare / gooddisplay | Search for `Waveshare 9.7" E-Paper 1200×825` on amazon or similar                                                                                                                                                                                                                                                                                                                                            |
-| `[parallel]` 7.8" (1872×1404px) display                                         | waveshare / gooddisplay | Search for `Waveshare 7.8" E-Paper 1872×1404` on amazon or similar                                                                                                                                                                                                                                                                                                                                           |
-| Raspberry Pi Zero W                                                             | Raspberry Pi            | Search for `Raspberry Pi Zero W` on amazon or similar                                                                                                                                                                                                                                                                                                                                                        |
-| MicroSD card                                                                    | Sandisk                 | Search for `MicroSD card 8GB` on amazon or similar                                                                                                                                                                                                                                                                                                                                                           |
-
-## Configuring the Raspberry Pi
-
-Flash Raspberry Pi OS on your microSD card (min. 4GB) with [Raspberry Pi Imager](https://www.raspberrypi.com/software/).
-The exact image currently used in the Raspberry Pi GitHub Actions test workflow is:
-
-- [Raspberry Pi OS Lite (Trixie, armhf, 2025-11-24)](https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-11-24/2025-11-24-raspios-trixie-armhf-lite.img.xz)
-
-| option                    |            value            |
-|:--------------------------|:---------------------------:|
-| hostname                  |           inkycal           |
-| enable ssh                |             yes             |
-| set username and password |             yes             |
-| username                  |     a username you like     |
-| password                  | a password you can remember |
-| set Wi-Fi                 |             yes             |
-| Wi-Fi SSID                |       your Wi-Fi name       |
-| Wi-Fi password            |     your Wi-Fi password     |
-| set timezone              |     your local timezone     |
-
-1. Create and download `settings.json` file for Inkycal from
-   the [WEB-UI](https://inkycal.aceinnolab.com/ui). Add the modules you want with the add
-   module button.
-2. Copy the `settings.json` to the flashed microSD card.
-3. Eject the microSD card from your computer now, insert it in the Raspberry Pi and power the Raspberry Pi.
-4. Once the green LED has stopped blinking after ~3 minutes, you can connect to your Raspberry Pi via SSH using a SSH
-   Client. We suggest [Termius](https://termius.com/download/windows)
-   on your smartphone. Use the address: `inkycal.local` with the username and password you set earlier. For more
-   detailed instructions, check out the page from
-   the [Raspberry Pi website](https://www.raspberrypi.org/documentation/remote-access/ssh/)
-5. After connecting via SSH, run the following commands, line by line:
-
-```bash
-# expand the filesystem to make use of the full space on the microSD card
-sudo raspi-config --expand-rootfs
-
-# enable SPI - the zero at the end means "on"
-sudo raspi-config nonint do_spi 0
-
-# set the timezone (optional)
-sudo dpkg-reconfigure tzdata
-
-# If you have the 12.48" display, these steps are also required:
-wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.71.tar.gz
-tar zxvf bcm2835-1.71.tar.gz 
-cd bcm2835-1.71/
-sudo ./configure && sudo make && sudo make check && sudo make install
-```
-
-These commands expand the filesystem, enable SPI and set up the correct timezone on the Raspberry Pi. When running the
-last command, please select the continent you live in, press enter and then select the capital of the country you live
-in. Lastly, press enter. 
-
-Follow the steps in `Installation` (see below) on how to install Inkycal.
-
-## Installing Inkycal
-
-### Interactive installer (recommended)
-
-If you want the simplest setup path on Raspberry Pi OS, use the Python installer. It handles dependencies, permissions, service installation, and the display test menu.
-
-```bash
-cd $HOME/Inkycal
-python3 installer.py
-```
-
-The installer can:
-- install or repair dependencies and the virtual environment
-- fix broken file permissions after accidental `sudo` use
-- install portable `systemd` services for your actual user and path
-- set up the recommended swap configuration automatically on Raspberry Pi Zero after asking for confirmation
-- set timezone via `raspi-config` from the installer menu
-- run a display test with model selection and a 60-second timeout
-- update Inkycal safely and re-run dependency sync
-- perform a full wipe that removes installer-managed changes and optionally deletes the cloned folder
-
-If you already have Inkycal installed, you can re-run the installer any time to repair or update it.
-If you’re on a Raspberry Pi Zero, the installer will ask whether to set up swap and will skip the step if it is already configured.
-
-⚠️ Please note that although the developers try to keep the installation as simple as possible, the full installation
-can sometimes take hours on the Raspberry Pi Zero W and is not guaranteed to go smoothly each time. This is because
-installing dependencies on the zero w takes a long time and is prone to copy-paste-, permission- and configuration
-errors.
-
-ℹ️ **Looking for a shortcut to save a few hours?** We know about this problem and have spent a signifcant amount of time
-to prepare a pre-configured image with the latest version of Inkycal for the Raspberry Pi Zero. It comes with the latest
-version of Inkycal, is fully tested and uses the Raspberry Pi OS Lite as it's base image. You only need to copy your
-settings.json file, we already took care of the rest, including auto-start at boot, enabling spi and installing all
-dependencies in advance. Pretty neat right? Check the [sponsor button](https://github.com/sponsors/aceisace) at the very
-top of the repo to get access to Inkycal-OS-Lite. Alternatively, you can also use the PayPal.me link and send the same
-amount as GitHub sponsors to get access to InkycalOS-Lite!
-This will help keep this project growing and cover the ongoing expenses too! Win-win for everyone! 🎊
-
-### InkycalOS-Lite setup
-
-Once you have access to InkycalOS-Lite:
-
-1. Download the image from [https://inkycal.aceinnolab.com/inkycal-os-lite](https://inkycal.aceinnolab.com/inkycal-os-lite)
-2. Flash it with [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
-3. Reinsert the SD card so the `bootfs` partition becomes visible
-4. Generate Raspberry Pi config files from [https://inkycal.aceinnolab.com/rpi-config](https://inkycal.aceinnolab.com/rpi-config)
-5. Copy those generated files into `bootfs`
-6. Generate `settings.json` from [https://inkycal.aceinnolab.com/ui](https://inkycal.aceinnolab.com/ui)
-7. Copy `settings.json` into `bootfs`
-8. Boot the Raspberry Pi and let Inkycal render automatically
-
-If something goes wrong, connect with SSH:
-
-```bash
-ssh inky@inkycal.local
-cd $HOME/Inkycal
-source venv/bin/activate
-python inky_run.py
-```
-
-Community help is available on Discord: [https://discord.gg/sHYKeSM](https://discord.gg/sHYKeSM)
-
-### Bonus: PiSugar support
-The PiSugar is a battery pack for the Raspberry Pi Zero W. It can power the Raspberry Pi and the e-paper, allowing battery life up to several weeks.
-If you have a PiSugar board, please see the wiki page on how to install the PiSugar driver and configure Inkycal to work with it:
-[PiSugar support](https://github.com/aceinnolab/Inkycal/wiki/PiSugar-support)
-
-
-### Installing on Raspberry Pi
-
-Run the following steps to install Inkycal. Do **not** use `sudo` for the installer itself unless explicitly told to do so.
-
-- update the system
-```bash
-sudo apt-get update -y
-```
-
-- To avoid running out of RAM, set up swap (file-based-RAM)
-```bash
-sudo mkdir /etc/rpi/swap.conf.d
-sudo nano /etc/rpi/swap.conf.d/80-use-swapfile.conf
-```
-
-- Paste the following content:
-```shell
-[Main]
-Mechanism=swapfile
-
-[File]
-FixedSizeMiB=1024
-```
-- Save the file with `[CTRL] + [X]`. Then press `[Y]` to confirm
-- Reload swap to use the new config:
-```shell
-sudo systemctl daemon-reexec
-sudo systemctl restart systemd-swap
-```
-
-- To make sure we don't attempt to overload the RAM during installation, we use a temp directory on the filesystem
-```bash
-export TMPDIR=/var/tmp
-```
-
-- clone the repo in the home directory
-```bash
-cd $HOME
-git clone https://github.com/aceinnolab/Inkycal
-cd Inkycal
-```
-
-- Install apt dependencies (single source: `apt_packages.txt`):
-```bash
-sudo apt-get update -y
-sudo apt-get install -y $(tr '\n' ' ' < apt_packages.txt)
-```
+InkyCal is a small dashboard for e-paper screens. It shows calendars, weather, tasks, photos, and custom modules on a Raspberry Pi.
 
-- Set up the virtual environment & install dependencies
-```bash
-# defaults to python3.13 on trixie
-python -m venv venv
-source venv/bin/activate
-
-# ARMv6 often has no matching wheels for many libraries - it will attempt to build wheels from source, which can
-# take a very long time. Piwheels already has wheels for the Raspberry Pi, we're using these to avoid hours of time
-pip install --upgrade pip wheel setuptools --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
-pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
-pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
-```
-
-Then run the installer to finish the setup, install services, and perform a display test:
-
-```bash
-python3 installer.py
-```
+**Two paths, one project:**
+- **InkyCal v3** = the ready-made product/customer setup
+- **Inkycal** = the open-source software you can install yourself
 
-The installer will install the `systemd` services for you and ensure only one Inkycal instance runs at a time.
+## Where should I go?
 
-That includes:
+- **I bought InkyCal v3** → start at the customer hub: [inkycal.aceinnolab.com](https://inkycal.aceinnolab.com/)
+- **I want to configure `settings.json`** → use the Web UI generator: [inkycal.aceinnolab.com/ui](https://inkycal.aceinnolab.com/ui)
+- **I want to install manually** → read the docs installation guide: [aceinnolab.github.io/Inkycal/installation](https://aceinnolab.github.io/Inkycal/installation/)
+- **I want the source code** → this repository: [github.com/aceinnolab/Inkycal](https://github.com/aceinnolab/Inkycal)
+- **I need help** → [Discord](https://discord.gg/sHYKeSM) or [GitHub Issues](https://github.com/aceinnolab/Inkycal/issues)
 
-- `inkycal.service`
-- `inkycal-webui.service`
-
-It also uses PiWheels-friendly pip flags to avoid unnecessary local builds:
+## Quick start
 
-```bash
-pip install --upgrade pip wheel setuptools --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
-pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
-```
+1. Pick your display model.
+2. Create `settings.json` in the Web UI.
+3. Follow the installation guide in the docs.
+4. Run InkyCal on your Pi.
 
-You can use the installer again later to repair, update, configure swap, or perform a wipe.
+## What InkyCal can do
 
-## Logging
+- Calendars and schedules
+- Weather forecasts
+- Tasks and reminders
+- Photos and slideshows
+- Custom Python modules
+- Local web UI for settings and display tools
 
-Inkycal writes logs to `Inkycal/logs/inkycal.log` and rotates them daily.
+## Documentation
 
-- 1 active log + up to 14 rotated logs
-- configurable via `INKYCAL_LOG_DIR` or `INKYCAL_LOG_FILE`
+- **Canonical docs:** [aceinnolab.github.io/Inkycal](https://aceinnolab.github.io/Inkycal/)
+- **Quickstart:** [aceinnolab.github.io/Inkycal/quickstart](https://aceinnolab.github.io/Inkycal/quickstart/)
+- **InkycalOS-Lite:** [aceinnolab.github.io/Inkycal/inkycalos-lite](https://aceinnolab.github.io/Inkycal/inkycalos-lite/)
+- **Local Web UI:** [aceinnolab.github.io/Inkycal/webui](https://aceinnolab.github.io/Inkycal/webui/)
+- **Support:** [Discord](https://discord.gg/sHYKeSM)
 
-Examples:
+## Hardware and community
 
-```bash
-# follow app log
-tail -f $HOME/Inkycal/logs/inkycal.log
+- **Assembled hardware:** [Tindie store](https://www.tindie.com/stores/aceinnolab/)
+- **Printable cases:** [3D-printable cases](https://aceinnolab.github.io/Inkycal/3d-printable-files/)
+- **Community gallery:** [Hall of Fame](https://aceinnolab.github.io/Inkycal/hall-of-fame/)
 
-# inspect service logs
-journalctl -u inkycal.service -f
-```
+InkyCal is meant to be easy to start with, but flexible enough to grow with you.
 
-## Webshot backend notes (Pi Zero)
+## ❤️ Support the project
 
-The Webshot module uses native Chromium headless mode by default (no Google Chrome required).
-If that fails, it falls back to Selenium + Chromium/Chromedriver.
+InkyCal is maintained in spare time. If it saves you hours of setup or powers your daily dashboard, consider sponsoring — it covers hardware costs, display testing, and keeps development going.
 
-You can override binaries with:
+👉 [Sponsor on GitHub](https://github.com/sponsors/aceisace) — one-time or monthly, any amount helps.
 
-```bash
-export INKYCAL_BROWSER_BIN=/usr/bin/chromium
-export INKYCAL_CHROMEDRIVER_BIN=/usr/bin/chromedriver
-```
-
-## Local web UI
-
-You can run the local web UI manually:
-
-```bash
-cd $HOME/Inkycal
-source venv/bin/activate
-python3 inky_webui.py
-```
-
-Then open `http://<raspberry-pi-ip>:8080`.
-
-Features include:
-- Inkycal version display
-- Inkycal service status
-- hardware overview (temp/load/memory/uptime)
-- start/stop/restart + dry-run buttons
-- log viewer for `inkycal.log*`
-- PayPal donation QR code
-- settings.json editors
-- display actions (calibration, clear, demo image)
-
-## Startup splash
-
-On first start after boot, Inkycal renders a monochrome startup splash before loading modules:
-
-- `Inkycal` (centered, large text)
-- `v<version>` below it (smaller text)
-
-The splash is independent from module rendering and only uses `settings.json` to determine the display model.
-
-You can disable it by adding this key in `settings.json`:
-
-```json
-{
-  "show_startup_splash": false
-}
-```
-
-## Installing on devices without GPIO
-- Get the most of InkyCal by using more powerful IDE, for debugging and creating own modules etc. 
-- You don't need to use a Raspberry Pi to use Inkycal, though you won't be able to display the generated images
-
-```sh
-git clone https://github.com/aceinnolab/Inkycal
-cd Inkycal
-python3 -m venv venv
-source venv/bin/activate
-pip install -e .
-```
-
-
-## Running Inkycal
-
-To run Inkycal, type in the following command in the terminal:
-
-```bash
-cd $HOME/Inkycal
-source venv/bin/activate
-python3 inky_run.py
-```
-
-## Updating Inkycal
-
-To update Inkycal to the latest version, navigate to the Inkycal folder, then run:
-
-```bash
-git pull
-```
-
-Then refresh the environment and re-run the installer if needed:
-
-```bash
-source venv/bin/activate
-pip install -e .
-python3 installer.py
-```
-
-That’s it. If you have made local changes, they will be overwritten.
-If that is the case, back up any modified files first and then run:
-
-```bash
-git reset --hard
-git pull
-```
-
-## Uninstalling Inkycal
-
-We'll miss you, but we don't want to make it hard for you to leave.
-Just delete the Inkycal folder, and you're good to go!
-
-If you installed the `systemd` services, re-run the installer or remove them via `systemctl` before deleting the folder.
-
-### Full wipe
-
-The installer includes a full wipe option that removes installer-managed system changes first. It can also delete the cloned `Inkycal` folder if you confirm that too.
-
-## Modifying Inkycal
-
-Inkycal now runs in a virtual environment to support more devices than just the Raspberry Pi. Therefore, to make changes
-to Inkycal, navigate to Inkycal, then run:
-
-```bash
-cd $HOME/Inkycal && source venv/bin/activate
-```
-
-Then modify the files as needed and experiment with Inkycal.
-To deactivate the virtual environment, simply run:
-
-```bash
-deactivate
-```
-
-## 3D printed frames
-
-With your setup being complete at this stage, you may want to 3d-print a case. The following files were shared by our
-friendly community:
-[3D-printable case](https://github.com/aceinnolab/Inkycal/wiki/3D-printable-files)
-
-
-## Contributing
-
-All sorts of contributions are most welcome and appreciated. To start contributing, please follow
-the [Contribution Guidelines](https://github.com/aceinnolab/Inkycal/blob/main/.github/CONTRIBUTING.md)
-
-The average response time for issues, PRs and emails is usually 24 hours. In some cases, it might be longer. If you want
-to have some faster responses, please use Discord (link below)
-
-**P.S:** Don't forget to star and/or watch the repo. For those who have done so already, thank you very much!
-
-## Join us on Discord!
-
-We're happy to help, to beginners and developers alike. In fact, you are more likely to get faster support on Discord
-than on GitHub.
-
-Join here: [https://discord.gg/sHYKeSM](https://discord.gg/sHYKeSM)
-
-<a href="https://discord.gg/sHYKeSM">
-        <img src="https://github.com/aceinnolab/Inkycal/blob/assets/Repo/discord-logo.png?raw=true" alt="Inkycal chatroom Discord" width=200>
-</a>
-
-## Sponsoring
-
-Inkycal relies on sponsors to keep up maintenance, development and bug-fixing. Please consider sponsoring Inkycal via
-the sponsor button if you are happy with Inkycal.
-
-We now offer perks depending on the amount contributed for sponsoring, ranging from pre-configured OS images for
-plug-and-play to development of user-suggested modules. Check out the sponsor page to find out more.
-If you have been a previous sponsor, please let us know on our Discord server or by sending an email. We'll send you the
-perks after confirming 💯
-
-## As featured on
-
-* [raspberrypi.com](https://www.raspberrypi.com/news/ashleys-top-five-projects-for-raspberry-pi-first-timers/)
-* [hackster.io](https://www.hackster.io/news/ace-innovation-lab-s-inkycal-v3-puts-a-raspberry-pi-powered-modular-epaper-dashboard-on-your-desk-b55a83cc0f46)
-* [raspberryme.com](https://www.raspberryme.com/inkycal-v3-est-un-tableau-de-bord-epaper-alimente-par-raspberry-pi-pour-votre-bureau/)
-* [adafruit.com](https://blog.adafruit.com/2023/12/19/icymi-python-on-microcontrollers-newsletter-circuitpython-9-alpha-6-released-gpt-via-circuitpython-new-books-and-more-circuitpython-python-micropython-icymi-raspberry_pi/)
-* [all3dp.com](https://all3dp.com/1/best-raspberry-pi-projects/)
-* [ittagesschau.de](https://www.ittagesschau.de/artikel/inkycal-v3-smartes-display-auf-grundlage-des-raspberry-pi-mit-elektronischem-papier-und-vielen-moglichkeiten_365893)
-* [makeuseof - fantastic projects using an eink display](http://makeuseof.com/fantastic-projects-using-an-e-ink-display/)
-* [notebookcheck.com](https://www.notebookcheck.com/Inkycal-V3-Smartes-Display-auf-Grundlage-des-Raspberry-Pi-mit-elektronischem-Papier-und-vielen-Moeglichkeiten.783012.0.html?ref=ittagesschau.de)
-* [linkedin.com](https://www.linkedin.com/pulse/global-epaper-industry-weekly-bulletin-16epaper-jtcqe?trk=article-ssr-frontend-pulse_more-articles_related-content-card)
-* [sohu.com](https://www.sohu.com/a/745630839_121311165)
-* [moreware.com](https://www.moreware.org/wp/blog/2023/12/18/inkycal-v3-dashboard-con-display-e-paper-e-raspberry-pi/)
-* [Waveshare - additional resources](https://www.waveshare.com/wiki/7.5inch_HD_e-Paper_HAT)
-* [ereaderpro.co.uk](https://www.ereaderpro.co.uk/blogs/news/e-ink-product-made-in-germany-inkycal-v3)
-* [cnx-software.com](https://www.cnx-software.com/2023/12/13/inkycal-v3-is-a-raspberry-pi-powered-epaper-dashboard-for-your-desk/)
-* [magpi.de](https://www.magpi.de/news/maginkcal-ein-kalender-mit-epaper-display-und-raspberry-pi)
-* [goodreader.com](https://goodereader.com/blog/e-paper/inkycal-v3-is-a-raspberry-pi-powered-e-paper-marvel-for-your-desk)
-* [goodreader.com](https://goodereader.com/blog/e-paper/five-of-the-most-innovative-e-ink-display-projects?doing_wp_cron=1701869793.2312469482421875000000)
-* [reddit - Inkycal](https://www.reddit.com/r/InkyCal/)
-* [schuemann.it](https://schuemann.it/2019/09/11/e-ink-calendar-with-a-raspberry-pi/)
-* [huernerfuerst.de](https://www.huenerfuerst.de/archives/e-ink-kalender-mit-einem-raspberry-pi-zero-teil-1-was-wird-benoetigt)
-* [canox.net](https://canox.net/2019/06/raspberry-pi-als-e-ink-kalender/)
-
-## Our Contributors
-
-<table><tr><td align="center"><a href="https://github.com/aceinnolab"><img alt="aceinnolab" src="https://avatars.githubusercontent.com/u/29558518?v=4" width="117" /><br />aceisace</a></td><td align="center"><a href="https://github.com/Atrejoe"><img alt="Atrejoe" src="https://avatars.githubusercontent.com/u/585091?v=4" width="117" /><br />Atrejoe</a></td><td align="center"><a href="https://github.com/actions-user"><img alt="actions-user" src="https://avatars.githubusercontent.com/u/65916846?v=4" width="117" /><br />actions-user</a></td><td align="center"><a href="https://github.com/emilyboda"><img alt="emilyboda" src="https://avatars.githubusercontent.com/u/9170143?v=4" width="117" /><br />emilyboda</a></td><td align="center"><a href="https://github.com/StevenSeifried"><img alt="StevenSeifried" src="https://avatars.githubusercontent.com/u/39765956?v=4" width="117" /><br />StevenSeifried</a></td><td align="center"><a href="https://github.com/mrbwburns"><img alt="mrbwburns" src="https://avatars.githubusercontent.com/u/66523867?v=4" width="117" /><br />mrbwburns</a></td></tr><tr><td align="center"><a href="https://github.com/apps/dependabot"><img alt="dependabot[bot]" src="https://avatars.githubusercontent.com/in/29110?v=4" width="117" /><br />dependabot[bot]</a></td><td align="center"><a href="https://github.com/LakesideMiners"><img alt="LakesideMiners" src="https://avatars.githubusercontent.com/u/23389169?v=4" width="117" /><br />LakesideMiners</a></td><td align="center"><a href="https://github.com/hjiang"><img alt="hjiang" src="https://avatars.githubusercontent.com/u/18527?v=4" width="117" /><br />hjiang</a></td><td align="center"><a href="https://github.com/ch3lmi"><img alt="ch3lmi" src="https://avatars.githubusercontent.com/u/19972012?v=4" width="117" /><br />ch3lmi</a></td><td align="center"><a href="https://github.com/mygrexit"><img alt="mygrexit" src="https://avatars.githubusercontent.com/u/33792951?v=4" width="117" /><br />mygrexit</a></td><td align="center"><a href="https://github.com/tobychui"><img alt="tobychui" src="https://avatars.githubusercontent.com/u/24617523?v=4" width="117" /><br />tobychui</a></td></tr><tr><td align="center"><a href="https://github.com/worstface"><img alt="worstface" src="https://avatars.githubusercontent.com/u/72295005?v=4" width="117" /><br />worstface</a></td><td align="center"><a href="https://github.com/sapostoluk"><img alt="sapostoluk" src="https://avatars.githubusercontent.com/u/7192139?v=4" width="117" /><br />sapostoluk</a></td><td align="center"><a href="https://github.com/freezingDaniel"><img alt="freezingDaniel" src="https://avatars.githubusercontent.com/u/82905307?v=4" width="117" /><br />freezingDaniel</a></td><td align="center"><a href="https://github.com/dealyllama"><img alt="dealyllama" src="https://avatars.githubusercontent.com/u/5891782?v=4" width="117" /><br />dealyllama</a></td><td align="center"><a href="https://github.com/rafaljanicki"><img alt="rafaljanicki" src="https://avatars.githubusercontent.com/u/7746477?v=4" width="117" /><br />rafaljanicki</a></td><td align="center"><a href="https://github.com/priv-kweihmann"><img alt="priv-kweihmann" src="https://avatars.githubusercontent.com/u/46938494?v=4" width="117" /><br />priv-kweihmann</a></td></tr><tr><td align="center"><a href="https://github.com/surak"><img alt="surak" src="https://avatars.githubusercontent.com/u/878399?v=4" width="117" /><br />surak</a></td><td align="center"><a href="https://github.com/AlessandroMandelli"><img alt="AlessandroMandelli" src="https://avatars.githubusercontent.com/u/65062723?v=4" width="117" /><br />AlessandroMandelli</a></td><td align="center"><a href="https://github.com/DavidCamre"><img alt="DavidCamre" src="https://avatars.githubusercontent.com/u/1098069?v=4" width="117" /><br />DavidCamre</a></td><td align="center"><a href="https://github.com/jordanschau"><img alt="jordanschau" src="https://avatars.githubusercontent.com/u/412028?v=4" width="117" /><br />jordanschau</a></td><td align="center"><a href="https://github.com/mshulman"><img alt="mshulman" src="https://avatars.githubusercontent.com/u/1484420?v=4" width="117" /><br />mshulman</a></td><td align="center"><a href="https://github.com/vitasam"><img alt="vitasam" src="https://avatars.githubusercontent.com/u/5597505?v=4" width="117" /><br />vitasam</a></td></tr></table>
+Sponsors also get access to **InkycalOS-Lite**: a pre-built SD card image with everything already configured, so you can skip the installation entirely.

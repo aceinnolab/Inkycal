@@ -46,7 +46,10 @@ nav:
       - Installer Guide: installer.md
       - Quickstart: quickstart.md
       - Hardware Setup: hardware.md
+      - PiSugar Battery Support: pisugar.md
       - Local Web UI: webui.md
+  - Hardware:
+      - 3D-Printable Cases: 3d-printable-files.md
   - Modules:
       - Modules Overview: modules.md
       - Agenda: modules/agenda.md
@@ -63,3 +66,5 @@ nav:
       - API Reference: reference.md  # optional if using mkdocstrings
   - Troubleshooting: troubleshooting.md
   - About: about.md
+  - Community:
+      - Hall of Fame: hall-of-fame.md

@@ -78,6 +78,7 @@ def _show_startup_splash_if_needed() -> None:
         return
 
     try:
+        orientation = int(settings_data.get("orientation", 0))
         display = Display(model)
         display.render_startup_splash(
             title="Inkycal",
@@ -85,6 +86,7 @@ def _show_startup_splash_if_needed() -> None:
             title_font_size=88,
             version_font_size=30,
             line_gap=28,
+            orientation=orientation,
         )
         os.makedirs(os.path.dirname(flag_path), exist_ok=True)
         with open(flag_path, "w", encoding="utf-8") as marker:

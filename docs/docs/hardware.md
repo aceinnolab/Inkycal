@@ -113,7 +113,7 @@ Enable PiSugar support in settings.json:
 ```
 
 More info:  
-https://github.com/aceinnolab/Inkycal/wiki/PiSugar-support
+[PiSugar Battery Support](https://aceinnolab.github.io/Inkycal/pisugar/)
 
 ---
 
@@ -157,7 +157,14 @@ d.render_text("Display works!")
 
 ---
 
-# 🚨 Troubleshooting
+# 🖨️ 3D-Printable Cases & Accessories
+
+For printable cases, holders, and frame ideas, see the dedicated page:
+
+- [3D-printable cases & accessories](3d-printable-files.md)
+- [Hall of Fame](hall-of-fame.md)
+
+---
 
 ### ❌ Display stays white  
 - SPI is disabled → enable via `raspi-config`

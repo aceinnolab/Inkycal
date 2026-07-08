@@ -153,6 +153,8 @@ You can reach the project through:
 * Discussions (soon)
 * Sponsor messages
 * Documentation site
+* Community showcase: [Hall of Fame](hall-of-fame.md)
+* Printable cases: [3D-printable cases](3d-printable-files.md)
 
 If you rely on Inkycal for your daily routine, please consider supporting the project as it funds ongoing maintenance, display testing, and PiZero optimizations.
 
