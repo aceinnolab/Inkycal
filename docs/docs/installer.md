@@ -36,6 +36,7 @@ The installer can:
 - create the `venv`
 - install or refresh Python dependencies
 - install or repair apt-side prerequisites when needed
+- install WiringPi from source (unconditionally on Linux, for 12.48" display compatibility)
 - use the PiWheels-friendly package flow already documented in the main installation guide
 
 ### Raspberry Pi Zero swap setup
@@ -158,4 +159,3 @@ The community is happy to help:
 
 - Discord: [https://discord.gg/sHYKeSM](https://discord.gg/sHYKeSM)
 - GitHub Issues: [https://github.com/aceinnolab/Inkycal/issues](https://github.com/aceinnolab/Inkycal/issues)
-
