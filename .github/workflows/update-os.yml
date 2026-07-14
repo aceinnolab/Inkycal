@@ -83,31 +83,11 @@ jobs:
             pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
 
             #334 & #335. TODO: check if 12.48" stuff is still required
-            # git clone https://github.com/WiringPi/WiringPi
-            # cd WiringPi
-            # ./build
-            # cd ..
-
-            # TODO: check if still required
-            # specific hacks to get this running on newer kernels, see #387. Special thanks to pbarthelemy
-            # wget  https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/pcre2-10.44.tar.bz2
-            # bzip2 -d pcre2-10.44.tar.bz2
-            # tar -xf pcre2-10.44.tar
-            # cd pcre2-10.44/
-            # ./configure && make && sudo make install && make clean
-            # cd ..
-            # wget https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/swig-4.3.0.tar
-            # tar -xf swig-4.3.0.tar
-            # cd swig-4.3.0/
-            # ./configure && make && sudo make install && make clean
-            # cd ..
-            # wget https://github.com/aceinnolab/Inkycal/raw/refs/heads/assets/hosting/lg.zip
-            # unzip lg.zip
-            # cd lg
-            # make && sudo make install && make clean
-            # cd ..
-            # pip install rpi-lgpio
-            # hacks section end
+            # update 14-july-2026: wiringpi is still required for 12.48" display, but not for 7.3" display. For now, we will install it unconditionally, as it is a small dependency.
+            git clone https://github.com/WiringPi/WiringPi
+            cd WiringPi
+            ./build
+            cd ..
 
             # wget https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
 
