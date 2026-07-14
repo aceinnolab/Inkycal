@@ -24,6 +24,7 @@ except ImportError:  # pragma: no cover - non-POSIX only
 
 
 APT_PACKAGES_FILE = "apt_packages.txt"
+WIRINGPI_REPO_URL = "https://github.com/WiringPi/WiringPi"
 
 PIP_INDEX_ARGS = [
     "--index-url", "https://www.piwheels.org/simple",
@@ -326,6 +327,7 @@ def install_or_repair(ctx: InstallerContext) -> None:
     except Exception as error:
         print(f"Warning: apt dependency step failed: {error}")
 
+    install_wiringpi(ctx)
     setup_swap(ctx, prompt=True)
 
     if not ctx.venv_dir.exists():
@@ -346,6 +348,21 @@ def install_or_repair(ctx: InstallerContext) -> None:
 
     save_state(ctx, "install", "ok")
     print("Install/repair completed.")
+
+
+def install_wiringpi(ctx: InstallerContext) -> None:
+    if sys.platform != "linux":
+        print("Skipping WiringPi install on non-Linux host.")
+        return
+
+    print('Installing WiringPi (needed for 12.48" display compatibility)...')
+    with tempfile.TemporaryDirectory(prefix="inkycal-wiringpi-") as temp_dir:
+        clone_path = Path(temp_dir) / "WiringPi"
+        result = run_command(["git", "clone", WIRINGPI_REPO_URL, str(clone_path)])
+        print_command_result(result)
+        result = run_command(["./build"], cwd=clone_path, use_sudo=True)
+        print_command_result(result)
+    save_state(ctx, "wiringpi", "ok")
 
 
 def update_inkycal(ctx: InstallerContext) -> None:

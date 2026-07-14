@@ -179,6 +179,8 @@ cd bcm2835-1.71/
 sudo ./configure && sudo make && sudo make check && sudo make install
 ```
 
+If you use `python3 installer.py`, WiringPi is now installed automatically during `Install / Repair Inkycal`.
+
 ## Step 5 — Install Dependencies
 
 - Update system:
