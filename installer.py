@@ -589,10 +589,7 @@ def run_menu(ctx: InstallerContext) -> None:
         ("Update Inkycal", lambda: update_inkycal(ctx)),
         (
             "Install / Refresh services",
-            lambda: install_services(
-                ctx,
-                ["127.0.0.1", "0.0.0.0"][choose_option("Web UI bind host", ["127.0.0.1 (localhost only)", "0.0.0.0 (LAN exposed)"])],
-            ),
+            lambda: install_services(ctx, "0.0.0.0"),
         ),
         ("Configure Pi Zero swap", lambda: setup_swap(ctx, prompt=True)),
         ("Full wipe", lambda: full_wipe(ctx)),
