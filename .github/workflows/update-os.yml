@@ -141,7 +141,7 @@ jobs:
             Group=inky
             WorkingDirectory=/home/inky/Inkycal
             Environment=PYTHONUNBUFFERED=1
-            Environment=INKYCAL_WEBUI_HOST=127.0.0.1
+            Environment=INKYCAL_WEBUI_HOST=0.0.0.0
             Environment=INKYCAL_WEBUI_PORT=8080
             ExecStart=/home/inky/Inkycal/venv/bin/python /home/inky/Inkycal/inky_webui.py
             Restart=always

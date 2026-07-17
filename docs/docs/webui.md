@@ -37,19 +37,19 @@ That service runs `inky_webui.py`, which starts the lightweight HTTP server impl
 
 ## Default address
 
-By default the web UI listens on:
+By default the web UI listens on all interfaces and is reachable from your LAN at:
 
 ```text
-http://127.0.0.1:8080
+http://inkycal.local:8080
 ```
 
-Many users expose it on the Pi's local network through the installer-managed service configuration.
+If mDNS is unavailable in your network/VPN setup, use the device IP instead (for example `http://192.168.x.x:8080`).
 
 ## Important environment variables
 
 | Variable | Purpose | Default |
 |---|---|---|
-| `INKYCAL_WEBUI_HOST` | Bind address | `127.0.0.1` |
+| `INKYCAL_WEBUI_HOST` | Bind address | `0.0.0.0` |
 | `INKYCAL_WEBUI_PORT` | HTTP port | `8080` |
 | `INKYCAL_SERVICE_NAME` | Main service controlled by UI | `inkycal.service` |
 | `INKYCAL_PYTHON_BIN` | Python interpreter used for actions | `venv/bin/python` |

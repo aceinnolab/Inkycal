@@ -26,7 +26,7 @@ from inkycal.utils.functions import get_inkycal_version
 settings = Settings()
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SERVICE_NAME = os.getenv("INKYCAL_SERVICE_NAME", "inkycal.service")
-WEBUI_HOST = os.getenv("INKYCAL_WEBUI_HOST", "127.0.0.1")
+WEBUI_HOST = os.getenv("INKYCAL_WEBUI_HOST", "0.0.0.0")
 WEBUI_PORT = int(os.getenv("INKYCAL_WEBUI_PORT", "8080"))
 PAYPAL_URL = os.getenv("INKYCAL_PAYPAL_URL", "https://www.paypal.com/paypalme/Aceinnolab")
 HARDWARE_REFRESH_SECONDS = int(os.getenv("INKYCAL_WEBUI_HW_REFRESH_SECONDS", "10"))

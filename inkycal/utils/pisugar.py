@@ -15,7 +15,7 @@ class PiSugar:
 
     def __init__(self):
         # replace "command" with actual command
-        self.command_template = 'echo "command" | nc -q 0 127.0.0.1 8423'
+        self.command_template = 'echo "command" | nc -q 0 localhost 8423'
         self.allowed_commands = ["get battery", "get model", "get rtc_time", "get rtc_alarm_enabled",
                                  "get rtc_alarm_time", "get alarm_repeat", "rtc_pi2rtc", "rtc_alarm_set"]
 
@@ -143,5 +143,4 @@ class PiSugar:
             if status == "done":
                 return True
         return False
-
 
