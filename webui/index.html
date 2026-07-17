@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1524,11 +1524,11 @@ It is designed for phone and desktop browsers and runs separately from the main 
 </ul>
 <p>That service runs <code>inky_webui.py</code>, which starts the lightweight HTTP server implemented in <code>inkycal/webui.py</code>.</p>
 <h2 id="default-address">Default address<a class="headerlink" href="#default-address" title="Permanent link">&para;</a></h2>
-<p>By default the web UI listens on:</p>
-<div class="codehilite"><pre><span></span><code>http://127.0.0.1:8080
+<p>By default the web UI listens on all interfaces and is reachable from your LAN at:</p>
+<div class="codehilite"><pre><span></span><code>http://inkycal.local:8080
 </code></pre></div>
 
-<p>Many users expose it on the Pi's local network through the installer-managed service configuration.</p>
+<p>If mDNS is unavailable in your network/VPN setup, use the device IP instead (for example <code>http://192.168.x.x:8080</code>).</p>
 <h2 id="important-environment-variables">Important environment variables<a class="headerlink" href="#important-environment-variables" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1542,7 +1542,7 @@ It is designed for phone and desktop browsers and runs separately from the main 
 <tr>
 <td><code>INKYCAL_WEBUI_HOST</code></td>
 <td>Bind address</td>
-<td><code>127.0.0.1</code></td>
+<td><code>0.0.0.0</code></td>
 </tr>
 <tr>
 <td><code>INKYCAL_WEBUI_PORT</code></td>
@@ -1680,7 +1680,7 @@ It is designed for phone and desktop browsers and runs separately from the main 
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.expand", "navigation.top", "content.code.copy", "content.action.edit", "content.tooltips", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
