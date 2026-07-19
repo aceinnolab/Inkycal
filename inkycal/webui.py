@@ -84,10 +84,20 @@ def _is_sudo_password_error(stderr: str, stdout: str = "") -> bool:
 
 
 def _run_sudo_command(command: List[str], sudo_password: str = "", timeout: int = 20) -> Tuple[int, str, str]:
-    if sudo_password:
-        return _run_command(["sudo", "-S", "-p", "", *command], timeout=timeout, stdin_text=f"{sudo_password}\n")
+    return _run_sudo_command_with_stdin(command, sudo_password=sudo_password, timeout=timeout)
 
-    code, out, err = _run_command(["sudo", "-n", *command], timeout=timeout)
+
+def _run_sudo_command_with_stdin(
+    command: List[str],
+    sudo_password: str = "",
+    timeout: int = 20,
+    stdin_text: Optional[str] = None,
+) -> Tuple[int, str, str]:
+    if sudo_password:
+        payload = f"{sudo_password}\n{stdin_text or ''}"
+        return _run_command(["sudo", "-S", "-p", "", *command], timeout=timeout, stdin_text=payload)
+
+    code, out, err = _run_command(["sudo", "-n", *command], timeout=timeout, stdin_text=stdin_text)
     if code != 0 and _is_sudo_password_error(err, out):
         raise SudoPasswordRequiredError("sudo password required")
     return code, out, err
@@ -324,15 +334,42 @@ def _read_settings_json() -> Dict[str, object]:
     return parsed if isinstance(parsed, dict) else {}
 
 
-def _write_settings_json(data: Dict[str, object], error_prefix: str) -> str:
+def _write_settings_json(
+    data: Dict[str, object],
+    error_prefix: str,
+    sudo_password: str = "",
+) -> Optional[ActionOutcome]:
+    payload = json.dumps(data, indent=2, ensure_ascii=False) + "\n"
     try:
         SETTINGS_FILE.parent.mkdir(parents=True, exist_ok=True)
-        SETTINGS_FILE.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        SETTINGS_FILE.write_text(payload, encoding="utf-8")
+        return None
     except PermissionError as error:
-        return f"{error_prefix}: permission denied for {SETTINGS_FILE} ({error})"
+        if not SETTINGS_FILE.parent.exists():
+            try:
+                code, out, err = _run_sudo_command(["mkdir", "-p", str(SETTINGS_FILE.parent)], sudo_password=sudo_password, timeout=20)
+            except SudoPasswordRequiredError:
+                return ActionOutcome(f"{error_prefix} requires sudo password.", sudo_required=True)
+            if code != 0:
+                if _is_sudo_password_error(err, out):
+                    return ActionOutcome(f"{error_prefix} failed: incorrect sudo password.", sudo_required=True)
+                return ActionOutcome(f"{error_prefix}: could not create {SETTINGS_FILE.parent} ({err or out or 'unknown error'})")
+        try:
+            code, out, err = _run_sudo_command_with_stdin(
+                ["tee", str(SETTINGS_FILE)],
+                sudo_password=sudo_password,
+                timeout=20,
+                stdin_text=payload,
+            )
+        except SudoPasswordRequiredError:
+            return ActionOutcome(f"{error_prefix} requires sudo password.", sudo_required=True)
+        if code == 0:
+            return None
+        if _is_sudo_password_error(err, out):
+            return ActionOutcome(f"{error_prefix} failed: incorrect sudo password.", sudo_required=True)
+        return ActionOutcome(f"{error_prefix}: could not write {SETTINGS_FILE} ({err or out or 'unknown error'})")
     except OSError as error:
-        return f"{error_prefix}: could not write {SETTINGS_FILE} ({error})"
-    return ""
+        return ActionOutcome(f"{error_prefix}: could not write {SETTINGS_FILE} ({error})")
 
 
 def _iter_leaf_paths(value: object, path: Tuple[str, ...] = ()) -> List[Tuple[Tuple[str, ...], object]]:
@@ -407,13 +444,13 @@ def _coerce_value(raw_value: str, existing_value: object) -> object:
     return json.loads(raw)
 
 
-def _save_settings_kv(path_labels: List[str], values: List[str]) -> str:
+def _save_settings_kv(path_labels: List[str], values: List[str], sudo_password: str = "") -> ActionOutcome:
     if len(path_labels) != len(values):
-        return "Settings save failed: malformed key/value payload."
+        return ActionOutcome("Settings save failed: malformed key/value payload.")
 
     data = _read_settings_json()
     if not isinstance(data, dict):
-        return "Settings save failed: root JSON must be an object."
+        return ActionOutcome("Settings save failed: root JSON must be an object.")
 
     for path_label, new_value in zip(path_labels, values):
         path = _path_from_label(path_label)
@@ -422,56 +459,56 @@ def _save_settings_kv(path_labels: List[str], values: List[str]) -> str:
             parsed_value = _coerce_value(new_value, existing)
             _set_nested_value(data, path, parsed_value)
         except Exception as error:
-            return f"Settings save failed at '{path_label}': {error}"
+            return ActionOutcome(f"Settings save failed at '{path_label}': {error}")
 
-    write_error = _write_settings_json(data, "Settings save failed")
-    if write_error:
-        return write_error
-    return f"Saved settings to {SETTINGS_FILE}"
+    outcome = _write_settings_json(data, "Settings save failed", sudo_password=sudo_password)
+    if outcome:
+        return outcome
+    return ActionOutcome(f"Saved settings to {SETTINGS_FILE}")
 
 
-def _save_settings_text(content: str) -> str:
+def _save_settings_text(content: str, sudo_password: str = "") -> ActionOutcome:
     try:
         parsed = json.loads(content)
     except json.JSONDecodeError as error:
-        return f"Settings save failed: invalid JSON ({error})"
+        return ActionOutcome(f"Settings save failed: invalid JSON ({error})")
 
     if not isinstance(parsed, dict):
-        return "Settings save failed: root JSON must be an object."
+        return ActionOutcome("Settings save failed: root JSON must be an object.")
 
-    write_error = _write_settings_json(parsed, "Settings save failed")
-    if write_error:
-        return write_error
-    return f"Saved settings to {SETTINGS_FILE}"
+    outcome = _write_settings_json(parsed, "Settings save failed", sudo_password=sudo_password)
+    if outcome:
+        return outcome
+    return ActionOutcome(f"Saved settings to {SETTINGS_FILE}")
 
 
-def _save_vcom(display_model: str, vcom_value: str) -> str:
+def _save_vcom(display_model: str, vcom_value: str, sudo_password: str = "") -> ActionOutcome:
     model = display_model.strip()
     if not model:
-        return "VCOM save failed: display model is required."
+        return ActionOutcome("VCOM save failed: display model is required.")
 
     if not is_parallel_display(model):
-        return "VCOM save failed: selected display is not a parallel model."
+        return ActionOutcome("VCOM save failed: selected display is not a parallel model.")
 
     raw = vcom_value.strip()
     if not raw:
-        return "VCOM save failed: value is required."
+        return ActionOutcome("VCOM save failed: value is required.")
 
     try:
         numeric_vcom = float(raw)
     except ValueError:
-        return "VCOM save failed: value must be numeric."
+        return ActionOutcome("VCOM save failed: value must be numeric.")
 
     data = _read_settings_json()
     if not isinstance(data, dict):
-        return "VCOM save failed: root JSON must be an object."
+        return ActionOutcome("VCOM save failed: root JSON must be an object.")
 
     data["vcom"] = numeric_vcom
-    write_error = _write_settings_json(data, "VCOM save failed")
-    if write_error:
-        return write_error
+    outcome = _write_settings_json(data, "VCOM save failed", sudo_password=sudo_password)
+    if outcome:
+        return outcome
     settings.VCOM = str(numeric_vcom)
-    return f"Saved VCOM {numeric_vcom} to {SETTINGS_FILE}"
+    return ActionOutcome(f"Saved VCOM {numeric_vcom} to {SETTINGS_FILE}")
 
 
 def _current_timezone() -> str:
@@ -673,6 +710,10 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         sudo_prompt_action: str = "",
         sudo_prompt_display_model: str = "",
         sudo_prompt_timezone: str = "",
+        sudo_prompt_vcom: str = "",
+        sudo_prompt_settings_content: str = "",
+        sudo_prompt_kv_paths: Optional[List[str]] = None,
+        sudo_prompt_kv_values: Optional[List[str]] = None,
         selected_git_branch: str = "",
     ) -> str:
         state = _service_state()
@@ -750,7 +791,36 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         else:
             vcom_section = "<p class='muted' style='margin-top: 0.85rem;'>VCOM is only needed for parallel displays.</p>"
 
-        message_class = "msg error" if "failed" in message.lower() else "msg"
+        lowered_message = message.lower()
+        message_class = "msg error" if any(
+            marker in lowered_message for marker in ("failed", "requires sudo password", "incorrect sudo password")
+        ) else "msg"
+
+        sudo_hidden_fields: List[str] = []
+        if sudo_prompt_action:
+            sudo_hidden_fields.append(
+                f"<input type='hidden' name='display_model' value='{html.escape(sudo_prompt_display_model)}'>"
+            )
+            sudo_hidden_fields.append(
+                f"<input type='hidden' name='timezone' value='{html.escape(sudo_prompt_timezone)}'>"
+            )
+            if sudo_prompt_vcom:
+                sudo_hidden_fields.append(
+                    f"<input type='hidden' name='vcom' value='{html.escape(sudo_prompt_vcom)}'>"
+                )
+            if sudo_prompt_settings_content:
+                sudo_hidden_fields.append(
+                    f"<input type='hidden' name='settings_content' value='{html.escape(sudo_prompt_settings_content)}'>"
+                )
+            if sudo_prompt_kv_paths and sudo_prompt_kv_values:
+                sudo_hidden_fields.extend(
+                    f"<input type='hidden' name='kv_path' value='{html.escape(path)}'>"
+                    for path in sudo_prompt_kv_paths
+                )
+                sudo_hidden_fields.extend(
+                    f"<input type='hidden' name='kv_value' value='{html.escape(value)}'>"
+                    for value in sudo_prompt_kv_values
+                )
 
         return f"""
 <!doctype html>
@@ -1053,8 +1123,7 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
       <p class='muted'>Enter your Linux user password to continue this action.</p>
       <form method='post'>
         <input type='hidden' name='action' value='{html.escape(sudo_prompt_action)}'>
-        <input type='hidden' name='display_model' value='{html.escape(sudo_prompt_display_model)}'>
-        <input type='hidden' name='timezone' value='{html.escape(sudo_prompt_timezone)}'>
+        {''.join(sudo_hidden_fields)}
         <label for='sudo_password'>Password</label>
         <input id='sudo_password' name='sudo_password' type='password' autocomplete='current-password' required>
         <div class='button-row'>
@@ -1135,15 +1204,19 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         timezone_name = form.get("timezone", [""])[0]
         sudo_password = form.get("sudo_password", [""])[0]
         git_branch = form.get("git_branch", [""])[0].strip()
+        settings_content = form.get("settings_content", [""])[0]
+        kv_paths = form.get("kv_path", [])
+        kv_values = form.get("kv_value", [])
+        vcom_value = form.get("vcom", [""])[0]
 
         if action == "save_settings":
-            outcome = ActionOutcome(_save_settings_text(form.get("settings_content", [""])[0]))
+            outcome = _save_settings_text(settings_content, sudo_password=sudo_password)
         elif action == "save_settings_kv":
-            outcome = ActionOutcome(_save_settings_kv(form.get("kv_path", []), form.get("kv_value", [])))
+            outcome = _save_settings_kv(kv_paths, kv_values, sudo_password=sudo_password)
         elif action == "set_timezone":
             outcome = _set_timezone(timezone_name, sudo_password=sudo_password)
         elif action == "save_vcom":
-            outcome = ActionOutcome(_save_vcom(display_model, form.get("vcom", [""])[0]))
+            outcome = _save_vcom(display_model, vcom_value, sudo_password=sudo_password)
         elif action in DISPLAY_ACTIONS:
             outcome = _run_display_action(action, display_model, sudo_password=sudo_password)
         elif action == "git_checkout":
@@ -1160,6 +1233,10 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
                 sudo_prompt_action=action if outcome.sudo_required else "",
                 sudo_prompt_display_model=display_model if outcome.sudo_required else "",
                 sudo_prompt_timezone=timezone_name if outcome.sudo_required else "",
+                sudo_prompt_vcom=vcom_value if outcome.sudo_required else "",
+                sudo_prompt_settings_content=settings_content if outcome.sudo_required else "",
+                sudo_prompt_kv_paths=kv_paths if outcome.sudo_required else None,
+                sudo_prompt_kv_values=kv_values if outcome.sudo_required else None,
                 selected_git_branch=git_branch,
             )
         )
