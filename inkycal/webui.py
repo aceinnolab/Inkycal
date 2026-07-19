@@ -318,9 +318,21 @@ def _read_settings_text() -> str:
 
 def _read_settings_json() -> Dict[str, object]:
     try:
-        return json.loads(_read_settings_text())
+        parsed = json.loads(_read_settings_text())
     except json.JSONDecodeError:
         return {}
+    return parsed if isinstance(parsed, dict) else {}
+
+
+def _write_settings_json(data: Dict[str, object], error_prefix: str) -> str:
+    try:
+        SETTINGS_FILE.parent.mkdir(parents=True, exist_ok=True)
+        SETTINGS_FILE.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    except PermissionError as error:
+        return f"{error_prefix}: permission denied for {SETTINGS_FILE} ({error})"
+    except OSError as error:
+        return f"{error_prefix}: could not write {SETTINGS_FILE} ({error})"
+    return ""
 
 
 def _iter_leaf_paths(value: object, path: Tuple[str, ...] = ()) -> List[Tuple[Tuple[str, ...], object]]:
@@ -412,8 +424,9 @@ def _save_settings_kv(path_labels: List[str], values: List[str]) -> str:
         except Exception as error:
             return f"Settings save failed at '{path_label}': {error}"
 
-    SETTINGS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    SETTINGS_FILE.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    write_error = _write_settings_json(data, "Settings save failed")
+    if write_error:
+        return write_error
     return f"Saved settings to {SETTINGS_FILE}"
 
 
@@ -423,8 +436,12 @@ def _save_settings_text(content: str) -> str:
     except json.JSONDecodeError as error:
         return f"Settings save failed: invalid JSON ({error})"
 
-    SETTINGS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    SETTINGS_FILE.write_text(json.dumps(parsed, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    if not isinstance(parsed, dict):
+        return "Settings save failed: root JSON must be an object."
+
+    write_error = _write_settings_json(parsed, "Settings save failed")
+    if write_error:
+        return write_error
     return f"Saved settings to {SETTINGS_FILE}"
 
 
@@ -450,8 +467,9 @@ def _save_vcom(display_model: str, vcom_value: str) -> str:
         return "VCOM save failed: root JSON must be an object."
 
     data["vcom"] = numeric_vcom
-    SETTINGS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    SETTINGS_FILE.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    write_error = _write_settings_json(data, "VCOM save failed")
+    if write_error:
+        return write_error
     settings.VCOM = str(numeric_vcom)
     return f"Saved VCOM {numeric_vcom} to {SETTINGS_FILE}"
 
@@ -744,25 +762,35 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
   <style>
     :root {{
       color-scheme: light;
-      --bg: #eff2f7;
+      --bg: #fafaf7;
       --surface: #ffffff;
-      --text: #1f2937;
-      --muted: #64748b;
-      --accent: #2563eb;
-      --ok: #157347;
-      --err: #b42318;
-      --shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
-      --border: #dbe2ef;
+      --surface-alt: #f3f0e8;
+      --text: #1a1a18;
+      --muted: #6b6659;
+      --accent: #d97706;
+      --accent-2: #0d9488;
+      --ok: #16a34a;
+      --err: #dc2626;
+      --shadow: 0 8px 28px rgba(26, 26, 24, 0.10);
+      --border: #ddd8cc;
     }}
     * {{ box-sizing: border-box; }}
     body {{
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(217, 119, 6, 0.10), transparent 34%),
+        radial-gradient(circle at top left, rgba(13, 148, 136, 0.08), transparent 30%),
+        var(--bg);
       color: var(--text);
     }}
     .wrapper {{ max-width: 1180px; margin: 0 auto; padding: 1rem; }}
-    h1 {{ margin: 0 0 0.25rem; font-size: clamp(1.4rem, 2.2vw, 2rem); }}
+    h1 {{
+      margin: 0 0 0.25rem;
+      font-family: 'Lato Bold', Inter, system-ui, sans-serif;
+      font-size: clamp(1.7rem, 3.2vw, 2.6rem);
+      line-height: 1.2;
+    }}
     .subtitle {{ margin: 0 0 1rem; color: var(--muted); }}
     .msg {{ margin: 0.6rem 0 1rem; color: var(--ok); font-weight: 600; min-height: 1.2rem; }}
     .msg.error {{ color: var(--err); }}
@@ -774,34 +802,50 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
       padding: 1rem;
       box-shadow: var(--shadow);
     }}
-    h2 {{ margin: 0 0 0.8rem; font-size: 1.1rem; }}
+    h2 {{
+      margin: 0 0 0.8rem;
+      font-family: 'Lato Bold', Inter, system-ui, sans-serif;
+      font-size: 1.1rem;
+      line-height: 1.2;
+    }}
     p {{ margin: 0.45rem 0; }}
     .muted {{ color: var(--muted); font-size: 0.92rem; }}
     .button-row {{ display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.55rem; }}
     button {{
-      border: 0;
-      border-radius: 10px;
-      padding: 0.55rem 0.8rem;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 0.58rem 0.84rem;
       background: var(--accent);
       color: #fff;
       font-weight: 600;
       cursor: pointer;
+      transition: filter 0.15s, box-shadow 0.15s;
     }}
-    button.secondary {{ background: #475569; }}
+    button:hover {{ filter: brightness(1.07); box-shadow: var(--shadow); }}
+    button:active {{ filter: brightness(0.96); }}
+    button.secondary {{
+      background: var(--accent-2);
+      border-color: var(--accent-2);
+    }}
     input, select, textarea {{
       width: 100%;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 0.58rem 0.7rem;
       font: inherit;
-      background: #fff;
+      background: var(--surface-alt);
       color: var(--text);
+    }}
+    input:focus, select:focus, textarea:focus {{
+      outline: 0;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
     }}
     label {{ display: block; margin: 0.4rem 0 0.35rem; font-weight: 600; }}
     textarea {{ min-height: 230px; resize: vertical; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }}
     pre {{
-      background: #0f172a;
-      color: #e2e8f0;
+      background: #1e1c16;
+      color: #ede8dc;
       padding: 0.85rem;
       border-radius: 10px;
       max-height: 45vh;
@@ -812,9 +856,9 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
       line-height: 1.35;
     }}
     .metrics {{ display: grid; grid-template-columns: auto 1fr; gap: 0.35rem 0.65rem; }}
-    .metrics strong {{ color: #0f172a; }}
+    .metrics strong {{ color: var(--text); }}
     .qr-img {{ max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--border); }}
-    .link-list a {{ color: #1d4ed8; text-decoration: none; font-weight: 600; }}
+    .link-list a {{ color: var(--accent); text-decoration: none; font-weight: 600; }}
     .link-list a:hover {{ text-decoration: underline; }}
     .discord-link {{ display: inline-flex; align-items: center; gap: 0.55rem; margin-top: 0.4rem; }}
     .discord-logo {{ width: 22px; height: 22px; display: inline-block; }}
@@ -827,8 +871,8 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
       padding: 0.45rem 0.65rem;
       border: 1px solid var(--border);
       border-radius: 10px;
-      background: #f8fafc;
-      color: #334155;
+      background: var(--surface-alt);
+      color: var(--muted);
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
       font-size: 0.88rem;
       word-break: break-word;
@@ -837,7 +881,7 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
     .modal-backdrop {{
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.45);
+      background: rgba(26, 26, 24, 0.45);
       display: none;
       align-items: center;
       justify-content: center;
