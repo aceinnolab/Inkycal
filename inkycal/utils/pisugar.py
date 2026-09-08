@@ -28,12 +28,16 @@ class PiSugar:
         else:
             cmd = self.command_template.replace("command", command)
         try:
-            result = subprocess.run(cmd, shell=True, text=True, capture_output=True)
+            result = subprocess.run(cmd, shell=True, text=True, capture_output=True, timeout=15)
             if result.returncode != 0:
                 print(f"Command failed with {result.stderr}")
                 return None
             output = result.stdout.strip()
             return output
+        except subprocess.TimeoutExpired:
+            logger.error(f"PiSugar command '{command}' timed out after 15s "
+                         f"(pisugar-server unresponsive, e.g. a stuck I2C bus)")
+            return None
         except Exception as e:
             logger.error(f"Error executing command: {e}")
             return None

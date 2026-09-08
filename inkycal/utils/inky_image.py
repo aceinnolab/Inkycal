@@ -47,7 +47,7 @@ class Inkyimage:
         try:
             if path.startswith("http"):
                 logger.info("loading image from URL")
-                image = Image.open(requests.get(path, stream=True).raw)
+                image = Image.open(requests.get(path, stream=True, timeout=15).raw)
             else:
                 logger.info("loading image from local path")
                 image = Image.open(path)
