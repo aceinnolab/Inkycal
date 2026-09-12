@@ -78,7 +78,7 @@ class Jokes(InkycalModule):
         # Get the actual joke
         url = "https://icanhazdadjoke.com"
         header = {"accept": "text/plain"}
-        response = requests.get(url, headers=header)
+        response = requests.get(url, headers=header, timeout=15)
         response.encoding = 'utf-8'  # Change encoding to UTF-8
         joke = response.text.rstrip()  # use to remove newlines
         logger.debug(f"joke: {joke}")

@@ -33,7 +33,7 @@ def is_timestamp_within_range(timestamp: datetime, start_time: datetime, end_tim
 
 def get_json_from_url(request_url):
     """Performs an HTTP GET request and returns the parsed JSON response."""
-    response = requests.get(request_url)
+    response = requests.get(request_url, timeout=15)
     if not response.ok:
         raise AssertionError(
             f"Failure getting weather: code {response.status_code}. Reason: {response.text}"

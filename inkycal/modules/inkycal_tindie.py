@@ -75,7 +75,7 @@ class Tindie(InkycalModule):
         # Make the API call
         url = f"https://www.tindie.com/api/v1/order/?format=json&username={self.username}&api_key={self.api_key}"
         header = {"accept": "text/json"}
-        response = requests.get(url, headers=header, params={"shipped": "false", "limit": "50"})
+        response = requests.get(url, headers=header, params={"shipped": "false", "limit": "50"}, timeout=15)
         if response.status_code != 200:
             logger.error(f"Failed to get orders, status code: {response.status_code}, reason: {response.reason}.")
             logger.error(f"response: {response.text}")
