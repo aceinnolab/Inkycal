@@ -2130,7 +2130,7 @@ The image is finally combined with others by Inkycal and rendered on the display
 <h3 id="required-method">Required method<a class="headerlink" href="#required-method" title="Permanent link">&para;</a></h3>
 <p>Each module <strong>must</strong> implement:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return (image_black, image_colour)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Return (image_black, image_colour)"""</span>
 </code></pre></div>
 
 <p>This is where all drawing happens.</p>
@@ -2141,19 +2141,19 @@ The image is finally combined with others by Inkycal and rendered on the display
 <h3 id="requires-mandatory-fields"><code>requires</code> (mandatory fields)<a class="headerlink" href="#requires-mandatory-fields" title="Permanent link">&para;</a></h3>
 <p>These fields <strong>must</strong> be provided in the Web-UI or an error is raised.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">requires</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Your API key&quot;</span><span class="p">},</span>
-    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Enter your username&quot;</span><span class="p">},</span>
+    <span class="s2">"api_key"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"label"</span><span class="p">:</span> <span class="s2">"Your API key"</span><span class="p">},</span>
+    <span class="s2">"username"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"label"</span><span class="p">:</span> <span class="s2">"Enter your username"</span><span class="p">},</span>
 <span class="p">}</span>
 </code></pre></div>
 
 <hr />
 <h3 id="optional-ui-exposed-but-not-required"><code>optional</code> (UI-exposed but not required)<a class="headerlink" href="#optional-ui-exposed-but-not-required" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><code><span class="n">optional</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;hobbies&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Hobbies (comma-separated)&quot;</span><span class="p">},</span>
-    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Your age&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">},</span>
-    <span class="s2">&quot;likes_inkycal&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Do you like Inkycal?&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
+    <span class="s2">"hobbies"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"label"</span><span class="p">:</span> <span class="s2">"Hobbies (comma-separated)"</span><span class="p">},</span>
+    <span class="s2">"age"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"label"</span><span class="p">:</span> <span class="s2">"Your age"</span><span class="p">,</span> <span class="s2">"default"</span><span class="p">:</span> <span class="mi">18</span><span class="p">},</span>
+    <span class="s2">"likes_inkycal"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"label"</span><span class="p">:</span> <span class="s2">"Do you like Inkycal?"</span><span class="p">,</span>
+        <span class="s2">"options"</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
     <span class="p">},</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -2168,14 +2168,14 @@ The image is finally combined with others by Inkycal and rendered on the display
 <li>empty values (<code>None</code>).</li>
 </ul>
 <p>Convert types manually inside <code>__init__()</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">])</span>
+<div class="codehilite"><pre><span></span><code><span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">"age"</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">"age"</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">"age"</span><span class="p">])</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="mi">18</span>
 </code></pre></div>
 
 <p>List conversion:</p>
-<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">hobbies</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;hobbies&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;hobbies&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="p">[]</span>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">hobbies</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"hobbies"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span> <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">"hobbies"</span><span class="p">]</span> <span class="k">else</span> <span class="p">[]</span>
 </code></pre></div>
 
 <hr />
@@ -2191,8 +2191,8 @@ The image is finally combined with others by Inkycal and rendered on the display
 <div class="codehilite"><pre><span></span><code><span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
     <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
     <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span>
-    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span>
-    <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">"Hello World!"</span><span class="p">,</span>
+    <span class="n">alignment</span><span class="o">=</span><span class="s2">"center"</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -2200,8 +2200,8 @@ The image is finally combined with others by Inkycal and rendered on the display
 <div class="codehilite"><pre><span></span><code><span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
     <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>
     <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">40</span><span class="p">),</span>
-    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Hello!&quot;</span><span class="p">,</span>
-    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;colour&quot;</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">"Hello!"</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">"colour"</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -2214,7 +2214,7 @@ The image is finally combined with others by Inkycal and rendered on the display
 <p>Modules may implement <code>_validate()</code> to check logic:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">age</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Age must be an integer&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Age must be an integer"</span><span class="p">)</span>
 </code></pre></div>
 
 <p>This runs automatically when calling <code>set(help=False, ...)</code> from the API.</p>
@@ -2227,26 +2227,26 @@ The image is finally combined with others by Inkycal and rendered on the display
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Simple</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Simple - Hello World&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">"Simple - Hello World"</span>
 
     <span class="n">requires</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Your name&quot;</span><span class="p">}</span>
+        <span class="s2">"username"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"label"</span><span class="p">:</span> <span class="s2">"Your name"</span><span class="p">}</span>
     <span class="p">}</span>
 
     <span class="n">optional</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;show_smiley&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Show a smiley?&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
-            <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">"show_smiley"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"label"</span><span class="p">:</span> <span class="s2">"Show a smiley?"</span><span class="p">,</span>
+            <span class="s2">"options"</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
+            <span class="s2">"default"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-        <span class="n">cfg</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"config"</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">cfg</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">show_smiley</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;show_smiley&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">cfg</span><span class="p">[</span><span class="s2">"username"</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_smiley</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"show_smiley"</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding_left</span>
@@ -2254,9 +2254,9 @@ The image is finally combined with others by Inkycal and rendered on the display
 
         <span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">im_size</span><span class="o">=</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">font</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="p">)</span>
 
-        <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Hello </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Hello </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">"</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_smiley</span><span class="p">:</span>
-            <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot; 🙂&quot;</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s2">" 🙂"</span>
 
         <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
 
@@ -2269,7 +2269,7 @@ The image is finally combined with others by Inkycal and rendered on the display
 <h3 id="1-update-inkycalmodules__init__py">1. Update <code>inkycal/modules/__init__.py</code><a class="headerlink" href="#1-update-inkycalmodules__init__py" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">InkycalModuleImporter</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
     <span class="o">...</span>
-    <span class="n">Simple</span> <span class="o">=</span> <span class="s2">&quot;inkycal.modules.simple.Simple&quot;</span>
+    <span class="n">Simple</span> <span class="o">=</span> <span class="s2">"inkycal.modules.simple.Simple"</span>
 </code></pre></div>
 
 <p>Inkycal resolves module classes through <code>InkycalModuleImporter</code>, so your custom module needs a unique enum entry there.</p>
@@ -2287,12 +2287,12 @@ The image is finally combined with others by Inkycal and rendered on the display
 </code></pre></div>
 
 <h3 id="save-previews">Save previews:<a class="headerlink" href="#save-previews" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="n">black</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;preview_black.png&quot;</span><span class="p">)</span>
-<span class="n">colour</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;preview_colour.png&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">black</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"preview_black.png"</span><span class="p">)</span>
+<span class="n">colour</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"preview_colour.png"</span><span class="p">)</span>
 </code></pre></div>
 
 <h3 id="logging">Logging:<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Value is </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">my_value</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Value is </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">my_value</span><span class="p">)</span>
 </code></pre></div>
 
 <p>Logs on the Pi are stored at:</p>

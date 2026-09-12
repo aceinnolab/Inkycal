@@ -1241,12 +1241,12 @@ Every time Inkycal generates an image, the <code>Display</code> class handles:</
 <h1 id="creating-a-display">Creating a Display<a class="headerlink" href="#creating-a-display" title="Permanent link">&para;</a></h1>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">inkycal.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Display</span>
 
-<span class="n">display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">&quot;epd_7_in_5_colour&quot;</span><span class="p">)</span>
+<span class="n">display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">"epd_7_in_5_colour"</span><span class="p">)</span>
 </code></pre></div>
 
 <p>If the model name exists in <code>supported_models</code>, the display initializes successfully.</p>
 <p>If not, you will see:</p>
-<div class="codehilite"><pre><span></span><code>Exception: Display model &#39;&lt;model&gt;&#39; is not supported. Check spelling or supported models list.
+<div class="codehilite"><pre><span></span><code>Exception: Display model '&lt;model&gt;' is not supported. Check spelling or supported models list.
 </code></pre></div>
 
 <p>Or if SPI is unavailable:</p>
@@ -1323,16 +1323,16 @@ Every time Inkycal generates an image, the <code>Display</code> class handles:</
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">inkycal.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Display</span>
 
-<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;hello.png&quot;</span><span class="p">)</span>
-<span class="n">display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">&quot;epd_7_in_5&quot;</span><span class="p">)</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"hello.png"</span><span class="p">)</span>
+<span class="n">display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">"epd_7_in_5"</span><span class="p">)</span>
 <span class="n">display</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </code></pre></div>
 
 <h3 id="example-colour-display">Example — colour display<a class="headerlink" href="#example-colour-display" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="n">black</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;black.png&quot;</span><span class="p">)</span>
-<span class="n">colour</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;colour.png&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">black</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"black.png"</span><span class="p">)</span>
+<span class="n">colour</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"colour.png"</span><span class="p">)</span>
 
-<span class="n">display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">&quot;epd_7_in_5_colour&quot;</span><span class="p">)</span>
+<span class="n">display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">"epd_7_in_5_colour"</span><span class="p">)</span>
 <span class="n">display</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">black</span><span class="p">,</span> <span class="n">colour</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1370,7 +1370,7 @@ Every time Inkycal generates an image, the <code>Display</code> class handles:</
 
 <p>⚠️ Calibration can take <strong>10–20 minutes</strong> depending on model.</p>
 <h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="n">display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">&quot;epd_7_in_5_colour&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">"epd_7_in_5_colour"</span><span class="p">)</span>
 <span class="n">display</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1378,7 +1378,7 @@ Every time Inkycal generates an image, the <code>Display</code> class handles:</
 <h2 id="get_display_sizemodel_name"><code>get_display_size(model_name)</code><a class="headerlink" href="#get_display_sizemodel_name" title="Permanent link">&para;</a></h2>
 <p>Returns the model's width and height in pixels.</p>
 <h3 id="example_1">Example<a class="headerlink" href="#example_1" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">Display</span><span class="o">.</span><span class="n">get_display_size</span><span class="p">(</span><span class="s2">&quot;epd_7_in_5&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">Display</span><span class="o">.</span><span class="n">get_display_size</span><span class="p">(</span><span class="s2">"epd_7_in_5"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>  <span class="c1"># e.g.: 640 384</span>
 </code></pre></div>
 
@@ -1398,7 +1398,7 @@ Every time Inkycal generates an image, the <code>Display</code> class handles:</
 <p>Utility method for quick debugging:<br />
 Renders centered text to the display without needing to manually create images.</p>
 <p>Great for troubleshooting:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;epd_7_in_5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">render_text</span><span class="p">(</span><span class="s2">&quot;Hello world!&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">Display</span><span class="p">(</span><span class="s2">"epd_7_in_5"</span><span class="p">)</span><span class="o">.</span><span class="n">render_text</span><span class="p">(</span><span class="s2">"Hello world!"</span><span class="p">)</span>
 </code></pre></div>
 
 <p>Features:</p>
@@ -1441,7 +1441,7 @@ Renders centered text to the display without needing to manually create images.<
 <h1 id="when-to-use-display">When to Use Display<a class="headerlink" href="#when-to-use-display" title="Permanent link">&para;</a></h1>
 <p>You should use the <code>Display</code> class when:</p>
 <h3 id="testing-your-screen">✔ Testing your screen<a class="headerlink" href="#testing-your-screen" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="n">display</span><span class="o">.</span><span class="n">render_text</span><span class="p">(</span><span class="s2">&quot;Testing E-Paper...&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">display</span><span class="o">.</span><span class="n">render_text</span><span class="p">(</span><span class="s2">"Testing E-Paper..."</span><span class="p">)</span>
 </code></pre></div>
 
 <h3 id="sending-final-module-output">✔ Sending final module output<a class="headerlink" href="#sending-final-module-output" title="Permanent link">&para;</a></h3>

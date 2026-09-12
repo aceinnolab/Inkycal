@@ -1981,7 +1981,7 @@ python<span class="w"> </span>inky_run.py
 <h2 id="step-3-enable-pisugar-mode-in-settings">Step 3: Enable PiSugar Mode in Settings<a class="headerlink" href="#step-3-enable-pisugar-mode-in-settings" title="Permanent link">&para;</a></h2>
 <p>In your <code>settings.json</code>, add or set:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;use_pi_sugar&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="nt">"use_pi_sugar"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 <span class="p">}</span>
 </code></pre></div>
 
@@ -2004,8 +2004,8 @@ python<span class="w"> </span>inky_run.py
 <p>To maximize battery life, enable auto-shutdown. This causes Inkycal to power off the Pi immediately after rendering, waking automatically at the next scheduled update.</p>
 <p><strong>Via settings.json:</strong></p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;use_pi_sugar&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;shutdown_after_run&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="nt">"use_pi_sugar"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"shutdown_after_run"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 <span class="p">}</span>
 </code></pre></div>
 
@@ -2109,7 +2109,7 @@ python<span class="w"> </span>inky_run.py
 <h2 id="tips-tricks">Tips &amp; Tricks<a class="headerlink" href="#tips-tricks" title="Permanent link">&para;</a></h2>
 <h3 id="disable-hdmi-to-save-power">💡 Disable HDMI to Save Power<a class="headerlink" href="#disable-hdmi-to-save-power" title="Permanent link">&para;</a></h3>
 <p>If you're not using HDMI output:</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;hdmi_blanking=2&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/boot/firmware/config.txt
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s2">"hdmi_blanking=2"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/boot/firmware/config.txt
 sudo<span class="w"> </span>reboot
 </code></pre></div>
 

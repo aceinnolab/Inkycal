@@ -1355,21 +1355,21 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">inkycal.utils.canvas</span><span class="w"> </span><span class="kn">import</span> <span class="n">Canvas</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">MyModule</span><span class="p">(</span><span class="n">InkycalModule</span><span class="p">):</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;My custom module&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">"My custom module"</span>
 
     <span class="n">requires</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">optional</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-        <span class="n">cfg</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"config"</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">im_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding_left</span><span class="p">))</span>
         <span class="n">im_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding_top</span><span class="p">))</span>
 
         <span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">((</span><span class="n">im_width</span><span class="p">,</span> <span class="n">im_height</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="p">)</span>
-        <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">im_width</span><span class="p">,</span> <span class="n">im_height</span><span class="p">),</span> <span class="s2">&quot;Hello from custom module&quot;</span><span class="p">)</span>
+        <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">im_width</span><span class="p">,</span> <span class="n">im_height</span><span class="p">),</span> <span class="s2">"Hello from custom module"</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">canvas</span><span class="o">.</span><span class="n">image_black</span><span class="p">,</span> <span class="n">canvas</span><span class="o">.</span><span class="n">image_colour</span>
 </code></pre></div>

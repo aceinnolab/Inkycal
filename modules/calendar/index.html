@@ -2127,7 +2127,7 @@ col = day index
 <hr />
 <h3 id="4-marking-event-days">4️⃣ Marking event days<a class="headerlink" href="#4-marking-event-days" title="Permanent link">&para;</a></h3>
 <p>Every event is expanded into <strong>all days between start and end</strong>:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">for</span> <span class="n">day</span> <span class="ow">in</span> <span class="n">arrow</span><span class="o">.</span><span class="n">Arrow</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code><span class="k">for</span> <span class="n">day</span> <span class="ow">in</span> <span class="n">arrow</span><span class="o">.</span><span class="n">Arrow</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="s1">'day'</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
     <span class="n">days_with_events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">day</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
 </code></pre></div>
 
@@ -2142,7 +2142,7 @@ col = day index
 <li>Multi-day events display a human-readable duration:</li>
 </ul>
 <p>Example:</p>
-<div class="codehilite"><pre><span></span><code><span class="mf">2</span><span class="w"> </span><span class="n">days</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="s">&quot;(in 2 days)&quot;</span>
+<div class="codehilite"><pre><span></span><code><span class="mf">2</span><span class="w"> </span><span class="n">days</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="s">"(in 2 days)"</span>
 </code></pre></div>
 
 <p>Line wrapping is handled by the Canvas engine.</p>
@@ -2167,7 +2167,7 @@ col = day index
 - <strong>CalDAV servers:</strong> Export or subscribe to iCalendar URL</p>
 <h3 id="validate-your-icalendar-url">Validate Your iCalendar URL<a class="headerlink" href="#validate-your-icalendar-url" title="Permanent link">&para;</a></h3>
 <p>Before using, test it works:</p>
-<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;YOUR_ICAL_URL&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-20
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">"YOUR_ICAL_URL"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-20
 </code></pre></div>
 
 <p>You should see lines starting with <code>BEGIN:VCALENDAR</code>. If you get an error, verify:
@@ -2176,7 +2176,7 @@ col = day index
 - Calendar actually contains events</p>
 <h3 id="multiple-calendars">Multiple Calendars<a class="headerlink" href="#multiple-calendars" title="Permanent link">&para;</a></h3>
 <p>Separate multiple URLs with commas:</p>
-<div class="codehilite"><pre><span></span><code><span class="nt">&quot;ical_urls&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://calendar.google.com/...1.ics, https://calendar.google.com/...2.ics&quot;</span>
+<div class="codehilite"><pre><span></span><code><span class="nt">"ical_urls"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://calendar.google.com/...1.ics, https://calendar.google.com/...2.ics"</span>
 </code></pre></div>
 
 <hr />

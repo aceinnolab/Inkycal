@@ -1424,7 +1424,7 @@ sudo<span class="w"> </span>./configure<span class="w"> </span><span class="o">&
 <ul>
 <li>Enable swap (strongly recommended on the Raspberry Pi Zero)</li>
 </ul>
-<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;mkdir -p /etc/rpi/swap.conf.d &amp;&amp;</span>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'mkdir -p /etc/rpi/swap.conf.d &amp;&amp;</span>
 <span class="s1">cat &lt;&lt;EOF | cmp -s - /etc/rpi/swap.conf.d/80-use-swapfile.conf || cat &lt;&lt;EOF &gt;/etc/rpi/swap.conf.d/80-use-swapfile.conf</span>
 <span class="s1">[Main]</span>
 <span class="s1">Mechanism=swapfile</span>
@@ -1432,7 +1432,7 @@ sudo<span class="w"> </span>./configure<span class="w"> </span><span class="o">&
 <span class="s1">[File]</span>
 <span class="s1">FixedSizeMiB=1024</span>
 <span class="s1">EOF</span>
-<span class="s1">EOF&#39;</span>
+<span class="s1">EOF'</span>
 </code></pre></div>
 
 <ul>
@@ -1454,7 +1454,7 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/acein
 <li>Install apt dependencies (single source: <code>apt_packages.txt</code>)</li>
 </ul>
 <div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span>-y
-sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="k">$(</span>tr<span class="w"> </span><span class="s1">&#39;\n&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span>&lt;<span class="w"> </span>apt_packages.txt<span class="k">)</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="k">$(</span>tr<span class="w"> </span><span class="s1">'\n'</span><span class="w"> </span><span class="s1">' '</span><span class="w"> </span>&lt;<span class="w"> </span>apt_packages.txt<span class="k">)</span>
 </code></pre></div>
 
 <p>Create virtual environment:</p>

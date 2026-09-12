@@ -1983,7 +1983,7 @@
 - <strong>CalDAV servers:</strong> Export or subscribe to iCalendar URL</p>
 <h3 id="validate-your-icalendar-url">Validate Your iCalendar URL<a class="headerlink" href="#validate-your-icalendar-url" title="Permanent link">&para;</a></h3>
 <p>Before using, test it works:</p>
-<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;YOUR_ICAL_URL&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-20
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">"YOUR_ICAL_URL"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-20
 </code></pre></div>
 
 <p>You should see lines starting with <code>BEGIN:VCALENDAR</code>. If you get an error, verify:
@@ -1992,7 +1992,7 @@
 - Calendar actually contains events</p>
 <h3 id="multiple-calendars">Multiple Calendars<a class="headerlink" href="#multiple-calendars" title="Permanent link">&para;</a></h3>
 <p>Separate multiple URLs with commas:</p>
-<div class="codehilite"><pre><span></span><code><span class="nt">&quot;ical_urls&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://calendar.google.com/...1.ics, https://calendar.google.com/...2.ics&quot;</span>
+<div class="codehilite"><pre><span></span><code><span class="nt">"ical_urls"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://calendar.google.com/...1.ics, https://calendar.google.com/...2.ics"</span>
 </code></pre></div>
 
 <hr />

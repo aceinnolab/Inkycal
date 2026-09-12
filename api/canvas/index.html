@@ -1390,9 +1390,9 @@ Every module generates its visual output using a <code>Canvas</code> instance, w
     <span class="n">box_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">alignment</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+    <span class="n">alignment</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"center"</span><span class="p">,</span> <span class="s2">"left"</span><span class="p">,</span> <span class="s2">"right"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"center"</span><span class="p">,</span>
     <span class="n">autofit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">colour</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="s2">&quot;colour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="n">colour</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"black"</span><span class="p">,</span> <span class="s2">"colour"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"black"</span><span class="p">,</span>
     <span class="n">rotation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">fill_width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="n">fill_height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
@@ -1403,16 +1403,16 @@ Every module generates its visual output using a <code>Canvas</code> instance, w
 <div class="codehilite"><pre><span></span><code><span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
     <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
     <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span>
-    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Hello World&quot;</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">"Hello World"</span><span class="p">,</span>
     <span class="n">autofit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+    <span class="n">alignment</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
 <hr />
 <h2 id="text_wraptext-max_width"><code>text_wrap(text, max_width)</code><a class="headerlink" href="#text_wraptext-max_width" title="Permanent link">&para;</a></h2>
 <p>Splits text into a list of wrapped lines based on rendered pixel width.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">lines</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">text_wrap</span><span class="p">(</span><span class="s2">&quot;some long text&quot;</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">lines</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">text_wrap</span><span class="p">(</span><span class="s2">"some long text"</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
 </code></pre></div>
 
 <p>This is used internally by <code>write()</code> but may also be useful when building complex layouts.</p>
@@ -1453,7 +1453,7 @@ Every module generates its visual output using a <code>Canvas</code> instance, w
     <span class="n">xy</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
     <span class="n">box_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
     <span class="n">icon</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">colour</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="s2">&quot;colour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="n">colour</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"black"</span><span class="p">,</span> <span class="s2">"colour"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"black"</span><span class="p">,</span>
     <span class="n">rotation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">fill_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.90</span><span class="p">,</span>
     <span class="n">font</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FONTS</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1464,8 +1464,8 @@ Every module generates its visual output using a <code>Canvas</code> instance, w
 <div class="codehilite"><pre><span></span><code><span class="n">canvas</span><span class="o">.</span><span class="n">draw_icon</span><span class="p">(</span>
     <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
     <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span>
-    <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\uf00d</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;colour&quot;</span>
+    <span class="n">icon</span><span class="o">=</span><span class="s2">"</span><span class="se">\uf00d</span><span class="s2">"</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">"colour"</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -1543,9 +1543,9 @@ Every module generates its visual output using a <code>Canvas</code> instance, w
         <span class="n">canvas</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
             <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
             <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
-            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">"Hello World!"</span><span class="p">,</span>
             <span class="n">autofit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span>
+            <span class="n">alignment</span><span class="o">=</span><span class="s2">"center"</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">canvas</span><span class="o">.</span><span class="n">image_black</span><span class="p">,</span> <span class="n">canvas</span><span class="o">.</span><span class="n">image_colour</span>

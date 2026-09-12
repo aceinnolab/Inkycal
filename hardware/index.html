@@ -1378,7 +1378,7 @@ Common supported models include (but are not limited to):</p>
 - Auto-wake timer<br />
 - Cleaner cable-free installation  </p>
 <p>Enable PiSugar support in settings.json:</p>
-<div class="codehilite"><pre><span></span><code><span class="nt">&quot;use_pi_sugar&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<div class="codehilite"><pre><span></span><code><span class="nt">"use_pi_sugar"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 </code></pre></div>
 
 <p>More info:<br />
@@ -1431,8 +1431,8 @@ Common supported models include (but are not limited to):</p>
 
 <p>Then test display access via Inkycal:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">inkycal.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Display</span>
-<span class="n">d</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">&quot;epd_7_in_5_colour&quot;</span><span class="p">)</span>
-<span class="n">d</span><span class="o">.</span><span class="n">render_text</span><span class="p">(</span><span class="s2">&quot;Display works!&quot;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">"epd_7_in_5_colour"</span><span class="p">)</span>
+<span class="n">d</span><span class="o">.</span><span class="n">render_text</span><span class="p">(</span><span class="s2">"Display works!"</span><span class="p">)</span>
 </code></pre></div>
 
 <hr />
@@ -1466,7 +1466,7 @@ Common supported models include (but are not limited to):</p>
 <hr />
 <h3 id="display-refreshes-but-shows-messyghosted-text">❌ Display refreshes but shows messy/ghosted text<a class="headerlink" href="#display-refreshes-but-shows-messyghosted-text" title="Permanent link">&para;</a></h3>
 <p>Run calibration:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">d</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">&quot;epd_7_in_5_colour&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">d</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span><span class="s2">"epd_7_in_5_colour"</span><span class="p">)</span>
 <span class="n">d</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
 
