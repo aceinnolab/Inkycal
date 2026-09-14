@@ -492,12 +492,18 @@ class Inkycal:
         # Create 2 blank images with the same resolution as the display
         width, height = Display.get_display_size(self.settings["model"])
 
-        # Since Inkycal runs in vertical mode, switch the height and width
-        width, height = height, width
+        # "layout": "horizontal" keeps the display's native (landscape) orientation
+        # and tiles modules left-to-right instead of top-to-bottom. Default/absent
+        # keeps the original vertical-stacking behavior unchanged.
+        layout = self.settings.get('layout', 'vertical')
+
+        if layout != 'horizontal':
+            # Since Inkycal runs in vertical mode by default, switch the height and width
+            width, height = height, width
 
         canvas = Canvas(im_size=(width, height), font=FONTS.default, font_size=14)
 
-        # Set cursor for y-axis
+        # Set cursor for the stacking axis (y-axis for vertical, x-axis for horizontal)
         im1_cursor = 0
         im2_cursor = 0
 
@@ -517,20 +523,24 @@ class Inkycal:
                 # Get the size of the section
                 section_size = [i for i in self.settings['modules'] if i['position'] == number][0]['config']['size']
 
-                # Calculate coordinates to center the image
-                x = int((section_size[0] - im1_size[0]) / 2)
-
-                # If this is the first module, use the y-offset
-                if im1_cursor == 0:
+                if layout == 'horizontal':
+                    x = im1_cursor + int((section_size[0] - im1_size[0]) / 2)
                     y = int((section_size[1] - im1_size[1]) / 2)
                 else:
-                    y = im1_cursor + int((section_size[1] - im1_size[1]) / 2)
+                    # Calculate coordinates to center the image
+                    x = int((section_size[0] - im1_size[0]) / 2)
+
+                    # If this is the first module, use the y-offset
+                    if im1_cursor == 0:
+                        y = int((section_size[1] - im1_size[1]) / 2)
+                    else:
+                        y = im1_cursor + int((section_size[1] - im1_size[1]) / 2)
 
                 # center the image in the section space
                 canvas.image_black.paste(im1, (x, y), im1)
 
-                # Shift the y-axis cursor at the beginning of next section
-                im1_cursor += section_size[1]
+                # Shift the cursor at the beginning of next section
+                im1_cursor += section_size[0] if layout == 'horizontal' else section_size[1]
 
             # Check if there is an image for the coloured band
             if os.path.exists(im2_path):
@@ -542,20 +552,24 @@ class Inkycal:
                 # Get the size of the section
                 section_size = [i for i in self.settings['modules'] if i['position'] == number][0]['config']['size']
 
-                # Calculate coordinates to center the image
-                x = int((section_size[0] - im2_size[0]) / 2)
-
-                # If this is the first module, use the y-offset
-                if im2_cursor == 0:
+                if layout == 'horizontal':
+                    x = im2_cursor + int((section_size[0] - im2_size[0]) / 2)
                     y = int((section_size[1] - im2_size[1]) / 2)
                 else:
-                    y = im2_cursor + int((section_size[1] - im2_size[1]) / 2)
+                    # Calculate coordinates to center the image
+                    x = int((section_size[0] - im2_size[0]) / 2)
+
+                    # If this is the first module, use the y-offset
+                    if im2_cursor == 0:
+                        y = int((section_size[1] - im2_size[1]) / 2)
+                    else:
+                        y = im2_cursor + int((section_size[1] - im2_size[1]) / 2)
 
                 # center the image in the section space
                 canvas.image_colour.paste(im2, (x, y), im2)
 
-                # Shift the y-axis cursor at the beginning of next section
-                im2_cursor += section_size[1]
+                # Shift the cursor at the beginning of next section
+                im2_cursor += section_size[0] if layout == 'horizontal' else section_size[1]
 
         # Add info-section if specified --
 

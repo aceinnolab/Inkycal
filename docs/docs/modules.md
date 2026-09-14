@@ -46,6 +46,28 @@ Each module entry in `settings.json` uses this structure:
 }
 ```
 
+## Layout direction
+
+By default, modules are stacked top-to-bottom in the display's native
+orientation swapped to portrait. Set a top-level `"layout": "horizontal"` in
+`settings.json` to keep the display's native (landscape) orientation instead
+and tile modules left-to-right:
+
+```json
+{
+  "layout": "horizontal",
+  "modules": [
+    { "position": 1, "name": "Calendar", "config": { "size": [550, 964], ... } },
+    { "position": 2, "name": "Xkcd", "config": { "size": [754, 964], ... } }
+  ]
+}
+```
+
+Each module's `size` is then interpreted as `[column width, full height]`
+instead of `[full width, row height]`. Omitting `layout` (or setting it to
+anything other than `"horizontal"`) keeps the original vertical-stacking
+behavior unchanged.
+
 ## Module docs
 
 - `modules/agenda.md`
