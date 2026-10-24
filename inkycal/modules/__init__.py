@@ -8,6 +8,7 @@ class InkycalModuleImporter(Enum):
     Inkyimage = "inkycal.modules.inkycal_image.Inkyimage"
     Jokes = "inkycal.modules.inkycal_jokes.Jokes"
     Inkyserver = "inkycal.modules.inkycal_server.Inkyserver"
+    SBahn = "inkycal.modules.inkycal_sbahn.SBahn"
     Slideshow = "inkycal.modules.inkycal_slideshow.Slideshow"
     Stocks = "inkycal.modules.inkycal_stocks.Stocks"
     TextToDisplay = "inkycal.modules.inkycal_textfile_to_display.TextToDisplay"

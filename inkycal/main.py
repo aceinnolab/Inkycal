@@ -515,10 +515,14 @@ class Inkycal:
                 im1_size = im1.size
 
                 # Get the size of the section
-                section_size = [i for i in self.settings['modules'] if i['position'] == number][0]['config']['size']
+                section_cfg = [i for i in self.settings['modules'] if i['position'] == number][0]['config']
+                section_size = section_cfg['size']
+                # optional shift of the module content (for hidden screen edges)
+                offset_x = int(section_cfg.get('offset_x', 0) or 0)
+                offset_y = int(section_cfg.get('offset_y', 0) or 0)
 
                 # Calculate coordinates to center the image
-                x = int((section_size[0] - im1_size[0]) / 2)
+                x = int((section_size[0] - im1_size[0]) / 2) + offset_x
 
                 # If this is the first module, use the y-offset
                 if im1_cursor == 0:
@@ -527,7 +531,7 @@ class Inkycal:
                     y = im1_cursor + int((section_size[1] - im1_size[1]) / 2)
 
                 # center the image in the section space
-                canvas.image_black.paste(im1, (x, y), im1)
+                canvas.image_black.paste(im1, (x, y + offset_y), im1)
 
                 # Shift the y-axis cursor at the beginning of next section
                 im1_cursor += section_size[1]
@@ -540,10 +544,14 @@ class Inkycal:
                 im2_size = im2.size
 
                 # Get the size of the section
-                section_size = [i for i in self.settings['modules'] if i['position'] == number][0]['config']['size']
+                section_cfg = [i for i in self.settings['modules'] if i['position'] == number][0]['config']
+                section_size = section_cfg['size']
+                # optional shift of the module content (for hidden screen edges)
+                offset_x = int(section_cfg.get('offset_x', 0) or 0)
+                offset_y = int(section_cfg.get('offset_y', 0) or 0)
 
                 # Calculate coordinates to center the image
-                x = int((section_size[0] - im2_size[0]) / 2)
+                x = int((section_size[0] - im2_size[0]) / 2) + offset_x
 
                 # If this is the first module, use the y-offset
                 if im2_cursor == 0:
@@ -552,7 +560,7 @@ class Inkycal:
                     y = im2_cursor + int((section_size[1] - im2_size[1]) / 2)
 
                 # center the image in the section space
-                canvas.image_colour.paste(im2, (x, y), im2)
+                canvas.image_colour.paste(im2, (x, y + offset_y), im2)
 
                 # Shift the y-axis cursor at the beginning of next section
                 im2_cursor += section_size[1]
