@@ -230,7 +230,15 @@ class Weather(InkycalModule):
         if image_ratio >= 4:
             row_height = im_height // 3
         else:
-            logger.info('Please consider decreasing the height.')
+            # Only say this once per run, and say what height would fit best
+            ideal = int(im_width / 4) + 2 * self.padding_top
+            msg = (f'Weather module: content is {im_height}px tall; it uses its space best '
+                   f'with a module height of about {ideal}px.')
+            if not getattr(Weather, '_height_hint_shown', False):
+                logger.info(msg)
+                Weather._height_hint_shown = True
+            else:
+                logger.debug(msg)
             row_height = int((im_height * (1 - im_height / im_width)) / 3)
 
         logger.debug(f"row_height: {row_height} | col_width: {col_width}")

@@ -16,4 +16,8 @@ class InkycalModuleImporter(Enum):
     Todoist = "inkycal.modules.inkycal_todoist.Todoist"
     Weather = "inkycal.modules.inkycal_weather.Weather"
     Webshot = "inkycal.modules.inkycal_webshot.Webshot"
+    Waste = "inkycal.modules.inkycal_waste.Waste"
+    Birthdays = "inkycal.modules.inkycal_birthdays.Birthdays"
+    Football = "inkycal.modules.inkycal_football.Football"
+    Pollen = "inkycal.modules.inkycal_pollen.Pollen"
     Xkcd = "inkycal.modules.inkycal_xkcd.Xkcd"

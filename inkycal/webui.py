@@ -22,6 +22,7 @@ from zoneinfo import available_timezones
 from inkycal.display.supported_models import is_parallel_display, supported_models
 from inkycal.settings import Settings
 from inkycal.utils.functions import get_inkycal_version
+from inkycal import webui_extras as extras
 
 settings = Settings()
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -444,126 +445,6 @@ def _coerce_value(raw_value: str, existing_value: object) -> object:
     return json.loads(raw)
 
 
-# ---------------------------------------------------------------------------
-# Grouped settings editor: one section for general settings, one per module
-# ---------------------------------------------------------------------------
-_KV_LABELS = {
-    "size.0": "width (px)",
-    "size.1": "height (px)",
-    "ical_urls": "calendar URL",
-    "api_key": "API key",
-    "padding_x": "padding left/right",
-    "padding_y": "padding top/bottom",
-    "offset_x": "shift right (+) / left (-)",
-    "offset_y": "shift down (+) / up (-)",
-    "fontsize": "font size",
-    "update_interval": "update interval (min)",
-    "calibration_hours": "calibration hour",
-    "image_hash": "only refresh on change",
-    "info_section": "info bar",
-    "info_section_height": "info bar height",
-    "border_around_modules": "module borders",
-    "walk_minutes": "walk to station (min)",
-    "relative_time": "show 'in x min'",
-}
-
-# Keys shown first inside a module section, in this order
-_KV_MODULE_ORDER = ["size", "padding_x", "padding_y", "offset_x", "offset_y", "fontsize", "language"]
-_KV_SECRET_KEYS = {"api_key", "api_key_owm", "token"}
-
-
-def _kv_friendly_label(rel_path: Tuple[str, ...]) -> str:
-    joined = ".".join(rel_path)
-    if joined in _KV_LABELS:
-        return _KV_LABELS[joined]
-    # lists like ical_urls.0 / calibration_hours.2
-    if len(rel_path) >= 2 and rel_path[-1].isdigit():
-        base = ".".join(rel_path[:-1])
-        label = _KV_LABELS.get(base, base.replace("_", " "))
-        return f"{label} {int(rel_path[-1]) + 1}"
-    return _KV_LABELS.get(rel_path[-1], rel_path[-1].replace("_", " "))
-
-
-def _kv_input_row(index: int, full_path: Tuple[str, ...], rel_path: Tuple[str, ...], value: object) -> str:
-    label_full = _path_to_label(full_path)
-    shown = json.dumps(value, ensure_ascii=False) if value is None else str(value)
-    key = rel_path[-1] if not rel_path[-1].isdigit() else (rel_path[-2] if len(rel_path) > 1 else "")
-    is_secret = key in _KV_SECRET_KEYS
-    is_long = len(shown) > 40
-    input_type = "password" if is_secret else "text"
-    row_class = "kv-row kv-wide" if is_long else "kv-row"
-    return (
-        f"<div class='{row_class}'>"
-        f"<label class='kv-key' for='kv_{index}' title='{html.escape(label_full)}'>{html.escape(_kv_friendly_label(rel_path))}</label>"
-        f"<input type='hidden' name='kv_path' value='{html.escape(label_full)}'>"
-        f"<input id='kv_{index}' class='kv-value' type='{input_type}' name='kv_value' value='{html.escape(shown)}'"
-        + (" onfocus=\"this.type='text'\" onblur=\"this.type='password'\"" if is_secret else "")
-        + ">"
-        "</div>"
-    )
-
-
-def _render_kv_sections(entries: List[Tuple[Tuple[str, ...], object]], settings_data: object) -> str:
-    general: List[Tuple[int, Tuple[str, ...], object]] = []
-    modules: Dict[int, List[Tuple[int, Tuple[str, ...], object]]] = {}
-
-    for index, (path, value) in enumerate(entries):
-        if len(path) >= 3 and path[0] == "modules" and path[1].isdigit():
-            modules.setdefault(int(path[1]), []).append((index, path, value))
-        else:
-            general.append((index, path, value))
-
-    module_list = settings_data.get("modules", []) if isinstance(settings_data, dict) else []
-
-    def module_sort_key(item):
-        rel = item[1][3:] if item[1][2] == "config" else item[1][2:]
-        top = rel[0] if rel else ""
-        if item[1][2] in ("name", "position"):
-            return (0, item[1][2], "")
-        if top in _KV_MODULE_ORDER:
-            return (1, str(_KV_MODULE_ORDER.index(top)).zfill(2), ".".join(rel))
-        return (2, ".".join(rel), "")
-
-    parts: List[str] = []
-
-    # General settings
-    parts.append("<details class='kv-section' open><summary>General</summary><div class='kv-grid'>")
-    for index, path, value in general:
-        parts.append(_kv_input_row(index, path, path, value))
-    parts.append("</div></details>")
-
-    # One section per module, ordered by position
-    def position_of(mod_index: int) -> int:
-        try:
-            return int(module_list[mod_index].get("position", mod_index + 1))
-        except Exception:
-            return mod_index + 1
-
-    total_height = 0
-    for mod_index in sorted(modules.keys(), key=position_of):
-        mod = module_list[mod_index] if mod_index < len(module_list) else {}
-        name = str(mod.get("name", f"Module {mod_index + 1}"))
-        size = (mod.get("config") or {}).get("size") or ["?", "?"]
-        try:
-            total_height += int(size[1])
-        except Exception:
-            pass
-        parts.append(
-            f"<details class='kv-section'><summary>{position_of(mod_index)} · {html.escape(name)}"
-            f"<span class='kv-meta'>{html.escape(str(size[0]))} × {html.escape(str(size[1]))} px</span></summary>"
-            "<div class='kv-grid'>"
-        )
-        for index, path, value in sorted(modules[mod_index], key=module_sort_key):
-            rel = path[3:] if path[2] == "config" else path[2:]
-            parts.append(_kv_input_row(index, path, rel or path, value))
-        parts.append("</div></details>")
-
-    if modules:
-        parts.insert(0, f"<p class='muted'>Total module height: <strong>{total_height} px</strong></p>")
-
-    return "".join(parts)
-
-
 def _save_settings_kv(path_labels: List[str], values: List[str], sudo_password: str = "") -> ActionOutcome:
     if len(path_labels) != len(values):
         return ActionOutcome("Settings save failed: malformed key/value payload.")
@@ -835,6 +716,7 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         sudo_prompt_kv_paths: Optional[List[str]] = None,
         sudo_prompt_kv_values: Optional[List[str]] = None,
         selected_git_branch: str = "",
+        sudo_passthrough: Optional[Dict[str, List[str]]] = None,
     ) -> str:
         state = _service_state()
         hardware = _hardware_details()
@@ -878,7 +760,16 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
             for branch_name in git_branches
         )
 
-        key_value_rows = _render_kv_sections(settings_leaf_entries, settings_data)
+        key_value_rows = "".join(
+            (
+                "<div class='kv-row'>"
+                f"<label class='kv-key' for='kv_{index}'>{html.escape(_path_to_label(path))}</label>"
+                f"<input type='hidden' name='kv_path' value='{html.escape(_path_to_label(path))}'>"
+                f"<input id='kv_{index}' class='kv-value' name='kv_value' value='{html.escape(json.dumps(value, ensure_ascii=False) if value is None else str(value))}'>"
+                "</div>"
+            )
+            for index, (path, value) in enumerate(settings_leaf_entries)
+        )
 
         if qr_path:
             qr_html = "<img alt='PayPal QR' class='qr-img' src='/paypal-qr.png' width='200' height='200'/>"
@@ -932,6 +823,9 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
                     f"<input type='hidden' name='kv_value' value='{html.escape(value)}'>"
                     for value in sudo_prompt_kv_values
                 )
+
+        if sudo_prompt_action and sudo_passthrough:
+            sudo_hidden_fields.append(extras.sudo_passthrough_fields(sudo_passthrough))
 
         return f"""
 <!doctype html>
@@ -1059,13 +953,6 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
       word-break: break-word;
     }}
     .kv-value {{ font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }}
-    .kv-section {{ border: 1px solid var(--border); border-radius: 12px; margin: 0.6rem 0; background: #fff; }}
-    .kv-section > summary {{ cursor: pointer; padding: 0.7rem 0.9rem; font-weight: 700; display: flex; align-items: center; list-style: none; }}
-    .kv-section > summary::before {{ content: '▸'; margin-right: 0.5rem; color: var(--muted); }}
-    .kv-section[open] > summary::before {{ content: '▾'; }}
-    .kv-section > summary span.kv-meta {{ margin-left: auto; font-weight: 400; color: var(--muted); font-size: 0.88rem; }}
-    .kv-section > .kv-grid {{ padding: 0 0.9rem 0.9rem; }}
-    .kv-wide {{ grid-template-columns: 1fr; }}
     .modal-backdrop {{
       position: fixed;
       inset: 0;
@@ -1086,6 +973,7 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
       padding: 1rem;
     }}
     .modal h3 {{ margin: 0 0 0.65rem; }}
+    {extras.CSS}
     @media (max-width: 640px) {{
       .wrapper {{ padding: 0.75rem; }}
       .card {{ padding: 0.85rem; border-radius: 12px; }}
@@ -1100,7 +988,11 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
     <p class='subtitle'>Monitor status, tweak timezone, and edit <code>settings.json</code> from your phone or desktop.</p>
     <p class='{message_class}'>{html.escape(message)}</p>
 
+    {extras.render_preview_card(settings_data)}
+
     <div class='grid'>
+      {extras.render_tools_cards()}
+
       <section class='card'>
         <h2>Status</h2>
         <p><strong>Version:</strong> v{html.escape(INKYCAL_VERSION)}</p>
@@ -1209,18 +1101,7 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
       <pre>{html.escape(log_content)}</pre>
     </section>
 
-    <section class='card' style='margin-top: 1rem;'>
-      <h2>Settings</h2>
-      <p class='muted'>Click a section to open it. Hover a label to see the full setting name.</p>
-      <form method='post'>
-        <div class='kv-grid'>
-          {key_value_rows}
-        </div>
-        <div class='button-row'>
-          <button name='action' value='save_settings_kv'>Save key/value settings</button>
-        </div>
-      </form>
-    </section>
+    {extras.render_settings_card(settings_data)}
 
     <section class='card' style='margin-top: 1rem;'>
       <h2>Settings JSON</h2>
@@ -1283,6 +1164,7 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
       }}
     }})();
   </script>
+  <script>{extras.JS}</script>
 </body>
 </html>
 """
@@ -1291,6 +1173,18 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         if parsed.path == "/api/hardware":
             self._send_json(_hardware_details())
+            return
+
+        if parsed.path == "/api/preview":
+            self._send_json(extras.preview_stamp())
+            return
+
+        if parsed.path == "/preview.png":
+            data = extras.preview_png()
+            if data:
+                self._send_binary(data, "image/png")
+            else:
+                self._send_html("<h1>No preview yet</h1>", status=HTTPStatus.NOT_FOUND)
             return
 
         if parsed.path == "/paypal-qr.png":
@@ -1327,7 +1221,9 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         kv_values = form.get("kv_value", [])
         vcom_value = form.get("vcom", [""])[0]
 
-        if action == "save_settings":
+        if action in extras.ACTIONS:
+            outcome = extras.handle(action, form, sudo_password=sudo_password)
+        elif action == "save_settings":
             outcome = _save_settings_text(settings_content, sudo_password=sudo_password)
         elif action == "save_settings_kv":
             outcome = _save_settings_kv(kv_paths, kv_values, sudo_password=sudo_password)
@@ -1356,6 +1252,7 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
                 sudo_prompt_kv_paths=kv_paths if outcome.sudo_required else None,
                 sudo_prompt_kv_values=kv_values if outcome.sudo_required else None,
                 selected_git_branch=git_branch,
+                sudo_passthrough=form if (outcome.sudo_required and action in extras.ACTIONS) else None,
             )
         )
 
