@@ -109,9 +109,11 @@ def module_specs(name: str) -> Dict[str, dict]:
 def default_module_config(name: str, settings_data: Dict[str, object]) -> Dict[str, object]:
     width, _ = screen_size(settings_data)
     config: Dict[str, object] = {
-        "size": [width, 120],
-        "padding_x": 10,
-        "padding_y": 10,
+        "size": [min(DEFAULT_MODULE_WIDTH, width), 120],
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "padding_left": 10,
+        "padding_right": 10,
         "fontsize": 14,
         "language": settings_data.get("language", "en"),
     }
@@ -138,6 +140,10 @@ LABELS = {
     "padding_y": "padding top/bottom",
     "offset_x": "shift right (+) / left (-)",
     "offset_y": "shift down (+) / up (-)",
+    "padding_top": "padding top",
+    "padding_bottom": "padding bottom",
+    "padding_left": "padding left",
+    "padding_right": "padding right",
     "fontsize": "font size",
     "update_interval": "update interval (min)",
     "calibration_hours": "calibration hours",
@@ -166,7 +172,32 @@ GENERAL_ORDER = [
     "model", "update_interval", "orientation", "language", "image_hash",
     "border_around_modules", "info_section", "info_section_height", "calibration_hours",
 ]
-MODULE_ORDER = ["size", "padding_x", "padding_y", "offset_x", "offset_y", "fontsize", "language"]
+MODULE_ORDER = ["size", "padding_top", "padding_bottom", "padding_left", "padding_right", "fontsize", "language"]
+DEFAULT_MODULE_WIDTH = 440
+_LEGACY_PADDING = ("padding_x", "padding_y", "offset_x", "offset_y")
+
+
+def sides_view(cfg: Dict[str, object]) -> Dict[str, object]:
+    """Module config with padding_x/padding_y/offset_x/offset_y turned into the four sides."""
+    def num(key):
+        try:
+            return int(cfg.get(key) or 0)
+        except (TypeError, ValueError):
+            return 0
+    px, py, ox, oy = num("padding_x"), num("padding_y"), num("offset_x"), num("offset_y")
+    view = {k: v for k, v in cfg.items() if k not in _LEGACY_PADDING}
+    view.setdefault("padding_left", max(0, px + ox))
+    view.setdefault("padding_right", max(0, px - ox))
+    view.setdefault("padding_top", max(0, py + oy))
+    view.setdefault("padding_bottom", max(0, py - oy))
+    return view
+
+
+def drop_legacy_padding(cfg: Dict[str, object]) -> None:
+    """Once the four sides are saved, the old keys would only double-shift the content."""
+    if all(k in cfg for k in ("padding_left", "padding_right", "padding_top", "padding_bottom")):
+        for key in _LEGACY_PADDING:
+            cfg.pop(key, None)
 
 
 def _label(rel: Tuple[str, ...]) -> str:
@@ -337,7 +368,7 @@ def render_settings_card(settings_data: Dict[str, object]) -> str:
             f"onclick=\"return confirm('Remove module {html.escape(name)}?')\">✕ Remove</button>"
             "</div><div class='kv-grid'>"
         )
-        parts.extend(_fields_for(cfg, ("modules", index, "config"), MODULE_ORDER, module_specs(name)))
+        parts.extend(_fields_for(sides_view(cfg), ("modules", index, "config"), MODULE_ORDER, module_specs(name)))
         parts.append("</div></details>")
 
     add_options = "".join(f"<option value='{html.escape(n)}'>{html.escape(n)}</option>" for n in module_names())
@@ -544,6 +575,9 @@ def handle_settings_form(form: Dict[str, List[str]], sudo_password: str = ""):
 
     try:
         apply_form(data, form)
+        for mod in data.get("modules", []) or []:
+            if isinstance(mod, dict) and isinstance(mod.get("config"), dict):
+                drop_legacy_padding(mod["config"])
     except ValueError as error:
         return _Outcome(f"Settings save failed: {error}")
 
