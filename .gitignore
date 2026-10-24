@@ -168,3 +168,6 @@ dmypy.json
 # local planning / tooling files
 plan.md
 .pre-commit-config.yaml
+
+# Saved web UI layouts (contain API keys / calendar links)
+layouts/
