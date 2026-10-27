@@ -24,6 +24,10 @@ class FONTS(str, Enum):
     noto_sans_ui_bold = os.path.join(settings.FONT_PATH, "NotoSansUI", "NotoSansUI-Bold.ttf")
     noto_sans_ui_regular = os.path.join(settings.FONT_PATH, "NotoSansUI", "NotoSansUI-Regular.ttf")
 
+    # Atkinson Hyperlegible (Braille Institute, OFL) - designed for maximum legibility
+    atkinson_hyperlegible = os.path.join(settings.FONT_PATH, "AtkinsonHyperlegible", "AtkinsonHyperlegible-Regular.ttf")
+    atkinson_hyperlegible_bold = os.path.join(settings.FONT_PATH, "AtkinsonHyperlegible", "AtkinsonHyperlegible-Bold.ttf")
+
     # weather icons
     weather_icons = os.path.join(settings.FONT_PATH, "WeatherFont", "weathericons-regular-webfont.ttf")
 

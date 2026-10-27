@@ -15,6 +15,11 @@ def _load_font(font_path, size):
 
 logger = logging.getLogger(__name__)
 
+# When True, text is drawn without anti-aliasing (sharp black pixels). On e-paper this looks
+# cleaner than smooth text, whose grey edges get thickened or dithered. Set by main.py from
+# the "text_rendering" setting ("crisp" or "smooth").
+CRISP_TEXT = False
+
 
 class Canvas:
     """Canvas class of Inkycal. Set this up once and use to draw text on a PIL Image."""
@@ -143,6 +148,8 @@ class Canvas:
         # ----------------------------
         space = Image.new("RGBA", (box_w, box_h), (0, 0, 0, 0))
         draw = ImageDraw.Draw(space)
+        if CRISP_TEXT:
+            draw.fontmode = "1"
 
         py = 0
         for line, lh in zip(wrapped_lines, line_heights):

@@ -21,8 +21,12 @@ import importlib
 from inkycal.display import Display
 from inkycal.display.supported_models import is_parallel_display
 from inkycal.modules import InkycalModuleImporter
+from inkycal.modules.template import module_padding, font_from_name
+from inkycal import night_mode
+from datetime import datetime
 from inkycal.settings import Settings
 from inkycal.utils.canvas import Canvas
+from inkycal.utils import canvas as canvas_module
 from inkycal.utils.enums import FONTS
 
 from inkycal.utils.functions import get_system_tz, draw_border_2, get_inkycal_version
@@ -121,6 +125,10 @@ class Inkycal:
         self.optimize = True
 
         self.show_border = self.settings.get('border_around_modules', False)
+        self._night_shown = False
+
+        # "crisp" = text without anti-aliasing (sharper on e-paper), "smooth" = Inkycal's default
+        canvas_module.CRISP_TEXT = self.settings.get('text_rendering', 'smooth') == 'crisp'
 
         self.cleanup()
 
@@ -163,7 +171,9 @@ class Inkycal:
                 # 2. Load class safely
                 ModuleClass = load_module_class(dotted_path)
 
-                # 3. Instantiate module
+                # 3. Instantiate module (modules without their own font use the general one)
+                if not module['config'].get('font') and self.settings.get('font'):
+                    module['config']['font'] = self.settings['font']
                 instance = ModuleClass(module)
 
                 # 4. Attach instance to self.module_X
@@ -357,6 +367,22 @@ class Inkycal:
         logger.info(f'Selected E-paper display: {self.settings["model"]}')
 
         while True:
+            # Night mode: show the night screen once, then wait until the night is over
+            if not run_once:
+                night_active, night_until, night_reason = night_mode.status(self.settings)
+                if night_active:
+                    if not self._night_shown:
+                        logger.info(f"Night mode ({night_reason}) until {night_until:%H:%M}, showing night screen")
+                        self._show_night_screen(night_until)
+                        self._night_shown = True
+                    seconds = (night_until - datetime.now()).total_seconds()
+                    await asyncio.sleep(max(30, min(300, seconds)))
+                    continue
+                if self._night_shown:
+                    logger.info("Night mode ended, back to the dashboard")
+                    self._night_shown = False
+                    self._remove_hashes(settings.IMAGE_FOLDER)
+
             logger.info("Starting new cycle...")
             current_time = arrow.now(tz=get_system_tz())
             logger.info(f"Timestamp: {current_time.format('HH:mm:ss DD.MM.YYYY')}")
@@ -460,6 +486,28 @@ class Inkycal:
 
             await asyncio.sleep(sleep_time)
 
+    def _show_night_screen(self, until):
+        """Render the night screen once (see inkycal/night_mode.py)."""
+        width, height = Display.get_display_size(self.settings["model"])
+        width, height = height, width  # Inkycal works in portrait mode
+        try:
+            image = night_mode.render(self.settings, (width, height), font_from_name(self.settings.get("font")),
+                                      get_system_tz(), until=until)
+        except Exception:
+            logger.exception("Night screen could not be drawn")
+            return
+        image.save(os.path.join(settings.IMAGE_FOLDER, "canvas.png"), "PNG")
+        if not self.render:
+            return
+        if self.optimize:
+            image = self._optimize_im(image)
+        if self.settings.get('orientation') == 180:
+            image = image.rotate(180, expand=True)
+        if self.supports_colour:
+            self.Display.render(image, Image.new('RGB', image.size, 'white'))
+        else:
+            self.Display.render(image)
+
     @staticmethod
     def _merge_bands():
         """Merges black and coloured bands for black-white ePapers
@@ -515,19 +563,19 @@ class Inkycal:
                 im1_size = im1.size
 
                 # Get the size of the section
-                section_size = [i for i in self.settings['modules'] if i['position'] == number][0]['config']['size']
+                section_cfg = [i for i in self.settings['modules'] if i['position'] == number][0]['config']
+                section_size = section_cfg['size']
+                # optional shift of the module content (for hidden screen edges)
+                offset_x = int(section_cfg.get('offset_x', 0) or 0)
+                offset_y = int(section_cfg.get('offset_y', 0) or 0)
 
-                # Calculate coordinates to center the image
-                x = int((section_size[0] - im1_size[0]) / 2)
-
-                # If this is the first module, use the y-offset
-                if im1_cursor == 0:
-                    y = int((section_size[1] - im1_size[1]) / 2)
-                else:
-                    y = im1_cursor + int((section_size[1] - im1_size[1]) / 2)
+                # Place the image so each side gets its own padding (left/right/top/bottom)
+                pad_l, pad_r, pad_t, pad_b = module_padding(section_cfg)
+                x = int((section_size[0] - im1_size[0] + pad_l - pad_r) / 2) + offset_x
+                y = im1_cursor + int((section_size[1] - im1_size[1] + pad_t - pad_b) / 2)
 
                 # center the image in the section space
-                canvas.image_black.paste(im1, (x, y), im1)
+                canvas.image_black.paste(im1, (x, y + offset_y), im1)
 
                 # Shift the y-axis cursor at the beginning of next section
                 im1_cursor += section_size[1]
@@ -540,19 +588,19 @@ class Inkycal:
                 im2_size = im2.size
 
                 # Get the size of the section
-                section_size = [i for i in self.settings['modules'] if i['position'] == number][0]['config']['size']
+                section_cfg = [i for i in self.settings['modules'] if i['position'] == number][0]['config']
+                section_size = section_cfg['size']
+                # optional shift of the module content (for hidden screen edges)
+                offset_x = int(section_cfg.get('offset_x', 0) or 0)
+                offset_y = int(section_cfg.get('offset_y', 0) or 0)
 
-                # Calculate coordinates to center the image
-                x = int((section_size[0] - im2_size[0]) / 2)
-
-                # If this is the first module, use the y-offset
-                if im2_cursor == 0:
-                    y = int((section_size[1] - im2_size[1]) / 2)
-                else:
-                    y = im2_cursor + int((section_size[1] - im2_size[1]) / 2)
+                # Place the image so each side gets its own padding (left/right/top/bottom)
+                pad_l, pad_r, pad_t, pad_b = module_padding(section_cfg)
+                x = int((section_size[0] - im2_size[0] + pad_l - pad_r) / 2) + offset_x
+                y = im2_cursor + int((section_size[1] - im2_size[1] + pad_t - pad_b) / 2)
 
                 # center the image in the section space
-                canvas.image_colour.paste(im2, (x, y), im2)
+                canvas.image_colour.paste(im2, (x, y + offset_y), im2)
 
                 # Shift the y-axis cursor at the beginning of next section
                 im2_cursor += section_size[1]

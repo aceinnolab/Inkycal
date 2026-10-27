@@ -22,6 +22,8 @@ from zoneinfo import available_timezones
 from inkycal.display.supported_models import is_parallel_display, supported_models
 from inkycal.settings import Settings
 from inkycal.utils.functions import get_inkycal_version
+from inkycal import webui_extras as extras
+from inkycal import webui_photos as photos
 
 settings = Settings()
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -715,6 +717,7 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         sudo_prompt_kv_paths: Optional[List[str]] = None,
         sudo_prompt_kv_values: Optional[List[str]] = None,
         selected_git_branch: str = "",
+        sudo_passthrough: Optional[Dict[str, List[str]]] = None,
     ) -> str:
         state = _service_state()
         hardware = _hardware_details()
@@ -821,6 +824,9 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
                     f"<input type='hidden' name='kv_value' value='{html.escape(value)}'>"
                     for value in sudo_prompt_kv_values
                 )
+
+        if sudo_prompt_action and sudo_passthrough:
+            sudo_hidden_fields.append(extras.sudo_passthrough_fields(sudo_passthrough))
 
         return f"""
 <!doctype html>
@@ -968,6 +974,8 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
       padding: 1rem;
     }}
     .modal h3 {{ margin: 0 0 0.65rem; }}
+    {extras.CSS}
+    {photos.CSS}
     @media (max-width: 640px) {{
       .wrapper {{ padding: 0.75rem; }}
       .card {{ padding: 0.85rem; border-radius: 12px; }}
@@ -982,7 +990,13 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
     <p class='subtitle'>Monitor status, tweak timezone, and edit <code>settings.json</code> from your phone or desktop.</p>
     <p class='{message_class}'>{html.escape(message)}</p>
 
+    {extras.render_preview_card(settings_data)}
+
+    {photos.render_card(settings_data)}
+
     <div class='grid'>
+      {extras.render_tools_cards()}
+
       <section class='card'>
         <h2>Status</h2>
         <p><strong>Version:</strong> v{html.escape(INKYCAL_VERSION)}</p>
@@ -1091,18 +1105,7 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
       <pre>{html.escape(log_content)}</pre>
     </section>
 
-    <section class='card' style='margin-top: 1rem;'>
-      <h2>Settings Key/Value Editor</h2>
-      <p class='muted'>Keys are read-only paths. Values are editable and saved with original types where possible.</p>
-      <form method='post'>
-        <div class='kv-grid'>
-          {key_value_rows}
-        </div>
-        <div class='button-row'>
-          <button name='action' value='save_settings_kv'>Save key/value settings</button>
-        </div>
-      </form>
-    </section>
+    {extras.render_settings_card(settings_data)}
 
     <section class='card' style='margin-top: 1rem;'>
       <h2>Settings JSON</h2>
@@ -1165,6 +1168,8 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
       }}
     }})();
   </script>
+  <script>{extras.JS}</script>
+  <script>{photos.JS}</script>
 </body>
 </html>
 """
@@ -1173,6 +1178,26 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         if parsed.path == "/api/hardware":
             self._send_json(_hardware_details())
+            return
+
+        if parsed.path == "/api/preview":
+            self._send_json(extras.preview_stamp())
+            return
+
+        if parsed.path == "/preview.png":
+            data = extras.preview_png()
+            if data:
+                self._send_binary(data, "image/png")
+            else:
+                self._send_html("<h1>No preview yet</h1>", status=HTTPStatus.NOT_FOUND)
+            return
+
+        if parsed.path.startswith("/photos/thumb/"):
+            data = photos.thumb_bytes(urllib.parse.unquote(parsed.path[len("/photos/thumb/"):]))
+            if data:
+                self._send_binary(data, "image/jpeg")
+            else:
+                self._send_html("<h1>Not found</h1>", status=HTTPStatus.NOT_FOUND)
             return
 
         if parsed.path == "/paypal-qr.png":
@@ -1188,10 +1213,27 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
             return
 
         self._query = urllib.parse.parse_qs(parsed.query)
-        self._send_html(self._render_dashboard())
+        self._send_html(self._render_dashboard(message=self._query.get("msg", [""])[0]))
+
+    def _photo_upload(self) -> None:
+        wants_json = "application/json" in self.headers.get("Accept", "")
+        length = int(self.headers.get("Content-Length", "0") or 0)
+        if length > photos.MAX_UPLOAD_BYTES:
+            self.close_connection = True  # body is not read
+            ok, message = False, f"Upload failed: more than {photos.MAX_UPLOAD_BYTES // (1024 * 1024)} MB at once."
+        else:
+            ok, message = photos.handle_upload(self.headers.get("Content-Type", ""), self.rfile.read(length))
+        if wants_json:
+            self._send_json({"ok": ok, "message": message})
+            return
+        self._query = {}
+        self._send_html(self._render_dashboard(message=message))
 
     def do_POST(self) -> None:  # noqa: N802
         parsed = urllib.parse.urlparse(self.path)
+        if parsed.path == "/photos/upload":
+            self._photo_upload()
+            return
         if parsed.path != "/":
             self._send_html("<h1>Not found</h1>", status=HTTPStatus.NOT_FOUND)
             return
@@ -1209,7 +1251,12 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
         kv_values = form.get("kv_value", [])
         vcom_value = form.get("vcom", [""])[0]
 
-        if action == "save_settings":
+        if action in photos.ACTIONS:
+            outcome = photos.handle(action, form, sudo_password=sudo_password)
+        elif action in extras.ACTIONS:
+            outcome = extras.handle(action, form, sudo_password=sudo_password)
+        elif action == "save_settings":
+            extras.backup_settings()
             outcome = _save_settings_text(settings_content, sudo_password=sudo_password)
         elif action == "save_settings_kv":
             outcome = _save_settings_kv(kv_paths, kv_values, sudo_password=sudo_password)
@@ -1238,6 +1285,7 @@ class InkycalWebUiHandler(BaseHTTPRequestHandler):
                 sudo_prompt_kv_paths=kv_paths if outcome.sudo_required else None,
                 sudo_prompt_kv_values=kv_values if outcome.sudo_required else None,
                 selected_git_branch=git_branch,
+                sudo_passthrough=form if (outcome.sudo_required and (action in extras.ACTIONS or action in photos.ACTIONS)) else None,
             )
         )
 

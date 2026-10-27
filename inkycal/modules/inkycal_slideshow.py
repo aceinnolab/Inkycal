@@ -2,8 +2,10 @@
 Inkycal Slideshow Module
 Copyright by aceinnolab
 """
-import glob
 import logging
+import os
+
+from PIL import Image, ImageDraw, ImageFont
 
 # PIL has a class named Image, use alias for Inkyimage -> Images
 from inkycal.utils.inky_image import Inkyimage as Images, image_to_palette
@@ -11,6 +13,47 @@ from inkycal.modules.template import InkycalModule
 from inkycal.utils import JSONCache
 
 logger = logging.getLogger(__name__)
+
+IMAGE_EXTENSIONS = ('jpg', 'jpeg', 'png')
+CACHE_NAME = 'inkycal_slideshow'
+
+
+def list_images(path: str) -> list:
+    """All png/jpg/jpeg files in the folder, sorted by file name (case-insensitive)."""
+    path = os.path.expanduser(path or '')
+    try:
+        names = os.listdir(path)
+    except OSError:
+        return []
+    files = [os.path.join(path, n) for n in names
+             if not n.startswith('.') and n.rsplit('.', 1)[-1].lower() in IMAGE_EXTENSIONS
+             and os.path.isfile(os.path.join(path, n))]
+    return sorted(files, key=lambda p: os.path.basename(p).lower())
+
+
+def pick_next(images: list, cache_data: dict) -> str:
+    """Choose the image to show and update cache_data.
+
+    * ``next_image`` (set by the web UI's "Show now" button) wins once if it still exists.
+    * Otherwise the image after ``last_image`` in name order is used. If ``last_image`` was
+      deleted, the first image whose name sorts after it is used, so the order is kept.
+    """
+    names = [os.path.basename(p) for p in images]
+    wanted = cache_data.pop('next_image', None)
+    if wanted in names:
+        index = names.index(wanted)
+    else:
+        last = cache_data.get('last_image')
+        if last in names:
+            index = (names.index(last) + 1) % len(names)
+        elif last:
+            later = [i for i, n in enumerate(names) if n.lower() > str(last).lower()]
+            index = later[0] if later else 0
+        else:
+            index = 0
+    cache_data['last_image'] = names[index]
+    cache_data['current_index'] = index
+    return images[index]
 
 
 class Slideshow(InkycalModule):
@@ -20,8 +63,9 @@ class Slideshow(InkycalModule):
     requires = {
 
         "path": {
-            "label": "Path to a local folder, e.g. /home/pi/Desktop/images. "
-                     "Only PNG and JPG/JPEG images are used for the slideshow."
+            "label": "Path to a local folder, e.g. /home/pi/inkycal_images. "
+                     "Only PNG and JPG/JPEG images are used for the slideshow. "
+                     "Pictures can be uploaded in the web UI (Photos)."
         },
 
         "palette": {
@@ -59,25 +103,31 @@ class Slideshow(InkycalModule):
         # optional parameters
         self.path = config['path']
         self.palette = config['palette']
-        self.autoflip = config['autoflip']
-        self.orientation = config['orientation']
+        self.autoflip = config.get('autoflip', False)
+        self.orientation = config.get('orientation', 'vertical')
 
-        # Get the full path of all png/jpg/jpeg images in the given folder
-        all_files = glob.glob(f'{self.path}/*')
-        self.images = [i for i in all_files if i.split('.')[-1].lower() in ('jpg', 'jpeg', 'png')]
+        if not list_images(self.path):
+            logger.warning(f'No images found in {self.path} yet - showing a hint instead.')
 
-        if not self.images:
-            logger.error('No images found in the given folder, please double check your path!')
-            raise Exception('No images found in the given folder path :/')
-
-        self.cache = JSONCache('inkycal_slideshow')
-        self.cache_data = self.cache.read()
-
-        # set a 'first run' signal
-        self._first_run = True
+        self.cache = JSONCache(CACHE_NAME)
 
         # give an OK message
         logger.debug(f'{__name__} loaded')
+
+    def _empty_image(self, size):
+        """White image with a short hint, used while the folder has no pictures."""
+        im = Image.new('RGB', size, 'white')
+        draw = ImageDraw.Draw(im)
+        text = 'No pictures uploaded yet'
+        try:
+            font = ImageFont.truetype(getattr(self.font, 'value', self.font), max(int(self.fontsize), 18))
+        except Exception:
+            font = ImageFont.load_default()
+        box = draw.textbbox((0, 0), text, font=font)
+        x = max(0, (size[0] - (box[2] - box[0])) // 2)
+        y = max(0, (size[1] - (box[3] - box[1])) // 2)
+        draw.text((x, y), text, fill='black', font=font)
+        return image_to_palette(im, self.palette)
 
     def generate_image(self):
         """Generate image for this module"""
@@ -89,26 +139,22 @@ class Slideshow(InkycalModule):
 
         logger.debug(f'Image size: {im_size}')
 
-        # rotates list items by 1 index
-        def rotate(list: list):
-            return list[1:] + list[:1]
+        # Read the folder every time, so newly uploaded pictures show up without a restart
+        images = list_images(self.path)
+        if not images:
+            return self._empty_image(im_size)
 
-        # Switch to the next image if this is not the first run
-        if self._first_run:
-            self._first_run = False
-            self.cache_data["current_index"] = 0
-        else:
-            self.images = rotate(self.images)
-            self.cache_data["current_index"] = (self.cache_data["current_index"] + 1) % len(self.images)
+        # Continue where the last run stopped (also across restarts and reboots)
+        cache_data = self.cache.read()
+        image_path = pick_next(images, cache_data)
+        logger.info(f'slideshow - showing {os.path.basename(image_path)} '
+                    f'({cache_data["current_index"] + 1}/{len(images)})')
+        # save before loading, so a broken file is skipped next time instead of blocking the show
+        self.cache.write(cache_data)
 
         # initialize custom image class
         im = Images()
-
-        # temporary print method, prints current filename
-        print(f'slideshow - current image name: {self.images[0].split("/")[-1]}')
-
-        # use the image at the first index
-        im.load(self.images[0])
+        im.load(image_path)
 
         # Remove background if present
         im.remove_alpha()
@@ -125,8 +171,6 @@ class Slideshow(InkycalModule):
 
         # with the images now send, clear the current image
         im.clear()
-
-        self.cache.write(self.cache_data)
 
         # return images
         return im_black, im_colour
