@@ -177,7 +177,7 @@ jobs:
 
       - name: Upload Raspberry Pi OS Image
         if: success()
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ env.version }}
