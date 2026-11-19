@@ -69,7 +69,6 @@ jobs:
             # to ensure we don't reach the max timeout for GitHub Actions and making it faster to install Inkycal, we're depending on piwheels
             # for the wheels we need
             pip install --upgrade pip wheel setuptools --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
-            pip install -e ".[dev]" pytest --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
-            pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
+            pip install -e ".[dev,raspberry-pi]" --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
             wget -q https://raw.githubusercontent.com/aceinnolab/Inkycal/assets/tests/settings.json
             python -m pytest --tb=short -v

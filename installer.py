@@ -338,13 +338,8 @@ def install_or_repair(ctx: InstallerContext) -> None:
     result = run_command([pip, "install", "--upgrade", "pip", "wheel", "setuptools", *PIP_INDEX_ARGS], cwd=ctx.repo_root)
     print_command_result(result)
 
-    result = run_command([pip, "install", "-e", ".", *PIP_INDEX_ARGS], cwd=ctx.repo_root)
+    result = run_command([pip, "install", "-e", ".[raspberry-pi]", *PIP_INDEX_ARGS], cwd=ctx.repo_root)
     print_command_result(result)
-
-    raspberry_reqs = ctx.repo_root / "raspberry_os_requirements.txt"
-    if raspberry_reqs.exists():
-        result = run_command([pip, "install", "-r", str(raspberry_reqs), *PIP_INDEX_ARGS], cwd=ctx.repo_root)
-        print_command_result(result)
 
     save_state(ctx, "install", "ok")
     print("Install/repair completed.")
