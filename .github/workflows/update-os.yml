@@ -79,8 +79,7 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install --upgrade pip wheel setuptools --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
-            pip install -e . --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
-            pip install -r raspberry_os_requirements.txt --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
+            pip install -e ".[raspberry-pi]" --index-url https://www.piwheels.org/simple --extra-index-url https://pypi.org/simple
 
             #334 & #335. TODO: check if 12.48" stuff is still required
             # update 14-july-2026: wiringpi is still required for 12.48" display, but not for 7.3" display. For now, we will install it unconditionally, as it is a small dependency.

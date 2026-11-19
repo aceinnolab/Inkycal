@@ -6,30 +6,64 @@ build-backend = "setuptools.build_meta"
 name = "inkycal"
 description = "InkyCal – e-paper calendar/dashboard for Raspberry Pi"
 readme = "README.md"
-requires-python = ">=3.9"
-license = { text = "GPL-3.0-only" }
+requires-python = ">=3.12,<4"
+license = "GPL-3.0-only"
 authors = [{ name = "aceinnolab", email = "inkycal@aceinnolab.com" }]
-dynamic = ["dependencies", "version"]
+dynamic = ["version"]
+dependencies = [
+  "pillow~=13.0",
+  "python-dotenv~=1.2.4",
+  "arrow~=1.4.0",
+  "requests~=2.34.2",
+  "tzlocal~=5.4.5",
+  "numpy~=2.5.5",
+  "icalendar~=7.3.0",
+  "python-dateutil~=2.9.0",
+  "feedparser~=6.0.14",
+  "xkcd~=2.4.2",
+  "yfinance~=1.8.0",
+  "certifi>=2026.10.23",
+  "todoist-api-python~=4.0.1",
+  "recurring-ical-events~=3.8.2",
+  "matplotlib~=3.11.2",
+  "selenium~=4.53.0",
+  "segno~=1.6.6",
+]
 
-# (optional but nice)
 classifiers = [
   "Development Status :: 4 - Beta",
-  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
   "Intended Audience :: Education",
   "Natural Language :: English",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest~=9.2.0",
+  "twine~=7.0.0",
+  # Keep docs on MkDocs 1.x until an explicit MkDocs 2 migration is planned.
+  "mkdocs>=1.6.1,<2",
+  "mkdocs-material>=9.8.1,<10",
+  "mkdocstrings[python]>=1.0.8,<2",
+]
+raspberry-pi = [
+  "spidev==3.8",
+  "lgpio==0.2.2.0",
+  "gpiozero~=2.0.1.post3",
 ]
 
 [project.urls]
 Homepage  = "https://github.com/aceinnolab/Inkycal"
 Issues    = "https://github.com/aceinnolab/Inkycal/issues"
 Changelog = "https://github.com/aceinnolab/Inkycal/releases"
+
+# Poetry is used only to resolve the cross-platform lockfile. Setuptools remains
+# the build backend and continues to read the package version from _version.txt.
+[tool.poetry]
+package-mode = false
 
 [tool.setuptools]
 include-package-data = true
@@ -38,7 +72,6 @@ include-package-data = true
 include = ["inkycal*"]  # change if your top-level package name differs
 
 [tool.setuptools.dynamic]
-dependencies = { file = ["requirements.txt"] }
 version = { file = ["_version.txt"] }
 [tool.setuptools.package-data]
 "inkycal" = [
